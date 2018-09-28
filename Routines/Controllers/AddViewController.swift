@@ -7,16 +7,18 @@
 //
 
 import UIKit
+import RealmSwift
 
-class AddViewController: UIViewController {
+class AddViewController: UIViewController, UINavigationControllerDelegate {
+    
+    let realm = try! Realm()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        navigationItem.backBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(self.cancelTapped))
     }
-    
-
     
     // MARK: - Navigation
 
@@ -26,6 +28,10 @@ class AddViewController: UIViewController {
         // Pass the selected object to the new view controller.
         let destination = segue.destination as! TableViewController
         destination.tableView.reloadData()
+    }
+    
+    @objc func cancelTapped() {
+        dismiss(animated: true, completion: nil)
     }
     
 

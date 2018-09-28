@@ -10,6 +10,7 @@
 		06DF6547C9AD0C4DAE458BD6 /* Pods_Routines.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 572EB0D39593DFD9CE92CFA1 /* Pods_Routines.framework */; };
 		F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TableViewController.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
+		F869D993215DF65800679AF4 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F869D992215DF65800679AF4 /* EditViewController.swift */; };
 		F86E96D5215DAA17009DB7F3 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86E96D4215DAA17009DB7F3 /* AddViewController.swift */; };
 		F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831B72155CBB000DAF60E /* AppDelegate.swift */; };
 		F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831BB2155CBB000DAF60E /* Main.storyboard */; };
@@ -24,6 +25,7 @@
 		E8C0A730970844B9835C2B2D /* Pods-Routines.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routines.release.xcconfig"; path = "Pods/Target Support Files/Pods-Routines/Pods-Routines.release.xcconfig"; sourceTree = "<group>"; };
 		F816DB332155CFBA009C6907 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
+		F869D992215DF65800679AF4 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		F86E96D4215DAA17009DB7F3 /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		F8B831B42155CBB000DAF60E /* Routines.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routines.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8B831B72155CBB000DAF60E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				F816DB332155CFBA009C6907 /* TableViewController.swift */,
 				F82770D221585D3000420C50 /* AddTableViewController.swift */,
 				F86E96D4215DAA17009DB7F3 /* AddViewController.swift */,
+				F869D992215DF65800679AF4 /* EditViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -237,6 +240,7 @@
 			files = (
 				F86E96D5215DAA17009DB7F3 /* AddViewController.swift in Sources */,
 				F8B831CD2155CBE300DAF60E /* Items.swift in Sources */,
+				F869D993215DF65800679AF4 /* EditViewController.swift in Sources */,
 				F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */,
 				F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */,
 				F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */,

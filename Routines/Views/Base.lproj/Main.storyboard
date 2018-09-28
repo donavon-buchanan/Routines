@@ -26,6 +26,12 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="pCY-jV-zNG" kind="show" identifier="editSegue" id="OaK-Gx-VNI">
+                                        <segue key="commit" inheritsFrom="parent" id="ymJ-MF-AXO"/>
+                                        <segue key="preview" inheritsFrom="commit" id="WfH-Ah-EPw"/>
+                                    </segue>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -36,7 +42,7 @@
                     <navigationItem key="navigationItem" id="zZQ-20-1Ec">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="XO1-Lz-EWV">
                             <connections>
-                                <segue destination="F4e-hB-iNF" kind="show" id="d1H-8a-zdT"/>
+                                <segue destination="F4e-hB-iNF" kind="show" identifier="addSegue" id="d1H-8a-zdT"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -44,6 +50,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SEk-qH-xtl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-356" y="109"/>
+        </scene>
+        <!--Edit View Controller-->
+        <scene sceneID="7iS-dp-u2I">
+            <objects>
+                <viewController id="pCY-jV-zNG" customClass="EditViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6DU-Hx-noX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="UZP-Bt-5YN"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I2c-hc-ek0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="646" y="391"/>
         </scene>
         <!--Add View Controller-->
         <scene sceneID="TTL-V2-5tj">
@@ -79,4 +100,7 @@
             <point key="canvasLocation" x="-1295" y="109"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="OaK-Gx-VNI"/>
+    </inferredMetricsTieBreakers>
 </document>
