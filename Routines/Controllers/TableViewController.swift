@@ -11,6 +11,8 @@ import RealmSwift
 
 class TableViewController: UITableViewController {
     
+    @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
+    
     // Get the default Realm
     let realm = try! Realm()
 
@@ -23,7 +25,7 @@ class TableViewController: UITableViewController {
     let eveningString = "Evening"
     let nightString = "Night"
     
-    //let segmentStringArray: [String] = ["All Day", "Morning", "Afternoon", "Evening", "Night"]
+    let segmentStringArray: [String] = ["Morning", "Afternoon", "Evening", "Night", "All Day"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,36 +49,40 @@ class TableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 5
+//        var activeSegments = 0
+//        for segment in 0...4 {
+//            if countForSegment(section: segment) > 0 {
+//                activeSegments += 1
+//            }
+//        }
+        return 4
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return countForSegment(section: section)
+        // return the number of rows
+        if countForSegment(section: section) > 0 {
+            return countForSegment(section: section)
+        } else {
+            return 1
+        }
     }
     
+    //Order of segments
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 1:
-            return morningString
-        case 2:
-            return afternoonString
-        case 3:
-            return eveningString
-        case 4:
-            return nightString
-        default:
-            return dayString
-        }
+        return segmentStringArray[section]
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let section = indexPath.section
         
-        let item = performSearch(segment: section)[indexPath.row]
-        if item.segment == indexPath.section {
-            cell.textLabel?.text = item.title
+        if countForSegment(section: section) > 0 {
+            let item = performSearch(segment: section)[indexPath.row]
+            if item.segment == indexPath.section {
+                cell.textLabel?.text = item.title
+            }
+        } else {
+            cell.textLabel?.text = "Your \(segmentStringArray[indexPath.section].lowercased()) is clear!"
         }
         
         return cell
@@ -124,18 +130,44 @@ class TableViewController: UITableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
-//        let destinationVC = segue.destination as! AddViewController
+        let destinationVC = segue.destination as! AddTableViewController
         // Pass the selected object to the new view controller.
-//        if let indexPath = tableView.indexPathForSelectedRow {
-//            let section = tableView.indexPathForSelectedRow?.section
-//            destinationVC.item = performSearch(segment: section!)[indexPath.row]
+        if let indexPath = tableView.indexPathForSelectedRow {
+            let section = tableView.indexPathForSelectedRow?.section
+            destinationVC.item = performSearch(segment: section!)[indexPath.row]
+        }
+        
+        //Set right bar item as "Save"
+        destinationVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: destinationVC, action: #selector(destinationVC.saveButtonPressed))
+        //Disable button until all values are filled
+        destinationVC.navigationItem.rightBarButtonItem?.isEnabled = false
+//        if segue.identifier == "addSegue" {
+//            let destination = segue.destination as! AddTableViewController
+//            //Set right bar item as "Save"
+//            destination.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: destination, action: #selector(destination.saveButtonPressed))
+//            //Disable button until all values are filled
+//            destination.navigationItem.rightBarButtonItem?.isEnabled = false
+//        }
+//
+//        if segue.identifier == "editSegue" {
+//            let destination = segue.destination as! AddTableViewController
+//            //Set right bar item as "Save"
+//            destination.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: destination, action: #selector(destination.saveButtonPressed))
+//            //Disable button until a value is changed
+//            destination.navigationItem.rightBarButtonItem?.isEnabled = false
+//            //pass in current item
+//            if let indexPath = tableView.indexPathForSelectedRow {
+//                let section = tableView.indexPathForSelectedRow?.section
+//                destination.item = performSearch(segment: section!)[indexPath.row]
+//            }
 //        }
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "editSegue", sender: self)
-        tableView.deselectRow(at: indexPath, animated: false)
-    }
+    //Duplicate of segue from IB
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        performSegue(withIdentifier: "editSegue", sender: self)
+//        tableView.deselectRow(at: indexPath, animated: false)
+//    }
     
     //MARK: - Model Manipulation Methods
     //Load segments

@@ -14,18 +14,14 @@ class AddTableViewController: UITableViewController {
     //MARK: - Properties
     @IBOutlet weak var taskTextField: UITextField!
     @IBOutlet weak var segmentSelection: UISegmentedControl!
-    //save task
-    @IBAction func saveButtonPressed(_ sender: UIButton) {
-        print("save button pressed")
-        addNewItem()
-        dismiss(animated: true, completion: nil)
-    }
     
-    @IBAction func cancelButtonPressed(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
-    }
+//    @IBAction func cancelButtonPressed(_ sender: UIButton) {
+//        dismiss(animated: true, completion: nil)
+//    }
     
-    var item = Items()
+    var item : Items?
+    
+    var itemTitle : String?
     
     // Get the default Realm
     let realm = try! Realm()
@@ -33,17 +29,21 @@ class AddTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if item.title.count > 0 {
-            taskTextField.text = item.title
-            segmentSelection.selectedSegmentIndex = item.segment
+        //If item is loaded, fill in values for editing
+        if item != nil {
+            taskTextField.text = item?.title
+            segmentSelection.selectedSegmentIndex = (item?.segment)!
         }
+        
+        //print("Segment selection is: \(segmentSelection.selectedSegmentIndex)")
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
+        taskTextField.addTarget(self, action: #selector(AddTableViewController.textFieldDidChange), for: .editingChanged)
+        segmentSelection.addTarget(self, action: #selector(self.textFieldDidChange), for: .valueChanged)
     }
 
     
@@ -56,18 +56,35 @@ class AddTableViewController: UITableViewController {
         let destinationVC = segue.destination as! TableViewController
         destinationVC.tableView.reloadData()
     }
+    
+    @objc func textFieldDidChange() {
+        if taskTextField.text!.count > 0 {
+           itemTitle = taskTextField.text!
+            navigationItem.rightBarButtonItem?.isEnabled = true
+        } else {
+            itemTitle = nil
+            navigationItem.rightBarButtonItem?.isEnabled = false
+        }
+        
+    }
+    
+    @objc func saveButtonPressed() {
+        addNewItem()
+        performSegue(withIdentifier: "unwindToTableViewController", sender: self)
+    }
  
     
     func addNewItem() {
         //if it's a new item, add it as new to the realm
         //otherwise, update the existing item
-        if self.item.title.count == 0 {
-            self.item.title = taskTextField.text!
-            self.item.dateModified = Date()
-            self.item.segment = segmentSelection.selectedSegmentIndex
+        if item == nil {
+            let newItem = Items()
+            newItem.title = itemTitle!
+            newItem.dateModified = Date()
+            newItem.segment = segmentSelection.selectedSegmentIndex
             
             //save to realm
-            saveItem(item: self.item)
+            saveItem(item: newItem)
         } else {
             updateItem()
         }
@@ -76,7 +93,7 @@ class AddTableViewController: UITableViewController {
     func saveItem(item: Items) {
         do {
             try realm.write {
-                realm.add(self.item)
+                realm.add(item)
             }
         } catch {
             print("Error saving item: \(error)")
@@ -86,9 +103,9 @@ class AddTableViewController: UITableViewController {
     func updateItem() {
         do {
             try realm.write {
-                item.title = taskTextField.text!
-                item.dateModified = Date()
-                item.segment = segmentSelection.selectedSegmentIndex
+                item!.title = itemTitle!
+                item!.dateModified = Date()
+                item!.segment = segmentSelection.selectedSegmentIndex
             }
         } catch {
             print("Error updating item: \(error)")
