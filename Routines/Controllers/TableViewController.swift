@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class TableViewController: UITableViewController {
+class TableViewController: SwipeTableViewController {
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     
@@ -30,7 +30,6 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.rowHeight = 50
-        
         //TODO: - Scroll to currently relevant section
         
         // Uncomment the following line to preserve selection between presentations
@@ -48,7 +47,7 @@ class TableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+        // return the number of sections
 //        var activeSegments = 0
 //        for segment in 0...4 {
 //            if countForSegment(section: segment) > 0 {
@@ -59,12 +58,13 @@ class TableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // return the number of rows
-        if countForSegment(section: section) > 0 {
-            return countForSegment(section: section)
-        } else {
-            return 1
-        }
+        // return the number of rows, always at least 1 for default text
+//        if countForSegment(section: section) > 0 {
+//            return countForSegment(section: section)
+//        } else {
+//            return 1
+//        }
+        return countForSegment(section: section)
     }
     
     //Order of segments
@@ -72,18 +72,36 @@ class TableViewController: UITableViewController {
         return segmentStringArray[section]
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let section = indexPath.section
-        
-        if countForSegment(section: section) > 0 {
-            let item = performSearch(segment: section)[indexPath.row]
-            if item.segment == indexPath.section {
-                cell.textLabel?.text = item.title
-            }
+    //@available(iOS 11.0, *)
+    func visibleRect(for tableView: UITableView) -> CGRect? {
+        if #available(iOS 11.0, *) {
+            return tableView.safeAreaLayoutGuide.layoutFrame
         } else {
-            cell.textLabel?.text = "Your \(segmentStringArray[indexPath.section].lowercased()) is clear!"
+            // Fallback on earlier versions
+            let topInset = navigationController?.navigationBar.frame.height ?? 0
+            let bottomInset = navigationController?.toolbar?.frame.height ?? 0
+            let bounds = tableView.bounds
+            
+            return CGRect(x: bounds.origin.x, y: bounds.origin.y + topInset, width: bounds.width, height: bounds.height - bottomInset)
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        let section = indexPath.section
+        let item = performSearch(segment: section)[indexPath.row]
+        if item.segment == indexPath.section {
+            cell.textLabel?.text = item.title
+        }
+        //default text if no items in segment
+//        if countForSegment(section: section) > 0 {
+//            let item = performSearch(segment: section)[indexPath.row]
+//            if item.segment == indexPath.section {
+//                cell.textLabel?.text = item.title
+//            }
+//        } else {
+//            cell.textLabel?.text = "Your \(segmentStringArray[indexPath.section].lowercased()) is clear!"
+//        }
         
         return cell
     }
@@ -163,10 +181,19 @@ class TableViewController: UITableViewController {
 //        }
     }
     
-    //Duplicate of segue from IB
+
 //    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        performSegue(withIdentifier: "editSegue", sender: self)
-//        tableView.deselectRow(at: indexPath, animated: false)
+//        if let item = items?[indexPath.row] {
+//            do {
+//                try realm.write {
+//                    item.completed = !item.completed
+//                }
+//            } catch {
+//                print("Error saving completed status: \(error)")
+//            }
+//        }
+//        tableView.deselectRow(at: indexPath, animated: true)
+//        tableView.reloadData()
 //    }
     
     //MARK: - Model Manipulation Methods
@@ -188,6 +215,21 @@ class TableViewController: UITableViewController {
         //loadSegments()
         loadItems()
         self.tableView.reloadData()
+    }
+    
+    //Override empty delete func from super
+    override func updateModel(at indexPath: IndexPath) {
+        super.updateModel(at: indexPath)
+        if let item = self.items?[indexPath.row] {
+            print("Deleting item with title: \(String(describing: item.title))")
+            do {
+                try self.realm.write {
+                    self.realm.delete(item)
+                }
+            } catch {
+                print("Error deleting item: \(error)")
+            }
+        }
     }
     
     //Ask for which section and count the items matching that section index to segment property

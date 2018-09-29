@@ -19,19 +19,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="7pz-fE-Rks">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="7pz-fE-Rks" customClass="SwipeTableViewCell" customModule="SwipeCellKit">
                                 <rect key="frame" x="0.0" y="55.333333333333343" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7pz-fE-Rks" id="fSe-63-Vch">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="A8c-r3-V1W" kind="show" identifier="editSegue" id="ECa-Cb-vJW">
-                                        <segue key="commit" inheritsFrom="parent" id="lbm-sy-xdD"/>
-                                        <segue key="preview" inheritsFrom="commit" id="Z9R-yE-UGg"/>
-                                    </segue>
-                                </connections>
+                                <viewLayoutGuide key="safeArea" id="mgs-e5-Htd"/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -152,7 +147,4 @@
             <point key="canvasLocation" x="-1295" y="109"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="ECa-Cb-vJW"/>
-    </inferredMetricsTieBreakers>
 </document>

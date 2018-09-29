@@ -44,6 +44,9 @@ class AddTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         taskTextField.addTarget(self, action: #selector(AddTableViewController.textFieldDidChange), for: .editingChanged)
         segmentSelection.addTarget(self, action: #selector(self.textFieldDidChange), for: .valueChanged)
+        
+        //Add a footer view to hide extra cells
+        self.tableView.tableFooterView = UIView()
     }
 
     
