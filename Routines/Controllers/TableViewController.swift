@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 import SwipeCellKit
 
-class TableViewController: SwipeTableViewController, UITabBarControllerDelegate {
+class TableViewController: SwipeTableViewController {
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     
@@ -30,8 +30,11 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.rowHeight = 40
+        self.tableView.rowHeight = 54
         //TODO: - Scroll to currently relevant section
+        //incomplete
+//        let indexPath = NSIndexPath(item: 0, section: 2)
+//        self.tableView.scrollToRow(at: indexPath as IndexPath, at: UITableView.ScrollPosition.middle, animated: true)
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -95,7 +98,7 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate 
             cell.textLabel?.text = item.title
         }
         
-        let imageView = UIImageView(frame: CGRect(x: 7, y: 0, width: 40, height: 40))
+        let imageView = UIImageView(frame: CGRect(x: 7, y: 7, width: 40, height: 40))
         
         switch section {
         case 1:

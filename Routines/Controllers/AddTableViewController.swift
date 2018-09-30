@@ -9,11 +9,13 @@
 import UIKit
 import RealmSwift
 
-class AddTableViewController: UITableViewController {
+class AddTableViewController: UITableViewController, UITextViewDelegate, UITextFieldDelegate {
     
     //MARK: - Properties
     @IBOutlet weak var taskTextField: UITextField!
     @IBOutlet weak var segmentSelection: UISegmentedControl!
+    @IBOutlet weak var notesTextView: UITextView!
+    
     
 //    @IBAction func cancelButtonPressed(_ sender: UIButton) {
 //        dismiss(animated: true, completion: nil)
@@ -32,9 +34,10 @@ class AddTableViewController: UITableViewController {
         //If item is loaded, fill in values for editing
         if item != nil {
             taskTextField.text = item?.title
-            segmentSelection.selectedSegmentIndex = (item?.segment)!
+            segmentSelection.selectedSegmentIndex = item?.segment ?? 0
+            notesTextView.text = item?.notes
         }
-        
+
         //print("Segment selection is: \(segmentSelection.selectedSegmentIndex)")
         
         // Uncomment the following line to preserve selection between presentations
@@ -45,10 +48,20 @@ class AddTableViewController: UITableViewController {
         taskTextField.addTarget(self, action: #selector(AddTableViewController.textFieldDidChange), for: .editingChanged)
         segmentSelection.addTarget(self, action: #selector(self.textFieldDidChange), for: .valueChanged)
         
+        //handle keyboard
+        self.taskTextField.delegate = self
+        self.notesTextView.delegate = self
+        
+        //Add padding to sections
+        //tableView(self.tableView, heightForFooterInSection: 2)
+        
         //Add a footer view to hide extra cells
         self.tableView.tableFooterView = UIView()
+        
+        
     }
 
+    
     
     // MARK: - Navigation
 
@@ -71,6 +84,22 @@ class AddTableViewController: UITableViewController {
         
     }
     
+    //dismiss keyboard
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+
+        textField.resignFirstResponder()
+
+        return true
+    }
+    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        textView.resignFirstResponder()
+        return true
+    }
+    
+//    @objc func notesTextViewDidChange(_ textView: UITextView) {
+//
+//    }
+    
     @objc func saveButtonPressed() {
         addNewItem()
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
@@ -85,6 +114,7 @@ class AddTableViewController: UITableViewController {
             newItem.title = itemTitle!
             newItem.dateModified = Date()
             newItem.segment = segmentSelection.selectedSegmentIndex
+            newItem.notes = notesTextView.text
             
             //save to realm
             saveItem(item: newItem)
@@ -109,6 +139,7 @@ class AddTableViewController: UITableViewController {
                 item!.title = itemTitle!
                 item!.dateModified = Date()
                 item!.segment = segmentSelection.selectedSegmentIndex
+                item!.notes = notesTextView.text
             }
         } catch {
             print("Error updating item: \(error)")
