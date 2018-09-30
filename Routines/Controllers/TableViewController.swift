@@ -20,17 +20,17 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate 
     //var segments: Results<Segments>?
     var items: Results<Items>?
     
-    let dayString = "All Day"
-    let morningString = "Morning"
-    let afternoonString = "Afternoon"
-    let eveningString = "Evening"
-    let nightString = "Night"
+//    let dayString = "All Day"
+//    let morningString = "Morning"
+//    let afternoonString = "Afternoon"
+//    let eveningString = "Evening"
+//    let nightString = "Night"
     
     let segmentStringArray: [String] = ["Morning", "Afternoon", "Evening", "Night", "All Day"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.rowHeight = 50
+        self.tableView.rowHeight = 40
         //TODO: - Scroll to currently relevant section
         
         // Uncomment the following line to preserve selection between presentations
@@ -68,7 +68,7 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate 
         return countForSegment(section: section)
     }
     
-    //Order of segments
+    //Segment Titles
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return segmentStringArray[section]
     }
@@ -94,6 +94,31 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate 
         if item.segment == section {
             cell.textLabel?.text = item.title
         }
+        
+        let imageView = UIImageView(frame: CGRect(x: 7, y: 0, width: 40, height: 40))
+        
+        switch section {
+        case 1:
+            imageView.image = UIImage(named: "afternoon")
+            cell.backgroundView = UIView()
+            cell.backgroundView!.addSubview(imageView)
+        case 2:
+            imageView.image = UIImage(named: "evening")
+            cell.backgroundView = UIView()
+            cell.backgroundView!.addSubview(imageView)
+        case 3:
+            imageView.image = UIImage(named: "night")
+            cell.backgroundView = UIView()
+            cell.backgroundView!.addSubview(imageView)
+        default:
+            imageView.image = UIImage(named: "morning")
+            cell.backgroundView = UIView()
+            cell.backgroundView!.addSubview(imageView)
+        }
+        
+        cell.indentationWidth = 10
+        cell.indentationLevel = 3
+        cell.backgroundColor = .none
 //        //default text if no items in segment
 //        if countForSegment(section: section) > 0 {
 //            let item = performSearch(segment: section)[indexPath.row]

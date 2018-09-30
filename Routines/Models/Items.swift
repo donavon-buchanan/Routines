@@ -15,5 +15,6 @@ class Items: Object {
     @objc dynamic var segment: Int = 0
     @objc dynamic var snoozeUntil: Date?
     @objc dynamic var repeats: Bool = false
+    @objc dynamic var notes: String = ""
     
 }
