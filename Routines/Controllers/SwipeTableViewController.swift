@@ -53,11 +53,17 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
             //editActionsOptionsForRowAt takes care of the table reload
         }
         
-        //customize the action appearance
-        completeAction.image = UIImage(named: "completed")
-        completeAction.backgroundColor = .clear
+        let snoozeAction = SwipeAction(style: .default, title: "Snooze") { (action, indexPath) in
+            //handle snooze
+            self.snoozeItem(at: indexPath)
+        }
         
-        return [completeAction]
+        //customize the action appearance
+//        completeAction.image = UIImage(named: "completed")
+        completeAction.backgroundColor = UIColor.init(displayP3Red:0.15,green:0.56,blue:0.25,alpha:1.00)
+        snoozeAction.backgroundColor = .orange
+        
+        return [completeAction, snoozeAction]
     }
 
     //continue dragging to delete
@@ -70,6 +76,10 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
     
     func updateModel(at indexPath: IndexPath) {
         //Update data model
+    }
+    
+    func snoozeItem(at indexPath: IndexPath) {
+        //Update data model to snooze
     }
 
 }

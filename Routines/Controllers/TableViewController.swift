@@ -8,8 +8,9 @@
 
 import UIKit
 import RealmSwift
+import SwipeCellKit
 
-class TableViewController: SwipeTableViewController {
+class TableViewController: SwipeTableViewController, UITabBarControllerDelegate {
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     
@@ -90,13 +91,13 @@ class TableViewController: SwipeTableViewController {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         let section = indexPath.section
         let item = performSearch(segment: section)[indexPath.row]
-        if item.segment == indexPath.section {
+        if item.segment == section {
             cell.textLabel?.text = item.title
         }
-        //default text if no items in segment
+//        //default text if no items in segment
 //        if countForSegment(section: section) > 0 {
 //            let item = performSearch(segment: section)[indexPath.row]
-//            if item.segment == indexPath.section {
+//            if item.segment == section {
 //                cell.textLabel?.text = item.title
 //            }
 //        } else {
@@ -105,6 +106,27 @@ class TableViewController: SwipeTableViewController {
         
         return cell
     }
+    
+//    //Only make cells swipeable if it's actually referencing an existing item object
+//    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+//        guard orientation == .right else { return nil}
+//
+//        let section = indexPath.section
+//        let itemCount = countForSegment(section: section)
+//
+//        if itemCount > 0 {
+//            let completeAction = SwipeAction(style: .destructive, title: "Complete") { (action, indexPath) in
+//                // handle action by updating model with deletion
+//                self.updateModel(at: indexPath)
+//                //action.fulfill(with: .reset)
+//                //tableView.reloadData()
+//                //editActionsOptionsForRowAt takes care of the table reload
+//            }
+//            return [completeAction]
+//        } else {
+//            return []
+//        }
+//    }
     
 
     /*
@@ -148,37 +170,38 @@ class TableViewController: SwipeTableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
-        let destinationVC = segue.destination as! AddTableViewController
-        // Pass the selected object to the new view controller.
-        if let indexPath = tableView.indexPathForSelectedRow {
-            let section = tableView.indexPathForSelectedRow?.section
-            destinationVC.item = performSearch(segment: section!)[indexPath.row]
-        }
-        
-        //Set right bar item as "Save"
-        destinationVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: destinationVC, action: #selector(destinationVC.saveButtonPressed))
-        //Disable button until all values are filled
-        destinationVC.navigationItem.rightBarButtonItem?.isEnabled = false
-//        if segue.identifier == "addSegue" {
-//            let destination = segue.destination as! AddTableViewController
-//            //Set right bar item as "Save"
-//            destination.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: destination, action: #selector(destination.saveButtonPressed))
-//            //Disable button until all values are filled
-//            destination.navigationItem.rightBarButtonItem?.isEnabled = false
+//        let destinationVC = segue.destination as! AddTableViewController
+//        // Pass the selected object to the new view controller.
+//        if let indexPath = tableView.indexPathForSelectedRow {
+//            let section = tableView.indexPathForSelectedRow?.section
+//            destinationVC.item = performSearch(segment: section!)[indexPath.row]
 //        }
 //
-//        if segue.identifier == "editSegue" {
-//            let destination = segue.destination as! AddTableViewController
-//            //Set right bar item as "Save"
-//            destination.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: destination, action: #selector(destination.saveButtonPressed))
-//            //Disable button until a value is changed
-//            destination.navigationItem.rightBarButtonItem?.isEnabled = false
-//            //pass in current item
-//            if let indexPath = tableView.indexPathForSelectedRow {
-//                let section = tableView.indexPathForSelectedRow?.section
-//                destination.item = performSearch(segment: section!)[indexPath.row]
-//            }
-//        }
+//        //Set right bar item as "Save"
+//        destinationVC.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: destinationVC, action: #selector(destinationVC.saveButtonPressed))
+//        //Disable button until all values are filled
+//        destinationVC.navigationItem.rightBarButtonItem?.isEnabled = false
+        
+        if segue.identifier == "addSegue" {
+            let destination = segue.destination as! AddTableViewController
+            //Set right bar item as "Save"
+            destination.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: destination, action: #selector(destination.saveButtonPressed))
+            //Disable button until all values are filled
+            destination.navigationItem.rightBarButtonItem?.isEnabled = false
+        }
+
+        if segue.identifier == "editSegue" {
+            let destination = segue.destination as! AddTableViewController
+            //Set right bar item as "Save"
+            destination.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: destination, action: #selector(destination.saveButtonPressed))
+            //Disable button until a value is changed
+            destination.navigationItem.rightBarButtonItem?.isEnabled = false
+            //pass in current item
+            if let indexPath = tableView.indexPathForSelectedRow {
+                let section = tableView.indexPathForSelectedRow?.section
+                destination.item = performSearch(segment: section!)[indexPath.row]
+            }
+        }
     }
     
 
@@ -220,7 +243,10 @@ class TableViewController: SwipeTableViewController {
     //Override empty delete func from super
     override func updateModel(at indexPath: IndexPath) {
         super.updateModel(at: indexPath)
-        if let item = self.items?[indexPath.row] {
+        let section = indexPath.section
+        let item = performSearch(segment: section)[indexPath.row]
+        
+        if item.segment == section {
             print("Deleting item with title: \(String(describing: item.title))")
             do {
                 try self.realm.write {
@@ -234,6 +260,7 @@ class TableViewController: SwipeTableViewController {
     
     //Ask for which section and count the items matching that section index to segment property
     func countForSegment(section: Int) -> Int {
+        loadItems()
         let count = performSearch(segment: section).count
         print("countForSegment run")
         print("count for segment \(section) is \(count)")
@@ -242,7 +269,7 @@ class TableViewController: SwipeTableViewController {
     
     //Filter items to relevant segment and return those items
     func performSearch(segment: Int) -> Results<Items> {
-        let filteredItems = items?.filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true) ?? realm.objects(Items.self).filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true)
+        guard let filteredItems = items?.filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true) else { fatalError() }
         print("performSearch run")
         //self.tableView.reloadData()
         return filteredItems
