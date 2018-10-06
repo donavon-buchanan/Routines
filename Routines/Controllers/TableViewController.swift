@@ -30,16 +30,11 @@ class TableViewController: SwipeTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.rowHeight = 54
-        //TODO: - Scroll to currently relevant section
-        //incomplete
-//        let indexPath = NSIndexPath(item: 0, section: 2)
-//        self.tableView.scrollToRow(at: indexPath as IndexPath, at: UITableView.ScrollPosition.middle, animated: true)
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        setupTopTabBar()
+        
+        self.tableView.rowHeight = 54
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         loadData()
     }
@@ -230,6 +225,20 @@ class TableViewController: SwipeTableViewController {
                 destination.item = performSearch(segment: section!)[indexPath.row]
             }
         }
+    }
+    
+    //Add top tab bar
+    let topTabBar: TopTabBar = {
+       let bar = TopTabBar()
+        return bar
+    }()
+    
+    func setupTopTabBar() {
+        view.addSubview(topTabBar)
+        topTabBar.translatesAutoresizingMaskIntoConstraints = false
+        topTabBar.leftAnchor.constraint(equalTo: view.leftAnchor)
+        topTabBar.rightAnchor.constraint(equalTo: view.rightAnchor)
+        topTabBar.heightAnchor.constraint(equalToConstant: 150)
     }
     
 

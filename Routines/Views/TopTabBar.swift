@@ -18,7 +18,7 @@ class TopTabBar: UIView, UICollectionViewDelegate, UICollectionViewDataSource, U
     //configure collection view cells
     let cellID = "cellID"
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+        return UICollectionViewCell()
     }
     
     override init(frame: CGRect) {
