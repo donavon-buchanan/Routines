@@ -31,8 +31,6 @@ class TableViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupTopTabBar()
-        
         self.tableView.rowHeight = 54
 
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
@@ -225,20 +223,6 @@ class TableViewController: SwipeTableViewController {
                 destination.item = performSearch(segment: section!)[indexPath.row]
             }
         }
-    }
-    
-    //Add top tab bar
-    let topTabBar: TopTabBar = {
-       let bar = TopTabBar()
-        return bar
-    }()
-    
-    func setupTopTabBar() {
-        view.addSubview(topTabBar)
-        topTabBar.translatesAutoresizingMaskIntoConstraints = false
-        topTabBar.leftAnchor.constraint(equalTo: view.leftAnchor)
-        topTabBar.rightAnchor.constraint(equalTo: view.rightAnchor)
-        topTabBar.heightAnchor.constraint(equalToConstant: 150)
     }
     
 
