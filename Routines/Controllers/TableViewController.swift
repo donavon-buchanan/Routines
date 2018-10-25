@@ -34,7 +34,8 @@ class TableViewController: SwipeTableViewController {
         self.tableView.rowHeight = 54
 
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        loadData()
+        //loadData()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,7 +52,7 @@ class TableViewController: SwipeTableViewController {
 //                activeSegments += 1
 //            }
 //        }
-        return 4
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -61,13 +62,14 @@ class TableViewController: SwipeTableViewController {
 //        } else {
 //            return 1
 //        }
-        return countForSegment(section: section)
+//        return countForSegment(section: section)
+        return self.items?.count ?? 0
     }
     
-    //Segment Titles
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return segmentStringArray[section]
-    }
+//    //Segment Titles
+//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return segmentStringArray[section]
+//    }
     
     //@available(iOS 11.0, *)
     func visibleRect(for tableView: UITableView) -> CGRect? {
@@ -85,35 +87,36 @@ class TableViewController: SwipeTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        let section = indexPath.section
-        let item = performSearch(segment: section)[indexPath.row]
-        if item.segment == section {
-            cell.textLabel?.text = item.title
-        }
+        guard let item = self.items?[indexPath.row] else { fatalError() }
+//        if item.segment == section {
+//            cell.textLabel?.text = item.title
+//        }
+        cell.textLabel?.text = item.title
         
-        let imageView = UIImageView(frame: CGRect(x: 7, y: 7, width: 40, height: 40))
-        
-        switch section {
-        case 1:
-            imageView.image = UIImage(named: "afternoon")
-            cell.backgroundView = UIView()
-            cell.backgroundView!.addSubview(imageView)
-        case 2:
-            imageView.image = UIImage(named: "evening")
-            cell.backgroundView = UIView()
-            cell.backgroundView!.addSubview(imageView)
-        case 3:
-            imageView.image = UIImage(named: "night")
-            cell.backgroundView = UIView()
-            cell.backgroundView!.addSubview(imageView)
-        default:
-            imageView.image = UIImage(named: "morning")
-            cell.backgroundView = UIView()
-            cell.backgroundView!.addSubview(imageView)
-        }
-        
-        cell.indentationWidth = 10
-        cell.indentationLevel = 3
+        //old code for showing glyphs on cells per section
+//        let imageView = UIImageView(frame: CGRect(x: 7, y: 7, width: 40, height: 40))
+//
+//        switch section {
+//        case 1:
+//            imageView.image = UIImage(named: "afternoon")
+//            cell.backgroundView = UIView()
+//            cell.backgroundView!.addSubview(imageView)
+//        case 2:
+//            imageView.image = UIImage(named: "evening")
+//            cell.backgroundView = UIView()
+//            cell.backgroundView!.addSubview(imageView)
+//        case 3:
+//            imageView.image = UIImage(named: "night")
+//            cell.backgroundView = UIView()
+//            cell.backgroundView!.addSubview(imageView)
+//        default:
+//            imageView.image = UIImage(named: "morning")
+//            cell.backgroundView = UIView()
+//            cell.backgroundView!.addSubview(imageView)
+//        }
+//
+//        cell.indentationWidth = 10
+//        cell.indentationLevel = 3
         cell.backgroundColor = .none
 //        //default text if no items in segment
 //        if countForSegment(section: section) > 0 {
@@ -219,8 +222,8 @@ class TableViewController: SwipeTableViewController {
             destination.navigationItem.rightBarButtonItem?.isEnabled = false
             //pass in current item
             if let indexPath = tableView.indexPathForSelectedRow {
-                let section = tableView.indexPathForSelectedRow?.section
-                destination.item = performSearch(segment: section!)[indexPath.row]
+                guard let item = self.items?[indexPath.row] else { fatalError() }
+                destination.item = item
             }
         }
     }
@@ -247,51 +250,44 @@ class TableViewController: SwipeTableViewController {
 //        //self.tableView.reloadData()
 //    }
     
-    //load items
-    func loadItems() {
-        items = realm.objects(Items.self)
-        //self.tableView.reloadData()
-        print("loadItems run")
-    }
-    
-    func loadData() {
+    func loadData(segment: Int) {
         print("loadData run")
         //loadSegments()
-        loadItems()
+        self.items = loadItems(segment: segment)
         self.tableView.reloadData()
     }
     
     //Override empty delete func from super
     override func updateModel(at indexPath: IndexPath) {
         super.updateModel(at: indexPath)
-        let section = indexPath.section
-        let item = performSearch(segment: section)[indexPath.row]
+
+        guard let items = self.items else { fatalError() }
+        let item = items[indexPath.row]
         
-        if item.segment == section {
-            print("Deleting item with title: \(String(describing: item.title))")
-            do {
-                try self.realm.write {
-                    self.realm.delete(item)
-                }
-            } catch {
-                print("Error deleting item: \(error)")
+        print("Deleting item with title: \(String(describing: item.title))")
+        do {
+            try self.realm.write {
+                self.realm.delete(item)
             }
+        } catch {
+            print("Error deleting item: \(error)")
         }
     }
     
-    //Ask for which section and count the items matching that section index to segment property
-    func countForSegment(section: Int) -> Int {
-        loadItems()
-        let count = performSearch(segment: section).count
-        print("countForSegment run")
-        print("count for segment \(section) is \(count)")
-        return count
-    }
+//    //Ask for which section and count the items matching that section index to segment property
+//    func countForSegment(section: Int) -> Int {
+//        loadItems()
+//        let count = performSearch(segment: section).count
+//        print("countForSegment run")
+//        print("count for segment \(section) is \(count)")
+//        return count
+//    }
     
     //Filter items to relevant segment and return those items
-    func performSearch(segment: Int) -> Results<Items> {
-        guard let filteredItems = items?.filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true) else { fatalError() }
-        print("performSearch run")
+    func loadItems(segment: Int) -> Results<Items> {
+//        guard let filteredItems = items?.filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true) else { fatalError() }
+        guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
+        print("loadItems run")
         //self.tableView.reloadData()
         return filteredItems
     }

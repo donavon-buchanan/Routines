@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Tasks-->
+        <!--Morning Tasks-->
         <scene sceneID="GDV-PT-QEl">
             <objects>
-                <tableViewController id="e3v-kc-NWN" customClass="TableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="e3v-kc-NWN" userLabel="Morning Tasks" customClass="TableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="88k-hj-4fi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -37,18 +37,24 @@
                             <outlet property="delegate" destination="e3v-kc-NWN" id="VaK-D5-ige"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Tasks" id="zZQ-20-1Ec">
-                        <barButtonItem key="backBarButtonItem" title="Cancel" id="peJ-k3-yHs"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="XO1-Lz-EWV">
-                            <connections>
-                                <segue destination="A8c-r3-V1W" kind="show" identifier="addSegue" id="CCO-Gm-Wv4"/>
-                            </connections>
-                        </barButtonItem>
+                    <navigationItem key="navigationItem" title="Morning" id="zZQ-20-1Ec">
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="XO1-Lz-EWV">
+                                <connections>
+                                    <segue destination="A8c-r3-V1W" kind="show" identifier="addSegue" id="CCO-Gm-Wv4"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Options" image="options" id="fje-qN-BIw">
+                                <connections>
+                                    <segue destination="a3q-M5-d7t" kind="show" id="CtJ-KX-J4i"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SEk-qH-xtl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="586.39999999999998" y="108.62068965517241"/>
+            <point key="canvasLocation" x="972" y="-270"/>
         </scene>
         <!--Add Table View Controller-->
         <scene sceneID="U4a-kR-hDN">
@@ -160,13 +166,13 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LL0-Y2-bBK" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="o9Q-Hw-Tfw" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1652" y="108.62068965517241"/>
+            <point key="canvasLocation" x="3804" y="-820"/>
         </scene>
-        <!--Tasks-->
+        <!--Morning-->
         <scene sceneID="eiy-SR-jk8">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zPf-jp-bgP" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Tasks" image="tick" id="Omx-Dn-6ft"/>
+                    <tabBarItem key="tabBarItem" title="Morning" image="morning" id="Omx-Dn-6ft" userLabel="Morning"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iL4-EF-AiN">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -179,7 +185,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oap-IY-6hC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-352.80000000000001" y="108.62068965517241"/>
+            <point key="canvasLocation" x="36" y="-270"/>
         </scene>
         <!--Options-->
         <scene sceneID="Ww1-vj-A6V">
@@ -224,7 +230,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zqO-d3-61K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="588" y="853.44827586206895"/>
+            <point key="canvasLocation" x="972" y="853"/>
         </scene>
         <!--Customize Times-->
         <scene sceneID="80A-RC-fBK">
@@ -348,7 +354,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PgW-01-qTU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1652" y="853"/>
+            <point key="canvasLocation" x="1889" y="853"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="1yi-uT-aw5">
@@ -362,36 +368,16 @@
                     </tabBar>
                     <connections>
                         <segue destination="zPf-jp-bgP" kind="relationship" relationship="viewControllers" id="E9L-uE-wiW"/>
-                        <segue destination="fmk-qd-Ajk" kind="relationship" relationship="viewControllers" id="aH9-Nb-3BS"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yMD-mU-BLB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1295.2" y="108.62068965517241"/>
         </scene>
-        <!--Options-->
-        <scene sceneID="CuX-ad-BkM">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fmk-qd-Ajk" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Options" image="options" selectedImage="options" id="cVH-Nq-K2d"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="b2j-up-ziX">
-                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="a3q-M5-d7t" kind="relationship" relationship="rootViewController" id="dbV-3i-ybN"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ihf-cI-7NC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-354.39999999999998" y="853.44827586206895"/>
-        </scene>
     </scenes>
     <resources>
+        <image name="morning" width="40" height="40"/>
         <image name="options" width="18" height="4"/>
-        <image name="tick" width="19" height="14"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="lP2-JT-oTl"/>
