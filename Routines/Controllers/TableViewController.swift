@@ -27,6 +27,15 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
 //    let nightString = "Night"
     
     let segmentStringArray: [String] = ["Morning", "Afternoon", "Evening", "Night", "All Day"]
+    
+    //Set segment after adding an item
+    var setSegment: Int?
+    func changeSegment() {
+        if let segment = setSegment {
+            tabBarController?.selectedIndex = segment
+            setSegment = nil
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +52,10 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
     
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        changeSegment()
     }
 
     // MARK: - Table view data source
@@ -292,6 +305,7 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
     //Filter items to relevant segment and return those items
     func loadItems(segment: Int) -> Results<Items> {
 //        guard let filteredItems = items?.filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true) else { fatalError() }
+        //TODO: This is not as efficient as you thought. Just load all the items once and then filter. You ended up loading them every time you run this function.
         let items: Results<Items>? = realm.objects(Items.self)
         guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
         print("loadItems run")

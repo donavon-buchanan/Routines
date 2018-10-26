@@ -47,10 +47,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         // self.clearsSelectionOnViewWillAppear = false
         
         //load in segment from add segue
-        guard let currentSegmentSelection = editingSegment else {
-            fatalError()
+        //TODO: Editing segue broken
+        if let currentSegmentSelection = editingSegment {
+            segmentSelection.selectedSegmentIndex = currentSegmentSelection
         }
-        segmentSelection.selectedSegmentIndex = currentSegmentSelection
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
@@ -79,7 +79,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         let destinationVC = segue.destination as! TableViewController
-        destinationVC.tableView.reloadData()
+        //destinationVC.tableView.reloadData()
+        
+        //Set the segment after adding or editing an item
+        destinationVC.setSegment = segmentSelection.selectedSegmentIndex
     }
     
     @objc func textFieldDidChange() {

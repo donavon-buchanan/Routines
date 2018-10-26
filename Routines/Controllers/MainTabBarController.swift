@@ -17,18 +17,19 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     //Trying to animate the transition from one tab to another even though I'm only using a single table view. Not yet working
-//    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-//
-//        guard let fromView = selectedViewController?.view, let toView = viewController.view else {
-//            return false // Make sure you want this as false
-//        }
-//
-//        if fromView != toView {
-//            UIView.transition(from: fromView, to: toView, duration: 0.3, options: [.transitionCrossDissolve], completion: nil)
-//        }
-//
-//        return true
-//    }
+    public func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        
+        let fromView: UIView = tabBarController.selectedViewController!.view
+        let toView  : UIView = viewController.view
+        if fromView == toView {
+            return false
+        }
+        
+        UIView.transition(from: fromView, to: toView, duration: 0.3, options: UIView.AnimationOptions.transitionCrossDissolve) { (finished:Bool) in
+            
+        }
+        return true
+    }
     
 
     /*
