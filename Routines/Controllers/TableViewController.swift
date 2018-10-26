@@ -13,6 +13,9 @@ import SwipeCellKit
 class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
+    @IBOutlet weak var addBarButtonItem: UIBarButtonItem!
+    
+    
     
     // Get the default Realm
     let realm = try! Realm()
@@ -354,13 +357,30 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
                 backgroundImage.heightAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
                 backgroundImage.centerXAnchor.constraint(lessThanOrEqualTo: self.view.centerXAnchor).isActive = true
                 backgroundImage.centerYAnchor.constraint(lessThanOrEqualTo: self.view.centerYAnchor, constant: OFFSET).isActive = true
+                
+                //This function should work well enough for now to manage the animation
+                //TODO: Save permanently later
+                startNavBarAnimation(UIObject: addBarButtonItem, key: "addButton")
+                
             } else {
                 print("removing background image")
                 //backgroundImage.removeFromSuperview()
                 self.tableView.backgroundView = nil
+                
+                //stop add button animation
+                stopNavBarAnimation(UIObject: addBarButtonItem, key: "addButton")
             }
         }
         //print(self.view.subviews)
+    }
+    
+    //MARK: - Animations
+    func startNavBarAnimation(UIObject : UIBarButtonItem, key: String) {
+        
+    }
+    
+    func stopNavBarAnimation(UIObject : UIBarButtonItem, key: String) {
+        
     }
     
 }
