@@ -10,5 +10,6 @@ target 'Routines' do
   # Pods for Routines
   pod 'RealmSwift'
   pod 'SwipeCellKit'
+  pod 'pop', '~> 1.0'
 
 end
