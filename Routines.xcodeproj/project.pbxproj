@@ -14,6 +14,7 @@
 		F8125CCA215F56E700ED3FA6 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8125CC9215F56E700ED3FA6 /* SwipeTableViewController.swift */; };
 		F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TableViewController.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
+		F888608021829B7F00FDF808 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F888607F21829B7F00FDF808 /* MainTabBarController.swift */; };
 		F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831B72155CBB000DAF60E /* AppDelegate.swift */; };
 		F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831BB2155CBB000DAF60E /* Main.storyboard */; };
 		F8B831C22155CBB100DAF60E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831C02155CBB100DAF60E /* LaunchScreen.storyboard */; };
@@ -31,6 +32,7 @@
 		F8125CC9215F56E700ED3FA6 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		F816DB332155CFBA009C6907 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
+		F888607F21829B7F00FDF808 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		F8B831B42155CBB000DAF60E /* Routines.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routines.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8B831B72155CBB000DAF60E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8B831BC2155CBB000DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 			children = (
 				F8125CC9215F56E700ED3FA6 /* SwipeTableViewController.swift */,
 				F816DB332155CFBA009C6907 /* TableViewController.swift */,
+				F888607F21829B7F00FDF808 /* MainTabBarController.swift */,
 				F82770D221585D3000420C50 /* AddTableViewController.swift */,
 				F807D3D22160A06600FF36D9 /* Options */,
 			);
@@ -276,6 +279,7 @@
 			files = (
 				F8B831CD2155CBE300DAF60E /* Items.swift in Sources */,
 				F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */,
+				F888608021829B7F00FDF808 /* MainTabBarController.swift in Sources */,
 				F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */,
 				F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */,
 				F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */,

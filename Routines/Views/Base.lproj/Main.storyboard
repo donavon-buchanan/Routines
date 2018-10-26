@@ -37,24 +37,22 @@
                             <outlet property="delegate" destination="e3v-kc-NWN" id="VaK-D5-ige"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Morning" id="zZQ-20-1Ec">
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="add" id="XO1-Lz-EWV">
-                                <connections>
-                                    <segue destination="A8c-r3-V1W" kind="show" identifier="addSegue" id="CCO-Gm-Wv4"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem title="Options" image="options" id="fje-qN-BIw">
-                                <connections>
-                                    <segue destination="a3q-M5-d7t" kind="show" id="CtJ-KX-J4i"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                    <navigationItem key="navigationItem" id="zZQ-20-1Ec">
+                        <barButtonItem key="leftBarButtonItem" title="Options" image="gear" id="fje-qN-BIw">
+                            <connections>
+                                <segue destination="a3q-M5-d7t" kind="show" id="CtJ-KX-J4i"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="XO1-Lz-EWV">
+                            <connections>
+                                <segue destination="A8c-r3-V1W" kind="show" identifier="addSegue" id="CCO-Gm-Wv4"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SEk-qH-xtl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="972" y="-270"/>
+            <point key="canvasLocation" x="102" y="159"/>
         </scene>
         <!--Add Table View Controller-->
         <scene sceneID="U4a-kR-hDN">
@@ -166,7 +164,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LL0-Y2-bBK" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="o9Q-Hw-Tfw" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3804" y="-820"/>
+            <point key="canvasLocation" x="974" y="159"/>
         </scene>
         <!--Morning-->
         <scene sceneID="eiy-SR-jk8">
@@ -185,7 +183,58 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oap-IY-6hC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="36" y="-270"/>
+            <point key="canvasLocation" x="-1386" y="-581"/>
+        </scene>
+        <!--Afternoon-->
+        <scene sceneID="2hT-c9-pO0">
+            <objects>
+                <navigationController id="75h-0Z-9GG" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" tag="1" title="Afternoon" image="afternoon" id="Hmc-YY-uNO"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yy0-pO-f6x">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="e3v-kc-NWN" kind="relationship" relationship="rootViewController" id="BsE-DN-QUh"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="plc-gL-YhM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1386" y="159"/>
+        </scene>
+        <!--Night-->
+        <scene sceneID="YAI-nr-2dH">
+            <objects>
+                <navigationController id="pvj-3G-5c5" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" tag="3" title="Night" image="night" id="KEp-MF-h3Q"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="kHc-p0-Fbk">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="e3v-kc-NWN" kind="relationship" relationship="rootViewController" id="mrq-CI-P72"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dFu-BB-BH4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2551" y="923"/>
+        </scene>
+        <!--Evening-->
+        <scene sceneID="RJx-Gx-IwY">
+            <objects>
+                <navigationController id="Pir-IO-sd4" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" tag="2" title="Evening" image="evening" id="Z95-2D-Mr2"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="zzb-sU-kjl">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="e3v-kc-NWN" kind="relationship" relationship="rootViewController" id="8ln-Up-acB"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="A6h-XX-R18" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1386" y="923"/>
         </scene>
         <!--Options-->
         <scene sceneID="Ww1-vj-A6V">
@@ -230,7 +279,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zqO-d3-61K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="972" y="853"/>
+            <point key="canvasLocation" x="974" y="923"/>
         </scene>
         <!--Customize Times-->
         <scene sceneID="80A-RC-fBK">
@@ -354,12 +403,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PgW-01-qTU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1889" y="853"/>
+            <point key="canvasLocation" x="1890" y="923"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Main Tab Bar Controller-->
         <scene sceneID="1yi-uT-aw5">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="DVA-mq-Xs7" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="DVA-mq-Xs7" customClass="MainTabBarController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Izc-4f-V3H">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -368,18 +417,25 @@
                     </tabBar>
                     <connections>
                         <segue destination="zPf-jp-bgP" kind="relationship" relationship="viewControllers" id="E9L-uE-wiW"/>
+                        <segue destination="75h-0Z-9GG" kind="relationship" relationship="viewControllers" id="IXZ-s9-kjB"/>
+                        <segue destination="Pir-IO-sd4" kind="relationship" relationship="viewControllers" id="oqd-VO-R3J"/>
+                        <segue destination="pvj-3G-5c5" kind="relationship" relationship="viewControllers" id="6er-Nv-mpa"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yMD-mU-BLB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1295.2" y="108.62068965517241"/>
+            <point key="canvasLocation" x="-2550" y="-109"/>
         </scene>
     </scenes>
     <resources>
+        <image name="afternoon" width="40" height="40"/>
+        <image name="evening" width="40" height="40"/>
+        <image name="gear" width="28" height="28"/>
         <image name="morning" width="40" height="40"/>
-        <image name="options" width="18" height="4"/>
+        <image name="night" width="40" height="40"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="lP2-JT-oTl"/>
+        <segue reference="AXD-IN-9f2"/>
     </inferredMetricsTieBreakers>
 </document>

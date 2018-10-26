@@ -23,6 +23,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     
     var item : Items?
     
+    //segment from add segue
+    var editingSegment: Int?
+    
     var itemTitle : String?
     
     // Get the default Realm
@@ -42,6 +45,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
+        
+        //load in segment from add segue
+        guard let currentSegmentSelection = editingSegment else {
+            fatalError()
+        }
+        segmentSelection.selectedSegmentIndex = currentSegmentSelection
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem

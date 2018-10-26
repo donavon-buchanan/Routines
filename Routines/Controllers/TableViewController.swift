@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 import SwipeCellKit
 
-class TableViewController: SwipeTableViewController {
+class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     
@@ -34,7 +34,10 @@ class TableViewController: SwipeTableViewController {
         self.tableView.rowHeight = 54
 
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        //loadData()
+        self.tabBarController?.delegate = self
+        guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
+        loadData(segment: selectedTab)
+        print(selectedTab)
         
     }
     
@@ -208,6 +211,9 @@ class TableViewController: SwipeTableViewController {
         
         if segue.identifier == "addSegue" {
             let destination = segue.destination as! AddTableViewController
+            //set segment based on current tab
+            guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
+            destination.editingSegment = selectedTab
             //Set right bar item as "Save"
             destination.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: destination, action: #selector(destination.saveButtonPressed))
             //Disable button until all values are filled
@@ -286,6 +292,7 @@ class TableViewController: SwipeTableViewController {
     //Filter items to relevant segment and return those items
     func loadItems(segment: Int) -> Results<Items> {
 //        guard let filteredItems = items?.filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true) else { fatalError() }
+        let items: Results<Items>? = realm.objects(Items.self)
         guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
         print("loadItems run")
         //self.tableView.reloadData()
