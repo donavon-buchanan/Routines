@@ -321,6 +321,7 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
 //        let sections = NSIndexSet(indexesIn: range)
 //        self.tableView.reloadSections(sections as IndexSet, with: .automatic)
         self.tableView.reloadData()
+        setViewBackgroundGraphic()
     }
     
 //    //Ask for which section and count the items matching that section index to segment property
@@ -331,5 +332,30 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
 //        print("count for segment \(section) is \(count)")
 //        return count
 //    }
+    
+    //Set background graphic if there's no cells in the view.
+    //Easiest method is to just use the filtered items count
+    func setViewBackgroundGraphic() {
+        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
+        if let currentItems = self.items {
+            if currentItems.count < 1 {
+                backgroundImage.image = UIImage(imageLiteralResourceName: "inlay")
+                backgroundImage.contentMode = .scaleAspectFit
+                
+                self.view.insertSubview(backgroundImage, at: 0)
+                
+                let IMAGE_SIZE:CGFloat = 300
+                let OFFSET:CGFloat = -60
+                
+                backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+                //backgroundImage.widthAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
+                backgroundImage.heightAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
+                backgroundImage.centerXAnchor.constraint(lessThanOrEqualTo: self.view.centerXAnchor).isActive = true
+                backgroundImage.centerYAnchor.constraint(lessThanOrEqualTo: self.view.centerYAnchor, constant: OFFSET).isActive = true
+            } else {
+                //TODO: remove the sub view
+            }
+        }
+    }
     
 }
