@@ -105,19 +105,20 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
 //        return segmentStringArray[section]
 //    }
     
-    //@available(iOS 11.0, *)
-    func visibleRect(for tableView: UITableView) -> CGRect? {
-        if #available(iOS 11.0, *) {
-            return tableView.safeAreaLayoutGuide.layoutFrame
-        } else {
-            // Fallback on earlier versions
-            let topInset = navigationController?.navigationBar.frame.height ?? 0
-            let bottomInset = navigationController?.toolbar?.frame.height ?? 0
-            let bounds = tableView.bounds
-            
-            return CGRect(x: bounds.origin.x, y: bounds.origin.y + topInset, width: bounds.width, height: bounds.height - bottomInset)
-        }
-    }
+//    TBH, I don't remember why I put this here. But it doesn't seem to be necessary anymore
+//    //@available(iOS 11.0, *)
+//    func visibleRect(for tableView: UITableView) -> CGRect? {
+//        if #available(iOS 11.0, *) {
+//            return tableView.safeAreaLayoutGuide.layoutFrame
+//        } else {
+//            // Fallback on earlier versions
+//            let topInset = navigationController?.navigationBar.frame.height ?? 0
+//            let bottomInset = navigationController?.toolbar?.frame.height ?? 0
+//            let bounds = tableView.bounds
+//
+//            return CGRect(x: bounds.origin.x, y: bounds.origin.y + topInset, width: bounds.width, height: bounds.height - bottomInset)
+//        }
+//    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
