@@ -151,7 +151,7 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
 //
 //        cell.indentationWidth = 10
 //        cell.indentationLevel = 3
-        cell.backgroundColor = .none
+//        cell.backgroundColor = .none
 //        //default text if no items in segment
 //        if countForSegment(section: section) > 0 {
 //            let item = performSearch(segment: section)[indexPath.row]
@@ -341,9 +341,10 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
             if currentItems.count < 1 {
                 backgroundImage.image = UIImage(imageLiteralResourceName: "inlay")
                 backgroundImage.contentMode = .scaleAspectFit
-                
-                self.view.insertSubview(backgroundImage, at: 0)
-                
+                //backgroundImage.tag = 100
+                //self.view.insertSubview(backgroundImage, at: 0)
+                //background view works better
+                self.tableView.backgroundView = backgroundImage
                 let IMAGE_SIZE:CGFloat = 300
                 let OFFSET:CGFloat = -60
                 
@@ -353,9 +354,12 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
                 backgroundImage.centerXAnchor.constraint(lessThanOrEqualTo: self.view.centerXAnchor).isActive = true
                 backgroundImage.centerYAnchor.constraint(lessThanOrEqualTo: self.view.centerYAnchor, constant: OFFSET).isActive = true
             } else {
-                //TODO: remove the sub view
+                print("removing background image")
+                //backgroundImage.removeFromSuperview()
+                self.tableView.backgroundView = nil
             }
         }
+        //print(self.view.subviews)
     }
     
 }
