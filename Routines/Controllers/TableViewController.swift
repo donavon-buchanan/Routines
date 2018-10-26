@@ -32,6 +32,7 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
     var setSegment: Int?
     func changeSegment() {
         if let segment = setSegment {
+            reloadTableView()
             tabBarController?.selectedIndex = segment
             setSegment = nil
         }
@@ -45,18 +46,35 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         self.tabBarController?.delegate = self
         guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
-        loadData(segment: selectedTab)
+        items = loadItems(segment: selectedTab)
+        reloadTableView()
         print(selectedTab)
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tableView.reloadData()
+        reloadTableView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         changeSegment()
     }
+    
+    //Trying to animate the transition from one tab to another even though I'm only using a single table view. Not yet working
+//    public func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+//
+//        let fromView: UIView = tabBarController.selectedViewController!.view
+//        let toView  : UIView = viewController.view
+//        if fromView == toView {
+//            return false
+//        }
+//
+//        UIView.transition(from: fromView, to: toView, duration: 0.3, options: UIView.AnimationOptions.transitionCrossDissolve) { (finished:Bool) in
+//
+//        }
+//
+//        return true
+//    }
 
     // MARK: - Table view data source
 
@@ -269,11 +287,15 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
 //        //self.tableView.reloadData()
 //    }
     
-    func loadData(segment: Int) {
-        print("loadData run")
-        //loadSegments()
-        self.items = loadItems(segment: segment)
-        self.tableView.reloadData()
+    //Filter items to relevant segment and return those items
+    func loadItems(segment: Int) -> Results<Items> {
+        //        guard let filteredItems = items?.filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true) else { fatalError() }
+        //TODO: This could probably still be more efficient. Find a way to load the items minimally
+        let items: Results<Items>? = realm.objects(Items.self)
+        guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
+        print("loadItems run")
+        //self.tableView.reloadData()
+        return filteredItems
     }
     
     //Override empty delete func from super
@@ -293,6 +315,14 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
         }
     }
     
+    //TODO: Animate reload - not working as intended
+    func reloadTableView() {
+//        let range = NSMakeRange(0, self.tableView.numberOfSections)
+//        let sections = NSIndexSet(indexesIn: range)
+//        self.tableView.reloadSections(sections as IndexSet, with: .automatic)
+        self.tableView.reloadData()
+    }
+    
 //    //Ask for which section and count the items matching that section index to segment property
 //    func countForSegment(section: Int) -> Int {
 //        loadItems()
@@ -301,16 +331,5 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
 //        print("count for segment \(section) is \(count)")
 //        return count
 //    }
-    
-    //Filter items to relevant segment and return those items
-    func loadItems(segment: Int) -> Results<Items> {
-//        guard let filteredItems = items?.filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true) else { fatalError() }
-        //TODO: This is not as efficient as you thought. Just load all the items once and then filter. You ended up loading them every time you run this function.
-        let items: Results<Items>? = realm.objects(Items.self)
-        guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
-        print("loadItems run")
-        //self.tableView.reloadData()
-        return filteredItems
-    }
     
 }

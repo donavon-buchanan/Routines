@@ -16,20 +16,20 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         // Do any additional setup after loading the view.
     }
     
-    //Trying to animate the transition from one tab to another even though I'm only using a single table view. Not yet working
-    public func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        
-        let fromView: UIView = tabBarController.selectedViewController!.view
-        let toView  : UIView = viewController.view
-        if fromView == toView {
-            return false
-        }
-        
-        UIView.transition(from: fromView, to: toView, duration: 0.3, options: UIView.AnimationOptions.transitionCrossDissolve) { (finished:Bool) in
-            
-        }
-        return true
-    }
+//    //Trying to animate the transition from one tab to another even though I'm only using a single table view. Not yet working
+//    public func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+//        
+//        let fromView: UIView = tabBarController.selectedViewController!.view
+//        let toView  : UIView = viewController.view
+//        if fromView == toView {
+//            return false
+//        }
+//        
+//        UIView.transition(from: fromView, to: toView, duration: 0.3, options: UIView.AnimationOptions.transitionCrossDissolve) { (finished:Bool) in
+//            
+//        }
+//        return true
+//    }
     
 
     /*
