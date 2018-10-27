@@ -9,9 +9,9 @@
 import UIKit
 import RealmSwift
 import SwipeCellKit
-import Pulsator
+//import Pulsator
 
-class TableViewController: SwipeTableViewController, UITabBarControllerDelegate, UINavigationControllerDelegate{
+class TableViewController: SwipeTableViewController, UITabBarControllerDelegate, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate {
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     @IBOutlet weak var addBarButtonItem: UIBarButtonItem!
@@ -50,13 +50,15 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
     }
     
     //Add button pulse animation object
-    let addButtonPulsator : Pulsator = Pulsator()
-    let addButtonPulseView = UIView()
+//    let addButtonPulsator : Pulsator = Pulsator()
+//    let addButtonPulseView = UIView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.tableView.rowHeight = 54
+        
+        loadData()
 
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         self.tabBarController?.delegate = self
@@ -69,6 +71,13 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
         
         //load options
         loadOptions()
+        
+        //Popover delgate
+        popoverVC.popoverPresentationController?.delegate = self
+        
+        //TODO: These seem similar in pupose. Maybe call the popup check from the first item check if firstItemAdded == false
+        checkIfFirstItemAdded()
+        checkIfPopoverShouldDisplay()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -264,6 +273,10 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
         if segue.identifier == "addSegue" {
             //TODO: Figure out why number of pulses seems to change after this
             //stopNavBarAnimation(pulsator: addButtonPulsator)
+            
+            //Remove popover
+            popoverVC.dismiss(animated: true, completion: nil)
+            
             let destination = segue.destination as! AddTableViewController
             //set segment based on current tab
             guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
@@ -310,11 +323,14 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
 //        //self.tableView.reloadData()
 //    }
     
+    func loadData() {
+        items = realm.objects(Items.self)
+    }
+    
     //Filter items to relevant segment and return those items
     func loadItems(segment: Int) -> Results<Items> {
         //        guard let filteredItems = items?.filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true) else { fatalError() }
         //TODO: This could probably still be more efficient. Find a way to load the items minimally
-        let items: Results<Items>? = realm.objects(Items.self)
         guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
         print("loadItems run")
         //self.tableView.reloadData()
@@ -335,6 +351,28 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
             }
         } catch {
             print("Error deleting item: \(error)")
+        }
+    }
+    
+    //If the realm has items, set firstItemAdded to true
+    func checkIfFirstItemAdded() {
+        if let items = self.items {
+            if items.count > 0 {
+                optionsObject?.firstItemAdded = true
+                saveOptions()
+            }
+        }
+    }
+    
+    func saveOptions() {
+        guard let options = self.optionsObject else { fatalError() }
+        
+        do {
+            try self.optionsRealm.write {
+                optionsRealm.add(options)
+            }
+        } catch {
+            print("Failed to save option from TableViewController")
         }
     }
     
@@ -388,7 +426,33 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
     }
     
     //MARK: - Navigation Bar Customizations
+    let popoverView = UIView()
+    let popoverLabel = UILabel()
+    let popoverVC = UIViewController()
+    
     func checkIfPopoverShouldDisplay() {
+        
+        popoverView.heightAnchor.constraint(equalToConstant: 80)
+        popoverView.widthAnchor.constraint(equalToConstant: 140)
+        popoverLabel.text = "Tap here to add your first task"
+        
+        popoverView.addSubview(popoverLabel)
+        
+        popoverVC.view.addSubview(popoverView)
+        popoverVC.modalPresentationStyle = .popover
+        
+        //Anchor point for popover
+        popoverVC.popoverPresentationController?.barButtonItem = addBarButtonItem
+        
+        if let itemAdded = optionsObject?.firstItemAdded {
+            print("First item status: \(itemAdded)")
+            if itemAdded == false {
+                print("presenting popover")
+                self.present(popoverVC, animated: true, completion: nil)
+            } else {
+                popoverVC.dismiss(animated: true, completion: nil)
+            }
+        }
         
     }
     
