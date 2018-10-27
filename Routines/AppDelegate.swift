@@ -7,15 +7,38 @@
 //
 
 import UIKit
+import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    let optionsRealm = try! Realm()
+    
+    var optionsObjects: Results<Options>?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        loadOptions()
+        
+        if let options = optionsObjects {
+            
+            if options.isEmpty {
+                let appOptions = Options()
+                do {
+                    try optionsRealm.write {
+                        optionsRealm.add(appOptions)
+                    }
+                } catch {
+                    print("Error saving Options in App Delegate")
+                }
+            }
+            
+        }
+        
         return true
     }
 
@@ -39,6 +62,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    //MARK: Realm
+    func loadOptions() {
+        optionsObjects = optionsRealm.objects(Options.self)
     }
 
 

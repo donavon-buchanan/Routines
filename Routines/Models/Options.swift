@@ -14,4 +14,7 @@ class Options: Object {
     @objc dynamic var segment1StartTime: Date?
     @objc dynamic var segment2StartTime: Date?
     @objc dynamic var segment3StartTime: Date?
+    
+    @objc dynamic var firstItemAdded: Bool = false
+    
 }
