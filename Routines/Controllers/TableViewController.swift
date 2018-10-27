@@ -9,12 +9,16 @@
 import UIKit
 import RealmSwift
 import SwipeCellKit
+import Pulsator
 
-class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
+class TableViewController: SwipeTableViewController, UITabBarControllerDelegate, UINavigationControllerDelegate{
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     @IBOutlet weak var addBarButtonItem: UIBarButtonItem!
     
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        //stopNavBarAnimation(pulsator: addButtonPulsator)
+    }
     
     
     // Get the default Realm
@@ -40,6 +44,10 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
             setSegment = nil
         }
     }
+    
+    //Add button pulse animation object
+    let addButtonPulsator : Pulsator = Pulsator()
+    let addButtonPulseView = UIView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,11 +56,12 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
 
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         self.tabBarController?.delegate = self
+        self.navigationController?.delegate = self
         guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
         items = loadItems(segment: selectedTab)
         reloadTableView()
-        print(selectedTab)
-        
+        print("Selected tab is \(selectedTab)")
+        setupPulsingButtonView(pulsator: addButtonPulsator, pulseView: addButtonPulseView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,6 +70,7 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
     
     override func viewDidAppear(_ animated: Bool) {
         changeSegment()
+        checkIfAnimationShouldRun()
     }
     
     //Trying to animate the transition from one tab to another even though I'm only using a single table view. Not yet working
@@ -245,6 +255,8 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
 //        destinationVC.navigationItem.rightBarButtonItem?.isEnabled = false
         
         if segue.identifier == "addSegue" {
+            //TODO: Figure out why number of pulses seems to change after this
+            stopNavBarAnimation(pulsator: addButtonPulsator)
             let destination = segue.destination as! AddTableViewController
             //set segment based on current tab
             guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
@@ -326,6 +338,7 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
 //        self.tableView.reloadSections(sections as IndexSet, with: .automatic)
         self.tableView.reloadData()
         setViewBackgroundGraphic()
+        //checkIfAnimationShouldRun()
     }
     
 //    //Ask for which section and count the items matching that section index to segment property
@@ -349,7 +362,7 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
                 //self.view.insertSubview(backgroundImage, at: 0)
                 //background view works better
                 self.tableView.backgroundView = backgroundImage
-                let IMAGE_SIZE:CGFloat = 300
+                let IMAGE_SIZE:CGFloat = UIScreen.main.bounds.width * 0.65
                 let OFFSET:CGFloat = -60
                 
                 backgroundImage.translatesAutoresizingMaskIntoConstraints = false
@@ -358,29 +371,58 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
                 backgroundImage.centerXAnchor.constraint(lessThanOrEqualTo: self.view.centerXAnchor).isActive = true
                 backgroundImage.centerYAnchor.constraint(lessThanOrEqualTo: self.view.centerYAnchor, constant: OFFSET).isActive = true
                 
-                //This function should work well enough for now to manage the animation
-                //TODO: Save permanently later
-                startNavBarAnimation(UIObject: addBarButtonItem, key: "addButton")
-                
             } else {
                 print("removing background image")
                 //backgroundImage.removeFromSuperview()
                 self.tableView.backgroundView = nil
-                
-                //stop add button animation
-                stopNavBarAnimation(UIObject: addBarButtonItem, key: "addButton")
             }
         }
         //print(self.view.subviews)
     }
     
     //MARK: - Animations
-    func startNavBarAnimation(UIObject : UIBarButtonItem, key: String) {
+    
+    func checkIfAnimationShouldRun() {
+        let itemsCount = realm.objects(Items.self).count
+        print("Checking count for animation: \(itemsCount)")
+        if itemsCount < 1 {
+            startNavBarAnimation(pulsator: addButtonPulsator)
+        } else {
+            stopNavBarAnimation(pulsator: addButtonPulsator)
+        }
+    }
+    
+    func setupPulsingButtonView(pulsator: Pulsator, pulseView: UIView) {
+        
+        let navbar = navigationController!.navigationBar
+        //TODO: Just add a view as the right bar item so you can modify that view directly. None of this is working well enough.
+        navbar.addSubview(pulseView)
+        pulseView.translatesAutoresizingMaskIntoConstraints = false
+        //pulseView.heightAnchor.constraint(equalToConstant: 100)
+//        let navWidth = self.navigationController!.view.bounds.width
+//        let navHeight = self.navigationController!.view.bounds.height
+//        print("Nav Height: \(navHeight), Nav Width \(navWidth)")
+        pulseView.centerYAnchor.constraint(equalTo: navbar.centerYAnchor).isActive = true
+        pulseView.centerXAnchor.constraint(equalTo: navbar.trailingAnchor, constant: 0).isActive = true
+        pulseView.layer.addSublayer(pulsator)
+        print("pulsing view set up")
         
     }
     
-    func stopNavBarAnimation(UIObject : UIBarButtonItem, key: String) {
-        
+    func startNavBarAnimation(pulsator: Pulsator) {
+        print("running animation")
+        // Create object after view appears then run func
+        pulsator.radius = 80.0
+        pulsator.numPulse = 3
+        pulsator.pulseInterval = 3
+        pulsator.timingFunction = CAMediaTimingFunction(name: .easeOut)
+        //pulsator.animationDuration = 2.5
+        pulsator.start()
+    }
+    
+    func stopNavBarAnimation(pulsator: Pulsator) {
+        print("stopping animation")
+        pulsator.stop()
     }
     
 }

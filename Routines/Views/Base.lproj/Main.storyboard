@@ -45,6 +45,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="XO1-Lz-EWV">
                             <connections>
+                                <action selector="addButtonPressed:" destination="e3v-kc-NWN" id="Ez3-xs-9vy"/>
                                 <segue destination="A8c-r3-V1W" kind="show" identifier="addSegue" id="CCO-Gm-Wv4"/>
                             </connections>
                         </barButtonItem>
@@ -178,7 +179,7 @@
         <!--Morning-->
         <scene sceneID="eiy-SR-jk8">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zPf-jp-bgP" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zPf-jp-bgP" customClass="NavigationController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Morning" image="morning" id="Omx-Dn-6ft" userLabel="Morning"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iL4-EF-AiN">
@@ -200,7 +201,7 @@
         <!--Afternoon-->
         <scene sceneID="2hT-c9-pO0">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="75h-0Z-9GG" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="75h-0Z-9GG" customClass="NavigationController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="1" title="Afternoon" image="afternoon" id="Hmc-YY-uNO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yy0-pO-f6x">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -217,7 +218,7 @@
         <!--Night-->
         <scene sceneID="YAI-nr-2dH">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="pvj-3G-5c5" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="pvj-3G-5c5" customClass="NavigationController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="3" title="Night" image="night" id="KEp-MF-h3Q"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="kHc-p0-Fbk">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -237,7 +238,7 @@
         <!--Evening-->
         <scene sceneID="RJx-Gx-IwY">
             <objects>
-                <navigationController id="Pir-IO-sd4" sceneMemberID="viewController">
+                <navigationController id="Pir-IO-sd4" customClass="NavigationController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="2" title="Evening" image="evening" id="Z95-2D-Mr2"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="zzb-sU-kjl">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -451,6 +452,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="lP2-JT-oTl"/>
-        <segue reference="AXD-IN-9f2"/>
+        <segue reference="mrq-CI-P72"/>
     </inferredMetricsTieBreakers>
 </document>

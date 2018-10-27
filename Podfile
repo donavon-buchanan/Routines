@@ -10,5 +10,6 @@ target 'Routines' do
   # Pods for Routines
   pod 'RealmSwift'
   pod 'SwipeCellKit'
+  pod 'Pulsator', :git => 'https://github.com/shu223/Pulsator.git', :tag => '0.5.3'
 
 end
