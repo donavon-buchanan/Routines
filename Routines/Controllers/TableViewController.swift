@@ -11,7 +11,7 @@ import RealmSwift
 import SwipeCellKit
 //import Pulsator
 
-class TableViewController: SwipeTableViewController, UITabBarControllerDelegate, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate {
+class TableViewController: SwipeTableViewController, UITabBarControllerDelegate, UINavigationControllerDelegate {
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     @IBOutlet weak var addBarButtonItem: UIBarButtonItem!
@@ -67,17 +67,16 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
         items = loadItems(segment: selectedTab)
         reloadTableView()
         print("Selected tab is \(selectedTab)")
+        
+        //TODO: !!!! check if this should be moved !!!!
         //setupPulsingButtonView(pulsator: addButtonPulsator, pulseView: addButtonPulseView)
         
         //load options
         loadOptions()
         
-        //Popover delgate
-        popoverVC.popoverPresentationController?.delegate = self
-        
         //TODO: These seem similar in pupose. Maybe call the popup check from the first item check if firstItemAdded == false
         checkIfFirstItemAdded()
-        checkIfPopoverShouldDisplay()
+        checkIfPingAnimationShouldRun()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -274,9 +273,6 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
             //TODO: Figure out why number of pulses seems to change after this
             //stopNavBarAnimation(pulsator: addButtonPulsator)
             
-            //Remove popover
-            popoverVC.dismiss(animated: true, completion: nil)
-            
             let destination = segue.destination as! AddTableViewController
             //set segment based on current tab
             guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
@@ -426,31 +422,17 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
     }
     
     //MARK: - Navigation Bar Customizations
-    let popoverView = UIView()
-    let popoverLabel = UILabel()
-    let popoverVC = UIViewController()
+
     
-    func checkIfPopoverShouldDisplay() {
-        
-        popoverView.heightAnchor.constraint(equalToConstant: 80)
-        popoverView.widthAnchor.constraint(equalToConstant: 140)
-        popoverLabel.text = "Tap here to add your first task"
-        
-        popoverView.addSubview(popoverLabel)
-        
-        popoverVC.view.addSubview(popoverView)
-        popoverVC.modalPresentationStyle = .popover
-        
-        //Anchor point for popover
-        popoverVC.popoverPresentationController?.barButtonItem = addBarButtonItem
+    func checkIfPingAnimationShouldRun() {
         
         if let itemAdded = optionsObject?.firstItemAdded {
             print("First item status: \(itemAdded)")
             if itemAdded == false {
-                print("presenting popover")
-                self.present(popoverVC, animated: true, completion: nil)
+                //print("Running ping animation")
+                //startNavBarAnimation(pulsator: addButtonPulsator)
             } else {
-                popoverVC.dismiss(animated: true, completion: nil)
+                
             }
         }
         
@@ -469,12 +451,41 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
 //    func setupPulsingButtonView(pulsator: Pulsator, pulseView: UIView) {
 //
 //        let navbar = navigationController!.navigationBar
-//        //TODO: None of this is working well enough.
+//        guard let rightButtonView = self.addBarButtonItem.value(forKey: "view") as? UIView else {
+//            fatalError("Couldn't pull view from button")
+//        }
+//        let addButtonView = UIView()
+//        addButtonView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+//        addButtonView.contentMode = .scaleAspectFit
+//        addButtonView.backgroundColor = .red
+//        let addButtonItem = UIBarButtonItem(customView: addButtonView)
+//        let buttonImageView = UIImageView(image: UIImage(imageLiteralResourceName: "add button"))
+//        addButtonView.addSubview(buttonImageView)
+//        buttonImageView.translatesAutoresizingMaskIntoConstraints = false
+//        buttonImageView.centerXAnchor.constraint(equalTo: addButtonView.leftAnchor).isActive = true
+//        buttonImageView.centerYAnchor.constraint(equalTo: addButtonView.centerYAnchor).isActive = true
 //
+//
+//        self.navigationItem.rightBarButtonItem = addButtonItem
+//
+//        addButtonView.addSubview(pulseView)
+//        let navWidth = navbar.bounds.width
+//        print("navWidth: \(navWidth)")
+    
+//        let screenWidth = UIScreen.main.bounds.width
+//        print("screenWidth: \(screenWidth)")
+//        var safeAreaRight: CGFloat = 0
+//        if #available(iOS 11.0, *) {
+//            safeAreaRight = navbar.safeAreaLayoutGuide.layoutFrame.size.width
+//        } else {
+//            safeAreaRight = 10// Fallback on earlier versions
+//        }
+//        print("safeAreaRight: \(safeAreaRight)")
 //        navbar.addSubview(pulseView)
-////        pulseView.translatesAutoresizingMaskIntoConstraints = false
-////        pulseView.centerXAnchor.constraint(equalTo: navbar.centerXAnchor).isActive = true
-////        pulseView.centerYAnchor.constraint(equalTo: navbar.centerYAnchor).isActive = true
+//        pulseView.layer.addSublayer(pulsator)
+//        pulseView.translatesAutoresizingMaskIntoConstraints = false
+//        pulseView.rightAnchor.constraint(equalTo: navbar.rightAnchor, constant: safeAreaRight).isActive = true
+//        pulseView.centerYAnchor.constraint(equalTo: navbar.centerYAnchor).isActive = true
 //        pulseView.layer.addSublayer(pulsator)
 //        print("pulsing view set up")
 //
