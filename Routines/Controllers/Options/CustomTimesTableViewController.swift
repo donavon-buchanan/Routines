@@ -10,6 +10,12 @@ import UIKit
 import RealmSwift
 
 class CustomTimesTableViewController: UITableViewController {
+    
+    @IBOutlet weak var morningDatePicker: UIDatePicker!
+    @IBOutlet weak var afternoonDatePicker: UIDatePicker!
+    @IBOutlet weak var eveningDatePicker: UIDatePicker!
+    @IBOutlet weak var nightDatePicker: UIDatePicker!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
