@@ -1,5 +1,4 @@
 PODS:
-  - Pulsator (0.5.3)
   - Realm (3.11.1):
     - Realm/Headers (= 3.11.1)
   - Realm/Headers (3.11.1)
@@ -8,7 +7,6 @@ PODS:
   - SwipeCellKit (2.5.0)
 
 DEPENDENCIES:
-  - Pulsator (from `https://github.com/shu223/Pulsator.git`, tag `0.5.3`)
   - RealmSwift
   - SwipeCellKit
 
@@ -18,22 +16,11 @@ SPEC REPOS:
     - RealmSwift
     - SwipeCellKit
 
-EXTERNAL SOURCES:
-  Pulsator:
-    :git: https://github.com/shu223/Pulsator.git
-    :tag: 0.5.3
-
-CHECKOUT OPTIONS:
-  Pulsator:
-    :git: https://github.com/shu223/Pulsator.git
-    :tag: 0.5.3
-
 SPEC CHECKSUMS:
-  Pulsator: d58707c6827ec862cd89fd727424866795dabd24
   Realm: 037c5919b9ceb59d6beed5d3b031096856b119b3
   RealmSwift: c9580133e73ef40ed340401af2dbc9a5790dfea7
   SwipeCellKit: d8f2617538ce3021cb0a11d1b93856a06a2f2e20
 
-PODFILE CHECKSUM: d75c5742c6bb673ddcd3e6efdb15b4afc71e2b73
+PODFILE CHECKSUM: 257b6953a58c7ed0cf7ce8240590705ea8442252
 
 COCOAPODS: 1.5.2

@@ -57,8 +57,11 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let footerView = UIView()
+        footerView.backgroundColor = .clear
+        self.tableView.tableFooterView = footerView
         
-        self.tableView.rowHeight = 54
+        //self.tableView.rowHeight = 54
         
         loadData()
 
