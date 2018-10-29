@@ -69,14 +69,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         //tableView(self.tableView, heightForFooterInSection: 2)
         
         //Add a footer view to hide extra cells
-        let footerView = UIView()
-        if #available(iOS 11.0, *) {
-            footerView.backgroundColor = UIColor(named: "barBackgroundColor")
-        } else {
-            footerView.backgroundColor = UIColor(hexString: "F9F9F9")
-        }
-        self.tableView.tableFooterView = footerView
-        self.tableView.backgroundView = footerView
+//        let footerView = UIView()
+//        if #available(iOS 11.0, *) {
+//            footerView.backgroundColor = UIColor(named: "barBackgroundColor")
+//        } else {
+//            footerView.backgroundColor = UIColor(hexString: "F9F9F9")
+//        }
+//        self.tableView.tableFooterView = footerView
+//        self.tableView.backgroundView = footerView
         
         
     }

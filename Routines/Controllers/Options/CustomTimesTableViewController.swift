@@ -18,7 +18,7 @@ class CustomTimesTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.tableFooterView = UIView()
+        //self.tableView.tableFooterView = UIView()
         
         
         

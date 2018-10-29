@@ -63,23 +63,23 @@
         <scene sceneID="U4a-kR-hDN">
             <objects>
                 <tableViewController automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="A8c-r3-V1W" customClass="AddTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="54" estimatedRowHeight="54" sectionHeaderHeight="28" sectionFooterHeight="28" id="THh-5G-tJT">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="static" style="grouped" separatorStyle="none" rowHeight="54" estimatedRowHeight="54" sectionHeaderHeight="18" sectionFooterHeight="18" id="THh-5G-tJT">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <viewLayoutGuide key="safeArea" id="bUH-Br-4R7"/>
                         <sections>
                             <tableViewSection headerTitle="Title" id="wDR-3K-ugE">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" id="Njk-SZ-nFt">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="55.333333333333343" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="Njk-SZ-nFt" id="0hz-1i-JRw">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="53.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="CU9-wA-X3j">
-                                                    <rect key="frame" x="10" y="1" width="355" height="51.666666666666664"/>
+                                                    <rect key="frame" x="10" y="1" width="355" height="52"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
@@ -92,20 +92,21 @@
                                                 <constraint firstAttribute="trailing" secondItem="CU9-wA-X3j" secondAttribute="trailing" constant="10" id="q1C-nH-3t4"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Segment" id="UXS-ab-XNk">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="L3m-ad-YEk">
-                                        <rect key="frame" x="0.0" y="110" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="165.33333333333334" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L3m-ad-YEk" id="cQa-1a-Ibo">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="53.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <segmentedControl opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ee6-Ut-pWz">
-                                                    <rect key="frame" x="10" y="1" width="355" height="52.666666666666664"/>
+                                                <segmentedControl opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ee6-Ut-pWz">
+                                                    <rect key="frame" x="10" y="1" width="355" height="53"/>
                                                     <segments>
                                                         <segment title="" image="morning"/>
                                                         <segment title="" image="afternoon"/>
@@ -121,16 +122,17 @@
                                                 <constraint firstItem="ee6-Ut-pWz" firstAttribute="leading" secondItem="cQa-1a-Ibo" secondAttribute="leading" constant="10" id="h4A-AX-Aws"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Notes" id="xBc-ny-cEg">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="152" id="wRF-7D-3zD">
-                                        <rect key="frame" x="0.0" y="192" width="375" height="152"/>
+                                        <rect key="frame" x="0.0" y="275.33333333333337" width="375" height="152"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wRF-7D-3zD" id="Fv4-fQ-urg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="151.66666666666666"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wRF-7D-3zD" id="Fv4-fQ-urg">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="152"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5iE-Oy-Fuc">
@@ -248,22 +250,22 @@
         <scene sceneID="Ww1-vj-A6V">
             <objects>
                 <tableViewController automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="a3q-M5-d7t" customClass="OptionsTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="54" estimatedRowHeight="54" sectionHeaderHeight="28" sectionFooterHeight="28" id="AAT-05-J1n">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="none" rowHeight="54" estimatedRowHeight="54" sectionHeaderHeight="18" sectionFooterHeight="18" id="AAT-05-J1n">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
                             <tableViewSection headerTitle="Start Times" id="8lN-SC-WVk">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="customizeTimeCell" textLabel="X1n-I8-wot" style="IBUITableViewCellStyleDefault" id="2lR-8M-Lli">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="55.333333333333343" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2lR-8M-Lli" id="vkh-69-a6j">
-                                            <rect key="frame" x="0.0" y="0.0" width="341" height="53.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Customize Times" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="X1n-I8-wot">
-                                                    <rect key="frame" x="16" y="0.0" width="324" height="53.666666666666664"/>
+                                                    <rect key="frame" x="16" y="0.0" width="324" height="54"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -293,32 +295,33 @@
         <scene sceneID="80A-RC-fBK">
             <objects>
                 <tableViewController title="Customize Times" automaticallyAdjustsScrollViewInsets="NO" hidesBottomBarWhenPushed="YES" id="ZDC-uB-bXL" customClass="CustomTimesTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="120" estimatedRowHeight="120" sectionHeaderHeight="28" sectionFooterHeight="28" id="UM3-HS-pGL">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="none" rowHeight="120" estimatedRowHeight="120" sectionHeaderHeight="18" sectionFooterHeight="18" id="UM3-HS-pGL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="sectionIndexBackgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
                             <tableViewSection headerTitle="Morning" id="RJU-qm-WWL">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="oYN-6N-PcX">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="120"/>
+                                        <rect key="frame" x="0.0" y="55.333333333333343" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oYN-6N-PcX" id="Wry-RD-DKB">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119.66666666666667"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="30" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JZC-X6-h1b">
-                                                    <rect key="frame" x="80" y="0.0" width="215" height="43.666666666666664"/>
+                                                    <rect key="frame" x="80" y="-48.333333333333336" width="215" height="216.33333333333334"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="559998000.64045894">
                                                         <!--2018-09-30 11:00:00 +0000-->
                                                     </date>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="JZC-X6-h1b" secondAttribute="bottom" id="6p3-7R-eVF"/>
-                                                <constraint firstAttribute="trailing" secondItem="JZC-X6-h1b" secondAttribute="trailing" constant="80" id="lFU-ea-M9g"/>
-                                                <constraint firstItem="JZC-X6-h1b" firstAttribute="top" secondItem="Wry-RD-DKB" secondAttribute="top" id="rEK-X3-L8g"/>
-                                                <constraint firstItem="JZC-X6-h1b" firstAttribute="leading" secondItem="Wry-RD-DKB" secondAttribute="leading" constant="80" id="u8f-Yl-pfs"/>
+                                                <constraint firstItem="JZC-X6-h1b" firstAttribute="centerX" secondItem="Wry-RD-DKB" secondAttribute="centerX" id="Wae-E9-Cyp"/>
+                                                <constraint firstItem="JZC-X6-h1b" firstAttribute="centerY" secondItem="Wry-RD-DKB" secondAttribute="centerY" id="Ylb-Iz-7ug"/>
+                                                <constraint firstAttribute="trailing" secondItem="JZC-X6-h1b" secondAttribute="trailing" constant="80" id="juH-pf-rNB"/>
+                                                <constraint firstItem="JZC-X6-h1b" firstAttribute="leading" secondItem="Wry-RD-DKB" secondAttribute="leading" constant="80" id="oG5-eZ-ziW"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -327,23 +330,23 @@
                             <tableViewSection headerTitle="Afternoon" id="dP8-x7-1I3">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="hvB-iW-pwG">
-                                        <rect key="frame" x="0.0" y="176" width="375" height="120"/>
+                                        <rect key="frame" x="0.0" y="231.33333333333337" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hvB-iW-pwG" id="srJ-Hp-KVy">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119.66666666666667"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="30" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBb-mY-CLe">
-                                                    <rect key="frame" x="80" y="0.0" width="215" height="43.666666666666664"/>
+                                                    <rect key="frame" x="80" y="-48.333333333333336" width="215" height="216.33333333333334"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="560016000.52806199">
                                                         <!--2018-09-30 16:00:00 +0000-->
                                                     </date>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="IBb-mY-CLe" firstAttribute="top" secondItem="srJ-Hp-KVy" secondAttribute="top" id="ALg-So-tqG"/>
+                                                <constraint firstItem="IBb-mY-CLe" firstAttribute="centerX" secondItem="srJ-Hp-KVy" secondAttribute="centerX" id="7Am-u4-61Z"/>
+                                                <constraint firstItem="IBb-mY-CLe" firstAttribute="centerY" secondItem="srJ-Hp-KVy" secondAttribute="centerY" id="Cod-MJ-uGd"/>
                                                 <constraint firstAttribute="trailing" secondItem="IBb-mY-CLe" secondAttribute="trailing" constant="80" id="Udb-Qo-or2"/>
-                                                <constraint firstAttribute="bottom" secondItem="IBb-mY-CLe" secondAttribute="bottom" id="iIL-f7-tg9"/>
                                                 <constraint firstItem="IBb-mY-CLe" firstAttribute="leading" secondItem="srJ-Hp-KVy" secondAttribute="leading" constant="80" id="mmV-BI-LZz"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -353,24 +356,24 @@
                             <tableViewSection headerTitle="Evening" id="gQ9-Nv-0Hc">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="qp2-sC-PDM">
-                                        <rect key="frame" x="0.0" y="324" width="375" height="120"/>
+                                        <rect key="frame" x="0.0" y="407.33333333333337" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qp2-sC-PDM" id="Epi-26-uol">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119.66666666666667"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="30" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="clr-jV-EhA">
-                                                    <rect key="frame" x="80" y="0.0" width="215" height="43.666666666666664"/>
+                                                    <rect key="frame" x="80" y="-48.333333333333336" width="215" height="216.33333333333334"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="560034000.29647398">
                                                         <!--2018-09-30 21:00:00 +0000-->
                                                     </date>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="clr-jV-EhA" firstAttribute="top" secondItem="Epi-26-uol" secondAttribute="top" id="CYl-0v-nte"/>
+                                                <constraint firstItem="clr-jV-EhA" firstAttribute="centerY" secondItem="Epi-26-uol" secondAttribute="centerY" id="Owp-Ee-P1u"/>
                                                 <constraint firstAttribute="trailing" secondItem="clr-jV-EhA" secondAttribute="trailing" constant="80" id="Wsc-DO-fRg"/>
-                                                <constraint firstAttribute="bottom" secondItem="clr-jV-EhA" secondAttribute="bottom" id="i8Y-FQ-bvg"/>
                                                 <constraint firstItem="clr-jV-EhA" firstAttribute="leading" secondItem="Epi-26-uol" secondAttribute="leading" constant="80" id="plV-y1-J5O"/>
+                                                <constraint firstItem="clr-jV-EhA" firstAttribute="centerX" secondItem="Epi-26-uol" secondAttribute="centerX" id="x2N-lW-Mdo"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -379,26 +382,23 @@
                             <tableViewSection headerTitle="Night" id="KJa-eh-Usw">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="zYs-kg-VWX">
-                                        <rect key="frame" x="0.0" y="472" width="375" height="120"/>
+                                        <rect key="frame" x="0.0" y="583.33333333333337" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zYs-kg-VWX" id="OZ2-sG-jgN">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119.66666666666667"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zYs-kg-VWX" id="OZ2-sG-jgN">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="30" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6wg-G3-W4t">
-                                                    <rect key="frame" x="80" y="0.0" width="215" height="120.33333333333333"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="120" id="Qm6-kd-7JF"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="80" y="-48.333333333333336" width="215" height="216.33333333333334"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="560048400.94189596">
                                                         <!--2018-10-01 01:00:00 +0000-->
                                                     </date>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="6wg-G3-W4t" firstAttribute="top" secondItem="OZ2-sG-jgN" secondAttribute="top" id="0xw-BF-ok6"/>
-                                                <constraint firstAttribute="bottom" secondItem="6wg-G3-W4t" secondAttribute="bottom" id="8s9-dS-7Rm"/>
+                                                <constraint firstItem="6wg-G3-W4t" firstAttribute="centerY" secondItem="OZ2-sG-jgN" secondAttribute="centerY" id="C5P-pi-XX2"/>
                                                 <constraint firstItem="6wg-G3-W4t" firstAttribute="leading" secondItem="OZ2-sG-jgN" secondAttribute="leading" constant="80" id="TyC-xM-fKu"/>
+                                                <constraint firstItem="6wg-G3-W4t" firstAttribute="centerX" secondItem="OZ2-sG-jgN" secondAttribute="centerX" id="cIV-vZ-oZk"/>
                                                 <constraint firstAttribute="trailing" secondItem="6wg-G3-W4t" secondAttribute="trailing" constant="80" id="fxA-ae-hVa"/>
                                             </constraints>
                                         </tableViewCellContentView>

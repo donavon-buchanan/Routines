@@ -21,7 +21,7 @@ class OptionsTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         //Add a footer view to hide extra cells
-        self.tableView.tableFooterView = UIView()
+        //self.tableView.tableFooterView = UIView()
     }
 
     // MARK: - Table view data source
