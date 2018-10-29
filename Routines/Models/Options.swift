@@ -9,12 +9,17 @@
 import Foundation
 import RealmSwift
 
-class Options: Object {
-    @objc dynamic var segment0StartTime: Date?
-    @objc dynamic var segment1StartTime: Date?
-    @objc dynamic var segment2StartTime: Date?
-    @objc dynamic var segment3StartTime: Date?
+@objcMembers class Options: Object {
+    dynamic var segment0StartTime: Date?
+    dynamic var segment1StartTime: Date?
+    dynamic var segment2StartTime: Date?
+    dynamic var segment3StartTime: Date?
     
-    @objc dynamic var firstItemAdded: Bool = false
+    dynamic var firstItemAdded: Bool = false
+    
+    dynamic var optionsKey = UUID().uuidString
+    override static func primaryKey() -> String? {
+        return "optionsKey"
+    }
     
 }

@@ -34,6 +34,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        //Set height of notes view
+//        self.notesTextView.translatesAutoresizingMaskIntoConstraints = false
+//        self.notesTextView.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        
         //If item is loaded, fill in values for editing
         if item != nil {
             taskTextField.text = item?.title
@@ -65,7 +69,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         //tableView(self.tableView, heightForFooterInSection: 2)
         
         //Add a footer view to hide extra cells
-        self.tableView.tableFooterView = UIView()
+        let footerView = UIView()
+        footerView.backgroundColor = .groupTableViewBackground
+        self.tableView.tableFooterView = footerView
+        self.tableView.backgroundView = footerView
         
         
     }

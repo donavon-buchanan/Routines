@@ -30,6 +30,8 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
     //Options Properties
     let optionsRealm = try! Realm()
     var optionsObject: Options?
+    //var firstItemAdded: Bool?
+    let optionsKey = "optionsKey"
     
 //    let dayString = "All Day"
 //    let morningString = "Morning"
@@ -74,9 +76,9 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
         //load options
         loadOptions()
         
-        //TODO: These seem similar in pupose. Maybe call the popup check from the first item check if firstItemAdded == false
+        //TODO: These seem similar in pupose. Maybe call the animation check from the first item check if firstItemAdded == false
         checkIfFirstItemAdded()
-        checkIfPingAnimationShouldRun()
+        //checkIfPingAnimationShouldRun()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -350,28 +352,6 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
         }
     }
     
-    //If the realm has items, set firstItemAdded to true
-    func checkIfFirstItemAdded() {
-        if let items = self.items {
-            if items.count > 0 {
-                optionsObject?.firstItemAdded = true
-                saveOptions()
-            }
-        }
-    }
-    
-    func saveOptions() {
-        guard let options = self.optionsObject else { fatalError() }
-        
-        do {
-            try self.optionsRealm.write {
-                optionsRealm.add(options)
-            }
-        } catch {
-            print("Failed to save option from TableViewController")
-        }
-    }
-    
     //TODO: Animate reload - not working as intended
     func reloadTableView() {
 //        let range = NSMakeRange(0, self.tableView.numberOfSections)
@@ -395,48 +375,38 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
     //Easiest method is to just use the filtered items count
     func setViewBackgroundGraphic() {
         let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
-        if let currentItems = self.items {
-            if currentItems.count < 1 {
-                backgroundImage.image = UIImage(imageLiteralResourceName: "inlay")
-                backgroundImage.contentMode = .scaleAspectFit
-                //backgroundImage.tag = 100
-                //self.view.insertSubview(backgroundImage, at: 0)
-                //background view works better
-                self.tableView.backgroundView = backgroundImage
-                let IMAGE_SIZE:CGFloat = UIScreen.main.bounds.width * 0.65
-                let OFFSET:CGFloat = -60
-                
-                backgroundImage.translatesAutoresizingMaskIntoConstraints = false
-                //backgroundImage.widthAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
-                backgroundImage.heightAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
-                backgroundImage.centerXAnchor.constraint(lessThanOrEqualTo: self.view.centerXAnchor).isActive = true
-                backgroundImage.centerYAnchor.constraint(lessThanOrEqualTo: self.view.centerYAnchor, constant: OFFSET).isActive = true
-                
-            } else {
-                print("removing background image")
-                //backgroundImage.removeFromSuperview()
-                self.tableView.backgroundView = nil
-            }
-        }
-        //print(self.view.subviews)
+        backgroundImage.image = UIImage(imageLiteralResourceName: "inlay")
+        backgroundImage.contentMode = .scaleAspectFit
+        //backgroundImage.tag = 100
+        //self.view.insertSubview(backgroundImage, at: 0)
+        //background view works better
+        self.tableView.backgroundView = backgroundImage
+        let IMAGE_SIZE:CGFloat = UIScreen.main.bounds.width * 0.65
+        let OFFSET:CGFloat = -60
+        
+        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+        //backgroundImage.widthAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
+        backgroundImage.heightAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
+        backgroundImage.centerXAnchor.constraint(lessThanOrEqualTo: self.view.centerXAnchor).isActive = true
+        backgroundImage.centerYAnchor.constraint(lessThanOrEqualTo: self.view.centerYAnchor, constant: OFFSET).isActive = true
     }
     
     //MARK: - Navigation Bar Customizations
 
     
-    func checkIfPingAnimationShouldRun() {
-        
-        if let itemAdded = optionsObject?.firstItemAdded {
-            print("First item status: \(itemAdded)")
-            if itemAdded == false {
-                //print("Running ping animation")
-                //startNavBarAnimation(pulsator: addButtonPulsator)
-            } else {
-                
-            }
-        }
-        
-    }
+//    func checkIfPingAnimationShouldRun() {
+//
+//        if let itemAdded = optionsObject?.firstItemAdded {
+//            print("First item status: \(itemAdded)")
+//            if itemAdded == false {
+//                //print("Running ping animation")
+//                //startNavBarAnimation(pulsator: addButtonPulsator)
+//            } else {
+//
+//            }
+//        }
+//
+//    }
     
 //    func checkIfAnimationShouldRun() {
 //        let itemsCount = realm.objects(Items.self).count
