@@ -385,14 +385,20 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
             return
         } else {
             self.tableView.addSubview(backgroundImage)
-            let IMAGE_SIZE:CGFloat = UIScreen.main.bounds.width * 0.65
-            let OFFSET:CGFloat = -60
+            //let IMAGE_SIZE:CGFloat = UIScreen.main.bounds.width * 0.65
+            let navBarHeight = self.navigationController?.navigationBar.bounds.height
+            let tabBarHeight = self.tabBarController?.tabBar.bounds.height
+            //I don't honestly know why this next line works. But it does, pretty well. It was mostly trial and error.
+            let offsetHeight = (tabBarHeight! + navBarHeight!) * 0.7
+            let OFFSET:CGFloat = -offsetHeight
             
             backgroundImage.translatesAutoresizingMaskIntoConstraints = false
             //backgroundImage.widthAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
-            backgroundImage.heightAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
+            //backgroundImage.heightAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
             backgroundImage.centerXAnchor.constraint(lessThanOrEqualTo: self.view.centerXAnchor).isActive = true
-            backgroundImage.centerYAnchor.constraint(lessThanOrEqualTo: self.view.centerYAnchor, constant: OFFSET).isActive = true
+            backgroundImage.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: OFFSET).isActive = true
+            backgroundImage.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 20).isActive = true
+            backgroundImage.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
         }
     }
     
