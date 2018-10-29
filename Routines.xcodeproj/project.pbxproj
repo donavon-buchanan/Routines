@@ -14,6 +14,7 @@
 		F8125CCA215F56E700ED3FA6 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8125CC9215F56E700ED3FA6 /* SwipeTableViewController.swift */; };
 		F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TableViewController.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
+		F84681FE21868C4B00BE3E19 /* HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84681FD21868C4B00BE3E19 /* HexColor.swift */; };
 		F888608021829B7F00FDF808 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F888607F21829B7F00FDF808 /* MainTabBarController.swift */; };
 		F89979A621840D17005542A9 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89979A521840D17005542A9 /* NavigationController.swift */; };
 		F89C0BE32184F9DB00B5C7C6 /* OptionsForTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89C0BE22184F9DB00B5C7C6 /* OptionsForTableViewController.swift */; };
@@ -34,6 +35,7 @@
 		F8125CC9215F56E700ED3FA6 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
 		F816DB332155CFBA009C6907 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TableViewController.swift; sourceTree = "<group>"; };
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
+		F84681FD21868C4B00BE3E19 /* HexColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColor.swift; sourceTree = "<group>"; };
 		F888607F21829B7F00FDF808 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		F89979A521840D17005542A9 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		F89C0BE22184F9DB00B5C7C6 /* OptionsForTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsForTableViewController.swift; sourceTree = "<group>"; };
@@ -84,6 +86,14 @@
 			path = Options;
 			sourceTree = "<group>";
 		};
+		F84681FC21868C2A00BE3E19 /* Other Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F84681FD21868C4B00BE3E19 /* HexColor.swift */,
+			);
+			path = "Other Extensions";
+			sourceTree = "<group>";
+		};
 		F8B831AB2155CBB000DAF60E = {
 			isa = PBXGroup;
 			children = (
@@ -109,6 +119,7 @@
 				F8B831CB2155CBD000DAF60E /* Models */,
 				F8B831C92155CBBD00DAF60E /* Controllers */,
 				F8B831CA2155CBC700DAF60E /* Views */,
+				F84681FC21868C2A00BE3E19 /* Other Extensions */,
 				F8B831C02155CBB100DAF60E /* LaunchScreen.storyboard */,
 				F8B831C32155CBB100DAF60E /* Info.plist */,
 				F8F3270D215C8509004AC619 /* Media.xcassets */,
@@ -282,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8B831CD2155CBE300DAF60E /* Items.swift in Sources */,
+				F84681FE21868C4B00BE3E19 /* HexColor.swift in Sources */,
 				F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */,
 				F888608021829B7F00FDF808 /* MainTabBarController.swift in Sources */,
 				F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */,
