@@ -376,22 +376,24 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
     
     //Set background graphic if there's no cells in the view.
     //Easiest method is to just use the filtered items count
+    let backgroundImage = UIImageView()
     func setViewBackgroundGraphic() {
-        let backgroundImage = UIImageView(frame: UIScreen.main.bounds)
         backgroundImage.image = UIImage(imageLiteralResourceName: "inlay")
         backgroundImage.contentMode = .scaleAspectFit
-        //backgroundImage.tag = 100
-        //self.view.insertSubview(backgroundImage, at: 0)
-        //background view works better
-        self.tableView.backgroundView = backgroundImage
-        let IMAGE_SIZE:CGFloat = UIScreen.main.bounds.width * 0.65
-        let OFFSET:CGFloat = -60
         
-        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
-        //backgroundImage.widthAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
-        backgroundImage.heightAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
-        backgroundImage.centerXAnchor.constraint(lessThanOrEqualTo: self.view.centerXAnchor).isActive = true
-        backgroundImage.centerYAnchor.constraint(lessThanOrEqualTo: self.view.centerYAnchor, constant: OFFSET).isActive = true
+        if self.tableView.subviews.contains(backgroundImage) {
+            return
+        } else {
+            self.tableView.addSubview(backgroundImage)
+            let IMAGE_SIZE:CGFloat = UIScreen.main.bounds.width * 0.65
+            let OFFSET:CGFloat = -60
+            
+            backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+            //backgroundImage.widthAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
+            backgroundImage.heightAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
+            backgroundImage.centerXAnchor.constraint(lessThanOrEqualTo: self.view.centerXAnchor).isActive = true
+            backgroundImage.centerYAnchor.constraint(lessThanOrEqualTo: self.view.centerYAnchor, constant: OFFSET).isActive = true
+        }
     }
     
     //MARK: - Navigation Bar Customizations
