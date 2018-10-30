@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bYU-Kq-EQc">
-    <device id="retina4_0" orientation="portrait">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,21 +15,21 @@
             <objects>
                 <viewController id="VDl-Zp-rGc" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kI1-rZ-mWf">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="inlay" translatesAutoresizingMaskIntoConstraints="NO" id="No1-b3-lJC">
-                                <rect key="frame" x="20" y="184" width="280" height="200"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="inlay" translatesAutoresizingMaskIntoConstraints="NO" id="No1-b3-lJC">
+                                <rect key="frame" x="0.0" y="272" width="375" height="268"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="No1-b3-lJC" secondAttribute="height" multiplier="383:274" id="IKg-WQ-ojn"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="No1-b3-lJC" secondAttribute="trailing" constant="20" id="9Ed-8Y-x2J"/>
+                            <constraint firstAttribute="trailing" secondItem="No1-b3-lJC" secondAttribute="trailing" id="9Ed-8Y-x2J"/>
                             <constraint firstItem="No1-b3-lJC" firstAttribute="centerX" secondItem="kI1-rZ-mWf" secondAttribute="centerX" id="iVR-75-QRd"/>
-                            <constraint firstItem="No1-b3-lJC" firstAttribute="leading" secondItem="kI1-rZ-mWf" secondAttribute="leading" constant="20" id="pts-LH-zaG"/>
+                            <constraint firstItem="No1-b3-lJC" firstAttribute="leading" secondItem="kI1-rZ-mWf" secondAttribute="leading" id="pts-LH-zaG"/>
                             <constraint firstItem="No1-b3-lJC" firstAttribute="centerY" secondItem="kI1-rZ-mWf" secondAttribute="centerY" id="y0s-g1-NnE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="eIY-wE-vhf"/>
@@ -53,7 +53,7 @@
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Yyf-S3-Znm">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -71,6 +71,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="bYU-Kq-EQc" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="JUa-lK-CiN">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
@@ -93,7 +94,7 @@
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="hsq-sV-5q5">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -113,7 +114,7 @@
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="oLr-0q-Cib">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -133,7 +134,7 @@
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="gg9-ZD-ATP">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -150,7 +151,7 @@
         <image name="afternoon" width="40" height="40"/>
         <image name="evening" width="40" height="40"/>
         <image name="gear" width="28" height="28"/>
-        <image name="inlay" width="383" height="274"/>
+        <image name="inlay" width="512" height="512"/>
         <image name="morning" width="40" height="40"/>
         <image name="night" width="40" height="40"/>
     </resources>

@@ -33,7 +33,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
 //        //Set height of notes view
 //        self.notesTextView.translatesAutoresizingMaskIntoConstraints = false
 //        self.notesTextView.heightAnchor.constraint(equalToConstant: 120).isActive = true
@@ -64,20 +63,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         //handle keyboard
         self.taskTextField.delegate = self
         self.notesTextView.delegate = self
-        
-        //Add padding to sections
-        //tableView(self.tableView, heightForFooterInSection: 2)
-        
-        //Add a footer view to hide extra cells
-//        let footerView = UIView()
-//        if #available(iOS 11.0, *) {
-//            footerView.backgroundColor = UIColor(named: "barBackgroundColor")
-//        } else {
-//            footerView.backgroundColor = UIColor(hexString: "F9F9F9")
-//        }
-//        self.tableView.tableFooterView = footerView
-//        self.tableView.backgroundView = footerView
-        
+
+        disableScrolling()
         
     }
 

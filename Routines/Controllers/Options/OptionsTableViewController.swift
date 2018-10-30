@@ -13,9 +13,15 @@ class OptionsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        //disableScrolling()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        disableScrolling()
     }
 
-    
+    //TODO: Add Notifications toggles
+    //TODO: Add About section with version + build number
 
 }

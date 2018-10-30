@@ -54,14 +54,16 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
     //Add button pulse animation object
 //    let addButtonPulsator : Pulsator = Pulsator()
 //    let addButtonPulseView = UIView()
+    
+    //Footer view
+    let footerView = UIView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let footerView = UIView()
         footerView.backgroundColor = .clear
         self.tableView.tableFooterView = footerView
         
-        //self.tableView.rowHeight = 54
+        setViewBackgroundGraphic()
         
         loadData()
 
@@ -185,7 +187,7 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
 //
 //        cell.indentationWidth = 10
 //        cell.indentationLevel = 3
-//        cell.backgroundColor = .none
+//        cell.backgroundColor = .white
 //        //default text if no items in segment
 //        if countForSegment(section: section) > 0 {
 //            let item = performSearch(segment: section)[indexPath.row]
@@ -361,7 +363,6 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
 //        let sections = NSIndexSet(indexesIn: range)
 //        self.tableView.reloadSections(sections as IndexSet, with: .automatic)
         self.tableView.reloadData()
-        setViewBackgroundGraphic()
         //checkIfAnimationShouldRun()
     }
     
@@ -374,32 +375,34 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
 //        return count
 //    }
     
-    //Set background graphic if there's no cells in the view.
-    //Easiest method is to just use the filtered items count
-    let backgroundImage = UIImageView()
+    //Set background graphic
     func setViewBackgroundGraphic() {
-        backgroundImage.image = UIImage(imageLiteralResourceName: "inlay")
-        backgroundImage.contentMode = .scaleAspectFit
         
-        if self.tableView.subviews.contains(backgroundImage) {
-            return
-        } else {
-            self.tableView.addSubview(backgroundImage)
-            //let IMAGE_SIZE:CGFloat = UIScreen.main.bounds.width * 0.65
-            let navBarHeight = self.navigationController?.navigationBar.bounds.height
-            let tabBarHeight = self.tabBarController?.tabBar.bounds.height
-            //I don't honestly know why this next line works. But it does, pretty well. It was mostly trial and error.
-            let offsetHeight = (tabBarHeight! + navBarHeight!) * 0.7
-            let OFFSET:CGFloat = -offsetHeight
-            
-            backgroundImage.translatesAutoresizingMaskIntoConstraints = false
-            //backgroundImage.widthAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
-            //backgroundImage.heightAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
-            backgroundImage.centerXAnchor.constraint(lessThanOrEqualTo: self.view.centerXAnchor).isActive = true
-            backgroundImage.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: OFFSET).isActive = true
-            backgroundImage.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 20).isActive = true
-            backgroundImage.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
-        }
+        //let imageSize:CGFloat = UIScreen.main.bounds.width * 0.893
+        
+        let backgroundImageView = UIImageView()
+        let backgroundImage = UIImage(imageLiteralResourceName: "inlay")
+        
+        backgroundImageView.image = backgroundImage
+        backgroundImageView.contentMode = .scaleAspectFit
+        
+        self.tableView.backgroundView = backgroundImageView
+
+//        let navBarHeight = self.navigationController?.navigationBar.bounds.height
+//        let tabBarHeight = self.tabBarController?.tabBar.bounds.height
+        //I don't honestly know why this next line works. But it does, pretty well. It was mostly trial and error.
+//        let offsetHeight = (tabBarHeight! + navBarHeight!) * 0.7
+//        let OFFSET:CGFloat = -offsetHeight
+        
+        
+        
+//        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+//        backgroundImage.widthAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
+//        backgroundImage.heightAnchor.constraint(equalToConstant: IMAGE_SIZE).isActive = true
+//        backgroundImage.centerXAnchor.constraint(lessThanOrEqualTo: self.view.centerXAnchor).isActive = true
+//        backgroundImage.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: OFFSET).isActive = true
+//        backgroundImage.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 20).isActive = true
+//        backgroundImage.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
     }
     
     //MARK: - Navigation Bar Customizations
