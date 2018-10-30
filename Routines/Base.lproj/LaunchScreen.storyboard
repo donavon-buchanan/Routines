@@ -37,7 +37,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="xX2-vo-vJE">
                         <barButtonItem key="leftBarButtonItem" title="Item" image="gear" id="Klk-SI-Yvz"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="KOe-jx-t1V"/>
+                        <barButtonItem key="rightBarButtonItem" image="add button" id="KOe-jx-t1V"/>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
@@ -148,6 +148,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="add button" width="28" height="28"/>
         <image name="afternoon" width="40" height="40"/>
         <image name="evening" width="40" height="40"/>
         <image name="gear" width="28" height="28"/>

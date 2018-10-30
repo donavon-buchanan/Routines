@@ -13,6 +13,10 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //https://stackoverflow.com/a/25421617
+        //Dark color was showing during nav transitions
+        self.navigationController?.view.backgroundColor = .white
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
