@@ -50,7 +50,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         // self.clearsSelectionOnViewWillAppear = false
         
         //load in segment from add segue
-        //TODO: Editing segue broken
         if let currentSegmentSelection = editingSegment {
             segmentSelection.selectedSegmentIndex = currentSegmentSelection
         }

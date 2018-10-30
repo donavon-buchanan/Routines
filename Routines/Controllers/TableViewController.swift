@@ -45,7 +45,7 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
     var setSegment: Int?
     func changeSegment() {
         if let segment = setSegment {
-            reloadTableView()
+            //reloadTableView()
             tabBarController?.selectedIndex = segment
             setSegment = nil
         }
