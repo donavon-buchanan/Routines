@@ -49,7 +49,7 @@
         <scene sceneID="Skg-xv-U15">
             <objects>
                 <navigationController title="Morning" automaticallyAdjustsScrollViewInsets="NO" id="5j4-AV-dWk" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="morning" id="RiQ-ia-eAF"/>
+                    <tabBarItem key="tabBarItem" title="" image="morning" selectedImage="morning-selected" id="RiQ-ia-eAF"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Yyf-S3-Znm">
@@ -90,7 +90,7 @@
         <scene sceneID="12Y-77-Cjw">
             <objects>
                 <navigationController title="Night" automaticallyAdjustsScrollViewInsets="NO" id="HqD-Iz-Ymw" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="night" id="Gwe-Fe-vLH"/>
+                    <tabBarItem key="tabBarItem" title="" image="night" selectedImage="night-selected" id="Gwe-Fe-vLH"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="hsq-sV-5q5">
@@ -110,7 +110,7 @@
         <scene sceneID="Sds-Se-YAZ">
             <objects>
                 <navigationController title="Afternoon" automaticallyAdjustsScrollViewInsets="NO" id="Azq-nL-rqx" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="afternoon" id="Oqh-ny-HNO"/>
+                    <tabBarItem key="tabBarItem" title="" image="afternoon" selectedImage="afternoon-selected" id="Oqh-ny-HNO"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="oLr-0q-Cib">
@@ -130,7 +130,7 @@
         <scene sceneID="U3a-2a-0MP">
             <objects>
                 <navigationController title="Evening" automaticallyAdjustsScrollViewInsets="NO" id="QWd-BU-7Lm" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="evening" id="0gz-jW-uVG"/>
+                    <tabBarItem key="tabBarItem" title="" image="evening" selectedImage="evening-selected" id="0gz-jW-uVG"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="gg9-ZD-ATP">
@@ -150,11 +150,15 @@
     <resources>
         <image name="add button" width="28" height="28"/>
         <image name="afternoon" width="23" height="23"/>
+        <image name="afternoon-selected" width="23" height="23"/>
         <image name="evening" width="23" height="23"/>
+        <image name="evening-selected" width="23" height="23"/>
         <image name="gear" width="28" height="28"/>
         <image name="inlay" width="512" height="512"/>
         <image name="morning" width="23" height="23"/>
+        <image name="morning-selected" width="23" height="23"/>
         <image name="night" width="23" height="23"/>
+        <image name="night-selected" width="23" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="mP7-lL-god"/>
