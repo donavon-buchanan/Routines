@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bYU-Kq-EQc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lsp-WH-zrr">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -45,46 +45,25 @@
             </objects>
             <point key="canvasLocation" x="1994.4000000000001" y="231.2807881773399"/>
         </scene>
-        <!--Morning-->
-        <scene sceneID="Skg-xv-U15">
-            <objects>
-                <navigationController title="Morning" automaticallyAdjustsScrollViewInsets="NO" id="5j4-AV-dWk" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="morning" selectedImage="morning-selected" id="RiQ-ia-eAF"/>
-                    <toolbarItems/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Yyf-S3-Znm">
-                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="VDl-Zp-rGc" kind="relationship" relationship="rootViewController" id="J8H-yp-fNG"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rXQ-jg-XG0" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1052" y="231.2807881773399"/>
-        </scene>
         <!--Tab Bar Controller-->
-        <scene sceneID="aDK-Xn-EIt">
+        <scene sceneID="MaC-Iz-71E">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="bYU-Kq-EQc" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="JUa-lK-CiN">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                <tabBarController id="lsp-WH-zrr" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="nuC-8l-780">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="5j4-AV-dWk" kind="relationship" relationship="viewControllers" id="CIY-aw-b7h"/>
-                        <segue destination="Azq-nL-rqx" kind="relationship" relationship="viewControllers" id="Qf4-BZ-p09"/>
-                        <segue destination="QWd-BU-7Lm" kind="relationship" relationship="viewControllers" id="j8Y-t1-Hai"/>
-                        <segue destination="HqD-Iz-Ymw" kind="relationship" relationship="viewControllers" id="5My-xW-o3U"/>
+                        <segue destination="8jr-ix-HvO" kind="relationship" relationship="viewControllers" id="TOk-vp-yZ4"/>
+                        <segue destination="Azq-nL-rqx" kind="relationship" relationship="viewControllers" id="iEl-2D-0YK"/>
+                        <segue destination="QWd-BU-7Lm" kind="relationship" relationship="viewControllers" id="PSi-7f-wrf"/>
+                        <segue destination="HqD-Iz-Ymw" kind="relationship" relationship="viewControllers" id="2qw-Bw-0u7"/>
                     </connections>
                 </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="p49-fz-X4M" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cgt-dp-99R" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="109.59999999999999" y="231.2807881773399"/>
+            <point key="canvasLocation" x="-110" y="231"/>
         </scene>
         <!--Night-->
         <scene sceneID="12Y-77-Cjw">
@@ -146,6 +125,23 @@
             </objects>
             <point key="canvasLocation" x="1052" y="919"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="QrM-QX-M99">
+            <objects>
+                <navigationController id="8jr-ix-HvO" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="morning" selectedImage="morning-selected" id="4QB-5x-kNF"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="BP9-ZD-4WK">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="VDl-Zp-rGc" kind="relationship" relationship="rootViewController" id="zxk-pW-3in"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="s8f-W0-gGj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="922" y="231"/>
+        </scene>
     </scenes>
     <resources>
         <image name="add button" width="28" height="28"/>
@@ -161,6 +157,6 @@
         <image name="night-selected" width="23" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="J8H-yp-fNG"/>
+        <segue reference="zxk-pW-3in"/>
     </inferredMetricsTieBreakers>
 </document>
