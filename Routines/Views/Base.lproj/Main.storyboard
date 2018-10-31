@@ -289,7 +289,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Notifications" footerTitle="Enable to receive notifications at the start of each period" id="MY6-AI-x8I">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="notificationsCell" id="t7s-nb-4h9">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="notificationsCell" id="t7s-nb-4h9">
                                         <rect key="frame" x="0.0" y="172.66666666666669" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="t7s-nb-4h9" id="jh7-r6-pB1">
@@ -307,6 +307,9 @@
                                                         </label>
                                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sr5-g1-2Wx">
                                                             <rect key="frame" x="294" y="0.0" width="51" height="32"/>
+                                                            <connections>
+                                                                <action selector="notificationSwitchToggled:" destination="a3q-M5-d7t" eventType="valueChanged" id="e3V-9G-8go"/>
+                                                            </connections>
                                                         </switch>
                                                     </subviews>
                                                 </stackView>
@@ -319,7 +322,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="notificationsCell" id="k6x-eH-qgb">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="notificationsCell" id="k6x-eH-qgb">
                                         <rect key="frame" x="0.0" y="226.66666666666669" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="k6x-eH-qgb" id="tY6-D3-LT6">
@@ -335,8 +338,11 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ZmJ-rT-USa">
+                                                        <switch opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ZmJ-rT-USa">
                                                             <rect key="frame" x="294" y="0.0" width="51" height="32"/>
+                                                            <connections>
+                                                                <action selector="notificationSwitchToggled:" destination="a3q-M5-d7t" eventType="valueChanged" id="7VR-tq-YXb"/>
+                                                            </connections>
                                                         </switch>
                                                     </subviews>
                                                 </stackView>
@@ -349,7 +355,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="notificationsCell" id="GU0-KN-sQp">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="notificationsCell" id="GU0-KN-sQp">
                                         <rect key="frame" x="0.0" y="280.66666666666669" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="GU0-KN-sQp" id="8tf-uB-QGk">
@@ -365,8 +371,11 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3B4-sy-Lml">
+                                                        <switch opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3B4-sy-Lml">
                                                             <rect key="frame" x="294" y="0.0" width="51" height="32"/>
+                                                            <connections>
+                                                                <action selector="notificationSwitchToggled:" destination="a3q-M5-d7t" eventType="valueChanged" id="wNF-pE-WHU"/>
+                                                            </connections>
                                                         </switch>
                                                     </subviews>
                                                 </stackView>
@@ -379,7 +388,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="notificationsCell" id="ECD-vu-NPu">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="notificationsCell" id="ECD-vu-NPu">
                                         <rect key="frame" x="0.0" y="334.66666666666669" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ECD-vu-NPu" id="4j3-V0-8f2">
@@ -395,8 +404,11 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="6Be-Gy-fuV">
+                                                        <switch opaque="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="6Be-Gy-fuV">
                                                             <rect key="frame" x="294" y="0.0" width="51" height="32"/>
+                                                            <connections>
+                                                                <action selector="notificationSwitchToggled:" destination="a3q-M5-d7t" eventType="valueChanged" id="PYT-Le-blD"/>
+                                                            </connections>
                                                         </switch>
                                                     </subviews>
                                                 </stackView>
@@ -442,6 +454,12 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Options" id="fZn-Fk-lRL"/>
+                    <connections>
+                        <outlet property="afternoonSwitch" destination="ZmJ-rT-USa" id="VaE-y0-Ieg"/>
+                        <outlet property="eveningSwitch" destination="3B4-sy-Lml" id="850-BD-9q6"/>
+                        <outlet property="morningSwitch" destination="sr5-g1-2Wx" id="fxs-kv-RAv"/>
+                        <outlet property="nightSwitch" destination="6Be-Gy-fuV" id="zOC-H7-Hsz"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zqO-d3-61K" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <stackView opaque="NO" contentMode="scaleToFill" id="FN8-nf-MkM">
@@ -535,7 +553,7 @@
                         <sections>
                             <tableViewSection headerTitle="Morning" id="RJU-qm-WWL">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="oYN-6N-PcX">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="oYN-6N-PcX">
                                         <rect key="frame" x="0.0" y="55.333333333333343" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oYN-6N-PcX" id="Wry-RD-DKB">
@@ -561,7 +579,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Afternoon" id="dP8-x7-1I3">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="hvB-iW-pwG">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="hvB-iW-pwG">
                                         <rect key="frame" x="0.0" y="231.33333333333337" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hvB-iW-pwG" id="srJ-Hp-KVy">
@@ -587,7 +605,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Evening" id="gQ9-Nv-0Hc">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="qp2-sC-PDM">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="qp2-sC-PDM">
                                         <rect key="frame" x="0.0" y="407.33333333333337" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qp2-sC-PDM" id="Epi-26-uol">
@@ -613,7 +631,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Night" id="KJa-eh-Usw">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="zYs-kg-VWX">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="zYs-kg-VWX">
                                         <rect key="frame" x="0.0" y="583.33333333333337" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zYs-kg-VWX" id="OZ2-sG-jgN">

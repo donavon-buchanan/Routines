@@ -148,13 +148,14 @@ class TableViewController: SwipeTableViewController{
     override func updateModel(at indexPath: IndexPath) {
         super.updateModel(at: indexPath)
 
-        guard let items = self.items else { fatalError() }
+        guard let items = self.segmentedItems else { fatalError() }
         let item = items[indexPath.row]
         
         print("Deleting item with title: \(String(describing: item.title))")
         do {
             try self.realm.write {
                 self.realm.delete(item)
+                self.updateBadge()
             }
         } catch {
             print("Error deleting item: \(error)")
