@@ -79,8 +79,15 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     }
     
     @objc func saveButtonPressed() {
-        addNewItem()
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "unwindToTableViewController" {
+            let destinationVC = segue.destination as! TableViewController
+            addNewItem()
+            //destinationVC.changeSegment(segment: segmentSelection.selectedSegmentIndex)
+        }
     }
  
     

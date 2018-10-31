@@ -32,12 +32,8 @@ class TableViewController: SwipeTableViewController{
     let segmentStringArray: [String] = ["Morning", "Afternoon", "Evening", "Night", "All Day"]
     
     //Set segment after adding an item
-    var setSegment: Int?
-    func changeSegment() {
-        if let segment = setSegment {
-            tabBarController?.selectedIndex = segment
-            setSegment = nil
-        }
+    func changeSegment(segment: Int) {
+        self.tabBarController?.selectedIndex = segment
     }
     
     //Footer view
