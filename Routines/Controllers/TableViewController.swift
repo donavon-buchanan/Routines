@@ -14,6 +14,8 @@ class TableViewController: SwipeTableViewController{
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     
+    //TODO: - !!!!!! CREATE CHILD VCs AS POTENTIAL FIX TO THE TAB BAR ISSUE !!!!!
+    
     
     // Get the default Realm
     let realm = try! Realm()
