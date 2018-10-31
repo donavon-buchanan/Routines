@@ -109,9 +109,9 @@ class AddTableViewController: UITableViewController {
     @objc func saveButtonPressed() {
         addNewItem()
         print("Added or saved item")
-        //performSegue(withIdentifier: "unwindToTableViewController", sender: self)
+        performSegue(withIdentifier: "unwindToTableViewController", sender: self)
         print("Unwind segue")
-        navigationController?.popViewController(animated: true)
+        //navigationController?.popViewController(animated: true)
     }
  
     

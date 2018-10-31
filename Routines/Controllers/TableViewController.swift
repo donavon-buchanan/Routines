@@ -71,7 +71,7 @@ class TableViewController: SwipeTableViewController{
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //changeSegment()
+        changeSegment()
         reloadTableView()
         print("viewDidAppear")
     }
