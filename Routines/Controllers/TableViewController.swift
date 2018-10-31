@@ -92,7 +92,6 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
     
     override func viewDidAppear(_ animated: Bool) {
         changeSegment()
-        //checkIfAnimationShouldRun()
     }
     
     //Trying to animate the transition from one tab to another even though I'm only using a single table view. Not yet working
@@ -357,13 +356,9 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
         }
     }
     
-    //TODO: Animate reload - not working as intended
+    //TODO: Animated reload would be nice
     func reloadTableView() {
-//        let range = NSMakeRange(0, self.tableView.numberOfSections)
-//        let sections = NSIndexSet(indexesIn: range)
-//        self.tableView.reloadSections(sections as IndexSet, with: .automatic)
         self.tableView.reloadData()
-        //checkIfAnimationShouldRun()
     }
     
 //    //Ask for which section and count the items matching that section index to segment property

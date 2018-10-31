@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AboutTableViewController: TableViewController {
+class AboutTableViewController: UITableViewController {
     
     @IBOutlet weak var versionNumberLabel: UILabel!
     
@@ -16,6 +16,7 @@ class AboutTableViewController: TableViewController {
         super.viewDidLoad()
         
         self.tableView.register(AboutTableViewCell.self, forCellReuseIdentifier: "versionCell")
+        setViewBackgroundGraphic()
 
     }
     
@@ -33,7 +34,15 @@ class AboutTableViewController: TableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        var numberOfRows: Int
+        switch section {
+        case 0:
+            numberOfRows = 1
+        default:
+            numberOfRows = 0
+        }
+        
+        return numberOfRows
     }
     
     func setVersionNumberLabel() -> String {
@@ -45,6 +54,18 @@ class AboutTableViewController: TableViewController {
         
         //return "fuck you"
         return versionString
+    }
+    
+    //Set background graphic
+    func setViewBackgroundGraphic() {
+        
+        let backgroundImageView = UIImageView()
+        let backgroundImage = UIImage(imageLiteralResourceName: "inlay")
+        
+        backgroundImageView.image = backgroundImage
+        backgroundImageView.contentMode = .scaleAspectFit
+        
+        self.tableView.backgroundView = backgroundImageView
     }
     
 }

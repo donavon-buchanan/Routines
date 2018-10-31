@@ -26,7 +26,28 @@ class CustomTimesTableViewController: UITableViewController {
         let datePickerArray: [UIDatePicker] = [morningDatePicker, afternoonDatePicker, eveningDatePicker, nightDatePicker]
         setDefaultMinTimes(datePickerArray: datePickerArray, gapInSeconds: 60)
         
-        disableScrolling()
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 4
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var numberOfRows: Int
+        switch section {
+        case 0:
+            numberOfRows = 1
+        case 1:
+            numberOfRows = 1
+        case 2:
+            numberOfRows = 1
+        case 3:
+            numberOfRows = 1
+        default:
+            numberOfRows = 0
+        }
+        
+        return numberOfRows
     }
     
     //Set default min times

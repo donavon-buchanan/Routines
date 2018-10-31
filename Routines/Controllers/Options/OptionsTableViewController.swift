@@ -14,11 +14,30 @@ class OptionsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //disableScrolling()
     }
     
     override func viewDidLayoutSubviews() {
-        disableScrolling()
+        
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 3
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var numberOfRows: Int
+        switch section {
+        case 0:
+            numberOfRows = 1
+        case 1:
+            numberOfRows = 4
+        case 2:
+            numberOfRows = 1
+        default:
+            numberOfRows = 0
+        }
+        
+        return numberOfRows
     }
 
     //TODO: Add Notifications toggles

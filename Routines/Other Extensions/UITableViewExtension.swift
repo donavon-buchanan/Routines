@@ -6,11 +6,11 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-import UIKit
+//import UIKit
 
-extension UITableViewController {
-    
-    func disableScrolling() {
+//extension UITableViewController {
+
+//    func disableScrolling() {
 //        //keep table from scrolling if it fits on screen
 //        //https://stackoverflow.com/q/7410845
 //        if (self.tableView.contentSize.height < self.tableView.frame.height) {
@@ -28,6 +28,6 @@ extension UITableViewController {
 //            print("Viewing area height: \(self.tableView.bounds.height)")
 //            self.tableView.isScrollEnabled = true
 //        }
-    }
+//    }
     
-}
+//}

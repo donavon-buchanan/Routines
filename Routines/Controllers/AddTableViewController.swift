@@ -62,8 +62,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         //handle keyboard
         self.taskTextField.delegate = self
         self.notesTextView.delegate = self
-
-        disableScrolling()
         
     }
 
