@@ -182,7 +182,7 @@
         <scene sceneID="eiy-SR-jk8">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zPf-jp-bgP" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Morning" image="morning" id="Omx-Dn-6ft" userLabel="Morning"/>
+                    <tabBarItem key="tabBarItem" title="Morning" image="morning" selectedImage="morning-selected" id="Omx-Dn-6ft" userLabel="Morning"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iL4-EF-AiN">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
@@ -241,7 +241,7 @@
         <scene sceneID="RJx-Gx-IwY">
             <objects>
                 <navigationController id="Pir-IO-sd4" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="2" title="Evening" image="evening" id="Z95-2D-Mr2"/>
+                    <tabBarItem key="tabBarItem" tag="2" title="Evening" image="evening" selectedImage="evening-selected" id="Z95-2D-Mr2"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="zzb-sU-kjl">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -746,13 +746,15 @@
         <image name="afternoon" width="23" height="23"/>
         <image name="afternoon-selected" width="23" height="23"/>
         <image name="evening" width="23" height="23"/>
+        <image name="evening-selected" width="23" height="23"/>
         <image name="gear" width="28" height="28"/>
         <image name="morning" width="23" height="23"/>
+        <image name="morning-selected" width="23" height="23"/>
         <image name="night" width="23" height="23"/>
         <image name="night-selected" width="23" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="lP2-JT-oTl"/>
-        <segue reference="mrq-CI-P72"/>
+        <segue reference="8ln-Up-acB"/>
     </inferredMetricsTieBreakers>
 </document>
