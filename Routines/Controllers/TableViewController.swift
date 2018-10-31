@@ -14,14 +14,14 @@ class TableViewController: SwipeTableViewController{
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     
-    //TODO: - !!!!!! CREATE CHILD VCs AS POTENTIAL FIX TO THE TAB BAR ISSUE !!!!!
-    
     
     // Get the default Realm
     let realm = try! Realm()
 
     //var segments: Results<Segments>?
     var items: Results<Items>?
+    //TODO: This is a bit of a mess for readability
+    var segmentedItems: Results<Items>?
     
     //Options Properties
     let optionsRealm = try! Realm()
@@ -55,9 +55,9 @@ class TableViewController: SwipeTableViewController{
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         //self.tabBarController?.delegate = self
         //self.navigationController?.delegate = self
-        guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
-        items = loadItems(segment: selectedTab)
-        print("Selected tab is \(selectedTab)")
+//        guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
+//        segmentedItems = loadItems(segment: selectedTab)
+//        print("Selected tab is \(selectedTab)")
         
         
         //load options
@@ -65,17 +65,15 @@ class TableViewController: SwipeTableViewController{
         checkIfFirstItemAdded()
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        //reloadTableView()
-//        print("viewWillAppear")
-//    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        changeSegment()
+        guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
+        segmentedItems = loadItems(segment: selectedTab)
+        print("Selected tab is \(selectedTab)")
+        //changeSegment()
         reloadTableView()
         print("viewDidAppear")
+        updateBadge()
     }
 
     // MARK: - Table view data source
@@ -88,13 +86,13 @@ class TableViewController: SwipeTableViewController{
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return self.items?.count ?? 0
+        return self.segmentedItems?.count ?? 0
         
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        guard let item = self.items?[indexPath.row] else { fatalError() }
+        guard let item = self.segmentedItems?[indexPath.row] else { fatalError() }
         cell.textLabel?.text = item.title
         
         return cell
@@ -126,7 +124,7 @@ class TableViewController: SwipeTableViewController{
             destination.navigationItem.rightBarButtonItem?.isEnabled = false
             //pass in current item
             if let indexPath = tableView.indexPathForSelectedRow {
-                guard let item = self.items?[indexPath.row] else { fatalError() }
+                guard let item = self.segmentedItems?[indexPath.row] else { fatalError() }
                 destination.item = item
             }
         }
@@ -140,8 +138,6 @@ class TableViewController: SwipeTableViewController{
     
     //Filter items to relevant segment and return those items
     func loadItems(segment: Int) -> Results<Items> {
-        //        guard let filteredItems = items?.filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true) else { fatalError() }
-        //TODO: This could probably still be more efficient. Find a way to load the items minimally
         guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
         print("loadItems run")
         //self.tableView.reloadData()
@@ -183,6 +179,27 @@ class TableViewController: SwipeTableViewController{
         
         self.tableView.backgroundView = backgroundImageView
         
+    }
+    
+    //Update tab bar badge counts
+    func updateBadge() {
+        
+        if let tabs = self.tabBarController?.tabBar.items {
+            
+            for tab in 0..<tabs.count {
+                let count = getSegmentCount(segment: tab)
+                if count > 0 {
+                    tabs[tab].badgeValue = "\(count)"
+                } else {
+                    tabs[tab].badgeValue = nil
+                }
+            }
+        }
+    }
+    
+    func getSegmentCount(segment: Int) -> Int {
+        guard let filteredItems = self.items?.filter("segment = \(segment)") else { fatalError() }
+        return filteredItems.count
     }
     
 }
