@@ -60,6 +60,7 @@ class OptionsTableViewController: UITableViewController {
         return numberOfRows
     }
     
+    //Make the full width of the cell toggle the switch along with typical haptic
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let haptic = UIImpactFeedbackGenerator(style: .light)
         if indexPath.section == 1 {

@@ -51,9 +51,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         let completeAction = SwipeAction(style: .destructive, title: "Complete") { (action, indexPath) in
             // handle action by updating model with deletion
             self.updateModel(at: indexPath)
-            //action.fulfill(with: .reset)
-            //tableView.reloadData()
-            //editActionsOptionsForRowAt takes care of the table reload
+            action.fulfill(with: .delete)
         }
         
         let snoozeAction = SwipeAction(style: .default, title: "Snooze") { (action, indexPath) in
