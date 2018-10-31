@@ -10,7 +10,7 @@ import UIKit
 import RealmSwift
 import SwipeCellKit
 
-class TableViewController: SwipeTableViewController, UITabBarControllerDelegate, UINavigationControllerDelegate {
+class TableViewController: SwipeTableViewController{
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     
@@ -33,7 +33,6 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
     var setSegment: Int?
     func changeSegment() {
         if let segment = setSegment {
-            //reloadTableView()
             tabBarController?.selectedIndex = segment
             setSegment = nil
         }
@@ -52,25 +51,29 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate,
         loadData()
 
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        self.tabBarController?.delegate = self
-        self.navigationController?.delegate = self
+        //self.tabBarController?.delegate = self
+        //self.navigationController?.delegate = self
         guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
         items = loadItems(segment: selectedTab)
-        reloadTableView()
         print("Selected tab is \(selectedTab)")
+        
         
         //load options
         loadOptions()
-        
         checkIfFirstItemAdded()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        reloadTableView()
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        //reloadTableView()
+//        print("viewWillAppear")
+//    }
     
     override func viewDidAppear(_ animated: Bool) {
-        changeSegment()
+        super.viewDidAppear(animated)
+        //changeSegment()
+        reloadTableView()
+        print("viewDidAppear")
     }
 
     // MARK: - Table view data source

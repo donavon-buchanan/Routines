@@ -204,7 +204,7 @@
         <scene sceneID="2hT-c9-pO0">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="75h-0Z-9GG" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="1" title="Afternoon" image="afternoon" id="Hmc-YY-uNO"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="Afternoon" image="afternoon" selectedImage="afternoon-selected" id="Hmc-YY-uNO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="yy0-pO-f6x">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -221,7 +221,7 @@
         <scene sceneID="YAI-nr-2dH">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="pvj-3G-5c5" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="3" title="Night" image="night" id="KEp-MF-h3Q"/>
+                    <tabBarItem key="tabBarItem" tag="3" title="Night" image="night" selectedImage="night-selected" id="KEp-MF-h3Q"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="kHc-p0-Fbk">
                         <rect key="frame" x="0.0" y="44" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -678,14 +678,16 @@
     </scenes>
     <resources>
         <image name="add button" width="28" height="28"/>
-        <image name="afternoon" width="40" height="40"/>
-        <image name="evening" width="40" height="40"/>
+        <image name="afternoon" width="23" height="23"/>
+        <image name="afternoon-selected" width="23" height="23"/>
+        <image name="evening" width="23" height="23"/>
         <image name="gear" width="28" height="28"/>
-        <image name="morning" width="40" height="40"/>
-        <image name="night" width="40" height="40"/>
+        <image name="morning" width="23" height="23"/>
+        <image name="night" width="23" height="23"/>
+        <image name="night-selected" width="23" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="lP2-JT-oTl"/>
-        <segue reference="AXD-IN-9f2"/>
+        <segue reference="mrq-CI-P72"/>
     </inferredMetricsTieBreakers>
 </document>

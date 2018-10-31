@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class AddTableViewController: UITableViewController, UITextViewDelegate, UITextFieldDelegate {
+class AddTableViewController: UITableViewController {
     
     //MARK: - Properties
     @IBOutlet weak var taskTextField: UITextField!
@@ -56,12 +56,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        taskTextField.addTarget(self, action: #selector(AddTableViewController.textFieldDidChange), for: .editingChanged)
+        taskTextField.addTarget(self, action: #selector(self.textFieldDidChange), for: .editingChanged)
         segmentSelection.addTarget(self, action: #selector(self.textFieldDidChange), for: .valueChanged)
         
         //handle keyboard
-        self.taskTextField.delegate = self
-        self.notesTextView.delegate = self
+//        self.taskTextField.delegate = self
+//        self.notesTextView.delegate = self
         
     }
 
@@ -75,7 +75,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         // Pass the selected object to the new view controller.
         let destinationVC = segue.destination as! TableViewController
         //destinationVC.tableView.reloadData()
-        
+
         //Set the segment after adding or editing an item
         destinationVC.setSegment = segmentSelection.selectedSegmentIndex
     }
@@ -88,20 +88,19 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             itemTitle = nil
             navigationItem.rightBarButtonItem?.isEnabled = false
         }
-        
     }
     
     //dismiss keyboard
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-
-        textField.resignFirstResponder()
-
-        return true
-    }
-    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
-        textView.resignFirstResponder()
-        return true
-    }
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//
+//        textField.resignFirstResponder()
+//
+//        return true
+//    }
+//    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+//        textView.resignFirstResponder()
+//        return true
+//    }
     
 //    @objc func notesTextViewDidChange(_ textView: UITextView) {
 //
@@ -109,7 +108,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     
     @objc func saveButtonPressed() {
         addNewItem()
-        performSegue(withIdentifier: "unwindToTableViewController", sender: self)
+        print("Added or saved item")
+        //performSegue(withIdentifier: "unwindToTableViewController", sender: self)
+        print("Unwind segue")
+        navigationController?.popViewController(animated: true)
     }
  
     
