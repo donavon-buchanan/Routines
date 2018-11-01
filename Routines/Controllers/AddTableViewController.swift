@@ -116,7 +116,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     func saveItem(item: Items) {
         do {
             try realm.write {
-                createNotification(notificationItem: item)
+                scheduleNewNotification(item: item)
                 realm.add(item)
             }
         } catch {
@@ -132,7 +132,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
                 item!.segment = segmentSelection.selectedSegmentIndex
                 item!.notes = notesTextView.text
                 removeNotification(item: self.item!)
-                createNotification(notificationItem: self.item!)
+                scheduleNewNotification(item: self.item!)
             }
         } catch {
             print("Error updating item: \(error)")
@@ -162,17 +162,18 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         }
     }
     
-    func checkForNotificationAuth() {
+    func checkForNotificationAuth(notificationItem: Items) {
         let notificationCenter = UNUserNotificationCenter.current()
         
         notificationCenter.getNotificationSettings { (settings) in
             //DO not schedule notifications if not authorized
             guard settings.authorizationStatus == .authorized else {
-                self.requestNotificationPermission()
+                //self.requestNotificationPermission()
                 return
             }
             if settings.alertSetting == .enabled {
                 //Schedule an alert-only notification
+                self.createNotification(notificationItem: notificationItem)
                 
             } else {
                 //Schedule a notification with a badge and sound
@@ -182,73 +183,69 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         }
     }
     
-    func checkNotificationOptions(notificationItem: Items) -> Bool {
-        var notificationsEnabled: Bool = false
-        switch notificationItem.segment {
-        case 0:
-            if let enabled = optionsObject?.morningNotificationsOn {
-                notificationsEnabled = enabled
-            }
-        case 1:
-            if let enabled = optionsObject?.afternoonNotificationsOn {
-                notificationsEnabled = enabled
-            }
-        case 2:
-            if let enabled = optionsObject?.eveningNotificationsOn {
-                notificationsEnabled = enabled
-            }
-        case 3:
-            if let enabled = optionsObject?.nightNotificationsOn {
-                notificationsEnabled = enabled
-            }
-        default:
-            notificationsEnabled = false
+    func createNotification(notificationItem: Items) {
+        let content = UNMutableNotificationContent()
+        guard case content.title = notificationItem.title else { return }
+        if let notes = notificationItem.notes {
+            content.body = notes
         }
-        return notificationsEnabled
+        
+        var dateComponents = DateComponents()
+        dateComponents.calendar = Calendar.current
+        switch notificationItem.segment {
+        case 1:
+            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
+            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
+        case 2:
+            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
+            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
+        case 3:
+            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
+            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
+        default:
+            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
+            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
+        }
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        //Create the request
+        let uuidString = UUID().uuidString
+        updateItemUUID(item: notificationItem, uuidString: uuidString)
+        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+        
+        //Schedule the request with the system
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.add(request) { (error) in
+            if error != nil {
+                //TODO: handle notification errors
+            }
+        }
+        
     }
     
-    func createNotification(notificationItem: Items) {
-        
-        if checkNotificationOptions(notificationItem: notificationItem) {
-            let content = UNMutableNotificationContent()
-            guard case content.title = notificationItem.title else { return }
-            if let notes = notificationItem.notes {
-                content.body = notes
-            }
-            
-            var dateComponents = DateComponents()
-            dateComponents.calendar = Calendar.current
-            switch notificationItem.segment {
-            case 1:
-                dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
-                dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
-            case 2:
-                dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
-                dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
-            case 3:
-                dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
-                dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
-            default:
-                dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
-                dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
-            }
-            
-            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-            
-            //Create the request
-            let uuidString = UUID().uuidString
-            updateItemUUID(item: notificationItem, uuidString: uuidString)
-            let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-            
-            //Schedule the request with the system
-            let notificationCenter = UNUserNotificationCenter.current()
-            notificationCenter.add(request) { (error) in
-                if error != nil {
-                    //TODO: handle notification errors
-                }
-            }
+    func scheduleNewNotification(item: Items) {
+        checkForNotificationAuth(notificationItem: item)
+    }
+    
+    func removeNotification(item: Items) {
+        if let uuidString = item.uuidString {
+            let center = UNUserNotificationCenter.current()
+            center.removePendingNotificationRequests(withIdentifiers: [uuidString])
         }
-        
+    }
+    
+    //MARK: - Options Realm
+    
+    //Options Properties
+    let optionsRealm = try! Realm()
+    var optionsObject: Options?
+    //var firstItemAdded: Bool?
+    let optionsKey = "optionsKey"
+    
+    //Load Options
+    func loadOptions() {
+        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
     }
     
     func getOptionTimes(timePeriod: Int, timeOption: Date?) -> Date {
@@ -288,26 +285,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         } catch {
             print("failed to update UUID for item")
         }
-    }
-    
-    func removeNotification(item: Items) {
-        if let uuidString = item.uuidString {
-            let center = UNUserNotificationCenter.current()
-            center.removePendingNotificationRequests(withIdentifiers: [uuidString])
-        }
-    }
-    
-    //MARK: - Options Realm
-    
-    //Options Properties
-    let optionsRealm = try! Realm()
-    var optionsObject: Options?
-    //var firstItemAdded: Bool?
-    let optionsKey = "optionsKey"
-    
-    //Load Options
-    func loadOptions() {
-        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
     }
 
 }
