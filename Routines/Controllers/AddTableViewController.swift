@@ -8,6 +8,8 @@
 
 import UIKit
 import RealmSwift
+import UserNotifications
+import UserNotificationsUI
 
 class AddTableViewController: UITableViewController, UITextViewDelegate {
     
@@ -49,7 +51,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         notesTextView.delegate = self
     }
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadOptions()
+    }
 
     
     
@@ -111,6 +116,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     func saveItem(item: Items) {
         do {
             try realm.write {
+                createNotification(notificationItem: item)
                 realm.add(item)
             }
         } catch {
@@ -125,10 +131,155 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
                 item!.dateModified = Date()
                 item!.segment = segmentSelection.selectedSegmentIndex
                 item!.notes = notesTextView.text
+                removeNotification(item: self.item!)
+                createNotification(notificationItem: self.item!)
             }
         } catch {
             print("Error updating item: \(error)")
         }
+    }
+    
+    //MARK: - Manage Notifications
+    
+    func requestNotificationPermission() {
+        let center = UNUserNotificationCenter.current()
+        //Request permission to display alerts and play sounds
+        if #available(iOS 12.0, *) {
+            center.requestAuthorization(options: [.alert, .sound, .badge, .provisional, .providesAppNotificationSettings]) { (granted, error) in
+                // Enable or disable features based on authorization.
+                if !granted {
+                    return
+                }
+            }
+        } else {
+            // Fallback on earlier versions
+            center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+                // Enable or disable features based on authorization.
+                if !granted {
+                    return
+                }
+            }
+        }
+    }
+    
+    func checkForNotificationAuth() {
+        let notificationCenter = UNUserNotificationCenter.current()
+        
+        notificationCenter.getNotificationSettings { (settings) in
+            //DO not schedule notifications if not authorized
+            guard settings.authorizationStatus == .authorized else {
+                self.requestNotificationPermission()
+                return
+            }
+            if settings.alertSetting == .enabled {
+                //Schedule an alert-only notification
+                
+            } else {
+                //Schedule a notification with a badge and sound
+                
+            }
+            
+        }
+    }
+    
+    func createNotification(notificationItem: Items) {
+        let content = UNMutableNotificationContent()
+        guard case content.title = notificationItem.title else { return }
+        if let notes = notificationItem.notes {
+            content.body = notes
+        }
+        
+        var dateComponents = DateComponents()
+        dateComponents.calendar = Calendar.current
+        switch notificationItem.segment {
+        case 1:
+            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
+            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
+        case 2:
+            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
+            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
+        case 3:
+            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
+            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
+        default:
+            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
+            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
+        }
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        //Create the request
+        let uuidString = UUID().uuidString
+        updateItemUUID(item: notificationItem, uuidString: uuidString)
+        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+        
+        //Schedule the request with the system
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.add(request) { (error) in
+            if error != nil {
+                //TODO: handle notification errors
+            }
+        }
+        
+    }
+    
+    func getOptionTimes(timePeriod: Int, timeOption: Date?) -> Date {
+        var time: Date
+        let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        
+        if let setTime = timeOption {
+            time = setTime
+        } else {
+            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
+        }
+        
+        return time
+    }
+    
+    func getHour(date: Date) -> Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH"
+        let hour = dateFormatter.string(from: date)
+        return Int(hour)!
+    }
+    
+    func getMinute(date: Date) -> Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "mm"
+        let minutes = dateFormatter.string(from: date)
+        return Int(minutes)!
+    }
+    
+    func updateItemUUID(item: Items, uuidString: String) {
+        do {
+            try realm.write {
+                item.uuidString = uuidString
+            }
+        } catch {
+            print("failed to update UUID for item")
+        }
+    }
+    
+    func removeNotification(item: Items) {
+        if let uuidString = item.uuidString {
+            let center = UNUserNotificationCenter.current()
+            center.removePendingNotificationRequests(withIdentifiers: [uuidString])
+        }
+    }
+    
+    //MARK: - Options Realm
+    
+    //Options Properties
+    let optionsRealm = try! Realm()
+    var optionsObject: Options?
+    //var firstItemAdded: Bool?
+    let optionsKey = "optionsKey"
+    
+    //Load Options
+    func loadOptions() {
+        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
     }
 
 }

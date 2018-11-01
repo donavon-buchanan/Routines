@@ -161,6 +161,7 @@ class TableViewController: SwipeTableViewController{
         print("Deleting item with title: \(String(describing: item.title))")
         do {
             try self.realm.write {
+                self.removeNotification(item: item)
                 self.realm.delete(item)
                 self.updateBadge()
             }
@@ -281,6 +282,7 @@ class TableViewController: SwipeTableViewController{
         
         //Create the request
         let uuidString = UUID().uuidString
+        updateItemUUID(item: notificationItem, uuidString: uuidString)
         let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
         
         //Schedule the request with the system
@@ -320,6 +322,23 @@ class TableViewController: SwipeTableViewController{
         dateFormatter.dateFormat = "mm"
         let minutes = dateFormatter.string(from: date)
         return Int(minutes)!
+    }
+    
+    func updateItemUUID(item: Items, uuidString: String) {
+        do {
+            try realm.write {
+                item.uuidString = uuidString
+            }
+        } catch {
+            print("failed to update UUID for item")
+        }
+    }
+    
+    func removeNotification(item: Items) {
+        if let uuidString = item.uuidString {
+            let center = UNUserNotificationCenter.current()
+            center.removePendingNotificationRequests(withIdentifiers: [uuidString])
+        }
     }
     
 }
