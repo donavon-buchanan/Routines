@@ -182,42 +182,70 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         }
     }
     
-    func createNotification(notificationItem: Items) {
-        let content = UNMutableNotificationContent()
-        guard case content.title = notificationItem.title else { return }
-        if let notes = notificationItem.notes {
-            content.body = notes
-        }
-        
-        var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.current
+    func checkNotificationOptions(notificationItem: Items) -> Bool {
+        var notificationsEnabled: Bool = false
         switch notificationItem.segment {
+        case 0:
+            if let enabled = optionsObject?.morningNotificationsOn {
+                notificationsEnabled = enabled
+            }
         case 1:
-            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
-            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
+            if let enabled = optionsObject?.afternoonNotificationsOn {
+                notificationsEnabled = enabled
+            }
         case 2:
-            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
-            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
+            if let enabled = optionsObject?.eveningNotificationsOn {
+                notificationsEnabled = enabled
+            }
         case 3:
-            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
-            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
+            if let enabled = optionsObject?.nightNotificationsOn {
+                notificationsEnabled = enabled
+            }
         default:
-            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
-            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
+            notificationsEnabled = false
         }
+        return notificationsEnabled
+    }
+    
+    func createNotification(notificationItem: Items) {
         
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        
-        //Create the request
-        let uuidString = UUID().uuidString
-        updateItemUUID(item: notificationItem, uuidString: uuidString)
-        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-        
-        //Schedule the request with the system
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.add(request) { (error) in
-            if error != nil {
-                //TODO: handle notification errors
+        if checkNotificationOptions(notificationItem: notificationItem) {
+            let content = UNMutableNotificationContent()
+            guard case content.title = notificationItem.title else { return }
+            if let notes = notificationItem.notes {
+                content.body = notes
+            }
+            
+            var dateComponents = DateComponents()
+            dateComponents.calendar = Calendar.current
+            switch notificationItem.segment {
+            case 1:
+                dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
+                dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
+            case 2:
+                dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
+                dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
+            case 3:
+                dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
+                dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
+            default:
+                dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
+                dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
+            }
+            
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+            
+            //Create the request
+            let uuidString = UUID().uuidString
+            updateItemUUID(item: notificationItem, uuidString: uuidString)
+            let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+            
+            //Schedule the request with the system
+            let notificationCenter = UNUserNotificationCenter.current()
+            notificationCenter.add(request) { (error) in
+                if error != nil {
+                    //TODO: handle notification errors
+                }
             }
         }
         

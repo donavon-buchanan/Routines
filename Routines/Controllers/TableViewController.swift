@@ -19,9 +19,10 @@ class TableViewController: SwipeTableViewController{
     
     // Get the default Realm
     let realm = try! Realm()
-
-    //var segments: Results<Segments>?
     var items: Results<Items>?
+    
+    //var segments: Results<Segments>?
+    
     //TODO: This is a bit of a mess for readability
     var segmentedItems: Results<Items>?
     
