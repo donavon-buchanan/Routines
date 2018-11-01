@@ -277,6 +277,20 @@ class TableViewController: SwipeTableViewController{
             dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
         }
         
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        //Create the request
+        let uuidString = UUID().uuidString
+        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+        
+        //Schedule the request with the system
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.add(request) { (error) in
+            if error != nil {
+                //TODO: handle notification errors
+            }
+        }
+        
     }
     
     func getOptionTimes(timePeriod: Int, timeOption: Date?) -> Date {

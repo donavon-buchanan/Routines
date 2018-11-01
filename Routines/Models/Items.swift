@@ -9,12 +9,15 @@
 import Foundation
 import RealmSwift
 
-class Items: Object {
-    @objc dynamic var title: String?
-    @objc dynamic var dateModified: Date?
-    @objc dynamic var segment: Int = 0
-    @objc dynamic var snoozeUntil: Date?
-    @objc dynamic var repeats: Bool = false
-    @objc dynamic var notes: String?
+@objcMembers class Items: Object {
+    dynamic var title: String?
+    dynamic var dateModified: Date?
+    dynamic var segment: Int = 0
+    dynamic var snoozeUntil: Date?
+    dynamic var repeats: Bool = false
+    dynamic var notes: String?
+    
+    //Notification identifier
+    dynamic var uuidString: String?
     
 }
