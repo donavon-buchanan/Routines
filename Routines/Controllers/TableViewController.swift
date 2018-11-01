@@ -235,17 +235,18 @@ class TableViewController: SwipeTableViewController{
         }
     }
     
-    func checkForNotificationAuth() {
+    func checkForNotificationAuth(notificationItem: Items) {
         let notificationCenter = UNUserNotificationCenter.current()
         
         notificationCenter.getNotificationSettings { (settings) in
             //DO not schedule notifications if not authorized
             guard settings.authorizationStatus == .authorized else {
-                self.requestNotificationPermission()
+                //self.requestNotificationPermission()
                 return
             }
             if settings.alertSetting == .enabled {
                 //Schedule an alert-only notification
+                self.createNotification(notificationItem: notificationItem)
                 
             } else {
                 //Schedule a notification with a badge and sound
@@ -296,6 +297,19 @@ class TableViewController: SwipeTableViewController{
         
     }
     
+    func scheduleNewNotification(item: Items) {
+        checkForNotificationAuth(notificationItem: item)
+    }
+    
+    func removeNotification(item: Items) {
+        if let uuidString = item.uuidString {
+            let center = UNUserNotificationCenter.current()
+            center.removePendingNotificationRequests(withIdentifiers: [uuidString])
+        }
+    }
+    
+    //MARK: - Options Realm
+    
     func getOptionTimes(timePeriod: Int, timeOption: Date?) -> Date {
         var time: Date
         let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
@@ -332,13 +346,6 @@ class TableViewController: SwipeTableViewController{
             }
         } catch {
             print("failed to update UUID for item")
-        }
-    }
-    
-    func removeNotification(item: Items) {
-        if let uuidString = item.uuidString {
-            let center = UNUserNotificationCenter.current()
-            center.removePendingNotificationRequests(withIdentifiers: [uuidString])
         }
     }
     
