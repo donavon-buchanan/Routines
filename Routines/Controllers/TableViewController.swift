@@ -66,6 +66,7 @@ class TableViewController: SwipeTableViewController{
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = false
         updateBadge()
     }

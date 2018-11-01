@@ -28,6 +28,14 @@ class CustomTimesTableViewController: UITableViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 4
     }
@@ -56,6 +64,23 @@ class CustomTimesTableViewController: UITableViewController {
         for picker in 1..<pickerCount {
             datePickerArray[picker].minimumDate = datePickerArray[picker-1].date.addingTimeInterval(gapInSeconds * 60)
         }
+    }
+    
+    //MARK: - Options Realm
+    
+    //Options Properties
+    let optionsRealm = try! Realm()
+    var optionsObject: Options?
+    //var firstItemAdded: Bool?
+    let optionsKey = "optionsKey"
+    
+    //Load Options
+    func loadOptions() {
+        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+    }
+    
+    func setUpUI() {
+        
     }
 
 }
