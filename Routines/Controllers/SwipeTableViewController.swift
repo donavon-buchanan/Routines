@@ -48,7 +48,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard orientation == .right else { return nil}
         
-        let completeAction = SwipeAction(style: .destructive, title: "Complete") { (action, indexPath) in
+        let completeAction = SwipeAction(style: .destructive, title: "Done") { (action, indexPath) in
             // handle action by updating model with deletion
             self.updateModel(at: indexPath)
             action.fulfill(with: .delete)
@@ -61,7 +61,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
         
         //customize the action appearance
 //        completeAction.image = UIImage(named: "completed")
-        completeAction.backgroundColor = UIColor.init(displayP3Red:0.15,green:0.56,blue:0.25,alpha:1.00)
+        completeAction.backgroundColor = UIColor(red:0.49,green:0.74,blue:0.12,alpha:1.00)
         //snoozeAction.backgroundColor = .orange
         
         return [completeAction]
