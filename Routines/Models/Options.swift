@@ -10,6 +10,7 @@ import Foundation
 import RealmSwift
 
 @objcMembers class Options: Object {
+    
     dynamic var morningStartTime: Date?
     dynamic var afternoonStartTime: Date?
     dynamic var eveningStartTime: Date?

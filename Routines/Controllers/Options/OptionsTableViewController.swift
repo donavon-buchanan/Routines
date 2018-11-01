@@ -43,11 +43,12 @@ class OptionsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadOptions()
+        //loadOptions()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        loadOptions()
         setUpUI()
     }
     
@@ -164,11 +165,17 @@ class OptionsTableViewController: UITableViewController {
     func getOptionTimes(timePeriod: Int, timeOption: Date?) -> String {
         var time: String = " "
         let periods = ["morning", "afternoon", "evening", "night"]
+        let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        
+        dateFormatter.timeStyle = .short
         if let dateTime = timeOption {
+            
             time = "Your \(periods[timePeriod]) begins at \(dateFormatter.string(from: dateTime))"
+        } else {
+            
+            let defaultTime = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
+            
+            time = "Your \(periods[timePeriod]) begins at \(dateFormatter.string(from: defaultTime))"
         }
         
         return time
