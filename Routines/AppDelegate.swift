@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        requestNotificationPermission()
         loadOptions()
 
         return true
@@ -71,6 +73,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             loadOptions()
         }
         
+    }
+    
+    //MARK: - Manage Notifications
+    
+    func requestNotificationPermission() {
+        let center = UNUserNotificationCenter.current()
+        //Request permission to display alerts and play sounds
+        if #available(iOS 12.0, *) {
+            center.requestAuthorization(options: [.alert, .sound, .badge, .provisional, .providesAppNotificationSettings]) { (granted, error) in
+                // Enable or disable features based on authorization.
+                if granted {
+                    print("App Delegate: App has notification permission")
+                } else {
+                    print("App Delegate: App does not have notification permission")
+                    return
+                }
+            }
+        } else {
+            // Fallback on earlier versions
+            center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+                // Enable or disable features based on authorization.
+                if granted {
+                    print("App Delegate: App has notification permission")
+                } else {
+                    print("App Delegate: App does not have notification permission")
+                    return
+                }
+            }
+        }
     }
 
 }
