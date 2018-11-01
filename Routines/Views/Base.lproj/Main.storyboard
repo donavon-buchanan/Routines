@@ -38,10 +38,7 @@
                                 </tableViewCellContentView>
                                 <viewLayoutGuide key="safeArea" id="mgs-e5-Htd"/>
                                 <connections>
-                                    <segue destination="A8c-r3-V1W" kind="show" identifier="editSegue" id="lP2-JT-oTl">
-                                        <segue key="commit" inheritsFrom="parent" id="UKM-gy-aKv"/>
-                                        <segue key="preview" inheritsFrom="commit" id="upF-br-aA0"/>
-                                    </segue>
+                                    <segue destination="A8c-r3-V1W" kind="show" identifier="editSegue" id="lP2-JT-oTl"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -770,7 +767,7 @@
         <image name="night-selected" width="23" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="lP2-JT-oTl"/>
+        <segue reference="CCO-Gm-Wv4"/>
         <segue reference="AXD-IN-9f2"/>
     </inferredMetricsTieBreakers>
 </document>

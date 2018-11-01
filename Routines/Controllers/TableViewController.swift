@@ -9,6 +9,8 @@
 import UIKit
 import RealmSwift
 import SwipeCellKit
+import UserNotifications
+import UserNotificationsUI
 
 class TableViewController: SwipeTableViewController{
     
@@ -63,6 +65,8 @@ class TableViewController: SwipeTableViewController{
         //load options
         loadOptions()
         checkIfFirstItemAdded()
+        
+        requestNotificationPermission()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -206,6 +210,27 @@ class TableViewController: SwipeTableViewController{
     func getSegmentCount(segment: Int) -> Int {
         guard let filteredItems = self.items?.filter("segment = \(segment)") else { fatalError() }
         return filteredItems.count
+    }
+    
+    func requestNotificationPermission() {
+        let center = UNUserNotificationCenter.current()
+        //Request permission to display alerts and play sounds
+        if #available(iOS 12.0, *) {
+            center.requestAuthorization(options: [.alert, .sound, .badge, .provisional, .providesAppNotificationSettings]) { (granted, error) in
+                // Enable or disable features based on authorization.
+                if !granted {
+                    return
+                }
+            }
+        } else {
+            // Fallback on earlier versions
+            center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+                // Enable or disable features based on authorization.
+                if !granted {
+                    return
+                }
+            }
+        }
     }
     
 }

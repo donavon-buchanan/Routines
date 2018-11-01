@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import UserNotifications
+import UserNotificationsUI
 import RealmSwift
 
 class OptionsTableViewController: UITableViewController {
@@ -137,6 +139,7 @@ class OptionsTableViewController: UITableViewController {
         } catch {
             print("failed to update notification saved bools")
         }
+        checkForNotificationAuth()
     }
     
     func setUpUI() {
@@ -179,6 +182,47 @@ class OptionsTableViewController: UITableViewController {
         }
         
         return time
+    }
+    
+    func requestNotificationPermission() {
+        let center = UNUserNotificationCenter.current()
+        //Request permission to display alerts and play sounds
+        if #available(iOS 12.0, *) {
+            center.requestAuthorization(options: [.alert, .sound, .badge, .provisional, .providesAppNotificationSettings]) { (granted, error) in
+                // Enable or disable features based on authorization.
+                if !granted {
+                    return
+                }
+            }
+        } else {
+            // Fallback on earlier versions
+            center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+                // Enable or disable features based on authorization.
+                if !granted {
+                    return
+                }
+            }
+        }
+    }
+    
+    func checkForNotificationAuth() {
+        let notificationCenter = UNUserNotificationCenter.current()
+        
+        notificationCenter.getNotificationSettings { (settings) in
+            //DO not schedule notifications if not authorized
+            guard settings.authorizationStatus == .authorized else {
+                self.requestNotificationPermission()
+                return
+            }
+            if settings.alertSetting == .enabled {
+                //Schedule an alert-only notification
+                
+            } else {
+                //Schedule a notification with a badge and sound
+                
+            }
+            
+        }
     }
 
 }
