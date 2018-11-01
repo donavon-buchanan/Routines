@@ -54,17 +54,17 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
             action.fulfill(with: .delete)
         }
         
-        let snoozeAction = SwipeAction(style: .default, title: "Snooze") { (action, indexPath) in
-            //handle snooze
-            self.snoozeItem(at: indexPath)
-        }
+//        let snoozeAction = SwipeAction(style: .default, title: "Snooze") { (action, indexPath) in
+//            //handle snooze
+//            self.snoozeItem(at: indexPath)
+//        }
         
         //customize the action appearance
 //        completeAction.image = UIImage(named: "completed")
         completeAction.backgroundColor = UIColor.init(displayP3Red:0.15,green:0.56,blue:0.25,alpha:1.00)
-        snoozeAction.backgroundColor = .orange
+        //snoozeAction.backgroundColor = .orange
         
-        return [completeAction, snoozeAction]
+        return [completeAction]
     }
 
     //continue dragging to delete

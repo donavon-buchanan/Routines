@@ -67,6 +67,7 @@ class TableViewController: SwipeTableViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = false
+        updateBadge()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -76,7 +77,6 @@ class TableViewController: SwipeTableViewController{
         print("Selected tab is \(selectedTab)")
         reloadTableView()
         print("viewDidAppear")
-        updateBadge()
         changeSegment(segment: passedSegment)
     }
 

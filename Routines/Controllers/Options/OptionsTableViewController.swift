@@ -16,16 +16,26 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet weak var eveningSwitch: UISwitch!
     @IBOutlet weak var nightSwitch: UISwitch!
     
+    @IBOutlet weak var morningSubLabel: UILabel!
+    @IBOutlet weak var afternoonSubLabel: UILabel!
+    @IBOutlet weak var eveningSubLabel: UILabel!
+    @IBOutlet weak var nightSubLabel: UILabel!
+    
+    
     @IBAction func notificationSwitchToggled(_ sender: UISwitch) {
         switch sender.tag {
         case 0:
             print("Morning Switch Toggled \(sender.isOn)")
+            updateNotificationOptions()
         case 1:
             print("Afternoon Switch Toggled \(sender.isOn)")
+            updateNotificationOptions()
         case 2:
             print("Evening Switch Toggled \(sender.isOn)")
+            updateNotificationOptions()
         case 3:
             print("Night Switch Toggled \(sender.isOn)")
+            updateNotificationOptions()
         default:
             break
         }
@@ -33,10 +43,14 @@ class OptionsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        loadOptions()
     }
     
-    override func viewDidLayoutSubviews() {
+    override func viewWillAppear(_ animated: Bool) {
+        setUpUI()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         
     }
     
@@ -69,21 +83,25 @@ class OptionsTableViewController: UITableViewController {
                 print("Tapped Morning Cell")
                 self.morningSwitch.setOn(!self.morningSwitch.isOn, animated: true)
                 print("Morning switch is now set to: \(morningSwitch.isOn)")
+                updateNotificationOptions()
                 haptic.impactOccurred()
             case 1:
                 print("Tapped Afternoon Cell")
                 self.afternoonSwitch.setOn(!self.afternoonSwitch.isOn, animated: true)
                 print("Afternoon switch is now set to: \(afternoonSwitch.isOn)")
+                updateNotificationOptions()
                 haptic.impactOccurred()
             case 2:
                 print("Tapped Evening Cell")
                 self.eveningSwitch.setOn(!self.eveningSwitch.isOn, animated: true)
                 print("Evening switch is now set to: \(eveningSwitch.isOn)")
+                updateNotificationOptions()
                 haptic.impactOccurred()
             case 3:
                 print("Tapped Night Cell")
                 self.nightSwitch.setOn(!self.nightSwitch.isOn, animated: true)
                 print("Night switch is now set to: \(nightSwitch.isOn)")
+                updateNotificationOptions()
                 haptic.impactOccurred()
             default:
                 break
@@ -91,7 +109,67 @@ class OptionsTableViewController: UITableViewController {
         }
     }
 
-    //TODO: Add Notifications toggles
-    //TODO: Add About section with version + build number
+    //MARK: - Options Realm
+    
+    //Options Properties
+    let optionsRealm = try! Realm()
+    var optionsObject: Options?
+    //var firstItemAdded: Bool?
+    let optionsKey = "optionsKey"
+    
+    //Load Options
+    func loadOptions() {
+        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+    }
+    
+    func updateNotificationOptions() {
+        do {
+            try self.optionsRealm.write {
+                print("saving notification option")
+                self.optionsObject?.morningNotificationsOn = morningSwitch.isOn
+                self.optionsObject?.afternoonNotificationsOn = afternoonSwitch.isOn
+                self.optionsObject?.eveningNotificationsOn = eveningSwitch.isOn
+                self.optionsObject?.nightNotificationsOn = nightSwitch.isOn
+            }
+        } catch {
+            print("failed to update notification options")
+        }
+    }
+    
+    func setUpUI() {
+        print("Setting up UI")
+        //Set Switches
+        morningSwitch.setOn(getNotificationBool(notificationOption: optionsObject?.morningNotificationsOn), animated: false)
+        afternoonSwitch.setOn(getNotificationBool(notificationOption: optionsObject?.afternoonNotificationsOn), animated: false)
+        eveningSwitch.setOn(getNotificationBool(notificationOption: optionsObject?.eveningNotificationsOn), animated: false)
+        nightSwitch.setOn(getNotificationBool(notificationOption: optionsObject?.nightNotificationsOn), animated: false)
+        
+        //Set Sub Labels
+        morningSubLabel.text = getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime)
+        afternoonSubLabel.text = getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime)
+        eveningSubLabel.text = getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime)
+        nightSubLabel.text = getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime)
+    }
+    
+    func getNotificationBool(notificationOption: Bool?) -> Bool {
+        var isOn = false
+        if let notificationIsOn = notificationOption {
+            isOn = notificationIsOn
+        }
+        return isOn
+    }
+    
+    func getOptionTimes(timePeriod: Int, timeOption: Date?) -> String {
+        var time: String = " "
+        let periods = ["morning", "afternoon", "evening", "night"]
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        
+        if let dateTime = timeOption {
+            time = "Your \(periods[timePeriod]) begins at \(dateFormatter.string(from: dateTime))"
+        }
+        
+        return time
+    }
 
 }

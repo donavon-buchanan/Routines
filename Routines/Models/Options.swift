@@ -10,10 +10,15 @@ import Foundation
 import RealmSwift
 
 @objcMembers class Options: Object {
-    dynamic var segment0StartTime: Date?
-    dynamic var segment1StartTime: Date?
-    dynamic var segment2StartTime: Date?
-    dynamic var segment3StartTime: Date?
+    dynamic var morningStartTime: Date?
+    dynamic var afternoonStartTime: Date?
+    dynamic var eveningStartTime: Date?
+    dynamic var nightStartTime: Date?
+    
+    dynamic var morningNotificationsOn: Bool = false
+    dynamic var afternoonNotificationsOn: Bool = false
+    dynamic var eveningNotificationsOn: Bool = false
+    dynamic var nightNotificationsOn: Bool = false
     
     dynamic var firstItemAdded: Bool = false
     

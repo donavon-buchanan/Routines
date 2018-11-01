@@ -82,10 +82,10 @@
 		F807D3D22160A06600FF36D9 /* Options */ = {
 			isa = PBXGroup;
 			children = (
-				F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */,
-				F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */,
 				F807D3CE2160964E00FF36D9 /* OptionsTableViewController.swift */,
 				F807D3D02160A05600FF36D9 /* CustomTimesTableViewController.swift */,
+				F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */,
+				F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */,
 			);
 			path = Options;
 			sourceTree = "<group>";
