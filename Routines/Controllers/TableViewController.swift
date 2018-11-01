@@ -61,16 +61,14 @@ class TableViewController: SwipeTableViewController{
 //        segmentedItems = loadItems(segment: selectedTab)
 //        print("Selected tab is \(selectedTab)")
         
-        
-        //load options
-        loadOptions()
-        checkIfFirstItemAdded()
-        
         requestNotificationPermission()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        //load options
+        loadOptions()
+        checkIfFirstItemAdded()
         self.tabBarController?.tabBar.isHidden = false
         updateBadge()
     }
@@ -212,6 +210,8 @@ class TableViewController: SwipeTableViewController{
         return filteredItems.count
     }
     
+    //MARK: - Manage Notifications
+    
     func requestNotificationPermission() {
         let center = UNUserNotificationCenter.current()
         //Request permission to display alerts and play sounds
@@ -231,6 +231,81 @@ class TableViewController: SwipeTableViewController{
                 }
             }
         }
+    }
+    
+    func checkForNotificationAuth() {
+        let notificationCenter = UNUserNotificationCenter.current()
+        
+        notificationCenter.getNotificationSettings { (settings) in
+            //DO not schedule notifications if not authorized
+            guard settings.authorizationStatus == .authorized else {
+                self.requestNotificationPermission()
+                return
+            }
+            if settings.alertSetting == .enabled {
+                //Schedule an alert-only notification
+                
+            } else {
+                //Schedule a notification with a badge and sound
+                
+            }
+            
+        }
+    }
+    
+    func createNotification(notificationItem: Items) {
+        let content = UNMutableNotificationContent()
+        guard case content.title = notificationItem.title else { return }
+        if let notes = notificationItem.notes {
+            content.body = notes
+        }
+        
+        var dateComponents = DateComponents()
+        dateComponents.calendar = Calendar.current
+        switch notificationItem.segment {
+        case 1:
+            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
+            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
+        case 2:
+            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
+            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
+        case 3:
+            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
+            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
+        default:
+            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
+            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
+        }
+        
+    }
+    
+    func getOptionTimes(timePeriod: Int, timeOption: Date?) -> Date {
+        var time: Date
+        let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        
+        if let setTime = timeOption {
+            time = setTime
+        } else {
+            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
+        }
+        
+        return time
+    }
+    
+    func getHour(date: Date) -> Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH"
+        let hour = dateFormatter.string(from: date)
+        return Int(hour)!
+    }
+    
+    func getMinute(date: Date) -> Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "mm"
+        let minutes = dateFormatter.string(from: date)
+        return Int(minutes)!
     }
     
 }

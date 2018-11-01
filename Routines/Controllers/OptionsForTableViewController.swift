@@ -11,16 +11,20 @@ import RealmSwift
 
 extension TableViewController {
     
+//    func loadOptions() {
+//        if let optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+//            self.optionsObject = optionsObject
+//        } else {
+//            let newOptions = Options()
+//            newOptions.optionsKey = optionsKey
+//            saveOptions(optionsObject: newOptions)
+//            loadOptions()
+//        }
+//    }
+    
     //Load Options
     func loadOptions() {
-        if let optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
-            self.optionsObject = optionsObject
-        } else {
-            let newOptions = Options()
-            newOptions.optionsKey = optionsKey
-            saveOptions(optionsObject: newOptions)
-            loadOptions()
-        }
+        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
     }
     
     //If the realm has items, set firstItemAdded to true
