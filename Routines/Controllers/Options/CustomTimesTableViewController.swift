@@ -122,6 +122,7 @@ class CustomTimesTableViewController: UITableViewController {
                 optionsObject?.afternoonStartTime = afternoonDatePicker.date
                 optionsObject?.eveningStartTime = eveningDatePicker.date
                 optionsObject?.nightStartTime = nightDatePicker.date
+                print("updateSavedTime: \(String(describing: optionsObject))")
             }
         } catch {
             print("failed to update notification saved times")
