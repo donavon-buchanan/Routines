@@ -29,7 +29,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.tabBar.isHidden = true
-        
         //If item is loaded, fill in values for editing
         if item != nil {
             taskTextField.text = item?.title
@@ -49,6 +48,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         segmentSelection.addTarget(self, action: #selector(self.textFieldDidChange), for: .valueChanged)
         notesTextView.delegate = self
     }
+    
+    
 
     
     

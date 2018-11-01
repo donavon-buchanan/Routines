@@ -65,12 +65,15 @@ class TableViewController: SwipeTableViewController{
         checkIfFirstItemAdded()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
         segmentedItems = loadItems(segment: selectedTab)
         print("Selected tab is \(selectedTab)")
-        //changeSegment()
         reloadTableView()
         print("viewDidAppear")
         updateBadge()
