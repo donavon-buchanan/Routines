@@ -32,8 +32,12 @@ class TableViewController: SwipeTableViewController{
     let segmentStringArray: [String] = ["Morning", "Afternoon", "Evening", "Night", "All Day"]
     
     //Set segment after adding an item
-    func changeSegment(segment: Int) {
-        self.tabBarController?.selectedIndex = segment
+    var passedSegment: Int?
+    func changeSegment(segment: Int?) {
+        if let newSegment = segment {
+            passedSegment = nil
+            self.tabBarController?.selectedIndex = newSegment
+        }
     }
     
     //Footer view
@@ -70,6 +74,7 @@ class TableViewController: SwipeTableViewController{
         reloadTableView()
         print("viewDidAppear")
         updateBadge()
+        changeSegment(segment: passedSegment)
     }
 
     // MARK: - Table view data source

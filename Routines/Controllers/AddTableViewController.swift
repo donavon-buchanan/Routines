@@ -28,6 +28,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tabBarController?.tabBar.isHidden = true
         
         //If item is loaded, fill in values for editing
         if item != nil {
@@ -79,17 +80,15 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     }
     
     @objc func saveButtonPressed() {
+        addNewItem()
+        self.tabBarController?.tabBar.isHidden = false
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "unwindToTableViewController" {
-            //let destinationVC = segue.destination as! TableViewController
-            addNewItem()
-            //destinationVC.changeSegment(segment: segmentSelection.selectedSegmentIndex)
-        }
-    }
  
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! TableViewController
+        destinationVC.passedSegment = segmentSelection.selectedSegmentIndex
+    }
     
     func addNewItem() {
         //if it's a new item, add it as new to the realm
