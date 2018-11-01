@@ -616,6 +616,9 @@
                                                     <date key="date" timeIntervalSinceReferenceDate="559998000.64045894">
                                                         <!--2018-09-30 11:00:00 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="morningTimeSet:" destination="ZDC-uB-bXL" eventType="valueChanged" id="lSq-vT-zVG"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
@@ -642,6 +645,9 @@
                                                     <date key="date" timeIntervalSinceReferenceDate="560016000.52806199">
                                                         <!--2018-09-30 16:00:00 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="afternoonTimeSet:" destination="ZDC-uB-bXL" eventType="valueChanged" id="ufz-lD-5D3"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
@@ -668,6 +674,9 @@
                                                     <date key="date" timeIntervalSinceReferenceDate="560034000.29647398">
                                                         <!--2018-09-30 21:00:00 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="eveningTimeSet:" destination="ZDC-uB-bXL" eventType="valueChanged" id="MBH-b1-TK0"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
@@ -694,6 +703,9 @@
                                                     <date key="date" timeIntervalSinceReferenceDate="560048400.94189596">
                                                         <!--2018-10-01 01:00:00 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="nightTimeSet:" destination="ZDC-uB-bXL" eventType="valueChanged" id="Hq7-7i-BYx"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>

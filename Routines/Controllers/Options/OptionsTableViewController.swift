@@ -135,7 +135,7 @@ class OptionsTableViewController: UITableViewController {
                 self.optionsObject?.nightNotificationsOn = nightSwitch.isOn
             }
         } catch {
-            print("failed to update notification options")
+            print("failed to update notification saved bools")
         }
     }
     
