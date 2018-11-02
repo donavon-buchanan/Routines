@@ -63,9 +63,9 @@ class OptionsTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadOptions()
+        //loadOptions()
         setUpUI()
-        loadItems()
+        //loadItems()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -138,16 +138,16 @@ class OptionsTableViewController: UITableViewController {
 
     //MARK: - Options Realm
     
-    //Options Properties
-    let optionsRealm = try! Realm()
-    var optionsObject: Options?
-    //var firstItemAdded: Bool?
-    let optionsKey = "optionsKey"
-    
-    //Load Options
-    func loadOptions() {
-        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-    }
+//    //Options Properties
+//    let optionsRealm = try! Realm()
+//    var optionsObject: Options?
+//    //var firstItemAdded: Bool?
+//    let optionsKey = "optionsKey"
+//
+//    //Load Options
+//    func loadOptions() {
+//        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+//    }
     
     func updateNotificationOptions() {
         do {
@@ -368,19 +368,19 @@ class OptionsTableViewController: UITableViewController {
 
     //MARK: Items Realm
 
-    // Get the default Realm
-    let realm = try! Realm()
-    var items: Results<Items>?
-
-    func loadItems() {
-        items = realm.objects(Items.self)
-    }
-
-    //Filter items to relevant segment and return those items
-    func filterItems(segment: Int, items: Results<Items>?) -> Results<Items> {
-        guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
-        print("filterItems run")
-        return filteredItems
-    }
+//    // Get the default Realm
+//    let realm = try! Realm()
+//    var items: Results<Items>?
+//
+//    func loadItems() {
+//        items = realm.objects(Items.self)
+//    }
+//
+//    //Filter items to relevant segment and return those items
+//    func filterItems(segment: Int, items: Results<Items>?) -> Results<Items> {
+//        guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
+//        print("filterItems run")
+//        return filteredItems
+//    }
 
 }

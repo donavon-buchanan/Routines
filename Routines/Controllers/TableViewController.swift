@@ -48,14 +48,14 @@ class TableViewController: SwipeTableViewController{
         super.viewDidLoad()
         
         //load options
-        loadOptions()
+        //loadOptions()
         
         footerView.backgroundColor = .clear
         self.tableView.tableFooterView = footerView
         
         setViewBackgroundGraphic()
         
-        items = loadData()
+        //items = loadData()
 
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         //self.tabBarController?.delegate = self
@@ -70,7 +70,7 @@ class TableViewController: SwipeTableViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        checkIfFirstItemAdded()
+        //checkIfFirstItemAdded()
         self.tabBarController?.tabBar.isHidden = false
         updateBadge()
     }
@@ -78,7 +78,7 @@ class TableViewController: SwipeTableViewController{
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
-        segmentedItems = loadItems(segment: selectedTab)
+        //segmentedItems = loadItems(segment: selectedTab)
         print("Selected tab is \(selectedTab)")
         reloadTableView()
         print("viewDidAppear")
@@ -94,15 +94,25 @@ class TableViewController: SwipeTableViewController{
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return self.segmentedItems?.count ?? 0
-        
+        var count = 0
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                count = realm.objects(Items.self).filter("segment = \(section)").count
+            }
+        }
+        return count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        guard let item = self.segmentedItems?[indexPath.row] else { fatalError() }
-        cell.textLabel?.text = item.title
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                cell.textLabel?.text = realm.objects(Items.self).filter("segment = \(indexPath.section)")[indexPath.row].title
+                
+            }
+        }
         
         return cell
     }
@@ -133,53 +143,45 @@ class TableViewController: SwipeTableViewController{
             destination.navigationItem.rightBarButtonItem?.isEnabled = false
             //pass in current item
             if let indexPath = tableView.indexPathForSelectedRow {
-                guard let item = self.segmentedItems?[indexPath.row] else { fatalError() }
-                destination.item = item
+                DispatchQueue(label: realmDispatchQueueLabel).async {
+                    autoreleasepool {
+                        let realm = try! Realm()
+                        destination.item = realm.objects(Items.self).filter("segment = \(indexPath.section)")[indexPath.row]
+                    }
+                }
             }
         }
     }
     
     //MARK: - Model Manipulation Methods
     
-    func loadData() -> Results<Items> {
-        return realm.objects(Items.self)
-    }
+//    func loadData() -> Results<Items> {
+//        return realm.objects(Items.self)
+//    }
     
     //Filter items to relevant segment and return those items
-    func loadItems(segment: Int) -> Results<Items> {
-        guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
-        print("loadItems run")
-        //self.tableView.reloadData()
-        return filteredItems
-    }
+//    func loadItems(segment: Int) -> Results<Items> {
+//        guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
+//        print("loadItems run")
+//        //self.tableView.reloadData()
+//        return filteredItems
+//    }
     
     //Override empty delete func from super
     override func updateModel(at indexPath: IndexPath) {
         super.updateModel(at: indexPath)
-        DispatchQueue.main.async {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
-                guard let items = self.segmentedItems else { fatalError() }
-                let item = items[indexPath.row]
-                
-                print("Deleting item with title: \(String(describing: item.title))")
-                DispatchQueue.init(label: self.realmDispatchQueueLabel).async {
-                    autoreleasepool {
-                        do {
-                            try self.realm.write {
-                                self.realm.delete(item)
-                            }
-                        } catch {
-                            print("Error deleting item: \(error)")
-                        }
+                let realm = try! Realm()
+                do {
+                    try! realm.write {
+                        let item = realm.objects(Items.self).filter("segment = \(indexPath.section)")[indexPath.row]
+                        realm.delete(item)
                     }
                 }
-                self.items = self.loadData()
-                self.segmentedItems = self.loadItems(segment: indexPath.section)
-                self.reloadTableView()
-                //self.removeNotification(item: item)
-                self.updateBadge()
             }
         }
+        self.updateBadge()
     }
     
     //TODO: Animated reload would be nice
@@ -219,8 +221,14 @@ class TableViewController: SwipeTableViewController{
     }
     
     func getSegmentCount(segment: Int) -> Int {
-        guard let filteredItems = self.items?.filter("segment = \(segment)") else { fatalError() }
-        return filteredItems.count
+        var count = Int()
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                count = realm.objects(Items.self).filter("segment = \(segment)").count
+            }
+        }
+        return count
     }
     
     //MARK: - Manage Notifications
@@ -278,17 +286,41 @@ class TableViewController: SwipeTableViewController{
         dateComponents.calendar = Calendar.current
         switch notificationItem.segment {
         case 1:
-            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
-            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
+            DispatchQueue(label: realmDispatchQueueLabel).async {
+                autoreleasepool {
+                    let realm = try! Realm()
+                    let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                    dateComponents.hour = self.getHour(date: self.getOptionTimes(timePeriod: 1, timeOption: options?.afternoonStartTime))
+                    dateComponents.minute = self.getMinute(date: self.getOptionTimes(timePeriod: 1, timeOption: options?.afternoonStartTime))
+                }
+            }
         case 2:
-            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
-            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
+            DispatchQueue(label: realmDispatchQueueLabel).async {
+                autoreleasepool {
+                    let realm = try! Realm()
+                    let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                    dateComponents.hour = self.getHour(date: self.getOptionTimes(timePeriod: 2, timeOption: options?.eveningStartTime))
+                    dateComponents.minute = self.getMinute(date: self.getOptionTimes(timePeriod: 2, timeOption: options?.eveningStartTime))
+                }
+            }
         case 3:
-            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
-            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
+            DispatchQueue(label: realmDispatchQueueLabel).async {
+                autoreleasepool {
+                    let realm = try! Realm()
+                    let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                    dateComponents.hour = self.getHour(date: self.getOptionTimes(timePeriod: 3, timeOption: options?.nightStartTime))
+                    dateComponents.minute = self.getMinute(date: self.getOptionTimes(timePeriod: 3, timeOption: options?.nightStartTime))
+                }
+            }
         default:
-            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
-            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
+            DispatchQueue(label: realmDispatchQueueLabel).async {
+                autoreleasepool {
+                    let realm = try! Realm()
+                    let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                    dateComponents.hour = self.getHour(date: self.getOptionTimes(timePeriod: 0, timeOption: options?.morningStartTime))
+                    dateComponents.minute = self.getMinute(date: self.getOptionTimes(timePeriod: 0, timeOption: options?.morningStartTime))
+                }
+            }
         }
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
@@ -351,10 +383,11 @@ class TableViewController: SwipeTableViewController{
     }
     
     func updateItemUUID(item: Items, uuidString: String) {
-        DispatchQueue.init(label: realmDispatchQueueLabel).async {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
+                let realm = try! Realm()
                 do {
-                    try self.realm.write {
+                    try realm.write {
                         item.uuidString = uuidString
                     }
                 } catch {
