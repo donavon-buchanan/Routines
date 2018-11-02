@@ -111,6 +111,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
             newItem.uuidString = uuidString
             //save to realm
             saveItem(item: newItem)
+            scheduleNewNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
         } else {
             updateItem()
         }
@@ -178,6 +179,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
             }
             if settings.alertSetting == .enabled {
                 //Schedule an alert-only notification
+                //TODO: Check if segment notification option is on or off
                 self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
                 
             } else {
