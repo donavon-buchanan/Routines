@@ -147,7 +147,7 @@ class OptionsTableViewController: UITableViewController {
 //    }
     
     func updateNotificationOptions(segment: Int, isOn: Bool) {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
@@ -309,20 +309,20 @@ class OptionsTableViewController: UITableViewController {
         return Int(minutes)!
     }
     
-    func updateItemUUID(item: Items, uuidString: String) {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
-            autoreleasepool {
-                let realm = try! Realm()
-                do {
-                    try realm.write {
-                        item.uuidString = uuidString
-                    }
-                } catch {
-                    print("updateItemUUID failed")
-                }
-            }
-        }
-    }
+//    func updateItemUUID(item: Items, uuidString: String) {
+//        DispatchQueue(label: realmDispatchQueueLabel).async {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                do {
+//                    try realm.write {
+//                        item.uuidString = uuidString
+//                    }
+//                } catch {
+//                    print("updateItemUUID failed")
+//                }
+//            }
+//        }
+//    }
     
     //MARK: - Manage Notifications
 
@@ -347,7 +347,7 @@ class OptionsTableViewController: UITableViewController {
         }
     }
 
-    func checkForNotificationAuth(notificationItem: Items) {
+    func scheduleNewNotification(segment: Int, title: String, body: String?, uuidString: String) {
         let notificationCenter = UNUserNotificationCenter.current()
 
         notificationCenter.getNotificationSettings { (settings) in
@@ -358,7 +358,7 @@ class OptionsTableViewController: UITableViewController {
             }
             if settings.alertSetting == .enabled {
                 //Schedule an alert-only notification
-                self.createNotification(notificationItem: notificationItem)
+                self.createNotification(segment: segment, title: title, body: body, uuidString: uuidString)
 
             } else {
                 //Schedule a notification with a badge and sound
@@ -368,16 +368,16 @@ class OptionsTableViewController: UITableViewController {
         }
     }
 
-    func createNotification(notificationItem: Items) {
+    func createNotification(segment: Int, title: String, body: String?, uuidString: String) {
         let content = UNMutableNotificationContent()
-        guard case content.title = notificationItem.title else { return }
-        if let notes = notificationItem.notes {
+        guard case content.title = title else { return }
+        if let notes = body {
             content.body = notes
         }
 
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.current
-        switch notificationItem.segment {
+        switch segment {
         case 1:
             DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
@@ -419,8 +419,8 @@ class OptionsTableViewController: UITableViewController {
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
 
         //Create the request
-        let uuidString = UUID().uuidString
-        updateItemUUID(item: notificationItem, uuidString: uuidString)
+        //let uuidString = UUID().uuidString
+        //updateItemUUID(item: notificationItem, uuidString: uuidString)
         let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
 
         //Schedule the request with the system
@@ -433,15 +433,13 @@ class OptionsTableViewController: UITableViewController {
 
     }
 
-    func scheduleNewNotification(item: Items) {
-        checkForNotificationAuth(notificationItem: item)
-    }
+//    func scheduleNewNotification(item: Items) {
+//        checkForNotificationAuth(notificationItem: item)
+//    }
 
-    func removeNotification(item: Items) {
-        if let uuidString = item.uuidString {
-            let center = UNUserNotificationCenter.current()
-            center.removePendingNotificationRequests(withIdentifiers: [uuidString])
-        }
+    func removeNotification(uuidString: String) {
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: [uuidString])
     }
 
     func removeNotifications(uuidStringArray: [String]?) {
@@ -459,15 +457,13 @@ class OptionsTableViewController: UITableViewController {
                 if isOn {
                     print("Turning notifications on for segment \(segment)")
                     for item in 0..<items.count {
-                        self.scheduleNewNotification(item: items[item])
+                        self.scheduleNewNotification(segment: segment, title: items[item].title!, body: items[item].notes, uuidString: items[item].uuidString)
                     }
                 } else {
                     print("Turning notifications off for segment \(segment)")
                     var uuidStrings: [String]?
                     for item in 0..<items.count {
-                        if let idString = items[item].uuidString {
-                            uuidStrings?.append(idString)
-                        }
+                        uuidStrings?.append(items[item].uuidString)
                     }
                     self.removeNotifications(uuidStringArray: uuidStrings)
                 }

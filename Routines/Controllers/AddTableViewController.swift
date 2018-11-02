@@ -25,7 +25,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     //segment from add segue
     var editingSegment: Int?
     
-    var uuidString = UUID().uuidString
+    var uuidString = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +35,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
             taskTextField.text = item?.title
             segmentSelection.selectedSegmentIndex = item?.segment ?? 0
             notesTextView.text = item?.notes
+            self.uuidString = (item?.uuidString)!
         }
         
         //load in segment from add segue
@@ -94,7 +95,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         print("running prepare for segue")
         let destinationVC = segue.destination as! TableViewController
         destinationVC.passedSegment = segmentSelection.selectedSegmentIndex
-        checkForNotificationAuth(title: taskTextField.text!, notes: notesTextView.text, segment: segmentSelection.selectedSegmentIndex, uuidString: self.uuidString)
+        scheduleNewNotification(title: taskTextField.text!, notes: notesTextView.text, segment: segmentSelection.selectedSegmentIndex, uuidString: self.uuidString)
     }
     
     func addNewItem(title: String, date: Date, segment: Int, notes: String, uuidString: String) {
@@ -139,8 +140,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         } catch {
             print("Error updating item: \(error)")
         }
-        self.removeNotification(item: self.item!)
-        //self.scheduleNewNotification(item: self.item!)
+        self.removeNotification(uuidString: self.item!.uuidString)
+        self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString)
     }
     
     //MARK: - Manage Notifications
@@ -166,7 +167,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         }
     }
     
-    func checkForNotificationAuth(title: String, notes: String?, segment: Int, uuidString: String) {
+    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
         let notificationCenter = UNUserNotificationCenter.current()
         
         notificationCenter.getNotificationSettings { (settings) in
@@ -226,11 +227,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         
     }
     
-    func removeNotification(item: Items) {
-        if let uuidString = item.uuidString {
-            let center = UNUserNotificationCenter.current()
-            center.removePendingNotificationRequests(withIdentifiers: [uuidString])
-        }
+    func removeNotification(uuidString: String) {
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: [uuidString])
     }
     
     //MARK: - Options Realm

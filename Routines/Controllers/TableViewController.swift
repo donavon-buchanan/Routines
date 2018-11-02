@@ -344,11 +344,9 @@ class TableViewController: SwipeTableViewController{
         checkForNotificationAuth(notificationItem: item)
     }
     
-    func removeNotification(item: Items) {
-        if let uuidString = item.uuidString {
-            let center = UNUserNotificationCenter.current()
-            center.removePendingNotificationRequests(withIdentifiers: [uuidString])
-        }
+    func removeNotification(uuidString: String) {
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: [uuidString])
     }
     
     //MARK: - Options Realm

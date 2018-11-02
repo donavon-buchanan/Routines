@@ -18,6 +18,6 @@ import RealmSwift
     dynamic var notes: String?
     
     //Notification identifier
-    dynamic var uuidString: String?
+    dynamic var uuidString = UUID().uuidString
     
 }
