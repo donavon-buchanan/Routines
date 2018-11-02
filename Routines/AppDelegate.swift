@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import RealmSwift
+//import RealmSwift
 import UserNotifications
 
 @UIApplicationMain
@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         requestNotificationPermission()
-        loadOptions()
+        //loadOptions()
 
         return true
     }
@@ -45,35 +45,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    //MARK: - Options Realm
-    
-    //Options Properties
-    let optionsRealm = try! Realm()
-    var optionsObject: Options?
-    let optionsKey = "optionsKey"
-    
-    //Load Options
-    func loadOptions() {
-        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-        
-        if let currentOptions = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
-            self.optionsObject = currentOptions
-            print("AppDelegate: Options loaded successfully - \(String(describing: optionsObject))")
-        } else {
-            print("AppDelegate: No Options exist yet. Creating it.")
-            let newOptionsObject = Options()
-            newOptionsObject.optionsKey = optionsKey
-            do {
-                try optionsRealm.write {
-                    optionsRealm.add(newOptionsObject, update: false)
-                }
-            } catch {
-                print("Failed to create new options object")
-            }
-            loadOptions()
-        }
-        
-    }
+//    //MARK: - Options Realm
+//
+//    //Options Properties
+//    let optionsRealm = try! Realm()
+//    var optionsObject: Options?
+//    let optionsKey = "optionsKey"
+//
+//    //Load Options
+//    func loadOptions() {
+//        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+//
+//        if let currentOptions = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+//            self.optionsObject = currentOptions
+//            print("AppDelegate: Options loaded successfully - \(String(describing: optionsObject))")
+//        } else {
+//            print("AppDelegate: No Options exist yet. Creating it.")
+//            let newOptionsObject = Options()
+//            newOptionsObject.optionsKey = optionsKey
+//            do {
+//                try optionsRealm.write {
+//                    optionsRealm.add(newOptionsObject, update: false)
+//                }
+//            } catch {
+//                print("Failed to create new options object")
+//            }
+//            loadOptions()
+//        }
+//
+//    }
     
     //MARK: - Manage Notifications
     

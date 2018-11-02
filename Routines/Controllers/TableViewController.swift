@@ -21,13 +21,10 @@ class TableViewController: SwipeTableViewController{
     let realm = try! Realm()
     var items: Results<Items>?
     
-    //var segments: Results<Segments>?
-    
     //TODO: This is a bit of a mess for readability
     var segmentedItems: Results<Items>?
     
     //Options Properties
-    let optionsRealm = try! Realm()
     var optionsObject: Options?
     //var firstItemAdded: Bool?
     let optionsKey = "optionsKey"
@@ -48,6 +45,10 @@ class TableViewController: SwipeTableViewController{
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //load options
+        loadOptions()
+        
         footerView.backgroundColor = .clear
         self.tableView.tableFooterView = footerView
         
@@ -67,8 +68,7 @@ class TableViewController: SwipeTableViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //load options
-        loadOptions()
+        
         checkIfFirstItemAdded()
         self.tabBarController?.tabBar.isHidden = false
         updateBadge()

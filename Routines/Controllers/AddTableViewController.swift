@@ -18,12 +18,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     @IBOutlet weak var segmentSelection: UISegmentedControl!
     @IBOutlet weak var notesTextView: UITextView!
     
+    let realmDispatchQueueLabel: String = "background"
+    
     var item : Items?
     
     //segment from add segue
     var editingSegment: Int?
-    
-    //var itemTitle : String?
     
     // Get the default Realm
     let realm = try! Realm()
@@ -115,9 +115,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     
     func saveItem(item: Items) {
         do {
-            try realm.write {
-                scheduleNewNotification(item: item)
-                realm.add(item)
+            try self.realm.write {
+                self.scheduleNewNotification(item: item)
+                self.realm.add(item)
             }
         } catch {
             print("Error saving item: \(error)")
@@ -125,17 +125,21 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     }
     
     func updateItem() {
-        do {
-            try realm.write {
-                item!.title = taskTextField.text
-                item!.dateModified = Date()
-                item!.segment = segmentSelection.selectedSegmentIndex
-                item!.notes = notesTextView.text
-                removeNotification(item: self.item!)
-                scheduleNewNotification(item: self.item!)
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                do {
+                    try self.realm.write {
+                        self.item!.title = self.taskTextField.text
+                        self.item!.dateModified = Date()
+                        self.item!.segment = self.segmentSelection.selectedSegmentIndex
+                        self.item!.notes = self.notesTextView.text
+                        self.removeNotification(item: self.item!)
+                        self.scheduleNewNotification(item: self.item!)
+                    }
+                } catch {
+                    print("Error updating item: \(error)")
+                }
             }
-        } catch {
-            print("Error updating item: \(error)")
         }
     }
     
@@ -225,7 +229,11 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     }
     
     func scheduleNewNotification(item: Items) {
-        checkForNotificationAuth(notificationItem: item)
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                self.checkForNotificationAuth(notificationItem: item)
+            }
+        }
     }
     
     func removeNotification(item: Items) {
@@ -238,14 +246,17 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     //MARK: - Options Realm
     
     //Options Properties
-    let optionsRealm = try! Realm()
     var optionsObject: Options?
     //var firstItemAdded: Bool?
     let optionsKey = "optionsKey"
     
     //Load Options
     func loadOptions() {
-        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                self.optionsObject = self.realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+            }
+        }
     }
     
     func getOptionTimes(timePeriod: Int, timeOption: Date?) -> Date {
@@ -278,12 +289,16 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     }
     
     func updateItemUUID(item: Items, uuidString: String) {
-        do {
-            try realm.write {
-                item.uuidString = uuidString
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                do {
+                    try self.realm.write {
+                        item.uuidString = uuidString
+                    }
+                } catch {
+                    print("failed to update UUID for item")
+                }
             }
-        } catch {
-            print("failed to update UUID for item")
         }
     }
 

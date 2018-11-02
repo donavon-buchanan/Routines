@@ -24,7 +24,25 @@ extension TableViewController {
     
     //Load Options
     func loadOptions() {
-        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+        //optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+        
+        if let currentOptions = self.realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+            self.optionsObject = currentOptions
+            print("TableVC: Options loaded successfully - \(String(describing: optionsObject))")
+        } else {
+            print("TableVC: No Options exist yet. Creating it.")
+            let newOptionsObject = Options()
+            newOptionsObject.optionsKey = optionsKey
+            do {
+                try self.realm.write {
+                    self.realm.add(newOptionsObject, update: false)
+                }
+            } catch {
+                print("Failed to create new options object")
+            }
+            loadOptions()
+        }
+        
     }
     
     //If the realm has items, set firstItemAdded to true
@@ -34,7 +52,7 @@ extension TableViewController {
             print("Item count is \(items.count)")
             if items.count > 0 {
                 do {
-                    try self.optionsRealm.write {
+                    try self.realm.write {
                         self.optionsObject?.firstItemAdded = true
                     }
                 } catch {
@@ -48,8 +66,8 @@ extension TableViewController {
         //guard let options = self.optionsObject else { fatalError() }
         
         do {
-            try self.optionsRealm.write {
-                optionsRealm.add(optionsObject, update: true)
+            try self.realm.write {
+                self.realm.add(optionsObject, update: true)
             }
         } catch {
             print("Failed to save option from TableViewController")

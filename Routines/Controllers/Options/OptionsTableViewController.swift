@@ -32,15 +32,15 @@ class OptionsTableViewController: UITableViewController {
             updateNotificationOptions()
         case 1:
             print("Afternoon Switch Toggled \(sender.isOn)")
-            addRemoveNotificationsOnToggle(segment: 1, isOn: sender.isOn)
+            //addRemoveNotificationsOnToggle(segment: 1, isOn: sender.isOn)
             updateNotificationOptions()
         case 2:
             print("Evening Switch Toggled \(sender.isOn)")
-            addRemoveNotificationsOnToggle(segment: 2, isOn: sender.isOn)
+            //addRemoveNotificationsOnToggle(segment: 2, isOn: sender.isOn)
             updateNotificationOptions()
         case 3:
             print("Night Switch Toggled \(sender.isOn)")
-            addRemoveNotificationsOnToggle(segment: 3, isOn: sender.isOn)
+            //addRemoveNotificationsOnToggle(segment: 3, isOn: sender.isOn)
             updateNotificationOptions()
         default:
             break
@@ -50,6 +50,15 @@ class OptionsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //loadOptions()
+        
+//        //Check that everything matches up
+//        DispatchQueue.main.async {
+//            self.addRemoveNotificationsOnToggle(segment: 0, isOn: self.morningSwitch.isOn)
+//            self.addRemoveNotificationsOnToggle(segment: 1, isOn: self.afternoonSwitch.isOn)
+//            self.addRemoveNotificationsOnToggle(segment: 2, isOn: self.eveningSwitch.isOn)
+//            self.addRemoveNotificationsOnToggle(segment: 3, isOn: self.nightSwitch.isOn)
+//        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,11 +70,7 @@ class OptionsTableViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        addRemoveNotificationsOnToggle(segment: 0, isOn: morningSwitch.isOn)
-        addRemoveNotificationsOnToggle(segment: 1, isOn: afternoonSwitch.isOn)
-        addRemoveNotificationsOnToggle(segment: 2, isOn: eveningSwitch.isOn)
-        addRemoveNotificationsOnToggle(segment: 3, isOn: nightSwitch.isOn)
+
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -240,7 +245,7 @@ class OptionsTableViewController: UITableViewController {
     }
     
     //MARK: - Manage Notifications
-    
+
     func requestNotificationPermission() {
         let center = UNUserNotificationCenter.current()
         //Request permission to display alerts and play sounds
@@ -261,10 +266,10 @@ class OptionsTableViewController: UITableViewController {
             }
         }
     }
-    
+
     func checkForNotificationAuth(notificationItem: Items) {
         let notificationCenter = UNUserNotificationCenter.current()
-        
+
         notificationCenter.getNotificationSettings { (settings) in
             //DO not schedule notifications if not authorized
             guard settings.authorizationStatus == .authorized else {
@@ -274,22 +279,22 @@ class OptionsTableViewController: UITableViewController {
             if settings.alertSetting == .enabled {
                 //Schedule an alert-only notification
                 self.createNotification(notificationItem: notificationItem)
-                
+
             } else {
                 //Schedule a notification with a badge and sound
-                
+
             }
-            
+
         }
     }
-    
+
     func createNotification(notificationItem: Items) {
         let content = UNMutableNotificationContent()
         guard case content.title = notificationItem.title else { return }
         if let notes = notificationItem.notes {
             content.body = notes
         }
-        
+
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.current
         switch notificationItem.segment {
@@ -306,14 +311,14 @@ class OptionsTableViewController: UITableViewController {
             dateComponents.hour = getHour(date: getOptionTimesAsDate(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
             dateComponents.minute = getMinute(date: getOptionTimesAsDate(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
         }
-        
+
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        
+
         //Create the request
         let uuidString = UUID().uuidString
         updateItemUUID(item: notificationItem, uuidString: uuidString)
         let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-        
+
         //Schedule the request with the system
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.add(request) { (error) in
@@ -321,27 +326,27 @@ class OptionsTableViewController: UITableViewController {
                 //TODO: handle notification errors
             }
         }
-        
+
     }
-    
+
     func scheduleNewNotification(item: Items) {
         checkForNotificationAuth(notificationItem: item)
     }
-    
+
     func removeNotification(item: Items) {
         if let uuidString = item.uuidString {
             let center = UNUserNotificationCenter.current()
             center.removePendingNotificationRequests(withIdentifiers: [uuidString])
         }
     }
-    
+
     func removeNotifications(uuidStringArray: [String]?) {
         if let uuidStrings = uuidStringArray {
             let center = UNUserNotificationCenter.current()
             center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
         }
     }
-    
+
     func addRemoveNotificationsOnToggle(segment: Int, isOn: Bool) {
         let items = filterItems(segment: segment, items: self.items)
         if isOn {
@@ -360,17 +365,17 @@ class OptionsTableViewController: UITableViewController {
             removeNotifications(uuidStringArray: uuidStrings)
         }
     }
-    
+
     //MARK: Items Realm
-    
+
     // Get the default Realm
     let realm = try! Realm()
     var items: Results<Items>?
-    
+
     func loadItems() {
         items = realm.objects(Items.self)
     }
-    
+
     //Filter items to relevant segment and return those items
     func filterItems(segment: Int, items: Results<Items>?) -> Results<Items> {
         guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
