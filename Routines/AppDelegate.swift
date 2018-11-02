@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//import RealmSwift
+import RealmSwift
 import UserNotifications
 
 @UIApplicationMain
@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         requestNotificationPermission()
-        //loadOptions()
+        checkToCreateOptions()
 
         return true
     }
@@ -46,6 +46,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
 //    //MARK: - Options Realm
+    let realmDispatchQueueLabel: String = "background"
+    
+    func checkToCreateOptions() {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: "optionsKey")
+                print("App Delegate - Options is: \(String(describing: options))")
+                if options == nil {
+                    let newOptions = Options()
+                    print("Creating Options for the first time with \(String(describing: newOptions))")
+                    do {
+                        try! realm.write {
+                            realm.add(newOptions)
+                        }
+                    }
+                } else {
+                    print("Options exist. Carry on.")
+                }
+            }
+        }
+    }
+    
 //
 //    //Options Properties
 //    let optionsRealm = try! Realm()

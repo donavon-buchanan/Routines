@@ -19,18 +19,22 @@ class CustomTimesTableViewController: UITableViewController {
     @IBAction func morningTimeSet(_ sender: UIDatePicker) {
         setMinMaxTimes()
         updateSavedTimes(segment: 0, time: sender.date)
+        print("Picker sent: \(String(describing: sender.date))")
     }
     @IBAction func afternoonTimeSet(_ sender: UIDatePicker) {
         setMinMaxTimes()
         updateSavedTimes(segment: 1, time: sender.date)
+        print("Picker sent: \(String(describing: sender.date))")
     }
     @IBAction func eveningTimeSet(_ sender: UIDatePicker) {
         setMinMaxTimes()
         updateSavedTimes(segment: 2, time: sender.date)
+        print("Picker sent: \(String(describing: sender.date))")
     }
     @IBAction func nightTimeSet(_ sender: UIDatePicker) {
         setMinMaxTimes()
         updateSavedTimes(segment: 3, time: sender.date)
+        print("Picker sent: \(String(describing: sender.date))")
     }
     
     let realmDispatchQueueLabel: String = "background"
@@ -117,7 +121,8 @@ class CustomTimesTableViewController: UITableViewController {
 //    }
     
     func updateSavedTimes(segment: Int, time: Date) {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        print("updateSavedTimes received: \(String(describing: time))")
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
@@ -133,7 +138,7 @@ class CustomTimesTableViewController: UITableViewController {
                         default:
                             options?.self.morningStartTime = time
                         }
-                        print("updateSavedTime: \(String(describing: options))")
+                        print("updateSavedTime: Options \(String(describing: options))")
                     }
                 } catch {
                     print("updateSavedTimes failed")
