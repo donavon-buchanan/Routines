@@ -72,6 +72,7 @@ class TableViewController: SwipeTableViewController{
         
         //checkIfFirstItemAdded()
         self.tabBarController?.tabBar.isHidden = false
+        reloadTableView()
         updateBadge()
     }
     
