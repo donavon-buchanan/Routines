@@ -137,24 +137,39 @@ class CustomTimesTableViewController: UITableViewController {
     }
     
     func setUpUI() {
+        if let morningTime = getTimesFromOptions(segment: 0) {
+            self.morningDatePicker.setDate(morningTime, animated: false)
+        }
+        if let afternoonTime = getTimesFromOptions(segment: 1) {
+            self.afternoonDatePicker.setDate(afternoonTime, animated: false)
+        }
+        if let eveningTime = getTimesFromOptions(segment: 2) {
+            self.eveningDatePicker.setDate(eveningTime, animated: false)
+        }
+        if let nightTime = getTimesFromOptions(segment: 3) {
+            self.nightDatePicker.setDate(nightTime, animated: false)
+        }
+    }
+    
+    func getTimesFromOptions(segment: Int) -> Date? {
+        var date: Date?
         DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                if let morningTime = options?.morningStartTime {
-                    self.morningDatePicker.setDate(morningTime, animated: false)
-                }
-                if let afternoonTime = options?.afternoonStartTime {
-                    self.afternoonDatePicker.setDate(afternoonTime, animated: false)
-                }
-                if let eveningTime = options?.eveningStartTime {
-                    self.eveningDatePicker.setDate(eveningTime, animated: false)
-                }
-                if let nightTime = options?.nightStartTime {
-                    self.nightDatePicker.setDate(nightTime, animated: false)
+                switch segment {
+                case 1:
+                    date = options?.afternoonStartTime
+                case 2:
+                    date = options?.eveningStartTime
+                case 3:
+                    date = options?.nightStartTime
+                default:
+                    date = options?.morningStartTime
                 }
             }
         }
+        return date
     }
 
 }

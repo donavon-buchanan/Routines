@@ -29,24 +29,22 @@ class OptionsTableViewController: UITableViewController {
     
     @IBAction func notificationSwitchToggled(_ sender: UISwitch) {
         switch sender.tag {
-        case 0:
-            print("Morning Switch Toggled \(sender.isOn)")
-            addRemoveNotificationsOnToggle(segment: 0, isOn: sender.isOn)
-            updateNotificationOptions()
         case 1:
             print("Afternoon Switch Toggled \(sender.isOn)")
-            //addRemoveNotificationsOnToggle(segment: 1, isOn: sender.isOn)
-            updateNotificationOptions()
+            addRemoveNotificationsOnToggle(segment: 1, isOn: sender.isOn)
+            updateNotificationOptions(segment: 1, isOn: sender.isOn)
         case 2:
             print("Evening Switch Toggled \(sender.isOn)")
-            //addRemoveNotificationsOnToggle(segment: 2, isOn: sender.isOn)
-            updateNotificationOptions()
+            addRemoveNotificationsOnToggle(segment: 2, isOn: sender.isOn)
+            updateNotificationOptions(segment: 2, isOn: sender.isOn)
         case 3:
             print("Night Switch Toggled \(sender.isOn)")
-            //addRemoveNotificationsOnToggle(segment: 3, isOn: sender.isOn)
-            updateNotificationOptions()
+            addRemoveNotificationsOnToggle(segment: 3, isOn: sender.isOn)
+            updateNotificationOptions(segment: 3, isOn: sender.isOn)
         default:
-            break
+            print("Morning Switch Toggled \(sender.isOn)")
+            addRemoveNotificationsOnToggle(segment: 0, isOn: sender.isOn)
+            updateNotificationOptions(segment: 0, isOn: sender.isOn)
         }
     }
 
@@ -66,9 +64,7 @@ class OptionsTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //loadOptions()
         setUpUI()
-        //loadItems()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -101,21 +97,13 @@ class OptionsTableViewController: UITableViewController {
         let haptic = UIImpactFeedbackGenerator(style: .light)
         if indexPath.section == 1 {
             switch indexPath.row {
-            case 0:
-                print("Tapped Morning Cell")
-                let isOn = !self.morningSwitch.isOn
-                self.morningSwitch.setOn(isOn, animated: true)
-                addRemoveNotificationsOnToggle(segment: 0, isOn: isOn)
-                print("Morning switch is now set to: \(morningSwitch.isOn)")
-                updateNotificationOptions()
-                haptic.impactOccurred()
             case 1:
                 print("Tapped Afternoon Cell")
                 let isOn = !self.afternoonSwitch.isOn
                 self.afternoonSwitch.setOn(isOn, animated: true)
                 addRemoveNotificationsOnToggle(segment: 1, isOn: isOn)
                 print("Afternoon switch is now set to: \(afternoonSwitch.isOn)")
-                updateNotificationOptions()
+                updateNotificationOptions(segment: 0, isOn: afternoonSwitch.isOn)
                 haptic.impactOccurred()
             case 2:
                 print("Tapped Evening Cell")
@@ -123,7 +111,7 @@ class OptionsTableViewController: UITableViewController {
                 self.eveningSwitch.setOn(isOn, animated: true)
                 addRemoveNotificationsOnToggle(segment: 2, isOn: isOn)
                 print("Evening switch is now set to: \(eveningSwitch.isOn)")
-                updateNotificationOptions()
+                updateNotificationOptions(segment: 0, isOn: eveningSwitch.isOn)
                 haptic.impactOccurred()
             case 3:
                 print("Tapped Night Cell")
@@ -131,10 +119,16 @@ class OptionsTableViewController: UITableViewController {
                 self.nightSwitch.setOn(isOn, animated: true)
                 addRemoveNotificationsOnToggle(segment: 3, isOn: isOn)
                 print("Night switch is now set to: \(nightSwitch.isOn)")
-                updateNotificationOptions()
+                updateNotificationOptions(segment: 0, isOn: nightSwitch.isOn)
                 haptic.impactOccurred()
             default:
-                break
+                print("Tapped Morning Cell")
+                let isOn = !self.morningSwitch.isOn
+                self.morningSwitch.setOn(isOn, animated: true)
+                addRemoveNotificationsOnToggle(segment: 0, isOn: isOn)
+                print("Morning switch is now set to: \(morningSwitch.isOn)")
+                updateNotificationOptions(segment: 0, isOn: morningSwitch.isOn)
+                haptic.impactOccurred()
             }
         }
     }
@@ -152,45 +146,92 @@ class OptionsTableViewController: UITableViewController {
 //        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
 //    }
     
-    func updateNotificationOptions() {
+    func updateNotificationOptions(segment: Int, isOn: Bool) {
         DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                do {
-                    try realm.write {
-                        print("updateNotificationOptions saving")
-                        options?.morningNotificationsOn = self.morningSwitch.isOn
-                        options?.afternoonNotificationsOn = self.afternoonSwitch.isOn
-                        options?.eveningNotificationsOn = self.eveningSwitch.isOn
-                        options?.nightNotificationsOn = self.nightSwitch.isOn
+                switch segment {
+                case 1:
+                    do {
+                        try realm.write {
+                            print("updateNotificationOptions saving")
+                            options?.afternoonNotificationsOn = isOn
+                        }
+                    } catch {
+                        print("updateNotificationOptions failed")
                     }
-                } catch {
-                    print("updateNotificationOptions failed")
+                case 2:
+                    do {
+                        try realm.write {
+                            print("updateNotificationOptions saving")
+                            options?.eveningNotificationsOn = isOn
+                        }
+                    } catch {
+                        print("updateNotificationOptions failed")
+                    }
+                case 3:
+                    do {
+                        try realm.write {
+                            print("updateNotificationOptions saving")
+                            options?.nightNotificationsOn = isOn
+                        }
+                    } catch {
+                        print("updateNotificationOptions failed")
+                    }
+                default:
+                    do {
+                        try realm.write {
+                            print("updateNotificationOptions saving")
+                            options?.morningNotificationsOn = isOn
+                        }
+                    } catch {
+                        print("updateNotificationOptions failed")
+                    }
                 }
             }
         }
     }
     
     func setUpUI() {
+        self.morningSwitch.setOn(getSwitchFromOptions(segment: 0), animated: false)
+        self.afternoonSwitch.setOn(getSwitchFromOptions(segment: 1), animated: false)
+        self.eveningSwitch.setOn(getSwitchFromOptions(segment: 2), animated: false)
+        self.nightSwitch.setOn(getSwitchFromOptions(segment: 3), animated: false)
+        
+        self.morningSubLabel.text = self.getOptionTimes(timePeriod: 0)
+        self.afternoonSubLabel.text = self.getOptionTimes(timePeriod: 1)
+        self.eveningSubLabel.text = self.getOptionTimes(timePeriod: 2)
+        self.nightSubLabel.text = self.getOptionTimes(timePeriod: 3)
+    }
+    
+    func getSwitchFromOptions(segment: Int) -> Bool {
+        var isOn = false
         DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                print("Setting up UI")
-                //Set Switches
-                self.morningSwitch.setOn(self.getNotificationBool(notificationOption: options?.morningNotificationsOn), animated: false)
-                self.afternoonSwitch.setOn(self.getNotificationBool(notificationOption: options?.afternoonNotificationsOn), animated: false)
-                self.eveningSwitch.setOn(self.getNotificationBool(notificationOption: options?.eveningNotificationsOn), animated: false)
-                self.nightSwitch.setOn(self.getNotificationBool(notificationOption: options?.nightNotificationsOn), animated: false)
-                
-                //Set Sub Labels
-                self.morningSubLabel.text = self.getOptionTimes(timePeriod: 0, timeOption: options?.morningStartTime)
-                self.afternoonSubLabel.text = self.getOptionTimes(timePeriod: 1, timeOption: options?.afternoonStartTime)
-                self.eveningSubLabel.text = self.getOptionTimes(timePeriod: 2, timeOption: options?.eveningStartTime)
-                self.nightSubLabel.text = self.getOptionTimes(timePeriod: 3, timeOption: options?.nightStartTime)
+                switch segment {
+                case 1:
+                    if let on = options?.afternoonNotificationsOn {
+                        isOn = on
+                    }
+                case 2:
+                    if let on = options?.eveningNotificationsOn {
+                        isOn = on
+                    }
+                case 3:
+                    if let on = options?.nightNotificationsOn {
+                        isOn = on
+                    }
+                default:
+                    if let on = options?.morningNotificationsOn {
+                        isOn = on
+                    }
+                }
             }
         }
+        return isOn
     }
     
     func getNotificationBool(notificationOption: Bool?) -> Bool {
@@ -201,20 +242,39 @@ class OptionsTableViewController: UITableViewController {
         return isOn
     }
     
-    func getOptionTimes(timePeriod: Int, timeOption: Date?) -> String {
+    func getOptionTimes(timePeriod: Int) -> String {
         var time: String = " "
-        let periods = ["morning", "afternoon", "evening", "night"]
-        let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        if let dateTime = timeOption {
-            
-            time = "Your \(periods[timePeriod]) begins at \(dateFormatter.string(from: dateTime))"
-        } else {
-            
-            let defaultTime = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
-            
-            time = "Your \(periods[timePeriod]) begins at \(dateFormatter.string(from: defaultTime))"
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                var timeOption: Date?
+                
+                switch timePeriod {
+                case 1:
+                    timeOption = options?.afternoonStartTime
+                case 2:
+                    timeOption = options?.eveningStartTime
+                case 3:
+                    timeOption = options?.nightStartTime
+                default:
+                    timeOption = options?.morningStartTime
+                }
+                
+                let periods = ["morning", "afternoon", "evening", "night"]
+                let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
+                let dateFormatter = DateFormatter()
+                dateFormatter.timeStyle = .short
+                if let dateTime = timeOption {
+                    
+                    time = "Your \(periods[timePeriod]) begins at \(dateFormatter.string(from: dateTime))"
+                } else {
+                    
+                    let defaultTime = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
+                    
+                    time = "Your \(periods[timePeriod]) begins at \(dateFormatter.string(from: defaultTime))"
+                }
+            }
         }
         
         return time
