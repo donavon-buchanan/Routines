@@ -18,19 +18,19 @@ class CustomTimesTableViewController: UITableViewController {
     
     @IBAction func morningTimeSet(_ sender: UIDatePicker) {
         setMinMaxTimes()
-        updateSavedTimes()
+        updateSavedTimes(segment: 0, time: sender.date)
     }
     @IBAction func afternoonTimeSet(_ sender: UIDatePicker) {
         setMinMaxTimes()
-        updateSavedTimes()
+        updateSavedTimes(segment: 1, time: sender.date)
     }
     @IBAction func eveningTimeSet(_ sender: UIDatePicker) {
         setMinMaxTimes()
-        updateSavedTimes()
+        updateSavedTimes(segment: 2, time: sender.date)
     }
     @IBAction func nightTimeSet(_ sender: UIDatePicker) {
         setMinMaxTimes()
-        updateSavedTimes()
+        updateSavedTimes(segment: 3, time: sender.date)
     }
     
     let realmDispatchQueueLabel: String = "background"
@@ -116,17 +116,23 @@ class CustomTimesTableViewController: UITableViewController {
 //        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
 //    }
     
-    func updateSavedTimes() {
+    func updateSavedTimes(segment: Int, time: Date) {
         DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
                 do {
                     try realm.write {
-                        options?.self.morningStartTime = self.morningDatePicker.date
-                        options?.self.afternoonStartTime = self.afternoonDatePicker.date
-                        options?.self.eveningStartTime = self.eveningDatePicker.date
-                        options?.self.nightStartTime = self.nightDatePicker.date
+                        switch segment {
+                        case 1:
+                            options?.self.afternoonStartTime = time
+                        case 2:
+                            options?.self.eveningStartTime = time
+                        case 3:
+                            options?.self.nightStartTime = time
+                        default:
+                            options?.self.morningStartTime = time
+                        }
                         print("updateSavedTime: \(String(describing: options))")
                     }
                 } catch {
@@ -153,7 +159,7 @@ class CustomTimesTableViewController: UITableViewController {
     
     func getTimesFromOptions(segment: Int) -> Date? {
         var date: Date?
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
