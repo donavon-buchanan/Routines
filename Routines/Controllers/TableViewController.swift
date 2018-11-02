@@ -95,7 +95,7 @@ class TableViewController: SwipeTableViewController{
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = 0
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 count = realm.objects(Items.self).filter("segment = \(section)").count
@@ -106,7 +106,7 @@ class TableViewController: SwipeTableViewController{
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 cell.textLabel?.text = realm.objects(Items.self).filter("segment = \(indexPath.section)")[indexPath.row].title
@@ -143,7 +143,7 @@ class TableViewController: SwipeTableViewController{
             destination.navigationItem.rightBarButtonItem?.isEnabled = false
             //pass in current item
             if let indexPath = tableView.indexPathForSelectedRow {
-                DispatchQueue(label: realmDispatchQueueLabel).async {
+                DispatchQueue(label: realmDispatchQueueLabel).sync {
                     autoreleasepool {
                         let realm = try! Realm()
                         destination.item = realm.objects(Items.self).filter("segment = \(indexPath.section)")[indexPath.row]
@@ -222,7 +222,7 @@ class TableViewController: SwipeTableViewController{
     
     func getSegmentCount(segment: Int) -> Int {
         var count = Int()
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 count = realm.objects(Items.self).filter("segment = \(segment)").count
@@ -286,7 +286,7 @@ class TableViewController: SwipeTableViewController{
         dateComponents.calendar = Calendar.current
         switch notificationItem.segment {
         case 1:
-            DispatchQueue(label: realmDispatchQueueLabel).async {
+            DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
                     let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
@@ -295,7 +295,7 @@ class TableViewController: SwipeTableViewController{
                 }
             }
         case 2:
-            DispatchQueue(label: realmDispatchQueueLabel).async {
+            DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
                     let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
@@ -304,7 +304,7 @@ class TableViewController: SwipeTableViewController{
                 }
             }
         case 3:
-            DispatchQueue(label: realmDispatchQueueLabel).async {
+            DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
                     let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
@@ -313,7 +313,7 @@ class TableViewController: SwipeTableViewController{
                 }
             }
         default:
-            DispatchQueue(label: realmDispatchQueueLabel).async {
+            DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
                     let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)

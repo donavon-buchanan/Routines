@@ -207,7 +207,7 @@ class OptionsTableViewController: UITableViewController {
     
     func getSwitchFromOptions(segment: Int) -> Bool {
         var isOn = false
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
@@ -244,7 +244,7 @@ class OptionsTableViewController: UITableViewController {
     
     func getOptionTimes(timePeriod: Int) -> String {
         var time: String = " "
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
@@ -379,7 +379,7 @@ class OptionsTableViewController: UITableViewController {
         dateComponents.calendar = Calendar.current
         switch notificationItem.segment {
         case 1:
-            DispatchQueue(label: realmDispatchQueueLabel).async {
+            DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
                     let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
@@ -388,7 +388,7 @@ class OptionsTableViewController: UITableViewController {
                 }
             }
         case 2:
-            DispatchQueue(label: realmDispatchQueueLabel).async {
+            DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
                     let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
@@ -397,7 +397,7 @@ class OptionsTableViewController: UITableViewController {
                 }
             }
         case 3:
-            DispatchQueue(label: realmDispatchQueueLabel).async {
+            DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
                     let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
@@ -406,7 +406,7 @@ class OptionsTableViewController: UITableViewController {
                 }
             }
         default:
-            DispatchQueue(label: realmDispatchQueueLabel).async {
+            DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
                     let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
@@ -452,7 +452,7 @@ class OptionsTableViewController: UITableViewController {
     }
 
     func addRemoveNotificationsOnToggle(segment: Int, isOn: Bool) {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 let items = realm.objects(Items.self).filter("segment = \(segment)")

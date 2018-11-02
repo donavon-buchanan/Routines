@@ -52,7 +52,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadOptions()
+        //loadOptions()
     }
 
     
@@ -240,15 +240,15 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     //var firstItemAdded: Bool?
     let optionsKey = "optionsKey"
     
-    //Load Options
-    func loadOptions() {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
-            autoreleasepool {
-                let realm = try! Realm()
-                self.optionsObject = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-            }
-        }
-    }
+//    //Load Options
+//    func loadOptions() {
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                self.optionsObject = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+//            }
+//        }
+//    }
     
     func getOptionTimes(timePeriod: Int, timeOption: Date?) -> Date {
         var time: Date
