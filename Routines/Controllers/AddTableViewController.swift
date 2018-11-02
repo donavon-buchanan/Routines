@@ -25,8 +25,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     //segment from add segue
     var editingSegment: Int?
     
-    // Get the default Realm
-    let realm = try! Realm()
+    var uuidString = UUID().uuidString
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,26 +85,29 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     }
     
     @objc func saveButtonPressed() {
-        addNewItem()
+        addNewItem(title: self.taskTextField.text!, date: Date(), segment: self.segmentSelection.selectedSegmentIndex, notes: self.notesTextView.text, uuidString: self.uuidString)
         self.tabBarController?.tabBar.isHidden = false
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
  
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("running prepare for segue")
         let destinationVC = segue.destination as! TableViewController
         destinationVC.passedSegment = segmentSelection.selectedSegmentIndex
+        checkForNotificationAuth(title: taskTextField.text!, notes: notesTextView.text, segment: segmentSelection.selectedSegmentIndex, uuidString: self.uuidString)
     }
     
-    func addNewItem() {
+    func addNewItem(title: String, date: Date, segment: Int, notes: String, uuidString: String) {
+        print("Running addNewItem")
         //if it's a new item, add it as new to the realm
         //otherwise, update the existing item
-        if item == nil {
+        if self.item == nil {
             let newItem = Items()
-            newItem.title = taskTextField.text
-            newItem.dateModified = Date()
-            newItem.segment = segmentSelection.selectedSegmentIndex
-            newItem.notes = notesTextView.text
-            
+            newItem.title = title
+            newItem.dateModified = date
+            newItem.segment = segment
+            newItem.notes = notes
+            newItem.uuidString = uuidString
             //save to realm
             saveItem(item: newItem)
         } else {
@@ -114,10 +116,11 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     }
     
     func saveItem(item: Items) {
+        print("Running saveItem")
+        let realm = try! Realm()
         do {
-            try self.realm.write {
-                self.scheduleNewNotification(item: item)
-                self.realm.add(item)
+            try realm.write {
+                realm.add(item)
             }
         } catch {
             print("Error saving item: \(error)")
@@ -125,22 +128,19 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     }
     
     func updateItem() {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
-            autoreleasepool {
-                do {
-                    try self.realm.write {
-                        self.item!.title = self.taskTextField.text
-                        self.item!.dateModified = Date()
-                        self.item!.segment = self.segmentSelection.selectedSegmentIndex
-                        self.item!.notes = self.notesTextView.text
-                        self.removeNotification(item: self.item!)
-                        self.scheduleNewNotification(item: self.item!)
-                    }
-                } catch {
-                    print("Error updating item: \(error)")
-                }
+        let realm = try! Realm()
+        do {
+            try realm.write {
+                self.item!.title = self.taskTextField.text
+                self.item!.dateModified = Date()
+                self.item!.segment = self.segmentSelection.selectedSegmentIndex
+                self.item!.notes = self.notesTextView.text
             }
+        } catch {
+            print("Error updating item: \(error)")
         }
+        self.removeNotification(item: self.item!)
+        //self.scheduleNewNotification(item: self.item!)
     }
     
     //MARK: - Manage Notifications
@@ -166,7 +166,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         }
     }
     
-    func checkForNotificationAuth(notificationItem: Items) {
+    func checkForNotificationAuth(title: String, notes: String?, segment: Int, uuidString: String) {
         let notificationCenter = UNUserNotificationCenter.current()
         
         notificationCenter.getNotificationSettings { (settings) in
@@ -177,7 +177,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
             }
             if settings.alertSetting == .enabled {
                 //Schedule an alert-only notification
-                self.createNotification(notificationItem: notificationItem)
+                self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
                 
             } else {
                 //Schedule a notification with a badge and sound
@@ -187,16 +187,16 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         }
     }
     
-    func createNotification(notificationItem: Items) {
+    func createNotification(title: String, notes: String?, segment: Int, uuidString: String) {
         let content = UNMutableNotificationContent()
-        guard case content.title = notificationItem.title else { return }
-        if let notes = notificationItem.notes {
-            content.body = notes
+        guard case content.title = title else { return }
+        if let notesText = notes {
+            content.body = notesText
         }
         
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.current
-        switch notificationItem.segment {
+        switch segment {
         case 1:
             dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
             dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
@@ -214,8 +214,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         
         //Create the request
-        let uuidString = UUID().uuidString
-        updateItemUUID(item: notificationItem, uuidString: uuidString)
         let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
         
         //Schedule the request with the system
@@ -226,14 +224,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
             }
         }
         
-    }
-    
-    func scheduleNewNotification(item: Items) {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
-            autoreleasepool {
-                self.checkForNotificationAuth(notificationItem: item)
-            }
-        }
     }
     
     func removeNotification(item: Items) {
@@ -254,7 +244,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     func loadOptions() {
         DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
-                self.optionsObject = self.realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                let realm = try! Realm()
+                self.optionsObject = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
             }
         }
     }
@@ -288,18 +279,19 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         return Int(minutes)!
     }
     
-    func updateItemUUID(item: Items, uuidString: String) {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
-            autoreleasepool {
-                do {
-                    try self.realm.write {
-                        item.uuidString = uuidString
-                    }
-                } catch {
-                    print("failed to update UUID for item")
-                }
-            }
-        }
-    }
+//    func updateItemUUID(item: Items, uuidString: String) {
+//        DispatchQueue(label: realmDispatchQueueLabel).async {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                do {
+//                    try realm.write {
+//                        item.uuidString = uuidString
+//                    }
+//                } catch {
+//                    print("failed to update UUID for item")
+//                }
+//            }
+//        }
+//    }
 
 }

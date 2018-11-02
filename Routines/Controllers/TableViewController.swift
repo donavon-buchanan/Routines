@@ -16,17 +16,18 @@ class TableViewController: SwipeTableViewController{
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     
+    let realmDispatchQueueLabel: String = "background"
     
-    // Get the default Realm
-    let realm = try! Realm()
-    var items: Results<Items>?
+//    // Get the default Realm
+//    let realm = try! Realm()
+//    var items: Results<Items>?
+//
+//    //TODO: This is a bit of a mess for readability
+//    var segmentedItems: Results<Items>?
+//
+//    //Options Properties
+//    var optionsObject: Options?
     
-    //TODO: This is a bit of a mess for readability
-    var segmentedItems: Results<Items>?
-    
-    //Options Properties
-    var optionsObject: Options?
-    //var firstItemAdded: Bool?
     let optionsKey = "optionsKey"
     
     let segmentStringArray: [String] = ["Morning", "Afternoon", "Evening", "Night", "All Day"]
@@ -54,7 +55,7 @@ class TableViewController: SwipeTableViewController{
         
         setViewBackgroundGraphic()
         
-        loadData()
+        items = loadData()
 
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         //self.tabBarController?.delegate = self
@@ -140,8 +141,8 @@ class TableViewController: SwipeTableViewController{
     
     //MARK: - Model Manipulation Methods
     
-    func loadData() {
-        items = realm.objects(Items.self)
+    func loadData() -> Results<Items> {
+        return realm.objects(Items.self)
     }
     
     //Filter items to relevant segment and return those items
@@ -155,19 +156,29 @@ class TableViewController: SwipeTableViewController{
     //Override empty delete func from super
     override func updateModel(at indexPath: IndexPath) {
         super.updateModel(at: indexPath)
-
-        guard let items = self.segmentedItems else { fatalError() }
-        let item = items[indexPath.row]
-        
-        print("Deleting item with title: \(String(describing: item.title))")
-        do {
-            try self.realm.write {
-                self.removeNotification(item: item)
-                self.realm.delete(item)
+        DispatchQueue.main.async {
+            autoreleasepool {
+                guard let items = self.segmentedItems else { fatalError() }
+                let item = items[indexPath.row]
+                
+                print("Deleting item with title: \(String(describing: item.title))")
+                DispatchQueue.init(label: self.realmDispatchQueueLabel).async {
+                    autoreleasepool {
+                        do {
+                            try self.realm.write {
+                                self.realm.delete(item)
+                            }
+                        } catch {
+                            print("Error deleting item: \(error)")
+                        }
+                    }
+                }
+                self.items = self.loadData()
+                self.segmentedItems = self.loadItems(segment: indexPath.section)
+                self.reloadTableView()
+                //self.removeNotification(item: item)
                 self.updateBadge()
             }
-        } catch {
-            print("Error deleting item: \(error)")
         }
     }
     
@@ -340,12 +351,16 @@ class TableViewController: SwipeTableViewController{
     }
     
     func updateItemUUID(item: Items, uuidString: String) {
-        do {
-            try realm.write {
-                item.uuidString = uuidString
+        DispatchQueue.init(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                do {
+                    try self.realm.write {
+                        item.uuidString = uuidString
+                    }
+                } catch {
+                    print("failed to update UUID for item")
+                }
             }
-        } catch {
-            print("failed to update UUID for item")
         }
     }
     
