@@ -33,6 +33,7 @@ class CustomTimesTableViewController: UITableViewController {
         updateSavedTimes()
     }
     
+    let realmDispatchQueueLabel: String = "background"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +44,7 @@ class CustomTimesTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadOptions()
+        //loadOptions()
         setUpUI()
     }
     
@@ -104,43 +105,55 @@ class CustomTimesTableViewController: UITableViewController {
     
     //MARK: - Options Realm
     
-    //Options Properties
-    let optionsRealm = try! Realm()
-    var optionsObject: Options?
-    //var firstItemAdded: Bool?
+//    //Options Properties
+//    let optionsRealm = try! Realm()
+//    var optionsObject: Options?
+//    //var firstItemAdded: Bool?
     let optionsKey = "optionsKey"
     
-    //Load Options
-    func loadOptions() {
-        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-    }
+//    //Load Options
+//    func loadOptions() {
+//        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+//    }
     
     func updateSavedTimes() {
-        do {
-            try self.optionsRealm.write {
-                optionsObject?.morningStartTime = morningDatePicker.date
-                optionsObject?.afternoonStartTime = afternoonDatePicker.date
-                optionsObject?.eveningStartTime = eveningDatePicker.date
-                optionsObject?.nightStartTime = nightDatePicker.date
-                print("updateSavedTime: \(String(describing: optionsObject))")
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                do {
+                    try realm.write {
+                        options?.self.morningStartTime = self.morningDatePicker.date
+                        options?.self.afternoonStartTime = self.afternoonDatePicker.date
+                        options?.self.eveningStartTime = self.eveningDatePicker.date
+                        options?.self.nightStartTime = self.nightDatePicker.date
+                        print("updateSavedTime: \(String(describing: options))")
+                    }
+                } catch {
+                    print("updateSavedTimes failed")
+                }
             }
-        } catch {
-            print("failed to update notification saved times")
         }
     }
     
     func setUpUI() {
-        if let morningTime = optionsObject?.morningStartTime {
-            morningDatePicker.setDate(morningTime, animated: false)
-        }
-        if let afternoonTime = optionsObject?.afternoonStartTime {
-            afternoonDatePicker.setDate(afternoonTime, animated: false)
-        }
-        if let eveningTime = optionsObject?.eveningStartTime {
-            eveningDatePicker.setDate(eveningTime, animated: false)
-        }
-        if let nightTime = optionsObject?.nightStartTime {
-            nightDatePicker.setDate(nightTime, animated: false)
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                if let morningTime = options?.morningStartTime {
+                    self.morningDatePicker.setDate(morningTime, animated: false)
+                }
+                if let afternoonTime = options?.afternoonStartTime {
+                    self.afternoonDatePicker.setDate(afternoonTime, animated: false)
+                }
+                if let eveningTime = options?.eveningStartTime {
+                    self.eveningDatePicker.setDate(eveningTime, animated: false)
+                }
+                if let nightTime = options?.nightStartTime {
+                    self.nightDatePicker.setDate(nightTime, animated: false)
+                }
+            }
         }
     }
 
