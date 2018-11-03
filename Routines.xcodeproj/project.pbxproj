@@ -15,7 +15,6 @@
 		F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TableViewController.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
 		F84681FE21868C4B00BE3E19 /* HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84681FD21868C4B00BE3E19 /* HexColor.swift */; };
-		F89C0BE32184F9DB00B5C7C6 /* OptionsForTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89C0BE22184F9DB00B5C7C6 /* OptionsForTableViewController.swift */; };
 		F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831B72155CBB000DAF60E /* AppDelegate.swift */; };
 		F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831BB2155CBB000DAF60E /* Main.storyboard */; };
 		F8B831C22155CBB100DAF60E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831C02155CBB100DAF60E /* LaunchScreen.storyboard */; };
@@ -37,7 +36,6 @@
 		F816DB332155CFBA009C6907 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TableViewController.swift; sourceTree = "<group>"; };
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
 		F84681FD21868C4B00BE3E19 /* HexColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColor.swift; sourceTree = "<group>"; };
-		F89C0BE22184F9DB00B5C7C6 /* OptionsForTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsForTableViewController.swift; sourceTree = "<group>"; };
 		F8B831B42155CBB000DAF60E /* Routines.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routines.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8B831B72155CBB000DAF60E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8B831BC2155CBB000DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -137,7 +135,6 @@
 			children = (
 				F8125CC9215F56E700ED3FA6 /* SwipeTableViewController.swift */,
 				F816DB332155CFBA009C6907 /* TableViewController.swift */,
-				F89C0BE22184F9DB00B5C7C6 /* OptionsForTableViewController.swift */,
 				F82770D221585D3000420C50 /* AddTableViewController.swift */,
 				F807D3D22160A06600FF36D9 /* Options */,
 			);
@@ -303,7 +300,6 @@
 				F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */,
 				F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */,
 				F807D3CF2160964E00FF36D9 /* OptionsTableViewController.swift in Sources */,
-				F89C0BE32184F9DB00B5C7C6 /* OptionsForTableViewController.swift in Sources */,
 				F807D3CD216073E300FF36D9 /* Options.swift in Sources */,
 				F8125CCA215F56E700ED3FA6 /* SwipeTableViewController.swift in Sources */,
 			);

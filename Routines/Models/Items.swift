@@ -9,6 +9,9 @@
 import Foundation
 import RealmSwift
 
+
+//TODO: Figure out inits with Realm
+
 @objcMembers class Items: Object {
     dynamic var title: String?
     dynamic var dateModified: Date?
