@@ -18,9 +18,9 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
     
     let realmDispatchQueueLabel: String = "background"
     
-    let optionsKey = "optionsKey"
+    //let optionsKey = "optionsKey"
     
-    let segmentStringArray: [String] = ["Morning", "Afternoon", "Evening", "Night", "All Day"]
+    //let segmentStringArray: [String] = ["Morning", "Afternoon", "Evening", "Night", "All Day"]
     
     //Set segment after adding an item
     var passedSegment: Int?
@@ -33,12 +33,13 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
     
     //Footer view
     let footerView = UIView()
-    var selectedTab = 0
+    //var selectedTab = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        loadItems()
+        self.segment = self.tabBarController?.selectedIndex ?? 0
+        //TODO: Fade cells into top nav bar
+        //self.tableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
         
         footerView.backgroundColor = .clear
         self.tableView.tableFooterView = footerView
@@ -46,6 +47,7 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
         setViewBackgroundGraphic()
 
         self.tabBarController?.delegate = self
+        loadItems(segment: self.segment)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,9 +60,6 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        guard let selectedTab = self.tabBarController?.selectedIndex else { fatalError() }
-        print("Selected tab is \(selectedTab)")
-        self.filteredItems = self.items?.filter("segment = \(selectedTab)")
         print("viewDidAppear \n")
         changeSegment(segment: passedSegment)
     }
@@ -78,21 +77,16 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let count = self.filteredItems?.count{
-            print("Rows for section: \(count)")
-            return count
-        } else {
-            return 0
-        }
+        
+        return self.items?.count ?? 0
+        
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        if let count = self.filteredItems?.count {
-            if count > 0 {
-                cell.textLabel?.text = self.filteredItems?[indexPath.row].title
-            }
-        }
+        
+        cell.textLabel?.text = self.items?[indexPath.row].title
+        
         return cell
     }
 
@@ -122,8 +116,7 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
             destination.navigationItem.rightBarButtonItem?.isEnabled = false
             //pass in current item
             if let indexPath = tableView.indexPathForSelectedRow {
-                let realm = try! Realm()
-                destination.item = realm.objects(Items.self).filter("segment = \(indexPath.section)")[indexPath.row]
+                destination.item = items?[indexPath.row]
             }
         }
     }
@@ -145,11 +138,11 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
     //Override empty delete func from super
     override func updateModel(at indexPath: IndexPath) {
         super.updateModel(at: indexPath)
-        
         let realm = try! Realm()
         do {
             try! realm.write {
-                let item = self.filteredItems?[indexPath.row]
+                let item = items?[indexPath.row]
+                removeNotification(uuidString: item!.uuidString)
                 realm.delete(item!)
             }
         }
@@ -210,11 +203,13 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
     
     // Get the default Realm
     let realm = try! Realm()
+    
+    //Each view (tab) loads its own set of items.
+    //Load from viewDidLoad. Reload table from viewWillAppear
     var items: Results<Items>?
-    var filteredItems: Results<Items>?
-
-    func loadItems() {
-        items = self.realm.objects(Items.self)
+    var segment = Int()
+    func loadItems(segment: Int) {
+        items = self.realm.objects(Items.self).filter("segment = \(segment)")
     }
     
 }
