@@ -12,7 +12,7 @@ import SwipeCellKit
 import UserNotifications
 import UserNotificationsUI
 
-class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
+class TableViewController: SwipeTableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     
@@ -37,6 +37,8 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tabBarController?.delegate = self
+        self.navigationController?.delegate = self
         self.segment = self.tabBarController?.selectedIndex ?? 0
         //TODO: Fade cells into top nav bar
         //self.tableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
@@ -45,10 +47,22 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
         self.tableView.tableFooterView = footerView
         
         setViewBackgroundGraphic()
-
-        self.tabBarController?.delegate = self
+        
         loadItems(segment: self.segment)
     }
+    
+//    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+//        
+//        guard let fromView = tabBarController.selectedViewController?.view, let toView = viewController.view else {
+//            return false // Make sure you want this as false
+//        }
+//        
+//        if fromView != toView {
+//            UIView.transition(from: fromView, to: toView, duration: 0.3, options: [.transitionCrossDissolve], completion: nil)
+//        }
+//        
+//        return true
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -210,6 +224,23 @@ class TableViewController: SwipeTableViewController, UITabBarControllerDelegate{
     var segment = Int()
     func loadItems(segment: Int) {
         items = self.realm.objects(Items.self).filter("segment = \(segment)")
+    }
+    
+    //MARK: - Themeing
+    func setMorningColors() {
+        
+    }
+    
+    func setAfternoonColors() {
+        
+    }
+    
+    func setEveningColors() {
+        
+    }
+    
+    func setDarkMode() {
+        
     }
     
 }

@@ -95,7 +95,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         print("running prepare for segue")
         let destinationVC = segue.destination as! TableViewController
         destinationVC.passedSegment = segmentSelection.selectedSegmentIndex
-        scheduleNewNotification(title: taskTextField.text!, notes: notesTextView.text, segment: segmentSelection.selectedSegmentIndex, uuidString: self.uuidString)
+        //scheduleNewNotification(title: taskTextField.text!, notes: notesTextView.text, segment: segmentSelection.selectedSegmentIndex, uuidString: self.uuidString)
     }
     
     func addNewItem(title: String, date: Date, segment: Int, notes: String, uuidString: String) {
@@ -148,6 +148,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     //MARK: - Manage Notifications
     
     func requestNotificationPermission() {
+        print("running Request notification permission")
         let center = UNUserNotificationCenter.current()
         //Request permission to display alerts and play sounds
         if #available(iOS 12.0, *) {
@@ -169,6 +170,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     }
     
     func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+        print("running scheduleNewNotification")
         let notificationCenter = UNUserNotificationCenter.current()
         
         notificationCenter.getNotificationSettings { (settings) in
@@ -177,6 +179,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
                 //self.requestNotificationPermission()
                 return
             }
+            
             if settings.alertSetting == .enabled {
                 //Schedule an alert-only notification
                 //TODO: Check if segment notification option is on or off
@@ -224,6 +227,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         notificationCenter.add(request) { (error) in
             if error != nil {
                 //TODO: handle notification errors
+                print("Failed to add notification")
+            } else {
+                print("Notification created successfully")
             }
         }
         
