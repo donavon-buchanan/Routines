@@ -235,21 +235,21 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         items = self.realm.objects(Items.self).filter("segment = \(segment)")
     }
     
-    //MARK: - Themeing
-    func setMorningColors() {
-        
-    }
-    
-    func setAfternoonColors() {
-        
-    }
-    
-    func setEveningColors() {
-        
-    }
-    
-    func setDarkMode() {
-        
-    }
+//    //MARK: - Themeing
+//    func setMorningColors() {
+//        
+//    }
+//    
+//    func setAfternoonColors() {
+//        
+//    }
+//    
+//    func setEveningColors() {
+//        
+//    }
+//    
+//    func setDarkMode() {
+//        
+//    }
     
 }
