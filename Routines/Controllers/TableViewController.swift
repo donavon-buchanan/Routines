@@ -215,13 +215,6 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         center.removePendingNotificationRequests(withIdentifiers: [uuidString])
     }
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
-        print("taking use to notification settings")
-        let navController = NavigationViewController()
-        let notificationSettingsVC = OptionsTableViewController()
-        navController.pushViewController(notificationSettingsVC, animated: true)
-    }
-    
     //MARK: - Realm
     
     // Get the default Realm

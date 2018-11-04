@@ -131,7 +131,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
     
-    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
+        print("taking use to notification settings")
+        let navController = NavigationViewController()
+        let notificationSettingsVC = OptionsTableViewController()
+        navController.pushViewController(notificationSettingsVC, animated: true)
+    }
     
 }
 
