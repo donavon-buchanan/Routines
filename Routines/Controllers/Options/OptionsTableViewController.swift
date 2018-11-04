@@ -358,7 +358,7 @@ class OptionsTableViewController: UITableViewController {
             }
             if settings.alertSetting == .enabled {
                 //Schedule an alert-only notification
-                self.createNotification(segment: segment, title: title, body: body, uuidString: uuidString)
+                self.createNotification(title: title, notes: body, segment: segment, uuidString: uuidString)
 
             } else {
                 //Schedule a notification with a badge and sound
@@ -368,69 +368,57 @@ class OptionsTableViewController: UITableViewController {
         }
     }
 
-    func createNotification(segment: Int, title: String, body: String?, uuidString: String) {
+    func createNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+        print("createNotification running")
         let content = UNMutableNotificationContent()
-        guard case content.title = title else { return }
-        if let notes = body {
-            content.body = notes
+        content.title = title
+        
+        if let notesText = notes {
+            content.body = notesText
         }
-
+        
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.current
+        //TODO: Error is here. Load these times with the view since they won't be changing. Then refernce those variables instead of the realm object
         switch segment {
         case 1:
-            DispatchQueue(label: realmDispatchQueueLabel).sync {
-                autoreleasepool {
-                    let realm = try! Realm()
-                    let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                    dateComponents.hour = self.getHour(date: self.getOptionTimesAsDate(timePeriod: 1, timeOption: options?.afternoonStartTime))
-                    dateComponents.minute = self.getMinute(date: self.getOptionTimesAsDate(timePeriod: 1, timeOption: options?.afternoonStartTime))
-                }
+            if let time = self.time[1] {
+                dateComponents.hour = getHour(date: getTime(timePeriod: 1, timeOption: time))
+                dateComponents.minute = getMinute(date: getTime(timePeriod: 1, timeOption: time))
             }
         case 2:
-            DispatchQueue(label: realmDispatchQueueLabel).sync {
-                autoreleasepool {
-                    let realm = try! Realm()
-                    let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                    dateComponents.hour = self.getHour(date: self.getOptionTimesAsDate(timePeriod: 2, timeOption: options?.eveningStartTime))
-                    dateComponents.minute = self.getMinute(date: self.getOptionTimesAsDate(timePeriod: 2, timeOption: options?.eveningStartTime))
-                }
+            if let time = self.time[2] {
+                dateComponents.hour = getHour(date: getTime(timePeriod: 2, timeOption: time))
+                dateComponents.minute = getMinute(date: getTime(timePeriod: 2, timeOption: time))
             }
         case 3:
-            DispatchQueue(label: realmDispatchQueueLabel).sync {
-                autoreleasepool {
-                    let realm = try! Realm()
-                    let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                    dateComponents.hour = self.getHour(date: self.getOptionTimesAsDate(timePeriod: 3, timeOption: options?.nightStartTime))
-                    dateComponents.minute = self.getMinute(date: self.getOptionTimesAsDate(timePeriod: 3, timeOption: options?.nightStartTime))
-                }
+            if let time = self.time[3] {
+                dateComponents.hour = getHour(date: getTime(timePeriod: 3, timeOption: time))
+                dateComponents.minute = getMinute(date: getTime(timePeriod: 3, timeOption: time))
             }
         default:
-            DispatchQueue(label: realmDispatchQueueLabel).sync {
-                autoreleasepool {
-                    let realm = try! Realm()
-                    let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                    dateComponents.hour = self.getHour(date: self.getOptionTimesAsDate(timePeriod: 0, timeOption: options?.morningStartTime))
-                    dateComponents.minute = self.getMinute(date: self.getOptionTimesAsDate(timePeriod: 0, timeOption: options?.morningStartTime))
-                }
+            if let time = self.time[0] {
+                dateComponents.hour = getHour(date: getTime(timePeriod: 0, timeOption: time))
+                dateComponents.minute = getMinute(date: getTime(timePeriod: 0, timeOption: time))
             }
         }
-
+        
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-
+        
         //Create the request
-        //let uuidString = UUID().uuidString
-        //updateItemUUID(item: notificationItem, uuidString: uuidString)
         let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-
+        
         //Schedule the request with the system
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.add(request) { (error) in
             if error != nil {
                 //TODO: handle notification errors
+                print(String(describing: error))
+            } else {
+                print("Notification created successfully")
             }
         }
-
+        
     }
 
 //    func scheduleNewNotification(item: Items) {
@@ -472,7 +460,34 @@ class OptionsTableViewController: UITableViewController {
     }
 
     //MARK: Items Realm
+    
+    var time: [Date?] = []
+    
+    func loadTimes() {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                //self.optionsObject = options
+                self.time = [options?.morningStartTime, options?.afternoonStartTime, options?.eveningStartTime, options?.nightStartTime]
+            }
+        }
+    }
 
+    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
+        var time: Date
+        let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        
+        if let setTime = timeOption {
+            time = setTime
+        } else {
+            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
+        }
+        
+        return time
+    }
 //    // Get the default Realm
 //    let realm = try! Realm()
 //    var items: Results<Items>?

@@ -21,7 +21,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     let realmDispatchQueueLabel: String = "background"
     
     var item : Items?
-    
+    var time: [Date?] = []
     //segment from add segue
     var editingSegment: Int?
     
@@ -29,13 +29,18 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.loadOptions()
         self.tabBarController?.tabBar.isHidden = true
         //If item is loaded, fill in values for editing
         if item != nil {
+            print("item was non-nil")
             taskTextField.text = item?.title
             segmentSelection.selectedSegmentIndex = item?.segment ?? 0
             notesTextView.text = item?.notes
             self.uuidString = (item?.uuidString)!
+            //print("Item's uuidString is \((item?.uuidString)!)")
+        } else {
+            self.uuidString = UUID().uuidString
         }
         
         //load in segment from add segue
@@ -53,7 +58,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //loadOptions()
     }
 
     
@@ -87,6 +91,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     
     @objc func saveButtonPressed() {
         addNewItem(title: self.taskTextField.text!, date: Date(), segment: self.segmentSelection.selectedSegmentIndex, notes: self.notesTextView.text, uuidString: self.uuidString)
+        //print("Adding item with uuidString: \(self.uuidString)")
         self.tabBarController?.tabBar.isHidden = false
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
@@ -177,44 +182,57 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
             //DO not schedule notifications if not authorized
             guard settings.authorizationStatus == .authorized else {
                 //self.requestNotificationPermission()
+                print("Authorization status has changed to unauthorized for notifications")
                 return
             }
             
             if settings.alertSetting == .enabled {
+                print("creating alert style notification")
                 //Schedule an alert-only notification
                 //TODO: Check if segment notification option is on or off
                 self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
                 
             } else {
                 //Schedule a notification with a badge and sound
-                
+                print("not an alert")
             }
             
         }
     }
     
     func createNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+        print("createNotification running")
         let content = UNMutableNotificationContent()
-        guard case content.title = title else { return }
+        content.title = title
+        
         if let notesText = notes {
             content.body = notesText
         }
         
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.current
+        //TODO: Error is here. Load these times with the view since they won't be changing. Then refernce those variables instead of the realm object
         switch segment {
         case 1:
-            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
-            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 1, timeOption: optionsObject?.afternoonStartTime))
+            if let time = self.time[1] {
+                dateComponents.hour = getHour(date: getTime(timePeriod: 1, timeOption: time))
+                dateComponents.minute = getMinute(date: getTime(timePeriod: 1, timeOption: time))
+            }
         case 2:
-            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
-            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 2, timeOption: optionsObject?.eveningStartTime))
+            if let time = self.time[2] {
+                dateComponents.hour = getHour(date: getTime(timePeriod: 2, timeOption: time))
+                dateComponents.minute = getMinute(date: getTime(timePeriod: 2, timeOption: time))
+            }
         case 3:
-            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
-            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 3, timeOption: optionsObject?.nightStartTime))
+            if let time = self.time[3] {
+                dateComponents.hour = getHour(date: getTime(timePeriod: 3, timeOption: time))
+                dateComponents.minute = getMinute(date: getTime(timePeriod: 3, timeOption: time))
+            }
         default:
-            dateComponents.hour = getHour(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
-            dateComponents.minute = getMinute(date: getOptionTimes(timePeriod: 0, timeOption: optionsObject?.morningStartTime))
+            if let time = self.time[0] {
+                dateComponents.hour = getHour(date: getTime(timePeriod: 0, timeOption: time))
+                dateComponents.minute = getMinute(date: getTime(timePeriod: 0, timeOption: time))
+            }
         }
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
@@ -227,7 +245,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         notificationCenter.add(request) { (error) in
             if error != nil {
                 //TODO: handle notification errors
-                print("Failed to add notification")
+                print(String(describing: error))
             } else {
                 print("Notification created successfully")
             }
@@ -243,21 +261,23 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     //MARK: - Options Realm
     
     //Options Properties
-    var optionsObject: Options?
+    //var optionsObject: Options?
     //var firstItemAdded: Bool?
     let optionsKey = "optionsKey"
     
-//    //Load Options
-//    func loadOptions() {
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                self.optionsObject = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-//            }
-//        }
-//    }
+    //Load Options
+    func loadOptions() {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                //self.optionsObject = options
+                self.time = [options?.morningStartTime, options?.afternoonStartTime, options?.eveningStartTime, options?.nightStartTime]
+            }
+        }
+    }
     
-    func getOptionTimes(timePeriod: Int, timeOption: Date?) -> Date {
+    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
         var time: Date
         let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
         let dateFormatter = DateFormatter()

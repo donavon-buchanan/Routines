@@ -36,6 +36,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     //var selectedTab = 0
 
     override func viewDidLoad() {
+        print("Running viewDidLoad")
         super.viewDidLoad()
         self.tabBarController?.delegate = self
         self.navigationController?.delegate = self
@@ -209,6 +210,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     //MARK: - Manage Notifications
     
     func removeNotification(uuidString: String) {
+        print("removing notification with uuid: \(String(describing: uuidString))")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: [uuidString])
     }

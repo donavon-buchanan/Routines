@@ -6,6 +6,8 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
+//TODO: You need to fetch uuidStrings on all current items and modify their associated notifications to match any updated times. Run those updates in async. It could be many.
+
 import UIKit
 import RealmSwift
 
