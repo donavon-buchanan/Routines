@@ -12,7 +12,7 @@ import SwipeCellKit
 import UserNotifications
 import UserNotificationsUI
 
-class TableViewController: SwipeTableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
+class TableViewController: SwipeTableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, UNUserNotificationCenterDelegate {
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     
@@ -213,6 +213,13 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         print("removing notification with uuid: \(String(describing: uuidString))")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: [uuidString])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
+        print("taking use to notification settings")
+        let navController = NavigationViewController()
+        let notificationSettingsVC = OptionsTableViewController()
+        navController.pushViewController(notificationSettingsVC, animated: true)
     }
     
     //MARK: - Realm

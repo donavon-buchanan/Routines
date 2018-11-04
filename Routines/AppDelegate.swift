@@ -9,9 +9,10 @@
 import UIKit
 import RealmSwift
 import UserNotifications
+import UserNotificationsUI
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate{
 
     var window: UIWindow?
 
@@ -20,6 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         requestNotificationPermission()
         //checkToCreateOptions()
         loadOptions()
+        
+        
 
         return true
     }
@@ -127,6 +130,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
+    
+    
     
 }
 
