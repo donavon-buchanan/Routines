@@ -81,16 +81,7 @@ open class NotificationHandler: UNUserNotificationCenter, UNUserNotificationCent
                 return
             }
             
-            if settings.alertSetting == .enabled {
-                print("creating alert style notification")
-                //Schedule an alert-only notification
-                //TODO: Check if segment notification option is on or off
-                self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
-                
-            } else {
-                //Schedule a notification with a badge and sound
-                print("not an alert")
-            }
+            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
             
         }
     }

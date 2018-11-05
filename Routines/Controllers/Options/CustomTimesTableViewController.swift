@@ -226,16 +226,7 @@ class CustomTimesTableViewController: UITableViewController {
                 return
             }
             
-            if settings.alertSetting == .enabled {
-                print("creating alert style notification")
-                //Schedule an alert-only notification
-                //TODO: Check if segment notification option is on or off
-                self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
-                
-            } else {
-                //Schedule a notification with a badge and sound
-                print("not an alert")
-            }
+            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
             
         }
     }
@@ -244,6 +235,8 @@ class CustomTimesTableViewController: UITableViewController {
         print("createNotification running")
         let content = UNMutableNotificationContent()
         content.title = title
+        content.sound = UNNotificationSound.default
+        content.threadIdentifier = String(segment)
         
         if let notesText = notes {
             content.body = notesText
