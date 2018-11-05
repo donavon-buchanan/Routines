@@ -54,13 +54,34 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         taskTextField.addTarget(self, action: #selector(self.textFieldDidChange), for: .editingChanged)
         segmentSelection.addTarget(self, action: #selector(self.textFieldDidChange), for: .valueChanged)
         notesTextView.delegate = self
+        
+        //Add tap gesture for editing notes
+        let textFieldTap = UITapGestureRecognizer(target: self, action: #selector(setNotesEditable))
+        self.notesTextView.addGestureRecognizer(textFieldTap)
+        
+        //add a tap recognizer to stop editing when tapping outside the textView
+        let viewTap = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        self.view.addGestureRecognizer(viewTap)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
 
+    @objc func setNotesEditable(_ aRecognizer: UITapGestureRecognizer) {
+        self.notesTextView.dataDetectorTypes = []
+        self.notesTextView.isEditable = true
+        self.notesTextView.becomeFirstResponder()
+    }
     
+    @objc func viewTapped(_ aRecognizer: UITapGestureRecognizer) {
+        self.view.endEditing(true)
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        textView.isEditable = false
+        textView.dataDetectorTypes = .all
+    }
     
     // MARK: - Navigation
 

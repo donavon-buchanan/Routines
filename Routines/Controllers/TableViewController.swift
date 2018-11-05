@@ -101,6 +101,13 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
         cell.textLabel?.text = self.items?[indexPath.row].title
+        if let subtitle = self.items?[indexPath.row].notes {
+            if subtitle.count > 0 {
+                cell.detailTextLabel?.text = subtitle
+            } else {
+                cell.detailTextLabel?.text = nil
+            }
+        }
         
         return cell
     }
