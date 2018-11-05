@@ -119,17 +119,37 @@ class NotificationHandler: UNUserNotificationCenter, UNUserNotificationCenterDel
         
     }
     
-    func removeNotification(uuidString: String) {
+    func removeNotification(uuidString: [String]) {
         let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: [uuidString])
+        center.removePendingNotificationRequests(withIdentifiers: uuidString)
     }
     
     func removeNotificationsForSegment(segment: Int) {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                var uuidStrings: [String] = []
+                let realm = try! Realm()
+                let items = realm.objects(Items.self).filter("segment = \(segment)")
+                for item in 0..<items.count {
+                    uuidStrings.append(items[item].uuidString)
+                }
+                //Might need to move this. But lets try it
+                self.removeNotification(uuidString: uuidStrings)
+            }
+        }
         
     }
     
     func enableNotificationsForSegment(segment: Int) {
-        
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                let items = realm.objects(Items.self).filter("segment = \(segment)")
+                for item in 0..<items.count {
+                    self.scheduleNewNotification(title: items[item].title!, notes: items[item].notes, segment: items[item].segment, uuidString: items[item].uuidString)
+                }
+            }
+        }
     }
     
     
