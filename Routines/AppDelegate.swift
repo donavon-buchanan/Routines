@@ -15,14 +15,18 @@ import UserNotificationsUI
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate{
 
     var window: UIWindow?
+    
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
+        requestNotificationPermission()
+        
+        return true
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        requestNotificationPermission()
         //checkToCreateOptions()
         loadOptions()
-        
-        
 
         return true
     }
@@ -108,7 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let center = UNUserNotificationCenter.current()
         //Request permission to display alerts and play sounds
         if #available(iOS 12.0, *) {
-            center.requestAuthorization(options: [.alert, .sound, .badge, .provisional, .providesAppNotificationSettings]) { (granted, error) in
+            center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { (granted, error) in
                 // Enable or disable features based on authorization.
                 if granted {
                     print("App Delegate: App has notification permission")

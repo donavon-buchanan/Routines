@@ -23,42 +23,30 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet weak var eveningSubLabel: UILabel!
     @IBOutlet weak var nightSubLabel: UILabel!
     
-    let realmDispatchQueueLabel: String = "background"
-    let optionsKey: String = "optionsKey"
-    
     
     @IBAction func notificationSwitchToggled(_ sender: UISwitch) {
         switch sender.tag {
         case 1:
             print("Afternoon Switch Toggled \(sender.isOn)")
-            addRemoveNotificationsOnToggle(segment: 1, isOn: sender.isOn)
+            addOrRemoveNotifications(isOn: sender.isOn, segment: 1)
             updateNotificationOptions(segment: 1, isOn: sender.isOn)
         case 2:
             print("Evening Switch Toggled \(sender.isOn)")
-            addRemoveNotificationsOnToggle(segment: 2, isOn: sender.isOn)
+            addOrRemoveNotifications(isOn: sender.isOn, segment: 2)
             updateNotificationOptions(segment: 2, isOn: sender.isOn)
         case 3:
             print("Night Switch Toggled \(sender.isOn)")
-            addRemoveNotificationsOnToggle(segment: 3, isOn: sender.isOn)
+            addOrRemoveNotifications(isOn: sender.isOn, segment: 3)
             updateNotificationOptions(segment: 3, isOn: sender.isOn)
         default:
             print("Morning Switch Toggled \(sender.isOn)")
-            addRemoveNotificationsOnToggle(segment: 0, isOn: sender.isOn)
+            addOrRemoveNotifications(isOn: sender.isOn, segment: 0)
             updateNotificationOptions(segment: 0, isOn: sender.isOn)
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //loadOptions()
-        
-//        //Check that everything matches up
-//        DispatchQueue.main.async {
-//            self.addRemoveNotificationsOnToggle(segment: 0, isOn: self.morningSwitch.isOn)
-//            self.addRemoveNotificationsOnToggle(segment: 1, isOn: self.afternoonSwitch.isOn)
-//            self.addRemoveNotificationsOnToggle(segment: 2, isOn: self.eveningSwitch.isOn)
-//            self.addRemoveNotificationsOnToggle(segment: 3, isOn: self.nightSwitch.isOn)
-//        }
         
     }
     
@@ -101,7 +89,7 @@ class OptionsTableViewController: UITableViewController {
                 print("Tapped Afternoon Cell")
                 let isOn = !self.afternoonSwitch.isOn
                 self.afternoonSwitch.setOn(isOn, animated: true)
-                addRemoveNotificationsOnToggle(segment: 1, isOn: isOn)
+                addOrRemoveNotifications(isOn: isOn, segment: 1)
                 print("Afternoon switch is now set to: \(afternoonSwitch.isOn)")
                 updateNotificationOptions(segment: 0, isOn: afternoonSwitch.isOn)
                 haptic.impactOccurred()
@@ -109,7 +97,7 @@ class OptionsTableViewController: UITableViewController {
                 print("Tapped Evening Cell")
                 let isOn = !self.eveningSwitch.isOn
                 self.eveningSwitch.setOn(isOn, animated: true)
-                addRemoveNotificationsOnToggle(segment: 2, isOn: isOn)
+                addOrRemoveNotifications(isOn: isOn, segment: 2)
                 print("Evening switch is now set to: \(eveningSwitch.isOn)")
                 updateNotificationOptions(segment: 0, isOn: eveningSwitch.isOn)
                 haptic.impactOccurred()
@@ -117,7 +105,7 @@ class OptionsTableViewController: UITableViewController {
                 print("Tapped Night Cell")
                 let isOn = !self.nightSwitch.isOn
                 self.nightSwitch.setOn(isOn, animated: true)
-                addRemoveNotificationsOnToggle(segment: 3, isOn: isOn)
+                addOrRemoveNotifications(isOn: isOn, segment: 3)
                 print("Night switch is now set to: \(nightSwitch.isOn)")
                 updateNotificationOptions(segment: 0, isOn: nightSwitch.isOn)
                 haptic.impactOccurred()
@@ -125,7 +113,7 @@ class OptionsTableViewController: UITableViewController {
                 print("Tapped Morning Cell")
                 let isOn = !self.morningSwitch.isOn
                 self.morningSwitch.setOn(isOn, animated: true)
-                addRemoveNotificationsOnToggle(segment: 0, isOn: isOn)
+                addOrRemoveNotifications(isOn: isOn, segment: 4)
                 print("Morning switch is now set to: \(morningSwitch.isOn)")
                 updateNotificationOptions(segment: 0, isOn: morningSwitch.isOn)
                 haptic.impactOccurred()
@@ -206,7 +194,7 @@ class OptionsTableViewController: UITableViewController {
     }
     
     func getSwitchFromOptions(segment: Int) -> Bool {
-        var isOn = false
+        var isOn = true
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -235,7 +223,7 @@ class OptionsTableViewController: UITableViewController {
     }
     
     func getNotificationBool(notificationOption: Bool?) -> Bool {
-        var isOn = false
+        var isOn = true
         if let notificationIsOn = notificationOption {
             isOn = notificationIsOn
         }
@@ -294,20 +282,20 @@ class OptionsTableViewController: UITableViewController {
         
         return time
     }
-    
-    func getHour(date: Date) -> Int {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH"
-        let hour = dateFormatter.string(from: date)
-        return Int(hour)!
-    }
-    
-    func getMinute(date: Date) -> Int {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "mm"
-        let minutes = dateFormatter.string(from: date)
-        return Int(minutes)!
-    }
+//
+//    func getHour(date: Date) -> Int {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "HH"
+//        let hour = dateFormatter.string(from: date)
+//        return Int(hour)!
+//    }
+//
+//    func getMinute(date: Date) -> Int {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "mm"
+//        let minutes = dateFormatter.string(from: date)
+//        return Int(minutes)!
+//    }
     
 //    func updateItemUUID(item: Items, uuidString: String) {
 //        DispatchQueue(label: realmDispatchQueueLabel).async {
@@ -326,48 +314,63 @@ class OptionsTableViewController: UITableViewController {
     
     //MARK: - Manage Notifications
 
-    func requestNotificationPermission() {
-        let center = UNUserNotificationCenter.current()
-        //Request permission to display alerts and play sounds
-        if #available(iOS 12.0, *) {
-            center.requestAuthorization(options: [.alert, .sound, .badge, .provisional, .providesAppNotificationSettings]) { (granted, error) in
-                // Enable or disable features based on authorization.
-                if !granted {
-                    return
-                }
-            }
-        } else {
-            // Fallback on earlier versions
-            center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-                // Enable or disable features based on authorization.
-                if !granted {
-                    return
+    //This is the one to run when setting up a brand new notification
+    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+        
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+                switch segment {
+                case 1:
+                    if !(options?.afternoonNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
+                case 2:
+                    if !(options?.eveningNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
+                case 3:
+                    if !(options?.nightNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
+                default:
+                    if !(options?.morningNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
                 }
             }
         }
-    }
-
-    func scheduleNewNotification(segment: Int, title: String, body: String?, uuidString: String) {
+        
+        print("running scheduleNewNotification")
         let notificationCenter = UNUserNotificationCenter.current()
-
+        
         notificationCenter.getNotificationSettings { (settings) in
             //DO not schedule notifications if not authorized
             guard settings.authorizationStatus == .authorized else {
                 //self.requestNotificationPermission()
+                print("Authorization status has changed to unauthorized for notifications")
                 return
             }
+            
             if settings.alertSetting == .enabled {
+                print("creating alert style notification")
                 //Schedule an alert-only notification
-                self.createNotification(title: title, notes: body, segment: segment, uuidString: uuidString)
-
+                //TODO: Check if segment notification option is on or off
+                self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                
             } else {
                 //Schedule a notification with a badge and sound
-
+                print("not an alert")
             }
-
+            
         }
     }
-
+    
     func createNotification(title: String, notes: String?, segment: Int, uuidString: String) {
         print("createNotification running")
         let content = UNMutableNotificationContent()
@@ -379,25 +382,26 @@ class OptionsTableViewController: UITableViewController {
         
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.current
+        self.loadOptions()
         //TODO: Error is here. Load these times with the view since they won't be changing. Then refernce those variables instead of the realm object
         switch segment {
         case 1:
-            if let time = self.time[1] {
+            if let time = self.timeArray[1] {
                 dateComponents.hour = getHour(date: getTime(timePeriod: 1, timeOption: time))
                 dateComponents.minute = getMinute(date: getTime(timePeriod: 1, timeOption: time))
             }
         case 2:
-            if let time = self.time[2] {
+            if let time = self.timeArray[2] {
                 dateComponents.hour = getHour(date: getTime(timePeriod: 2, timeOption: time))
                 dateComponents.minute = getMinute(date: getTime(timePeriod: 2, timeOption: time))
             }
         case 3:
-            if let time = self.time[3] {
+            if let time = self.timeArray[3] {
                 dateComponents.hour = getHour(date: getTime(timePeriod: 3, timeOption: time))
                 dateComponents.minute = getMinute(date: getTime(timePeriod: 3, timeOption: time))
             }
         default:
-            if let time = self.time[0] {
+            if let time = self.timeArray[0] {
                 dateComponents.hour = getHour(date: getTime(timePeriod: 0, timeOption: time))
                 dateComponents.minute = getMinute(date: getTime(timePeriod: 0, timeOption: time))
             }
@@ -420,41 +424,116 @@ class OptionsTableViewController: UITableViewController {
         }
         
     }
-
-//    func scheduleNewNotification(item: Items) {
-//        checkForNotificationAuth(notificationItem: item)
-//    }
-
-    func removeNotification(uuidString: String) {
+    
+    public func removeNotification(uuidString: [String]) {
+        print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: [uuidString])
+        center.removePendingNotificationRequests(withIdentifiers: uuidString)
     }
-
-    func removeNotifications(uuidStringArray: [String]?) {
-        if let uuidStrings = uuidStringArray {
-            let center = UNUserNotificationCenter.current()
-            center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
+    
+    func removeNotificationsForSegment(segment: Int) {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                var uuidStrings: [String] = []
+                let realm = try! Realm()
+                let items = realm.objects(Items.self).filter("segment = \(segment)")
+                for item in 0..<items.count {
+                    uuidStrings.append(items[item].uuidString)
+                }
+                //Might need to move this. But lets try it
+                self.removeNotification(uuidString: uuidStrings)
+            }
         }
+        
     }
-
-    func addRemoveNotificationsOnToggle(segment: Int, isOn: Bool) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+    
+    func enableNotificationsForSegment(segment: Int) {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
                 let items = realm.objects(Items.self).filter("segment = \(segment)")
-                if isOn {
-                    print("Turning notifications on for segment \(segment)")
-                    for item in 0..<items.count {
-                        self.scheduleNewNotification(segment: segment, title: items[item].title!, body: items[item].notes, uuidString: items[item].uuidString)
-                    }
-                } else {
-                    print("Turning notifications off for segment \(segment)")
-                    var uuidStrings: [String]?
-                    for item in 0..<items.count {
-                        uuidStrings?.append(items[item].uuidString)
-                    }
-                    self.removeNotifications(uuidStringArray: uuidStrings)
+                for item in 0..<items.count {
+                    self.scheduleNewNotification(title: items[item].title!, notes: items[item].notes, segment: items[item].segment, uuidString: items[item].uuidString)
                 }
+            }
+        }
+    }
+    
+    func addOrRemoveNotifications(isOn: Bool, segment: Int) {
+        if isOn {
+            enableNotificationsForSegment(segment: segment)
+        } else {
+            removeNotificationsForSegment(segment: segment)
+        }
+    }
+
+//    func addRemoveNotificationsOnToggle(segment: Int, isOn: Bool) {
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let items = realm.objects(Items.self).filter("segment = \(segment)")
+//                if isOn {
+//                    print("Turning notifications on for segment \(segment)")
+//                    for item in 0..<items.count {
+//                        self.scheduleNewNotification(title: items[item].title!, notes: items[item].notes, segment: segment, uuidString: items[item].uuidString)
+//                    }
+//                } else {
+//                    print("Turning notifications off for segment \(segment)")
+//                    var uuidStrings: [String]?
+//                    for item in 0..<items.count {
+//                        uuidStrings?.append(items[item].uuidString)
+//                    }
+//                    self.removeNotification(uuidString: uuidStrings)
+//                }
+//            }
+//        }
+//    }
+    
+    //MARK: - Conversion functions
+    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
+        var time: Date
+        let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        
+        if let setTime = timeOption {
+            time = setTime
+        } else {
+            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
+        }
+        
+        return time
+    }
+    
+    func getHour(date: Date) -> Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH"
+        let hour = dateFormatter.string(from: date)
+        return Int(hour)!
+    }
+    
+    func getMinute(date: Date) -> Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "mm"
+        let minutes = dateFormatter.string(from: date)
+        return Int(minutes)!
+    }
+    
+    //Mark: - Realm
+    
+    let realmDispatchQueueLabel: String = "background"
+    let optionsKey = "optionsKey"
+    
+    var timeArray: [Date?] = []
+    
+    //Load Options
+    func loadOptions() {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                //self.optionsObject = options
+                self.timeArray = [options?.morningStartTime, options?.afternoonStartTime, options?.eveningStartTime, options?.nightStartTime]
             }
         }
     }
@@ -474,33 +553,19 @@ class OptionsTableViewController: UITableViewController {
         }
     }
 
-    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
-        var time: Date
-        let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        
-        if let setTime = timeOption {
-            time = setTime
-        } else {
-            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
-        }
-        
-        return time
-    }
-//    // Get the default Realm
-//    let realm = try! Realm()
-//    var items: Results<Items>?
+//    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
+//        var time: Date
+//        let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.timeStyle = .short
 //
-//    func loadItems() {
-//        items = realm.objects(Items.self)
-//    }
+//        if let setTime = timeOption {
+//            time = setTime
+//        } else {
+//            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
+//        }
 //
-//    //Filter items to relevant segment and return those items
-//    func filterItems(segment: Int, items: Results<Items>?) -> Results<Items> {
-//        guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
-//        print("filterItems run")
-//        return filteredItems
+//        return time
 //    }
 
 }

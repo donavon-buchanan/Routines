@@ -157,7 +157,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         do {
             try! realm.write {
                 let item = items?[indexPath.row]
-                removeNotification(uuidString: item!.uuidString)
+                self.removeNotification(uuidString: [item!.uuidString])
                 realm.delete(item!)
             }
         }
@@ -208,12 +208,12 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     }
     
     //MARK: - Manage Notifications
-    
-    func removeNotification(uuidString: String) {
-        print("removing notification with uuid: \(String(describing: uuidString))")
+    public func removeNotification(uuidString: [String]) {
+        print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: [uuidString])
+        center.removePendingNotificationRequests(withIdentifiers: uuidString)
     }
+    
     
     //MARK: - Realm
     

@@ -313,7 +313,7 @@
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
-                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sr5-g1-2Wx">
+                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sr5-g1-2Wx">
                                                             <rect key="frame" x="294" y="3.6666666666666643" width="51" height="31"/>
                                                             <connections>
                                                                 <action selector="notificationSwitchToggled:" destination="a3q-M5-d7t" eventType="valueChanged" id="e3V-9G-8go"/>
@@ -360,7 +360,7 @@
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
-                                                        <switch opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ZmJ-rT-USa">
+                                                        <switch opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZmJ-rT-USa">
                                                             <rect key="frame" x="294" y="3.6666666666666643" width="51" height="31"/>
                                                             <connections>
                                                                 <action selector="notificationSwitchToggled:" destination="a3q-M5-d7t" eventType="valueChanged" id="7VR-tq-YXb"/>
@@ -404,7 +404,7 @@
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
-                                                        <switch opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3B4-sy-Lml">
+                                                        <switch opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3B4-sy-Lml">
                                                             <rect key="frame" x="294" y="3.6666666666666643" width="51" height="31"/>
                                                             <connections>
                                                                 <action selector="notificationSwitchToggled:" destination="a3q-M5-d7t" eventType="valueChanged" id="wNF-pE-WHU"/>
@@ -448,7 +448,7 @@
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
-                                                        <switch opaque="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="6Be-Gy-fuV">
+                                                        <switch opaque="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Be-Gy-fuV">
                                                             <rect key="frame" x="294" y="3.6666666666666643" width="51" height="31"/>
                                                             <connections>
                                                                 <action selector="notificationSwitchToggled:" destination="a3q-M5-d7t" eventType="valueChanged" id="PYT-Le-blD"/>

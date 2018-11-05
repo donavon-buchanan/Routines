@@ -16,10 +16,10 @@ import RealmSwift
     dynamic var eveningStartTime: Date?
     dynamic var nightStartTime: Date?
     
-    dynamic var morningNotificationsOn: Bool = false
-    dynamic var afternoonNotificationsOn: Bool = false
-    dynamic var eveningNotificationsOn: Bool = false
-    dynamic var nightNotificationsOn: Bool = false
+    dynamic var morningNotificationsOn: Bool = true
+    dynamic var afternoonNotificationsOn: Bool = true
+    dynamic var eveningNotificationsOn: Bool = true
+    dynamic var nightNotificationsOn: Bool = true
     
     dynamic var firstItemAdded: Bool = false
     

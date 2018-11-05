@@ -11,7 +11,7 @@ import UserNotificationsUI
 import UserNotifications
 import RealmSwift
 
-class NotificationHandler: UNUserNotificationCenter, UNUserNotificationCenterDelegate {
+open class NotificationHandler: UNUserNotificationCenter, UNUserNotificationCenterDelegate {
     
     func requestNotificationPermission() {
         print("running Request notification permission")
@@ -40,6 +40,36 @@ class NotificationHandler: UNUserNotificationCenter, UNUserNotificationCenterDel
     
     //This is the one to run when setting up a brand new notification
     func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+        
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+                switch segment {
+                case 1:
+                    if !(options?.afternoonNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
+                case 2:
+                    if !(options?.eveningNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
+                case 3:
+                    if !(options?.nightNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
+                default:
+                    if !(options?.morningNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
+                }
+            }
+        }
+        
         print("running scheduleNewNotification")
         let notificationCenter = UNUserNotificationCenter.current()
         
@@ -119,7 +149,8 @@ class NotificationHandler: UNUserNotificationCenter, UNUserNotificationCenterDel
         
     }
     
-    func removeNotification(uuidString: [String]) {
+    public func removeNotification(uuidString: [String]) {
+        print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidString)
     }
@@ -149,6 +180,14 @@ class NotificationHandler: UNUserNotificationCenter, UNUserNotificationCenterDel
                     self.scheduleNewNotification(title: items[item].title!, notes: items[item].notes, segment: items[item].segment, uuidString: items[item].uuidString)
                 }
             }
+        }
+    }
+    
+    func addOrRemoveNotifications(isOn: Bool, segment: Int) {
+        if isOn {
+            enableNotificationsForSegment(segment: segment)
+        } else {
+            removeNotificationsForSegment(segment: segment)
         }
     }
     

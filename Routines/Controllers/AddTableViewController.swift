@@ -21,7 +21,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     let realmDispatchQueueLabel: String = "background"
     
     var item : Items?
-    var time: [Date?] = []
+    var timeArray: [Date?] = []
     //segment from add segue
     var editingSegment: Int?
     
@@ -152,29 +152,37 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     
     //MARK: - Manage Notifications
     
-    func requestNotificationPermission() {
-        print("running Request notification permission")
-        let center = UNUserNotificationCenter.current()
-        //Request permission to display alerts and play sounds
-        if #available(iOS 12.0, *) {
-            center.requestAuthorization(options: [.alert, .sound, .badge, .provisional, .providesAppNotificationSettings]) { (granted, error) in
-                // Enable or disable features based on authorization.
-                if !granted {
-                    return
-                }
-            }
-        } else {
-            // Fallback on earlier versions
-            center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
-                // Enable or disable features based on authorization.
-                if !granted {
-                    return
+    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+        
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+                switch segment {
+                case 1:
+                    if !(options?.afternoonNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
+                case 2:
+                    if !(options?.eveningNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
+                case 3:
+                    if !(options?.nightNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
+                default:
+                    if !(options?.morningNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
                 }
             }
         }
-    }
-    
-    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+        
         print("running scheduleNewNotification")
         let notificationCenter = UNUserNotificationCenter.current()
         
@@ -214,22 +222,22 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         //TODO: Error is here. Load these times with the view since they won't be changing. Then refernce those variables instead of the realm object
         switch segment {
         case 1:
-            if let time = self.time[1] {
+            if let time = self.timeArray[1] {
                 dateComponents.hour = getHour(date: getTime(timePeriod: 1, timeOption: time))
                 dateComponents.minute = getMinute(date: getTime(timePeriod: 1, timeOption: time))
             }
         case 2:
-            if let time = self.time[2] {
+            if let time = self.timeArray[2] {
                 dateComponents.hour = getHour(date: getTime(timePeriod: 2, timeOption: time))
                 dateComponents.minute = getMinute(date: getTime(timePeriod: 2, timeOption: time))
             }
         case 3:
-            if let time = self.time[3] {
+            if let time = self.timeArray[3] {
                 dateComponents.hour = getHour(date: getTime(timePeriod: 3, timeOption: time))
                 dateComponents.minute = getMinute(date: getTime(timePeriod: 3, timeOption: time))
             }
         default:
-            if let time = self.time[0] {
+            if let time = self.timeArray[0] {
                 dateComponents.hour = getHour(date: getTime(timePeriod: 0, timeOption: time))
                 dateComponents.minute = getMinute(date: getTime(timePeriod: 0, timeOption: time))
             }
@@ -254,6 +262,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     }
     
     func removeNotification(uuidString: String) {
+        print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: [uuidString])
     }
@@ -272,7 +281,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
                 //self.optionsObject = options
-                self.time = [options?.morningStartTime, options?.afternoonStartTime, options?.eveningStartTime, options?.nightStartTime]
+                self.timeArray = [options?.morningStartTime, options?.afternoonStartTime, options?.eveningStartTime, options?.nightStartTime]
             }
         }
     }
