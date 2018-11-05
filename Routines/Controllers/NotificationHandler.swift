@@ -90,6 +90,8 @@ open class NotificationHandler: UNUserNotificationCenter, UNUserNotificationCent
         print("createNotification running")
         let content = UNMutableNotificationContent()
         content.title = title
+        content.sound = UNNotificationSound.default
+        content.threadIdentifier = String(segment)
         
         if let notesText = notes {
             content.body = notesText
