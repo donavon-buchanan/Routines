@@ -308,6 +308,18 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         return Int(minutes)!
     }
     
+    //Set the notification badge count
+    func getSegmentCount(segment: Int) -> Int {
+        var count = Int()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                count = realm.objects(Items.self).filter("segment = \(segment)").count
+            }
+        }
+        return count
+    }
+    
 //    func updateItemUUID(item: Items, uuidString: String) {
 //        DispatchQueue(label: realmDispatchQueueLabel).async {
 //            autoreleasepool {

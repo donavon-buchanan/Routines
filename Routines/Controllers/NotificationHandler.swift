@@ -145,6 +145,7 @@ open class NotificationHandler: UNUserNotificationCenter, UNUserNotificationCent
     public func removeNotification(uuidString: [String]) {
         print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
+        
         center.removePendingNotificationRequests(withIdentifiers: uuidString)
     }
     
@@ -213,6 +214,18 @@ open class NotificationHandler: UNUserNotificationCenter, UNUserNotificationCent
         dateFormatter.dateFormat = "mm"
         let minutes = dateFormatter.string(from: date)
         return Int(minutes)!
+    }
+    
+    //Set the notification badge count
+    func getSegmentCount(segment: Int) -> Int {
+        var count = Int()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                count = realm.objects(Items.self).filter("segment = \(segment)").count
+            }
+        }
+        return count
     }
     
     //Mark: - Realm
