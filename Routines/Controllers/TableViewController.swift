@@ -11,6 +11,7 @@ import RealmSwift
 import SwipeCellKit
 import UserNotifications
 import UserNotificationsUI
+import NotificationCenter
 
 class TableViewController: SwipeTableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, UNUserNotificationCenterDelegate {
     
@@ -38,6 +39,9 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     override func viewDidLoad() {
         print("Running viewDidLoad")
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil )
+        
         self.tabBarController?.delegate = self
         self.navigationController?.delegate = self
         self.segment = self.tabBarController?.selectedIndex ?? 0
@@ -52,24 +56,17 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         loadItems(segment: self.segment)
     }
     
-//    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-//        
-//        guard let fromView = tabBarController.selectedViewController?.view, let toView = viewController.view else {
-//            return false // Make sure you want this as false
-//        }
-//        
-//        if fromView != toView {
-//            UIView.transition(from: fromView, to: toView, duration: 0.3, options: [.transitionCrossDissolve], completion: nil)
-//        }
-//        
-//        return true
-//    }
+    @objc func appBecameActive() {
+        loadItems(segment: self.segment)
+        updateBadge()
+        tableView.reloadData()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("View Will Appear")
+        //loadItems(segment: self.segment)
         self.tabBarController?.tabBar.isHidden = false
-        reloadTableView()
         updateBadge()
         removeDeliveredNotifications()
     }
@@ -78,7 +75,10 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         super.viewDidAppear(animated)
         print("viewDidAppear \n")
         changeSegment(segment: passedSegment)
+        reloadTableView()
     }
+    
+    
     
 //    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
 //        self.selectedTab = tabBarController.selectedIndex
@@ -238,7 +238,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     //MARK: - Realm
     
     // Get the default Realm
-    let realm = try! Realm()
+    lazy var realm = try! Realm()
     
     //Each view (tab) loads its own set of items.
     //Load from viewDidLoad. Reload table from viewWillAppear

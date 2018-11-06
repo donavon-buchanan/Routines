@@ -22,5 +22,7 @@ import RealmSwift
     
     //Notification identifier
     dynamic var uuidString: String = UUID().uuidString
-    
+    override static func primaryKey() -> String? {
+        return "uuidString"
+    }
 }

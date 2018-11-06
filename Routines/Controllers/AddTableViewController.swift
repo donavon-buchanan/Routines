@@ -41,6 +41,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             //print("Item's uuidString is \((item?.uuidString)!)")
         } else {
             self.uuidString = UUID().uuidString
+            print("new item uuidString: \(self.uuidString)")
         }
         
         //load in segment from add segue

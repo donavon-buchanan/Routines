@@ -16,7 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var window: UIWindow?
     
+    let center = UNUserNotificationCenter.current()
+    
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
+        migrateRealm()
+        
+        center.delegate = self
         
         requestNotificationPermission()
         registerNotificationCategoriesAndActions()
@@ -25,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
         //checkToCreateOptions()
         loadOptions()
 
@@ -56,13 +63,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    //MARK: - Options Realm
     var timeArray: [Date?] = []
 //    //Options Properties
-    let realm = try! Realm()
+    lazy var realm = try! Realm()
     var optionsObject: Options?
     let optionsKey = "optionsKey"
     let realmDispatchQueueLabel: String = "background"
     
+    func migrateRealm() {
+        print("performing realm migration")
+        let config = Realm.Configuration(
+            // Set the new schema version. This must be greater than the previously used
+            // version (if you've never set a schema version before, the version is 0).
+            schemaVersion: 1,
+            
+            // Set the block which will be called automatically when opening a Realm with
+            // a schema version lower than the one set above
+            migrationBlock: { migration, oldSchemaVersion in
+                // We haven’t migrated anything yet, so oldSchemaVersion == 0
+                if (oldSchemaVersion < 1) {
+//                    migration.enumerateObjects(ofType: Items.className(), { (newObject, oldObject) in
+//                        newObject!["uuidString"] = oldObject!["uuidString"]
+//                    })
+                }
+        })
+        
+        // Tell Realm to use this new configuration object for the default Realm
+        Realm.Configuration.defaultConfiguration = config
+        
+        // Now that we've told Realm how to handle the schema change, opening the file
+        // will automatically perform the migration
+        let realm = try! Realm()
+    }
+    
     func loadTimes() {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
@@ -96,7 +129,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func completeItem(uuidString: String) {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        print("running completeItem")
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
@@ -108,15 +142,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
             }
+            print("completeItem completed")
         }
     }
     
     func snoozeItem(uuidString: String) {
+        print("running snoozeItem")
         var title : String?
         var notes : String?
         var itemSegment : Int?
         var itemuuidString : String?
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
@@ -139,7 +175,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     notes = item.notes
                     itemSegment = item.segment
                     itemuuidString = item.uuidString
-                    
+                    print("snoozeItem Completed")
                 }
             }
         }
@@ -151,7 +187,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     //MARK: - Manage Notifications
     
     func requestNotificationPermission() {
-        let center = UNUserNotificationCenter.current()
+        //let center = UNUserNotificationCenter.current()
         //Request permission to display alerts and play sounds
         if #available(iOS 12.0, *) {
             center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { (granted, error) in
@@ -185,8 +221,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     //Notification Categories and Actions
+    
     func registerNotificationCategoriesAndActions() {
-        let center = UNUserNotificationCenter.current()
+        //let center = UNUserNotificationCenter.current()
         
         let completeAction = UNNotificationAction(identifier: "complete", title: "Complete", options: UNNotificationActionOptions(rawValue: 0))
         
@@ -201,8 +238,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
+        print("running userNotificationCenter:didReceive:withCompletionHandler")
         if response.notification.request.content.categoryIdentifier == "morning" {
+            print("running response: morning")
             switch response.actionIdentifier {
             case "complete":
                 completeItem(uuidString: response.notification.request.identifier)
@@ -211,9 +249,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             default:
                 break
             }
+            
         }
         
         if response.notification.request.content.categoryIdentifier == "afternoon" {
+            print("running response: afternoon")
             switch response.actionIdentifier {
             case "complete":
                 completeItem(uuidString: response.notification.request.identifier)
@@ -225,6 +265,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         if response.notification.request.content.categoryIdentifier == "evening" {
+            print("running response: evening")
             switch response.actionIdentifier {
             case "complete":
                 completeItem(uuidString: response.notification.request.identifier)
@@ -236,6 +277,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         if response.notification.request.content.categoryIdentifier == "night" {
+            print("running response: night")
             switch response.actionIdentifier {
             case "complete":
                 completeItem(uuidString: response.notification.request.identifier)
@@ -245,6 +287,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 break
             }
         }
+        
+        completionHandler()
         
     }
     
