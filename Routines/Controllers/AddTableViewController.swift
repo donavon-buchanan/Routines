@@ -62,11 +62,11 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         notesTextView.layer.borderColor = UIColor.lightGray.cgColor
         
         if taskTextField.hasText == false {
-            taskTextField.backgroundColor = UIColor.groupTableViewBackground
+            //taskTextField.backgroundColor = UIColor.groupTableViewBackground
         }
         
         if notesTextView.hasText == false {
-            notesTextView.backgroundColor = UIColor.groupTableViewBackground
+            //notesTextView.backgroundColor = UIColor.groupTableViewBackground
         }
         
         //Add tap gesture for editing notes
@@ -87,7 +87,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         self.notesTextView.isEditable = true
         self.notesTextView.becomeFirstResponder()
         
-        notesTextView.backgroundColor = UIColor.groupTableViewBackground
+        //notesTextView.backgroundColor = UIColor.groupTableViewBackground
     }
     
     @objc func viewTapped(_ aRecognizer: UITapGestureRecognizer) {
@@ -99,17 +99,17 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         textView.dataDetectorTypes = .all
         
         if textView.hasText {
-            textView.backgroundColor = .white
+            //textView.backgroundColor = .white
         }
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        textView.backgroundColor = UIColor.groupTableViewBackground
+        //textView.backgroundColor = UIColor.groupTableViewBackground
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.hasText {
-            textField.backgroundColor = .white
+            //textField.backgroundColor = .white
         }
     }
     // MARK: - Navigation
