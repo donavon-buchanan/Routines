@@ -260,9 +260,21 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             content.body = notesText
         }
         
+        // Assign the category (and the associated actions).
+        switch segment {
+        case 1:
+            content.categoryIdentifier = "afternoon"
+        case 2:
+            content.categoryIdentifier = "evening"
+        case 3:
+            content.categoryIdentifier = "night"
+        default:
+            content.categoryIdentifier = "morning"
+        }
+        
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.current
-        //TODO: Error is here. Load these times with the view since they won't be changing. Then refernce those variables instead of the realm object
+        
         switch segment {
         case 1:
             if let time = self.timeArray[1] {

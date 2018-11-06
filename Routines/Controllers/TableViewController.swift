@@ -71,6 +71,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         self.tabBarController?.tabBar.isHidden = false
         reloadTableView()
         updateBadge()
+        removeDeliveredNotifications()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -219,6 +220,18 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidString)
+    }
+    
+    func removeDeliveredNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.getDeliveredNotifications { (notifications) in
+            for notification in notifications {
+                //TODO: If repeats, remove and then add again
+                //Get the ID and then get the properties of the specific object
+                //Need to get all the same notification functions used in other views to be able to create
+                center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
+            }
+        }
     }
     
     

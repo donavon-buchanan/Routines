@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
         requestNotificationPermission()
-        
+        registerNotificationCategoriesAndActions()
         return true
     }
 
@@ -54,34 +54,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
 //    //MARK: - Options Realm
-//    let realmDispatchQueueLabel: String = "background"
-//
-//    func checkToCreateOptions() {
-//        DispatchQueue(label: realmDispatchQueueLabel).async {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let options = realm.object(ofType: Options.self, forPrimaryKey: "optionsKey")
-//                print("App Delegate - Options is: \(String(describing: options))")
-//                if options == nil {
-//                    let newOptions = Options()
-//                    print("Creating Options for the first time with \(String(describing: newOptions))")
-//                    do {
-//                        try! realm.write {
-//                            realm.add(newOptions)
-//                        }
-//                    }
-//                } else {
-//                    print("Options exist. Carry on.")
-//                }
-//            }
-//        }
-//    }
-    
-//
+    var timeArray: [Date?] = []
 //    //Options Properties
     let realm = try! Realm()
     var optionsObject: Options?
     let optionsKey = "optionsKey"
+    let realmDispatchQueueLabel: String = "background"
+    
+    func loadTimes() {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                //self.optionsObject = options
+                self.timeArray = [options?.morningStartTime, options?.afternoonStartTime, options?.eveningStartTime, options?.nightStartTime]
+            }
+        }
+    }
 
     //Load Options
     func loadOptions() {
@@ -104,6 +93,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             loadOptions()
         }
 
+    }
+    
+    func completeItem(uuidString: String) {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
+                    do {
+                        try! realm.write {
+                            realm.delete(item)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func snoozeItem(uuidString: String) {
+        var title : String?
+        var notes : String?
+        var itemSegment : Int?
+        var itemuuidString : String?
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
+                    let segment = item.segment
+                    var newSegment = Int()
+                    
+                    switch segment {
+                    case 3:
+                        newSegment = 0
+                    default:
+                        newSegment = segment+1
+                    }
+                    
+                    do {
+                        try! realm.write {
+                            item.segment = newSegment
+                        }
+                    }
+                    title = item.title
+                    notes = item.notes
+                    itemSegment = item.segment
+                    itemuuidString = item.uuidString
+                    
+                }
+            }
+        }
+        if let newTitle = title {
+            scheduleNewNotification(title: newTitle, notes: notes!, segment: itemSegment!, uuidString: itemuuidString!)
+        }
     }
     
     //MARK: - Manage Notifications
@@ -140,6 +181,202 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let navController = NavigationViewController()
         let notificationSettingsVC = OptionsTableViewController()
         navController.pushViewController(notificationSettingsVC, animated: true)
+    }
+    
+    //Notification Categories and Actions
+    func registerNotificationCategoriesAndActions() {
+        let center = UNUserNotificationCenter.current()
+        
+        let completeAction = UNNotificationAction(identifier: "complete", title: "Complete", options: .init(rawValue: 0))
+        
+        let morningCategory = UNNotificationCategory(identifier: "morning", actions: [completeAction], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
+        
+        center.setNotificationCategories([morningCategory])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        if response.notification.request.content.categoryIdentifier == "morning" {
+            switch response.actionIdentifier {
+            case "complete":
+                completeItem(uuidString: response.notification.request.identifier)
+            default:
+                break
+            }
+        }
+        
+        if response.notification.request.content.categoryIdentifier == "afternoon" {
+            switch response.actionIdentifier {
+            case "complete":
+                completeItem(uuidString: response.notification.request.identifier)
+            default:
+                break
+            }
+        }
+        
+        if response.notification.request.content.categoryIdentifier == "evening" {
+            switch response.actionIdentifier {
+            case "complete":
+                completeItem(uuidString: response.notification.request.identifier)
+            default:
+                break
+            }
+        }
+        
+        if response.notification.request.content.categoryIdentifier == "night" {
+            switch response.actionIdentifier {
+            case "complete":
+                completeItem(uuidString: response.notification.request.identifier)
+            default:
+                break
+            }
+        }
+        
+    }
+    
+    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+        
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+                switch segment {
+                case 1:
+                    if !(options?.afternoonNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
+                case 2:
+                    if !(options?.eveningNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
+                case 3:
+                    if !(options?.nightNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
+                default:
+                    if !(options?.morningNotificationsOn)! {
+                        print("Afternoon Notifications toggled off. Aborting")
+                        return
+                    }
+                }
+            }
+        }
+        
+        print("running scheduleNewNotification")
+        let notificationCenter = UNUserNotificationCenter.current()
+        
+        notificationCenter.getNotificationSettings { (settings) in
+            //DO not schedule notifications if not authorized
+            guard settings.authorizationStatus == .authorized else {
+                //self.requestNotificationPermission()
+                print("Authorization status has changed to unauthorized for notifications")
+                return
+            }
+            
+            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+            
+        }
+    }
+    
+    func createNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+        loadTimes()
+        print("createNotification running")
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.sound = UNNotificationSound.default
+        content.threadIdentifier = String(segment)
+        
+        if let notesText = notes {
+            content.body = notesText
+        }
+        
+        // Assign the category (and the associated actions).
+        switch segment {
+        case 1:
+            content.categoryIdentifier = "afternoon"
+        case 2:
+            content.categoryIdentifier = "evening"
+        case 3:
+            content.categoryIdentifier = "night"
+        default:
+            content.categoryIdentifier = "morning"
+        }
+        
+        var dateComponents = DateComponents()
+        dateComponents.calendar = Calendar.current
+        
+        switch segment {
+        case 1:
+            if let time = self.timeArray[1] {
+                dateComponents.hour = getHour(date: getTime(timePeriod: 1, timeOption: time))
+                dateComponents.minute = getMinute(date: getTime(timePeriod: 1, timeOption: time))
+            }
+        case 2:
+            if let time = self.timeArray[2] {
+                dateComponents.hour = getHour(date: getTime(timePeriod: 2, timeOption: time))
+                dateComponents.minute = getMinute(date: getTime(timePeriod: 2, timeOption: time))
+            }
+        case 3:
+            if let time = self.timeArray[3] {
+                dateComponents.hour = getHour(date: getTime(timePeriod: 3, timeOption: time))
+                dateComponents.minute = getMinute(date: getTime(timePeriod: 3, timeOption: time))
+            }
+        default:
+            if let time = self.timeArray[0] {
+                dateComponents.hour = getHour(date: getTime(timePeriod: 0, timeOption: time))
+                dateComponents.minute = getMinute(date: getTime(timePeriod: 0, timeOption: time))
+            }
+        }
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        //Create the request
+        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+        
+        //Schedule the request with the system
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.add(request) { (error) in
+            if error != nil {
+                //TODO: handle notification errors
+                print(String(describing: error))
+            } else {
+                print("Notification created successfully")
+            }
+        }
+        
+    }
+    
+    //MARK: - Conversion functions
+    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
+        var time: Date
+        let defaultTimeStrings = ["07:00", "12:00", "17:00", "21:00 PM"]
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        
+        if let setTime = timeOption {
+            time = setTime
+        } else {
+            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
+        }
+        
+        return time
+    }
+    
+    func getHour(date: Date) -> Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH"
+        let hour = dateFormatter.string(from: date)
+        return Int(hour)!
+    }
+    
+    func getMinute(date: Date) -> Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "mm"
+        let minutes = dateFormatter.string(from: date)
+        return Int(minutes)!
     }
     
 }
