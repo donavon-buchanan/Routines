@@ -189,7 +189,7 @@ open class NotificationHandler: UNUserNotificationCenter, UNUserNotificationCent
     //MARK: - Conversion functions
     func getTime(timePeriod: Int, timeOption: Date?) -> Date {
         var time: Date
-        let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
+        let defaultTimeStrings = ["07:00", "12:00", "17:00", "21:00 PM"]
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .short
         

@@ -11,7 +11,7 @@ import RealmSwift
 import UserNotifications
 import UserNotificationsUI
 
-class AddTableViewController: UITableViewController, UITextViewDelegate {
+class AddTableViewController: UITableViewController, UITextViewDelegate, UITextFieldDelegate {
     
     //MARK: - Properties
     @IBOutlet weak var taskTextField: UITextField!
@@ -54,11 +54,16 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         taskTextField.addTarget(self, action: #selector(self.textFieldDidChange), for: .editingChanged)
         segmentSelection.addTarget(self, action: #selector(self.textFieldDidChange), for: .valueChanged)
         notesTextView.delegate = self
+        taskTextField.delegate = self
         
         notesTextView.layer.cornerRadius = 6
         notesTextView.layer.masksToBounds = true
         notesTextView.layer.borderWidth = 0.25
         notesTextView.layer.borderColor = UIColor.lightGray.cgColor
+        
+        if taskTextField.hasText == false {
+            taskTextField.backgroundColor = UIColor.groupTableViewBackground
+        }
         
         if notesTextView.hasText == false {
             notesTextView.backgroundColor = UIColor.groupTableViewBackground
@@ -93,11 +98,20 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         textView.isEditable = false
         textView.dataDetectorTypes = .all
         
-        if notesTextView.hasText {
-            notesTextView.backgroundColor = .white
+        if textView.hasText {
+            textView.backgroundColor = .white
         }
     }
     
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        textView.backgroundColor = UIColor.groupTableViewBackground
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField.hasText {
+            textField.backgroundColor = .white
+        }
+    }
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

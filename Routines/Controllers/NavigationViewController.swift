@@ -12,10 +12,10 @@ class NavigationViewController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationBar.shadowImage = UIImage()
-        self.navigationBar.backgroundColor = .white
-        self.view.backgroundColor = .white
-        self.navigationBar.isTranslucent = false
+//        self.navigationBar.shadowImage = UIImage()
+//        self.navigationBar.backgroundColor = .white
+//        self.view.backgroundColor = .white
+//        self.navigationBar.isTranslucent = false
         // Do any additional setup after loading the view.
     }
     

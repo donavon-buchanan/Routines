@@ -250,9 +250,10 @@ class OptionsTableViewController: UITableViewController {
                 }
                 
                 let periods = ["morning", "afternoon", "evening", "night"]
-                let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
                 let dateFormatter = DateFormatter()
                 dateFormatter.timeStyle = .short
+                dateFormatter.locale = Locale(identifier: "enUS")
+                
                 if let dateTime = timeOption {
                     
                     time = "Your \(periods[timePeriod]) begins at \(dateFormatter.string(from: dateTime))"
@@ -270,7 +271,6 @@ class OptionsTableViewController: UITableViewController {
     
     func getOptionTimesAsDate(timePeriod: Int, timeOption: Date?) -> Date {
         var time: Date
-        let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .short
         
@@ -483,11 +483,14 @@ class OptionsTableViewController: UITableViewController {
 //    }
     
     //MARK: - Conversion functions
+    let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
+    
+    
     func getTime(timePeriod: Int, timeOption: Date?) -> Date {
         var time: Date
-        let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .short
+        dateFormatter.locale = Locale(identifier: "enUS")
         
         if let setTime = timeOption {
             time = setTime
