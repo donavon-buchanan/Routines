@@ -55,6 +55,15 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         segmentSelection.addTarget(self, action: #selector(self.textFieldDidChange), for: .valueChanged)
         notesTextView.delegate = self
         
+        notesTextView.layer.cornerRadius = 6
+        notesTextView.layer.masksToBounds = true
+        notesTextView.layer.borderWidth = 0.25
+        notesTextView.layer.borderColor = UIColor.lightGray.cgColor
+        
+        if notesTextView.hasText == false {
+            notesTextView.backgroundColor = UIColor.groupTableViewBackground
+        }
+        
         //Add tap gesture for editing notes
         let textFieldTap = UITapGestureRecognizer(target: self, action: #selector(setNotesEditable))
         self.notesTextView.addGestureRecognizer(textFieldTap)
@@ -72,6 +81,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
         self.notesTextView.dataDetectorTypes = []
         self.notesTextView.isEditable = true
         self.notesTextView.becomeFirstResponder()
+        
+        notesTextView.backgroundColor = UIColor.groupTableViewBackground
     }
     
     @objc func viewTapped(_ aRecognizer: UITapGestureRecognizer) {
@@ -81,6 +92,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.isEditable = false
         textView.dataDetectorTypes = .all
+        
+        if notesTextView.hasText {
+            notesTextView.backgroundColor = .white
+        }
     }
     
     // MARK: - Navigation

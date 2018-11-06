@@ -92,6 +92,7 @@
                                             <subviews>
                                                 <textField opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="CU9-wA-X3j">
                                                     <rect key="frame" x="10" y="1" width="355" height="52"/>
+                                                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
@@ -148,7 +149,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="interactive" editable="NO" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5iE-Oy-Fuc">
-                                                    <rect key="frame" x="16" y="11" width="343" height="130"/>
+                                                    <rect key="frame" x="10" y="11" width="355" height="130"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
                                                     <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES" shipmentTrackingNumber="YES" flightNumber="YES" lookupSuggestion="YES"/>
@@ -156,9 +157,9 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottomMargin" secondItem="5iE-Oy-Fuc" secondAttribute="bottom" id="bEc-uY-QsS"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="5iE-Oy-Fuc" secondAttribute="trailing" id="n4H-XY-ZbP"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="5iE-Oy-Fuc" secondAttribute="trailing" constant="-6" id="n4H-XY-ZbP"/>
                                                 <constraint firstItem="5iE-Oy-Fuc" firstAttribute="top" secondItem="Fv4-fQ-urg" secondAttribute="topMargin" id="pce-Tl-GB3"/>
-                                                <constraint firstItem="5iE-Oy-Fuc" firstAttribute="leading" secondItem="Fv4-fQ-urg" secondAttribute="leadingMargin" id="zLI-08-iev"/>
+                                                <constraint firstItem="5iE-Oy-Fuc" firstAttribute="leading" secondItem="Fv4-fQ-urg" secondAttribute="leadingMargin" constant="-6" id="zLI-08-iev"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
