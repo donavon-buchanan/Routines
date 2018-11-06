@@ -11,7 +11,7 @@ import UserNotificationsUI
 import UserNotifications
 import RealmSwift
 
-open class NotificationHandler: UNUserNotificationCenter, UNUserNotificationCenterDelegate {
+open class NotificationsTemplates: UNUserNotificationCenter, UNUserNotificationCenterDelegate {
     
     func requestNotificationPermission() {
         print("running Request notification permission")
