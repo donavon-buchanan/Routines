@@ -100,6 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             autoreleasepool {
                 let realm = try! Realm()
                 if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
+                    print("Completing item")
                     do {
                         try! realm.write {
                             realm.delete(item)
@@ -187,11 +188,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func registerNotificationCategoriesAndActions() {
         let center = UNUserNotificationCenter.current()
         
-        let completeAction = UNNotificationAction(identifier: "complete", title: "Complete", options: .init(rawValue: 0))
+        let completeAction = UNNotificationAction(identifier: "complete", title: "Complete", options: UNNotificationActionOptions(rawValue: 0))
         
-        let morningCategory = UNNotificationCategory(identifier: "morning", actions: [completeAction], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
+        let snoozeAction = UNNotificationAction(identifier: "snooze", title: "Snooze", options: UNNotificationActionOptions(rawValue: 0))
         
-        center.setNotificationCategories([morningCategory])
+        let morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction,completeAction], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
+        let afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction,completeAction], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
+        let eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction,completeAction], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
+        let nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction,completeAction], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
+        
+        center.setNotificationCategories([morningCategory,afternoonCategory,eveningCategory,nightCategory])
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
@@ -200,6 +206,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             switch response.actionIdentifier {
             case "complete":
                 completeItem(uuidString: response.notification.request.identifier)
+            case "snooze":
+                snoozeItem(uuidString: response.notification.request.identifier)
             default:
                 break
             }
@@ -209,6 +217,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             switch response.actionIdentifier {
             case "complete":
                 completeItem(uuidString: response.notification.request.identifier)
+            case "snooze":
+                snoozeItem(uuidString: response.notification.request.identifier)
             default:
                 break
             }
@@ -218,6 +228,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             switch response.actionIdentifier {
             case "complete":
                 completeItem(uuidString: response.notification.request.identifier)
+            case "snooze":
+                snoozeItem(uuidString: response.notification.request.identifier)
             default:
                 break
             }
@@ -227,6 +239,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             switch response.actionIdentifier {
             case "complete":
                 completeItem(uuidString: response.notification.request.identifier)
+            case "snooze":
+                snoozeItem(uuidString: response.notification.request.identifier)
             default:
                 break
             }
