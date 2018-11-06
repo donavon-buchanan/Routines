@@ -251,17 +251,18 @@ class OptionsTableViewController: UITableViewController {
                 
                 let periods = ["morning", "afternoon", "evening", "night"]
                 let dateFormatter = DateFormatter()
-                dateFormatter.timeStyle = .short
-                dateFormatter.locale = Locale(identifier: "enUS")
+                //dateFormatter.timeStyle = .short
+                dateFormatter.locale = Locale.autoupdatingCurrent
+                dateFormatter.setLocalizedDateFormatFromTemplate("HH:mm")
                 
                 if let dateTime = timeOption {
                     
-                    time = "Your \(periods[timePeriod]) begins at \(dateFormatter.string(from: dateTime))"
+                    time = "Your \(periods[timePeriod]) begins at \(getLocalTimeString(date: dateTime))"
                 } else {
                     
                     let defaultTime = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
                     
-                    time = "Your \(periods[timePeriod]) begins at \(dateFormatter.string(from: defaultTime))"
+                    time = "Your \(periods[timePeriod]) begins at \(getLocalTimeString(date: defaultTime))"
                 }
             }
         }
@@ -483,15 +484,19 @@ class OptionsTableViewController: UITableViewController {
 //    }
     
     //MARK: - Conversion functions
-    let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
+    let defaultTimeStrings = ["07:00", "12:00", "17:00", "21:00"]
+    
+    func getLocalTimeString(date: Date) -> String{
+        return DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)
+    }
     
     
     func getTime(timePeriod: Int, timeOption: Date?) -> Date {
         var time: Date
         let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        dateFormatter.locale = Locale(identifier: "enUS")
-        
+        //dateFormatter.timeStyle = .short
+        dateFormatter.locale = Locale.autoupdatingCurrent
+        dateFormatter.setLocalizedDateFormatFromTemplate("HH:mm")
         if let setTime = timeOption {
             time = setTime
         } else {
