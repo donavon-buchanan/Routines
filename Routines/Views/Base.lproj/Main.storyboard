@@ -57,7 +57,7 @@
                     <navigationItem key="navigationItem" id="zZQ-20-1Ec">
                         <barButtonItem key="leftBarButtonItem" title="Options" image="gear" id="fje-qN-BIw">
                             <connections>
-                                <segue destination="a3q-M5-d7t" kind="show" id="CtJ-KX-J4i"/>
+                                <segue destination="a3q-M5-d7t" kind="show" identifier="optionsSegue" id="CtJ-KX-J4i"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="add button" id="XO1-Lz-EWV">
@@ -741,10 +741,10 @@
             </objects>
             <point key="canvasLocation" x="1890" y="923"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab Bar View Controller-->
         <scene sceneID="1yi-uT-aw5">
             <objects>
-                <tabBarController id="DVA-mq-Xs7" sceneMemberID="viewController">
+                <tabBarController id="DVA-mq-Xs7" customClass="TabBarViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Izc-4f-V3H">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>

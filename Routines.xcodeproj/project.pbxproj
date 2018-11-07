@@ -12,11 +12,11 @@
 		F807D3CF2160964E00FF36D9 /* OptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3CE2160964E00FF36D9 /* OptionsTableViewController.swift */; };
 		F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3D02160A05600FF36D9 /* CustomTimesTableViewController.swift */; };
 		F8125CCA215F56E700ED3FA6 /* SwipeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8125CC9215F56E700ED3FA6 /* SwipeTableViewController.swift */; };
+		F814CF5A2192A8E000E3C0F5 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F814CF592192A8E000E3C0F5 /* TabBarViewController.swift */; };
 		F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TableViewController.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
 		F84681FE21868C4B00BE3E19 /* HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84681FD21868C4B00BE3E19 /* HexColor.swift */; };
 		F85213B5218F5EE600291CFE /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85213B4218F5EE600291CFE /* NavigationViewController.swift */; };
-		F8901BA2218FB24A00F8FA41 /* NotificationsTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8901BA1218FB24A00F8FA41 /* NotificationsTemplates.swift */; };
 		F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831B72155CBB000DAF60E /* AppDelegate.swift */; };
 		F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831BB2155CBB000DAF60E /* Main.storyboard */; };
 		F8B831C22155CBB100DAF60E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831C02155CBB100DAF60E /* LaunchScreen.storyboard */; };
@@ -35,11 +35,11 @@
 		F807D3CE2160964E00FF36D9 /* OptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTableViewController.swift; sourceTree = "<group>"; };
 		F807D3D02160A05600FF36D9 /* CustomTimesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTimesTableViewController.swift; sourceTree = "<group>"; };
 		F8125CC9215F56E700ED3FA6 /* SwipeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeTableViewController.swift; sourceTree = "<group>"; };
+		F814CF592192A8E000E3C0F5 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		F816DB332155CFBA009C6907 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TableViewController.swift; sourceTree = "<group>"; };
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
 		F84681FD21868C4B00BE3E19 /* HexColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColor.swift; sourceTree = "<group>"; };
 		F85213B4218F5EE600291CFE /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
-		F8901BA1218FB24A00F8FA41 /* NotificationsTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTemplates.swift; sourceTree = "<group>"; };
 		F8B831B42155CBB000DAF60E /* Routines.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routines.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8B831B72155CBB000DAF60E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8B831BC2155CBB000DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -137,12 +137,12 @@
 		F8B831C92155CBBD00DAF60E /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F814CF592192A8E000E3C0F5 /* TabBarViewController.swift */,
 				F85213B4218F5EE600291CFE /* NavigationViewController.swift */,
 				F8125CC9215F56E700ED3FA6 /* SwipeTableViewController.swift */,
 				F816DB332155CFBA009C6907 /* TableViewController.swift */,
 				F82770D221585D3000420C50 /* AddTableViewController.swift */,
 				F807D3D22160A06600FF36D9 /* Options */,
-				F8901BA1218FB24A00F8FA41 /* NotificationsTemplates.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -300,12 +300,12 @@
 				F85213B5218F5EE600291CFE /* NavigationViewController.swift in Sources */,
 				F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */,
 				F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */,
+				F814CF5A2192A8E000E3C0F5 /* TabBarViewController.swift in Sources */,
 				F84681FE21868C4B00BE3E19 /* HexColor.swift in Sources */,
 				F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */,
 				F8F278522187D56400D2AC46 /* UITableViewExtension.swift in Sources */,
 				F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */,
 				F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */,
-				F8901BA2218FB24A00F8FA41 /* NotificationsTemplates.swift in Sources */,
 				F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */,
 				F807D3CF2160964E00FF36D9 /* OptionsTableViewController.swift in Sources */,
 				F807D3CD216073E300FF36D9 /* Options.swift in Sources */,

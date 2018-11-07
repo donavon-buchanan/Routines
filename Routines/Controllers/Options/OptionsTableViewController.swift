@@ -182,15 +182,19 @@ class OptionsTableViewController: UITableViewController {
     }
     
     func setUpUI() {
-        self.morningSwitch.setOn(getSwitchFromOptions(segment: 0), animated: false)
-        self.afternoonSwitch.setOn(getSwitchFromOptions(segment: 1), animated: false)
-        self.eveningSwitch.setOn(getSwitchFromOptions(segment: 2), animated: false)
-        self.nightSwitch.setOn(getSwitchFromOptions(segment: 3), animated: false)
-        
-        self.morningSubLabel.text = self.getOptionTimes(timePeriod: 0)
-        self.afternoonSubLabel.text = self.getOptionTimes(timePeriod: 1)
-        self.eveningSubLabel.text = self.getOptionTimes(timePeriod: 2)
-        self.nightSubLabel.text = self.getOptionTimes(timePeriod: 3)
+        DispatchQueue.main.async {
+            autoreleasepool {
+                self.morningSwitch.setOn(self.getSwitchFromOptions(segment: 0), animated: false)
+                self.afternoonSwitch.setOn(self.getSwitchFromOptions(segment: 1), animated: false)
+                self.eveningSwitch.setOn(self.getSwitchFromOptions(segment: 2), animated: false)
+                self.nightSwitch.setOn(self.getSwitchFromOptions(segment: 3), animated: false)
+                
+                self.morningSubLabel.text = self.getOptionTimes(timePeriod: 0)
+                self.afternoonSubLabel.text = self.getOptionTimes(timePeriod: 1)
+                self.eveningSubLabel.text = self.getOptionTimes(timePeriod: 2)
+                self.nightSubLabel.text = self.getOptionTimes(timePeriod: 3)
+            }
+        }
     }
     
     func getSwitchFromOptions(segment: Int) -> Bool {

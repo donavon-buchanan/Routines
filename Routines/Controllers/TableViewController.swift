@@ -13,9 +13,10 @@ import UserNotifications
 import UserNotificationsUI
 import NotificationCenter
 
-class TableViewController: SwipeTableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, UNUserNotificationCenterDelegate {
+class TableViewController: SwipeTableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
+    
     
     let realmDispatchQueueLabel: String = "background"
     
@@ -196,15 +197,19 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     //Update tab bar badge counts
     func updateBadge() {
         
-        if let tabs = self.tabBarController?.tabBar.items {
-            
-            for tab in 0..<tabs.count {
-                let count = getSegmentCount(segment: tab)
-                print("Count for tab \(tab) is \(count)")
-                if count > 0 {
-                    tabs[tab].badgeValue = "\(count)"
-                } else {
-                    tabs[tab].badgeValue = nil
+        DispatchQueue.main.async {
+            autoreleasepool {
+                if let tabs = self.tabBarController?.tabBar.items {
+                    
+                    for tab in 0..<tabs.count {
+                        let count = self.getSegmentCount(segment: tab)
+                        print("Count for tab \(tab) is \(count)")
+                        if count > 0 {
+                            tabs[tab].badgeValue = "\(count)"
+                        } else {
+                            tabs[tab].badgeValue = nil
+                        }
+                    }
                 }
             }
         }
@@ -216,6 +221,9 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     }
     
     //MARK: - Manage Notifications
+    
+    let center = UNUserNotificationCenter.current()
+    
     public func removeNotification(uuidString: [String]) {
         print("Removing Notifications")
         let center = UNUserNotificationCenter.current()

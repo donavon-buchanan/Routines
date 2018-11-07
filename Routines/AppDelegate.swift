@@ -213,13 +213,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
     
-    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
-        print("taking use to notification settings")
-        let navController = NavigationViewController()
-        let notificationSettingsVC = OptionsTableViewController()
-        navController.pushViewController(notificationSettingsVC, animated: true)
-    }
-    
     //Notification Categories and Actions
     
     func registerNotificationCategoriesAndActions() {
@@ -287,6 +280,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 break
             }
         }
+        
+        
         
         completionHandler()
         
@@ -410,6 +405,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 print("Notification created successfully")
             }
         }
+        
+    }
+    
+    //Notification Settings Screen
+    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
+        
         
     }
     

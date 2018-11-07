@@ -64,7 +64,7 @@ class CustomTimesTableViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setMinMaxTimes()
+        //setMinMaxTimes()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
