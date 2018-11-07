@@ -52,7 +52,7 @@ class CustomTimesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //self.tableView.tableFooterView = UIView()
-        setDefaultMaxTimes()
+        //setDefaultMaxTimes()
         
     }
     
@@ -185,13 +185,13 @@ class CustomTimesTableViewController: UITableViewController {
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
                 switch segment {
                 case 1:
-                    date = options?.afternoonStartTime
+                    date = options?.afternoonStartTime ?? DateFormatter().date(from: "12:00 PM")
                 case 2:
-                    date = options?.eveningStartTime
+                    date = options?.eveningStartTime ?? DateFormatter().date(from: "5:00 PM")
                 case 3:
-                    date = options?.nightStartTime
+                    date = options?.nightStartTime ?? DateFormatter().date(from: "9:00 PM")
                 default:
-                    date = options?.morningStartTime
+                    date = options?.morningStartTime ?? DateFormatter().date(from: "7:00 AM")
                 }
             }
         }
