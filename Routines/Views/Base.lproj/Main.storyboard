@@ -108,10 +108,10 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Segment" id="UXS-ab-XNk">
+                            <tableViewSection id="UXS-ab-XNk">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="L3m-ad-YEk">
-                                        <rect key="frame" x="0.0" y="165.33333333333334" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="145.33333333333334" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L3m-ad-YEk" id="cQa-1a-Ibo">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
@@ -141,7 +141,7 @@
                             <tableViewSection headerTitle="Notes" id="xBc-ny-cEg">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="152" id="wRF-7D-3zD">
-                                        <rect key="frame" x="0.0" y="275.33333333333337" width="375" height="152"/>
+                                        <rect key="frame" x="0.0" y="255.33333333333337" width="375" height="152"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wRF-7D-3zD" id="Fv4-fQ-urg">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="152"/>
