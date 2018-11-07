@@ -111,7 +111,7 @@ class CustomTimesTableViewController: UITableViewController {
                 break
             }
         }
-        //keep saved times updated with what's show in UI
+        //keep saved times updated with what's shown in UI
         updateSavedTimes(segment: 0, time: datePickerArray[0].date)
         updateSavedTimes(segment: 1, time: datePickerArray[1].date)
         updateSavedTimes(segment: 2, time: datePickerArray[2].date)
@@ -125,13 +125,7 @@ class CustomTimesTableViewController: UITableViewController {
         afternoonDatePicker.maximumDate = dateFormatter.date(from: "9:45 PM")
         eveningDatePicker.maximumDate = dateFormatter.date(from: "10:45 PM")
         nightDatePicker.maximumDate = dateFormatter.date(from: "11:45 PM")
-//
-//        let datePickerArray: [UIDatePicker] = [morningDatePicker, afternoonDatePicker, eveningDatePicker, nightDatePicker]
-//        let pickerCount = datePickerArray.count
-//        for picker in 0..<pickerCount {
-//            //keep saved times updated with what's show in UI
-//            updateSavedTimes(segment: picker, time: datePickerArray[picker].date)
-//        }
+
     }
     
     func setMinMaxTimes() {
