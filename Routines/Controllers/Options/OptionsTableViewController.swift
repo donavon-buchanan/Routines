@@ -318,35 +318,6 @@ class OptionsTableViewController: UITableViewController {
     //This is the one to run when setting up a brand new notification
     func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
         
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-                switch segment {
-                case 1:
-                    if !(options?.afternoonNotificationsOn)! {
-                        print("Afternoon Notifications toggled off. Aborting")
-                        return
-                    }
-                case 2:
-                    if !(options?.eveningNotificationsOn)! {
-                        print("Afternoon Notifications toggled off. Aborting")
-                        return
-                    }
-                case 3:
-                    if !(options?.nightNotificationsOn)! {
-                        print("Afternoon Notifications toggled off. Aborting")
-                        return
-                    }
-                default:
-                    if !(options?.morningNotificationsOn)! {
-                        print("Afternoon Notifications toggled off. Aborting")
-                        return
-                    }
-                }
-            }
-        }
-        
         print("running scheduleNewNotification")
         let notificationCenter = UNUserNotificationCenter.current()
         
@@ -358,7 +329,42 @@ class OptionsTableViewController: UITableViewController {
                 return
             }
             
-            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+            DispatchQueue(label: self.realmDispatchQueueLabel).sync {
+                autoreleasepool {
+                    let realm = try! Realm()
+                    let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                    switch segment {
+                    case 1:
+                        if (options?.afternoonNotificationsOn)! {
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                        } else {
+                            print("Afternoon Notifications toggled off. Aborting")
+                            return
+                        }
+                    case 2:
+                        if (options?.eveningNotificationsOn)! {
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                        } else {
+                            print("Afternoon Notifications toggled off. Aborting")
+                            return
+                        }
+                    case 3:
+                        if (options?.nightNotificationsOn)! {
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                        } else {
+                            print("Afternoon Notifications toggled off. Aborting")
+                            return
+                        }
+                    default:
+                        if (options?.morningNotificationsOn)! {
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                        } else {
+                            print("Afternoon Notifications toggled off. Aborting")
+                            return
+                        }
+                    }
+                }
+            }
             
         }
     }

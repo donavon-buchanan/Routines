@@ -52,7 +52,7 @@ class CustomTimesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //self.tableView.tableFooterView = UIView()
-        
+        setDefaultMaxTimes()
         
     }
     
@@ -93,28 +93,50 @@ class CustomTimesTableViewController: UITableViewController {
     func setDefaultMinTimes() {
         let datePickerArray: [UIDatePicker] = [morningDatePicker, afternoonDatePicker, eveningDatePicker, nightDatePicker]
         let pickerCount = datePickerArray.count
-        for picker in 1..<pickerCount {
-            datePickerArray[picker].minimumDate = datePickerArray[picker-1].date.addingTimeInterval(3600)
+        for picker in 0..<pickerCount {
+            let midnight = DateFormatter().date(from: "12:00 AM")
+            switch picker {
+            case 0:
+                datePickerArray[0].minimumDate = midnight
+            case 1:
+                let minDate = datePickerArray[0].date.addingTimeInterval(3600)
+                datePickerArray[1].minimumDate = minDate
+            case 2:
+                let minDate = datePickerArray[1].date.addingTimeInterval(3600)
+                datePickerArray[2].minimumDate = minDate
+            case 3:
+                let minDate = datePickerArray[2].date.addingTimeInterval(3600)
+                datePickerArray[3].minimumDate = minDate
+            default:
+                break
+            }
         }
+        //keep saved times updated with what's show in UI
+        updateSavedTimes(segment: 0, time: datePickerArray[0].date)
+        updateSavedTimes(segment: 1, time: datePickerArray[1].date)
+        updateSavedTimes(segment: 2, time: datePickerArray[2].date)
+        updateSavedTimes(segment: 3, time: datePickerArray[3].date)
     }
     
     func setDefaultMaxTimes() {
-        let maxTimeString = "11:00 PM"
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .short
-        let maxTime = dateFormatter.date(from: maxTimeString)
-        nightDatePicker.maximumDate = maxTime
-        
-        let datePickerArray: [UIDatePicker] = [nightDatePicker, eveningDatePicker, afternoonDatePicker, morningDatePicker]
-        let pickerCount = datePickerArray.count
-        for picker in 1..<pickerCount {
-            datePickerArray[picker].maximumDate = datePickerArray[picker-1].date.addingTimeInterval(0)
-        }
+        morningDatePicker.maximumDate = dateFormatter.date(from: "8:45 PM")
+        afternoonDatePicker.maximumDate = dateFormatter.date(from: "9:45 PM")
+        eveningDatePicker.maximumDate = dateFormatter.date(from: "10:45 PM")
+        nightDatePicker.maximumDate = dateFormatter.date(from: "11:45 PM")
+//
+//        let datePickerArray: [UIDatePicker] = [morningDatePicker, afternoonDatePicker, eveningDatePicker, nightDatePicker]
+//        let pickerCount = datePickerArray.count
+//        for picker in 0..<pickerCount {
+//            //keep saved times updated with what's show in UI
+//            updateSavedTimes(segment: picker, time: datePickerArray[picker].date)
+//        }
     }
     
     func setMinMaxTimes() {
         setDefaultMinTimes()
-        setDefaultMaxTimes()
+        //setDefaultMaxTimes()
     }
     
     //MARK: - Options Realm
@@ -186,35 +208,6 @@ class CustomTimesTableViewController: UITableViewController {
     //This is the one to run when setting up a brand new notification
     func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
         
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-                switch segment {
-                case 1:
-                    if !(options?.afternoonNotificationsOn)! {
-                        print("Afternoon Notifications toggled off. Aborting")
-                        return
-                    }
-                case 2:
-                    if !(options?.eveningNotificationsOn)! {
-                        print("Afternoon Notifications toggled off. Aborting")
-                        return
-                    }
-                case 3:
-                    if !(options?.nightNotificationsOn)! {
-                        print("Afternoon Notifications toggled off. Aborting")
-                        return
-                    }
-                default:
-                    if !(options?.morningNotificationsOn)! {
-                        print("Afternoon Notifications toggled off. Aborting")
-                        return
-                    }
-                }
-            }
-        }
-        
         print("running scheduleNewNotification")
         let notificationCenter = UNUserNotificationCenter.current()
         
@@ -226,7 +219,42 @@ class CustomTimesTableViewController: UITableViewController {
                 return
             }
             
-            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+            DispatchQueue(label: self.realmDispatchQueueLabel).sync {
+                autoreleasepool {
+                    let realm = try! Realm()
+                    let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                    switch segment {
+                    case 1:
+                        if (options?.afternoonNotificationsOn)! {
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                        } else {
+                            print("Afternoon Notifications toggled off. Aborting")
+                            return
+                        }
+                    case 2:
+                        if (options?.eveningNotificationsOn)! {
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                        } else {
+                            print("Afternoon Notifications toggled off. Aborting")
+                            return
+                        }
+                    case 3:
+                        if (options?.nightNotificationsOn)! {
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                        } else {
+                            print("Afternoon Notifications toggled off. Aborting")
+                            return
+                        }
+                    default:
+                        if (options?.morningNotificationsOn)! {
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                        } else {
+                            print("Afternoon Notifications toggled off. Aborting")
+                            return
+                        }
+                    }
+                }
+            }
             
         }
     }
