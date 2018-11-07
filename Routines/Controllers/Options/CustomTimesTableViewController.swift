@@ -21,28 +21,24 @@ class CustomTimesTableViewController: UITableViewController {
     @IBOutlet weak var nightDatePicker: UIDatePicker!
     
     @IBAction func morningTimeSet(_ sender: UIDatePicker) {
-        setMinMaxTimes()
         updateSavedTimes(segment: 0, time: sender.date)
         print("Picker sent: \(String(describing: sender.date))")
         removeNotificationsForSegment(segment: 0)
         enableNotificationsForSegment(segment: 0)
     }
     @IBAction func afternoonTimeSet(_ sender: UIDatePicker) {
-        setMinMaxTimes()
         updateSavedTimes(segment: 1, time: sender.date)
         print("Picker sent: \(String(describing: sender.date))")
         removeNotificationsForSegment(segment: 1)
         enableNotificationsForSegment(segment: 1)
     }
     @IBAction func eveningTimeSet(_ sender: UIDatePicker) {
-        setMinMaxTimes()
         updateSavedTimes(segment: 2, time: sender.date)
         print("Picker sent: \(String(describing: sender.date))")
         removeNotificationsForSegment(segment: 2)
         enableNotificationsForSegment(segment: 2)
     }
     @IBAction func nightTimeSet(_ sender: UIDatePicker) {
-        setMinMaxTimes()
         updateSavedTimes(segment: 3, time: sender.date)
         print("Picker sent: \(String(describing: sender.date))")
         removeNotificationsForSegment(segment: 3)
@@ -51,8 +47,6 @@ class CustomTimesTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.tableView.tableFooterView = UIView()
-        //setDefaultMaxTimes()
         
     }
     
@@ -64,7 +58,12 @@ class CustomTimesTableViewController: UITableViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //setMinMaxTimes()
+        //keep saved times updated with what's shown in UI
+        saveAllTimes()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        saveAllTimes()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -89,49 +88,60 @@ class CustomTimesTableViewController: UITableViewController {
         return numberOfRows
     }
     
-    //Set default min times
-    func setDefaultMinTimes() {
+    //Save all times
+    func saveAllTimes() {
         let datePickerArray: [UIDatePicker] = [morningDatePicker, afternoonDatePicker, eveningDatePicker, nightDatePicker]
-        let pickerCount = datePickerArray.count
-        for picker in 0..<pickerCount {
-            let midnight = DateFormatter().date(from: "12:00 AM")
-            switch picker {
-            case 0:
-                datePickerArray[0].minimumDate = midnight
-            case 1:
-                let minDate = datePickerArray[0].date.addingTimeInterval(3600)
-                datePickerArray[1].minimumDate = minDate
-            case 2:
-                let minDate = datePickerArray[1].date.addingTimeInterval(3600)
-                datePickerArray[2].minimumDate = minDate
-            case 3:
-                let minDate = datePickerArray[2].date.addingTimeInterval(3600)
-                datePickerArray[3].minimumDate = minDate
-            default:
-                break
-            }
-        }
-        //keep saved times updated with what's shown in UI
         updateSavedTimes(segment: 0, time: datePickerArray[0].date)
         updateSavedTimes(segment: 1, time: datePickerArray[1].date)
         updateSavedTimes(segment: 2, time: datePickerArray[2].date)
         updateSavedTimes(segment: 3, time: datePickerArray[3].date)
     }
     
-    func setDefaultMaxTimes() {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        morningDatePicker.maximumDate = dateFormatter.date(from: "8:45 PM")
-        afternoonDatePicker.maximumDate = dateFormatter.date(from: "9:45 PM")
-        eveningDatePicker.maximumDate = dateFormatter.date(from: "10:45 PM")
-        nightDatePicker.maximumDate = dateFormatter.date(from: "11:45 PM")
-
-    }
+    //Set default min times
+//    func setDefaultMinTimes() {
+//        let datePickerArray: [UIDatePicker] = [morningDatePicker, afternoonDatePicker, eveningDatePicker, nightDatePicker]
+//        let pickerCount = datePickerArray.count
+//        for picker in 0..<pickerCount {
+//            let midnight = DateFormatter().date(from: "12:00 AM")
+//            switch picker {
+//            case 0:
+//                datePickerArray[0].minimumDate = midnight
+//            case 1:
+//                let minDate = datePickerArray[0].date.addingTimeInterval(3600)
+//                datePickerArray[1].minimumDate = minDate
+//            case 2:
+//                let minDate = datePickerArray[1].date.addingTimeInterval(3600)
+//                datePickerArray[2].minimumDate = minDate
+//            case 3:
+//                let minDate = datePickerArray[2].date.addingTimeInterval(3600)
+//                datePickerArray[3].minimumDate = minDate
+//            default:
+//                break
+//            }
+//        }
+//        //keep saved times updated with what's shown in UI
+//        updateSavedTimes(segment: 0, time: datePickerArray[0].date)
+//        updateSavedTimes(segment: 1, time: datePickerArray[1].date)
+//        updateSavedTimes(segment: 2, time: datePickerArray[2].date)
+//        updateSavedTimes(segment: 3, time: datePickerArray[3].date)
+//
+//        setDefaultMaxTimes()
+//    }
     
-    func setMinMaxTimes() {
-        setDefaultMinTimes()
-        //setDefaultMaxTimes()
-    }
+//    func setDefaultMaxTimes() {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.timeStyle = .short
+//        morningDatePicker.maximumDate = dateFormatter.date(from: "8:45 PM")
+//        afternoonDatePicker.maximumDate = dateFormatter.date(from: "9:45 PM")
+//        eveningDatePicker.maximumDate = dateFormatter.date(from: "10:45 PM")
+//        nightDatePicker.maximumDate = dateFormatter.date(from: "11:45 PM")
+//
+//    }
+//
+//    func setMinMaxTimes() {
+//        setDefaultMinTimes()
+//        //setDefaultMaxTimes()
+//    }
     
     //MARK: - Options Realm
     
@@ -153,7 +163,7 @@ class CustomTimesTableViewController: UITableViewController {
                         default:
                             options?.self.morningStartTime = time
                         }
-                        print("updateSavedTime: Options \(String(describing: options))")
+                        //print("updateSavedTime: Options \(String(describing: options))")
                     }
                 } catch {
                     print("updateSavedTimes failed")
@@ -185,13 +195,13 @@ class CustomTimesTableViewController: UITableViewController {
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
                 switch segment {
                 case 1:
-                    date = options?.afternoonStartTime ?? DateFormatter().date(from: "12:00 PM")
+                    date = options?.afternoonStartTime
                 case 2:
-                    date = options?.eveningStartTime ?? DateFormatter().date(from: "5:00 PM")
+                    date = options?.eveningStartTime
                 case 3:
-                    date = options?.nightStartTime ?? DateFormatter().date(from: "9:00 PM")
+                    date = options?.nightStartTime
                 default:
-                    date = options?.morningStartTime ?? DateFormatter().date(from: "7:00 AM")
+                    date = options?.morningStartTime
                 }
             }
         }
