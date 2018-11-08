@@ -20,8 +20,6 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     let realmDispatchQueueLabel: String = "background"
     
-    //let optionsKey = "optionsKey"
-    
     //let segmentStringArray: [String] = ["Morning", "Afternoon", "Evening", "Night", "All Day"]
     
     //Set segment after adding an item
@@ -58,6 +56,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     }
     
     @objc func appBecameActive() {
+        //TODO: smartSnoozeMove()
         loadItems(segment: self.segment)
         updateBadge()
         tableView.reloadData()
@@ -248,6 +247,8 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     // Get the default Realm
     lazy var realm = try! Realm()
     
+    let optionsKey = "optionsKey"
+    
     //Each view (tab) loads its own set of items.
     //Load from viewDidLoad. Reload table from viewWillAppear
     var items: Results<Items>?
@@ -272,5 +273,28 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
 //    func setDarkMode() {
 //        
 //    }
+    
+    //MARK: - Smart Snooze
+    
+    func smartSnoozeMove() {
+        
+    }
+    
+    func getOptionTimes(segment: Int) -> DateComponents {
+        var time = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: nil, minute: nil, second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+//                switch segment {
+//                case 1:
+//
+//                default:
+//                    time.hour =
+//                }
+            }
+        }
+        return time
+    }
     
 }

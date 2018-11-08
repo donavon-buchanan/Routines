@@ -476,10 +476,47 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection footerTitle="Enabling Smart Snooze will automatically move incomplete task to the next period" id="9gB-gB-5f2" userLabel="Smart Snooze">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="smartSnoozeCell" id="fzW-Eo-Deo">
+                                        <rect key="frame" x="0.0" y="478.66666666666674" width="375" height="60"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fzW-Eo-Deo" id="0e8-Fu-3ej">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="142" translatesAutoresizingMaskIntoConstraints="NO" id="ayx-df-fvP">
+                                                    <rect key="frame" x="16" y="11" width="343" height="38"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Smart Snooze" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7H-qR-S1Q">
+                                                            <rect key="frame" x="0.0" y="8.9999999999999982" width="152" height="20.333333333333329"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-0c-y3h">
+                                                            <rect key="frame" x="294" y="3.6666666666666643" width="51" height="31"/>
+                                                            <connections>
+                                                                <action selector="smartSnoozeSwitchToggled:" destination="a3q-M5-d7t" eventType="valueChanged" id="1r1-a0-wo5"/>
+                                                            </connections>
+                                                        </switch>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="ayx-df-fvP" secondAttribute="trailing" id="JiH-q3-ih8"/>
+                                                <constraint firstItem="ayx-df-fvP" firstAttribute="leading" secondItem="0e8-Fu-3ej" secondAttribute="leadingMargin" id="KxT-XX-25H"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="ayx-df-fvP" secondAttribute="bottom" id="Rp6-cE-9kX"/>
+                                                <constraint firstItem="ayx-df-fvP" firstAttribute="top" secondItem="0e8-Fu-3ej" secondAttribute="topMargin" id="bTI-Oe-yD4"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection headerTitle="About" id="Mh0-Xn-pCD">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="aboutCell" textLabel="kjr-Gf-k2s" style="IBUITableViewCellStyleDefault" id="JZL-NA-pX6">
-                                        <rect key="frame" x="0.0" y="498.66666666666674" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="622.66666666666674" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JZL-NA-pX6" id="XeW-Nf-qRm">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="60"/>
@@ -500,40 +537,6 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="9gB-gB-5f2">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="smartSnoozeCell" id="fzW-Eo-Deo">
-                                        <rect key="frame" x="0.0" y="594.66666666666674" width="375" height="60"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fzW-Eo-Deo" id="0e8-Fu-3ej">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="142" translatesAutoresizingMaskIntoConstraints="NO" id="ayx-df-fvP">
-                                                    <rect key="frame" x="16" y="11" width="343" height="38"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7H-qR-S1Q">
-                                                            <rect key="frame" x="0.0" y="8.9999999999999982" width="152" height="20.333333333333329"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-0c-y3h">
-                                                            <rect key="frame" x="294" y="3.6666666666666643" width="51" height="31"/>
-                                                        </switch>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="ayx-df-fvP" secondAttribute="trailing" id="JiH-q3-ih8"/>
-                                                <constraint firstItem="ayx-df-fvP" firstAttribute="leading" secondItem="0e8-Fu-3ej" secondAttribute="leadingMargin" id="KxT-XX-25H"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="ayx-df-fvP" secondAttribute="bottom" id="Rp6-cE-9kX"/>
-                                                <constraint firstItem="ayx-df-fvP" firstAttribute="top" secondItem="0e8-Fu-3ej" secondAttribute="topMargin" id="bTI-Oe-yD4"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="a3q-M5-d7t" id="LLQ-bp-nQh"/>
@@ -550,6 +553,7 @@
                         <outlet property="morningSwitch" destination="sr5-g1-2Wx" id="fxs-kv-RAv"/>
                         <outlet property="nightSubLabel" destination="RBy-Vs-22B" id="vo0-6e-R9I"/>
                         <outlet property="nightSwitch" destination="6Be-Gy-fuV" id="zOC-H7-Hsz"/>
+                        <outlet property="smartSnoozeSwitch" destination="U5Q-0c-y3h" id="Vcl-mC-m7C"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zqO-d3-61K" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -44,6 +44,13 @@ class OptionsTableViewController: UITableViewController {
             updateNotificationOptions(segment: 0, isOn: sender.isOn)
         }
     }
+    
+    
+    @IBOutlet weak var smartSnoozeSwitch: UISwitch!
+    @IBAction func smartSnoozeSwitchToggled(_ sender: UISwitch) {
+        setSmartSnooze()
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,8 +67,9 @@ class OptionsTableViewController: UITableViewController {
 
     }
     
+    //TODO: Make this dependant on if pro has been purchased when those options are ready
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -72,6 +80,8 @@ class OptionsTableViewController: UITableViewController {
         case 1:
             numberOfRows = 4
         case 2:
+            numberOfRows = 1
+        case 3:
             numberOfRows = 1
         default:
             numberOfRows = 0
@@ -117,6 +127,16 @@ class OptionsTableViewController: UITableViewController {
                 print("Morning switch is now set to: \(morningSwitch.isOn)")
                 updateNotificationOptions(segment: 0, isOn: morningSwitch.isOn)
                 haptic.impactOccurred()
+            }
+        }
+        
+        //Smart Snooze
+        if indexPath.section == 2 {
+            switch indexPath.row {
+                
+            default:
+                self.smartSnoozeSwitch.setOn(!smartSnoozeSwitch.isOn, animated: true)
+                setSmartSnooze()
             }
         }
     }
@@ -189,6 +209,8 @@ class OptionsTableViewController: UITableViewController {
                 self.eveningSwitch.setOn(self.getSwitchFromOptions(segment: 2), animated: false)
                 self.nightSwitch.setOn(self.getSwitchFromOptions(segment: 3), animated: false)
                 
+                self.smartSnoozeSwitch.setOn(self.smartSnoozeStatus(), animated: false)
+                
                 self.morningSubLabel.text = self.getOptionTimes(timePeriod: 0)
                 self.afternoonSubLabel.text = self.getOptionTimes(timePeriod: 1)
                 self.eveningSubLabel.text = self.getOptionTimes(timePeriod: 2)
@@ -196,6 +218,50 @@ class OptionsTableViewController: UITableViewController {
             }
         }
     }
+    
+    
+    //MARK: smartSnooze
+    func smartSnoozeStatus() -> Bool {
+        var status = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                if let smartSnooze = options?.smartSnooze {
+                    status = smartSnooze
+                }
+            }
+        }
+        return status
+    }
+    
+    func getSmartSnoozeSwitch() -> Bool {
+        var isOn = false
+        DispatchQueue.main.sync {
+            autoreleasepool {
+                isOn = smartSnoozeSwitch.isOn
+            }
+        }
+        return isOn
+    }
+    
+    func setSmartSnooze() {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                do {
+                    try realm.write {
+                        options?.smartSnooze = self.getSmartSnoozeSwitch()
+                    }
+                } catch {
+                    print("failed to update smartSnooze")
+                }
+            }
+        }
+    }
+    
+    //END: smartSnooze
     
     func getSwitchFromOptions(segment: Int) -> Bool {
         var isOn = true
