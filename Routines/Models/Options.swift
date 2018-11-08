@@ -23,6 +23,8 @@ import RealmSwift
     
     dynamic var firstItemAdded: Bool = false
     
+    dynamic var smartSnooze: Bool = false
+    
     dynamic var optionsKey = UUID().uuidString
     override static func primaryKey() -> String? {
         return "optionsKey"
