@@ -61,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
 //    //MARK: - Options Realm
-    var timeArray: [Date?] = []
+    var timeArray: [DateComponents?] = []
 //    //Options Properties
     lazy var realm = try! Realm()
     var optionsObject: Options?
@@ -73,16 +73,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 2,
+            schemaVersion: 3,
             
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
             migrationBlock: { migration, oldSchemaVersion in
                 // We haven’t migrated anything yet, so oldSchemaVersion == 0
-                if (oldSchemaVersion < 2) {
-//                    migration.enumerateObjects(ofType: Items.className(), { (newObject, oldObject) in
-//                        newObject!["uuidString"] = oldObject!["uuidString"]
-//                    })
+                if (oldSchemaVersion < 3) {
+                    migration.enumerateObjects(ofType: Items.className(), { (newObject, oldObject) in
+                        let morningStartTime = oldObject!["morningStartTime"] as! Date?
+                        let afternoonStartTime = oldObject!["afternoonStartTime"] as! Date?
+                        let eveningStartTime = oldObject!["eveningStartTime"] as! Date?
+                        let nightStartTime = oldObject!["nightStartTime"] as! Date?
+                        
+                        let newMorning = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: self.getHour(date: morningStartTime), minute: self.getMinute(date: morningStartTime), second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
+                        
+                        let newAfternoon = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: self.getHour(date: afternoonStartTime), minute: self.getMinute(date: afternoonStartTime), second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
+                        
+                        let newEvening = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: self.getHour(date: eveningStartTime), minute: self.getMinute(date: eveningStartTime), second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
+                        
+                        let newNight = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: self.getHour(date: nightStartTime), minute: self.getMinute(date: nightStartTime), second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
+                        
+                        newObject!["morningStartTime"] = newMorning
+                        newObject!["afternoonStartTime"] = newAfternoon
+                        newObject!["eveningStartTime"] = newEvening
+                        newObject!["nightStartTime"] = newNight
+                        
+                    })
                 }
         })
         
@@ -93,6 +110,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // will automatically perform the migration
         _ = try! Realm()
     }
+    
+//    func getHour(date: Date) -> Int {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "HH"
+//        let hour = dateFormatter.string(from: date)
+//        return Int(hour)!
+//    }
+//
+//    func getMinute(date: Date) -> Int {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "mm"
+//        let minutes = dateFormatter.string(from: date)
+//        return Int(minutes)!
+//    }
     
     func loadTimes() {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -370,23 +401,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         switch segment {
         case 1:
             if let time = self.timeArray[1] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 1, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 1, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         case 2:
             if let time = self.timeArray[2] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 2, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 2, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         case 3:
             if let time = self.timeArray[3] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 3, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 3, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         default:
             if let time = self.timeArray[0] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 0, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 0, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         }
         
@@ -432,17 +463,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return time
     }
     
-    func getHour(date: Date) -> Int {
+    func getHour(date: Date?) -> Int {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH"
-        let hour = dateFormatter.string(from: date)
+        let hour = dateFormatter.string(from: date!)
         return Int(hour)!
     }
-    
-    func getMinute(date: Date) -> Int {
+
+    func getMinute(date: Date?) -> Int {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "mm"
-        let minutes = dateFormatter.string(from: date)
+        let minutes = dateFormatter.string(from: date!)
         return Int(minutes)!
     }
     

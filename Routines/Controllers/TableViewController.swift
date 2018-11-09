@@ -276,25 +276,25 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     //MARK: - Smart Snooze
     
-    func smartSnoozeMove() {
-        
-    }
-    
-    func getOptionTimes(segment: Int) -> DateComponents {
-        var time = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: nil, minute: nil, second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-//                switch segment {
-//                case 1:
-//
-//                default:
-//                    time.hour =
-//                }
-            }
-        }
-        return time
-    }
+//    func smartSnoozeMove() {
+//        
+//    }
+//    
+//    func getOptionTimes(segment: Int) -> DateComponents {
+//        var time = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: nil, minute: nil, second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+////                switch segment {
+////                case 1:
+////
+////                default:
+////                    time.hour =
+////                }
+//            }
+//        }
+//        return time
+//    }
     
 }

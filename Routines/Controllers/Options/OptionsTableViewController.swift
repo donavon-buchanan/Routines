@@ -306,7 +306,7 @@ class OptionsTableViewController: UITableViewController {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                var timeOption: Date?
+                var timeOption: DateComponents?
                 
                 switch timePeriod {
                 case 1:
@@ -327,7 +327,7 @@ class OptionsTableViewController: UITableViewController {
                 
                 if let dateTime = timeOption {
                     
-                    time = "Your \(periods[timePeriod]) begins at \(getLocalTimeString(date: dateTime))"
+                    time = "Your \(periods[timePeriod]) begins at \(dateTime.hour!):\(dateTime.minute!)"
                 } else {
                     
                     let defaultTime = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
@@ -469,23 +469,23 @@ class OptionsTableViewController: UITableViewController {
         switch segment {
         case 1:
             if let time = self.timeArray[1] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 1, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 1, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         case 2:
             if let time = self.timeArray[2] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 2, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 2, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         case 3:
             if let time = self.timeArray[3] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 3, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 3, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         default:
             if let time = self.timeArray[0] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 0, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 0, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         }
         
@@ -625,7 +625,7 @@ class OptionsTableViewController: UITableViewController {
     let realmDispatchQueueLabel: String = "background"
     let optionsKey = "optionsKey"
     
-    var timeArray: [Date?] = []
+    var timeArray: [DateComponents?] = []
     
     //Load Options
     func loadOptions() {
@@ -641,18 +641,18 @@ class OptionsTableViewController: UITableViewController {
 
     //MARK: Items Realm
     
-    var time: [Date?] = []
-    
-    func loadTimes() {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                //self.optionsObject = options
-                self.time = [options?.morningStartTime, options?.afternoonStartTime, options?.eveningStartTime, options?.nightStartTime]
-            }
-        }
-    }
+//    var time: [Date?] = []
+//
+//    func loadTimes() {
+//        DispatchQueue(label: realmDispatchQueueLabel).async {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+//                //self.optionsObject = options
+//                self.time = [options?.morningStartTime, options?.afternoonStartTime, options?.eveningStartTime, options?.nightStartTime]
+//            }
+//        }
+//    }
 
 //    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
 //        var time: Date

@@ -21,25 +21,25 @@ class CustomTimesTableViewController: UITableViewController {
     @IBOutlet weak var nightDatePicker: UIDatePicker!
     
     @IBAction func morningTimeSet(_ sender: UIDatePicker) {
-        updateSavedTimes(segment: 0, time: sender.date)
+        updateSavedTimes(segment: 0, hour: getHour(date: morningDatePicker.date), minute: getMinute(date: morningDatePicker.date))
         print("Picker sent: \(String(describing: sender.date))")
         removeNotificationsForSegment(segment: 0)
         enableNotificationsForSegment(segment: 0)
     }
     @IBAction func afternoonTimeSet(_ sender: UIDatePicker) {
-        updateSavedTimes(segment: 1, time: sender.date)
+        updateSavedTimes(segment: 1, hour: getHour(date: afternoonDatePicker.date), minute: getMinute(date: afternoonDatePicker.date))
         print("Picker sent: \(String(describing: sender.date))")
         removeNotificationsForSegment(segment: 1)
         enableNotificationsForSegment(segment: 1)
     }
     @IBAction func eveningTimeSet(_ sender: UIDatePicker) {
-        updateSavedTimes(segment: 2, time: sender.date)
+        updateSavedTimes(segment: 2, hour: getHour(date: eveningDatePicker.date), minute: getMinute(date: eveningDatePicker.date))
         print("Picker sent: \(String(describing: sender.date))")
         removeNotificationsForSegment(segment: 2)
         enableNotificationsForSegment(segment: 2)
     }
     @IBAction func nightTimeSet(_ sender: UIDatePicker) {
-        updateSavedTimes(segment: 3, time: sender.date)
+        updateSavedTimes(segment: 3, hour: getHour(date: nightDatePicker.date), minute: getMinute(date: nightDatePicker.date))
         print("Picker sent: \(String(describing: sender.date))")
         removeNotificationsForSegment(segment: 3)
         enableNotificationsForSegment(segment: 3)
@@ -91,10 +91,10 @@ class CustomTimesTableViewController: UITableViewController {
     //Save all times
     func saveAllTimes() {
         let datePickerArray: [UIDatePicker] = [morningDatePicker, afternoonDatePicker, eveningDatePicker, nightDatePicker]
-        updateSavedTimes(segment: 0, time: datePickerArray[0].date)
-        updateSavedTimes(segment: 1, time: datePickerArray[1].date)
-        updateSavedTimes(segment: 2, time: datePickerArray[2].date)
-        updateSavedTimes(segment: 3, time: datePickerArray[3].date)
+        updateSavedTimes(segment: 0, hour: getHour(date: datePickerArray[0].date), minute: getMinute(date: datePickerArray[0].date))
+        updateSavedTimes(segment: 1, hour: getHour(date: datePickerArray[1].date), minute: getMinute(date: datePickerArray[1].date))
+        updateSavedTimes(segment: 2, hour: getHour(date: datePickerArray[2].date), minute: getMinute(date: datePickerArray[2].date))
+        updateSavedTimes(segment: 3, hour: getHour(date: datePickerArray[3].date), minute: getMinute(date: datePickerArray[3].date))
     }
     
     //Set default min times
@@ -145,7 +145,7 @@ class CustomTimesTableViewController: UITableViewController {
     
     //MARK: - Options Realm
     
-    func updateSavedTimes(segment: Int, time: Date) {
+    func updateSavedTimes(segment: Int, hour: Int, minute: Int) {
         print("updateSavedTimes received: \(String(describing: time))")
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -155,13 +155,17 @@ class CustomTimesTableViewController: UITableViewController {
                     try realm.write {
                         switch segment {
                         case 1:
-                            options?.self.afternoonStartTime = time
+                            options?.afternoonStartTime.hour = hour
+                            options?.afternoonStartTime.minute = minute
                         case 2:
-                            options?.self.eveningStartTime = time
+                            options?.eveningStartTime.hour = hour
+                            options?.eveningStartTime.minute = minute
                         case 3:
-                            options?.self.nightStartTime = time
+                            options?.nightStartTime.hour = hour
+                            options?.nightStartTime.minute = minute
                         default:
-                            options?.self.morningStartTime = time
+                            options?.morningStartTime.hour = hour
+                            options?.morningStartTime.minute = minute
                         }
                         //print("updateSavedTime: Options \(String(describing: options))")
                     }
@@ -193,15 +197,16 @@ class CustomTimesTableViewController: UITableViewController {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                let dateFormatter = DateFormatter()
                 switch segment {
                 case 1:
-                    date = options?.afternoonStartTime
+                    date = dateFormatter.date(from: "\((options?.afternoonStartTime.hour)!):\((options?.afternoonStartTime.minute)!)")
                 case 2:
-                    date = options?.eveningStartTime
+                    date = dateFormatter.date(from: "\((options?.eveningStartTime.hour)!):\((options?.eveningStartTime.minute)!)")
                 case 3:
-                    date = options?.nightStartTime
+                    date = dateFormatter.date(from: "\((options?.nightStartTime.hour)!):\((options?.nightStartTime.minute)!)")
                 default:
-                    date = options?.morningStartTime
+                    date = dateFormatter.date(from: "\((options?.morningStartTime.hour)!):\((options?.morningStartTime.minute)!)")
                 }
             }
         }
@@ -293,23 +298,23 @@ class CustomTimesTableViewController: UITableViewController {
         switch segment {
         case 1:
             if let time = self.timeArray[1] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 1, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 1, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         case 2:
             if let time = self.timeArray[2] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 2, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 2, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         case 3:
             if let time = self.timeArray[3] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 3, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 3, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         default:
             if let time = self.timeArray[0] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 0, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 0, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         }
         
@@ -421,7 +426,7 @@ class CustomTimesTableViewController: UITableViewController {
     let realmDispatchQueueLabel: String = "background"
     let optionsKey = "optionsKey"
     
-    var timeArray: [Date?] = []
+    var timeArray: [DateComponents?] = []
     
     //Load Options
     func loadOptions() {

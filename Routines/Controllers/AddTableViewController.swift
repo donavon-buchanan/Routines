@@ -21,7 +21,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     let realmDispatchQueueLabel: String = "background"
     
     var item : Items?
-    var timeArray: [Date?] = []
+    var timeArray: [DateComponents?] = []
     //segment from add segue
     var editingSegment: Int?
     
@@ -288,23 +288,23 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         switch segment {
         case 1:
             if let time = self.timeArray[1] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 1, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 1, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         case 2:
             if let time = self.timeArray[2] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 2, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 2, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         case 3:
             if let time = self.timeArray[3] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 3, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 3, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         default:
             if let time = self.timeArray[0] {
-                dateComponents.hour = getHour(date: getTime(timePeriod: 0, timeOption: time))
-                dateComponents.minute = getMinute(date: getTime(timePeriod: 0, timeOption: time))
+                dateComponents.hour = time.hour
+                dateComponents.minute = time.minute
             }
         }
         
