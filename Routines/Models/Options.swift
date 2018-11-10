@@ -11,10 +11,17 @@ import RealmSwift
 
 @objcMembers class Options: Object {
     
-    dynamic var morningStartTime: DateComponents = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: 7, minute: 0, second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
-    dynamic var afternoonStartTime: DateComponents = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: 12, minute: 0, second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
-    dynamic var eveningStartTime: DateComponents = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: 17, minute: 0, second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
-    dynamic var nightStartTime: DateComponents = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: 21, minute: 0, second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
+    dynamic var morningHour: Int = 7
+    dynamic var morningMinute: Int = 0
+    
+    dynamic var afternoonHour: Int = 12
+    dynamic var afternoonMinute: Int = 0
+    
+    dynamic var eveningHour: Int = 17
+    dynamic var eveningMinute: Int = 0
+    
+    dynamic var nightHour: Int = 21
+    dynamic var nightMinute: Int = 0
     
     dynamic var morningNotificationsOn: Bool = true
     dynamic var afternoonNotificationsOn: Bool = true

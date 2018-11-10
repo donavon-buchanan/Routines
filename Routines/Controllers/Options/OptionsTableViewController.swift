@@ -608,6 +608,50 @@ class OptionsTableViewController: UITableViewController {
         return Int(minutes)!
     }
     
+    func getOptionHour(segment: Int) -> Int {
+        var hour = Int()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                switch segment {
+                case 1:
+                    hour = (options?.afternoonHour)!
+                case 2:
+                    hour = (options?.eveningHour)!
+                case 3:
+                    hour = (options?.nightHour)!
+                default:
+                    hour = (options?.morningHour)!
+                }
+                
+            }
+        }
+        return hour
+    }
+    
+    func getOptionMinute(segment: Int) -> Int {
+        var minute = Int()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                switch segment {
+                case 1:
+                    minute = (options?.afternoonMinute)!
+                case 2:
+                    minute = (options?.eveningMinute)!
+                case 3:
+                    minute = (options?.nightMinute)!
+                default:
+                    minute = (options?.morningMinute)!
+                }
+                
+            }
+        }
+        return minute
+    }
+    
     //Set the notification badge count
     func getSegmentCount(segment: Int) -> Int {
         var count = Int()

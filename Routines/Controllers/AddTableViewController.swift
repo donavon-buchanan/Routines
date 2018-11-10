@@ -339,18 +339,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     //var firstItemAdded: Bool?
     let optionsKey = "optionsKey"
     
-    //Load Options
-    func loadOptions() {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                //self.optionsObject = options
-                self.timeArray = [options?.morningStartTime, options?.afternoonStartTime, options?.eveningStartTime, options?.nightStartTime]
-            }
-        }
-    }
-    
     func getTime(timePeriod: Int, timeOption: Date?) -> Date {
         var time: Date
         let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
@@ -378,6 +366,50 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         dateFormatter.dateFormat = "mm"
         let minutes = dateFormatter.string(from: date)
         return Int(minutes)!
+    }
+    
+    func getOptionHour(segment: Int) -> Int {
+        var hour = Int()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                switch segment {
+                case 1:
+                    hour = (options?.afternoonHour)!
+                case 2:
+                    hour = (options?.eveningHour)!
+                case 3:
+                    hour = (options?.nightHour)!
+                default:
+                    hour = (options?.morningHour)!
+                }
+                
+            }
+        }
+        return hour
+    }
+    
+    func getOptionMinute(segment: Int) -> Int {
+        var minute = Int()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                switch segment {
+                case 1:
+                    minute = (options?.afternoonMinute)!
+                case 2:
+                    minute = (options?.eveningMinute)!
+                case 3:
+                    minute = (options?.nightMinute)!
+                default:
+                    minute = (options?.morningMinute)!
+                }
+                
+            }
+        }
+        return minute
     }
     
     //Set the notification badge count

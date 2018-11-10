@@ -86,19 +86,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         let eveningStartTime = oldObject!["eveningStartTime"] as! Date?
                         let nightStartTime = oldObject!["nightStartTime"] as! Date?
                         
-                        let newMorning = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: self.getHour(date: morningStartTime), minute: self.getMinute(date: morningStartTime), second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
+                        newObject!["morningHour"] = self.getHour(date: morningStartTime)
+                        newObject!["morningMinute"] = self.getMinute(date: morningStartTime)
                         
-                        let newAfternoon = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: self.getHour(date: afternoonStartTime), minute: self.getMinute(date: afternoonStartTime), second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
+                        newObject!["afternoonHour"] = self.getHour(date: afternoonStartTime)
+                        newObject!["afternoonMinute"] = self.getMinute(date: afternoonStartTime)
                         
-                        let newEvening = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: self.getHour(date: eveningStartTime), minute: self.getMinute(date: eveningStartTime), second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
+                        newObject!["eveningHour"] = self.getHour(date: eveningStartTime)
+                        newObject!["eveningMinute"] = self.getMinute(date: eveningStartTime)
                         
-                        let newNight = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: self.getHour(date: nightStartTime), minute: self.getMinute(date: nightStartTime), second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
-                        
-                        newObject!["morningStartTime"] = newMorning
-                        newObject!["afternoonStartTime"] = newAfternoon
-                        newObject!["eveningStartTime"] = newEvening
-                        newObject!["nightStartTime"] = newNight
-                        
+                        newObject!["nightHour"] = self.getHour(date: nightStartTime)
+                        newObject!["nightMinute"] = self.getMinute(date: nightStartTime)
                     })
                 }
         })
@@ -125,15 +123,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        return Int(minutes)!
 //    }
     
-    func loadTimes() {
+    func getOptionHour(segment: Int) -> Int {
+        var hour = Int()
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                //self.optionsObject = options
-                self.timeArray = [options?.morningStartTime, options?.afternoonStartTime, options?.eveningStartTime, options?.nightStartTime]
+                switch segment {
+                case 1:
+                    hour = (options?.afternoonHour)!
+                case 2:
+                    hour = (options?.eveningHour)!
+                case 3:
+                    hour = (options?.nightHour)!
+                default:
+                    hour = (options?.morningHour)!
+                }
+                
             }
         }
+        return hour
+    }
+    
+    func getOptionMinute(segment: Int) -> Int {
+        var minute = Int()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                switch segment {
+                case 1:
+                    minute = (options?.afternoonMinute)!
+                case 2:
+                    minute = (options?.eveningMinute)!
+                case 3:
+                    minute = (options?.nightMinute)!
+                default:
+                    minute = (options?.morningMinute)!
+                }
+                
+            }
+        }
+        return minute
     }
 
     //Load Options
@@ -372,7 +403,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func createNotification(title: String, notes: String?, segment: Int, uuidString: String) {
-        loadTimes()
         print("createNotification running")
         let content = UNMutableNotificationContent()
         content.title = title
