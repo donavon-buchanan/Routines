@@ -160,13 +160,17 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     //Override empty delete func from super
     override func updateModel(at indexPath: IndexPath) {
-        super.updateModel(at: indexPath)
-        let realm = try! Realm()
-        do {
-            try! realm.write {
-                let item = items?[indexPath.row]
-                self.removeNotification(uuidString: [item!.uuidString])
-                realm.delete(item!)
+        //super.updateModel(at: indexPath)
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                do {
+                    try! realm.write {
+                        let item = self.items?[indexPath.row]
+                        self.removeNotification(uuidString: [item!.uuidString])
+                        realm.delete(item!)
+                    }
+                }
             }
         }
         

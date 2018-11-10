@@ -62,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    //MARK: - Options Realm
     var timeArray: [DateComponents?] = []
 //    //Options Properties
-    lazy var realm = try! Realm()
+    //let realm = try! Realm()
     var optionsObject: Options?
     let optionsKey = "optionsKey"
     let realmDispatchQueueLabel: String = "background"
@@ -72,13 +72,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 3,
+            schemaVersion: 2,
             
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
             migrationBlock: { migration, oldSchemaVersion in
                 // We haven’t migrated anything yet, so oldSchemaVersion == 0
-                if (oldSchemaVersion < 3) {
+                
+                if (oldSchemaVersion < 2) {
                     
                     migration.enumerateObjects(ofType: Options.className(), { (newObject, oldObject) in
                         let morningStartTime = oldObject!["morningStartTime"] as! Date?
@@ -106,7 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Now that we've told Realm how to handle the schema change, opening the file
         // will automatically perform the migration
-        _ = try! Realm()
+        let realm = try! Realm()
     }
     
 //    func getHour(date: Date) -> Int {
@@ -169,6 +170,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     //Load Options
     func loadOptions() {
+        let realm = try! Realm()
         optionsObject = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
 
         if let currentOptions = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {

@@ -71,7 +71,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
     //continue dragging to delete
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
         var options = SwipeTableOptions()
-        options.expansionStyle = .destructive
+        options.expansionStyle = SwipeExpansionStyle.destructiveAfterFill
         options.transitionStyle = .border
         return options
     }
