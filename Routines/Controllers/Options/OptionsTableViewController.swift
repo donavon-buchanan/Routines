@@ -310,13 +310,17 @@ class OptionsTableViewController: UITableViewController {
                 
                 switch timePeriod {
                 case 1:
-                    timeOption = options?.afternoonStartTime
+                    timeOption?.hour = options?.afternoonHour
+                    timeOption?.minute = options?.afternoonMinute
                 case 2:
-                    timeOption = options?.eveningStartTime
+                    timeOption?.hour = options?.eveningHour
+                    timeOption?.minute = options?.eveningMinute
                 case 3:
-                    timeOption = options?.nightStartTime
+                    timeOption?.hour = options?.nightHour
+                    timeOption?.minute = options?.nightMinute
                 default:
-                    timeOption = options?.morningStartTime
+                    timeOption?.hour = options?.morningHour
+                    timeOption?.minute = options?.morningMinute
                 }
                 
                 let periods = ["morning", "afternoon", "evening", "night"]
@@ -327,7 +331,7 @@ class OptionsTableViewController: UITableViewController {
                 
                 if let dateTime = timeOption {
                     
-                    time = "Your \(periods[timePeriod]) begins at \(dateTime.hour!):\(dateTime.minute!)"
+                    time = "Your \(periods[timePeriod]) begins at \(DateFormatter.localizedString(from: dateTime.date!, dateStyle: .short, timeStyle: .short))"
                 } else {
                     
                     let defaultTime = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
@@ -468,25 +472,17 @@ class OptionsTableViewController: UITableViewController {
         
         switch segment {
         case 1:
-            if let time = self.timeArray[1] {
-                dateComponents.hour = time.hour
-                dateComponents.minute = time.minute
-            }
+            dateComponents.hour = afternoonHour
+            dateComponents.minute = afternoonMinute
         case 2:
-            if let time = self.timeArray[2] {
-                dateComponents.hour = time.hour
-                dateComponents.minute = time.minute
-            }
+            dateComponents.hour = eveningHour
+            dateComponents.minute = eveningMinute
         case 3:
-            if let time = self.timeArray[3] {
-                dateComponents.hour = time.hour
-                dateComponents.minute = time.minute
-            }
+            dateComponents.hour = nightHour
+            dateComponents.minute = nightMinute
         default:
-            if let time = self.timeArray[0] {
-                dateComponents.hour = time.hour
-                dateComponents.minute = time.minute
-            }
+            dateComponents.hour = morningHour
+            dateComponents.minute = morningMinute
         }
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
@@ -669,16 +665,36 @@ class OptionsTableViewController: UITableViewController {
     let realmDispatchQueueLabel: String = "background"
     let optionsKey = "optionsKey"
     
-    var timeArray: [DateComponents?] = []
+    lazy var morningHour: Int = 7
+    lazy var morningMinute: Int = 0
+    
+    lazy var afternoonHour: Int = 12
+    lazy var afternoonMinute: Int = 0
+    
+    lazy var eveningHour: Int = 17
+    lazy var eveningMinute: Int = 0
+    
+    lazy var nightHour: Int = 21
+    lazy var nightMinute: Int = 0
     
     //Load Options
     func loadOptions() {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                //self.optionsObject = options
-                self.timeArray = [options?.morningStartTime, options?.afternoonStartTime, options?.eveningStartTime, options?.nightStartTime]
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    self.morningHour = options.morningHour
+                    self.morningMinute = options.morningMinute
+                    
+                    self.afternoonHour = options.afternoonHour
+                    self.afternoonMinute = options.afternoonMinute
+                    
+                    self.eveningHour = options.eveningHour
+                    self.eveningMinute = options.eveningMinute
+                    
+                    self.nightHour = options.nightHour
+                    self.nightMinute = options.nightMinute
+                }
             }
         }
     }

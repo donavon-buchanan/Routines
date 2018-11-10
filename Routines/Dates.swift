@@ -7,3 +7,11 @@
 //
 
 import Foundation
+
+class Dates {
+    
+}
+
+protocol DatesDelegate {
+    
+}

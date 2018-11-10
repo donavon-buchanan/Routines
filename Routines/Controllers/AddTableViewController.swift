@@ -29,7 +29,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.loadOptions()
+        
         self.tabBarController?.tabBar.isHidden = true
         //If item is loaded, fill in values for editing
         if item != nil {
@@ -373,18 +373,18 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                switch segment {
-                case 1:
-                    hour = (options?.afternoonHour)!
-                case 2:
-                    hour = (options?.eveningHour)!
-                case 3:
-                    hour = (options?.nightHour)!
-                default:
-                    hour = (options?.morningHour)!
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    switch segment {
+                    case 1:
+                        hour = options.afternoonHour
+                    case 2:
+                        hour = options.eveningHour
+                    case 3:
+                        hour = options.nightHour
+                    default:
+                        hour = options.morningHour
+                    }
                 }
-                
             }
         }
         return hour

@@ -7,3 +7,12 @@
 //
 
 import Foundation
+import UserNotifications
+
+class Notifications {
+    
+}
+
+protocol NotificationsDelegate {
+    
+}

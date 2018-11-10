@@ -20,8 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
-        migrateRealm()
-        
         center.delegate = self
         
         requestNotificationPermission()
@@ -31,6 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        migrateRealm()
         
         //checkToCreateOptions()
         loadOptions()
@@ -80,7 +79,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             migrationBlock: { migration, oldSchemaVersion in
                 // We haven’t migrated anything yet, so oldSchemaVersion == 0
                 if (oldSchemaVersion < 3) {
-                    migration.enumerateObjects(ofType: Items.className(), { (newObject, oldObject) in
+                    
+                    migration.enumerateObjects(ofType: Options.className(), { (newObject, oldObject) in
                         let morningStartTime = oldObject!["morningStartTime"] as! Date?
                         let afternoonStartTime = oldObject!["afternoonStartTime"] as! Date?
                         let eveningStartTime = oldObject!["eveningStartTime"] as! Date?
