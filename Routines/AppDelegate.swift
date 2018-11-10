@@ -68,6 +68,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     let realmDispatchQueueLabel: String = "background"
     
     func migrateRealm() {
+        
+        let configCheck = Realm.Configuration();
+        do {
+            let fileUrlIs = try schemaVersionAtURL(configCheck.fileURL!)
+            print("schema version \(fileUrlIs)")
+        } catch  {
+            print(error)
+        }
+        
         print("performing realm migration")
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
@@ -77,10 +86,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
             migrationBlock: { migration, oldSchemaVersion in
-                // We haven’t migrated anything yet, so oldSchemaVersion == 0
-                
-                if (oldSchemaVersion < 2) {
-                    
+                print("oldSchemaVersion: \(oldSchemaVersion)")
+                if (oldSchemaVersion == 1) {
+                    print("Migration block running")
                     migration.enumerateObjects(ofType: Options.className(), { (newObject, oldObject) in
                         let morningStartTime = oldObject!["morningStartTime"] as! Date?
                         let afternoonStartTime = oldObject!["afternoonStartTime"] as! Date?
@@ -107,7 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Now that we've told Realm how to handle the schema change, opening the file
         // will automatically perform the migration
-        let realm = try! Realm()
+        _ = try! Realm()
     }
     
 //    func getHour(date: Date) -> Int {
