@@ -57,7 +57,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     @objc func appBecameActive() {
         self.runSmartSnooze()
-        
+        setAppearance()
         loadItems(segment: self.segment)
         updateBadge()
         tableView.reloadData()
@@ -66,6 +66,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNavTitle()
+        setAppearance()
         self.runSmartSnooze()
         print("View Will Appear")
         //loadItems(segment: self.segment)
@@ -279,21 +280,52 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     }
     
 //    //MARK: - Themeing
-//    func setMorningColors() {
-//        
-//    }
-//    
-//    func setAfternoonColors() {
-//        
-//    }
-//    
-//    func setEveningColors() {
-//        
-//    }
-//    
-//    func setDarkMode() {
-//        
-//    }
+    
+    func setAppearance() {
+        switch self.segment {
+        case 1:
+            setAfternoonColors()
+        case 2:
+            setEveningColors()
+        case 3:
+            setNightColors()
+        default:
+            setMorningColors()
+        }
+    }
+    
+    func setMorningColors() {
+
+    }
+    
+    func setAfternoonColors() {
+
+    }
+    
+    func setEveningColors() {
+
+    }
+    
+    func setNightColors() {
+
+    }
+    
+    func setDarkMode() {
+
+    }
+    
+    func getDarkModeStatus() -> Bool {
+        var darkMode = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    darkMode = options.darkMode
+                }
+            }
+        }
+        return darkMode
+    }
     
     //MARK: - Smart Snooze
     //Run this first

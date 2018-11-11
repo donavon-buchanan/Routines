@@ -37,6 +37,8 @@ import RealmSwift
     
     dynamic var smartSnooze: Bool = false
     
+    dynamic var darkMode: Bool = false
+    
     dynamic var optionsKey = UUID().uuidString
     override static func primaryKey() -> String? {
         return "optionsKey"

@@ -51,6 +51,11 @@ class OptionsTableViewController: UITableViewController {
         setSmartSnooze()
     }
     
+    @IBOutlet weak var darkModeSwtich: UISwitch!
+    @IBAction func darkModeSwitchToggled(_ sender: UISwitch) {
+        saveDarkModeOption(isOn: sender.isOn)
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,9 +73,9 @@ class OptionsTableViewController: UITableViewController {
     }
     
     //TODO: Make this dependant on if pro has been purchased when those options are ready
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
-    }
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        return 5
+//    }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var numberOfRows: Int
@@ -82,6 +87,8 @@ class OptionsTableViewController: UITableViewController {
         case 2:
             numberOfRows = 1
         case 3:
+            numberOfRows = 1
+        case 4:
             numberOfRows = 1
         default:
             numberOfRows = 0
@@ -134,6 +141,11 @@ class OptionsTableViewController: UITableViewController {
         if indexPath.section == 2 {
             self.smartSnoozeSwitch.setOn(!smartSnoozeSwitch.isOn, animated: true)
             setSmartSnooze()
+        }
+        
+        if indexPath.section == 3 {
+            self.darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
+            saveDarkModeOption(isOn: darkModeSwtich.isOn)
         }
     }
 
@@ -206,6 +218,8 @@ class OptionsTableViewController: UITableViewController {
                 self.nightSwitch.setOn(self.getSwitchFromOptions(segment: 3), animated: false)
                 
                 self.smartSnoozeSwitch.setOn(self.smartSnoozeStatus(), animated: false)
+                
+                self.darkModeSwtich.setOn(self.getDarkModeStatus(), animated: false)
                 
                 self.morningSubLabel.text = self.getOptionTimes(timePeriod: 0)
                 self.afternoonSubLabel.text = self.getOptionTimes(timePeriod: 1)
@@ -712,6 +726,37 @@ class OptionsTableViewController: UITableViewController {
             }
         }
         return snooze
+    }
+    
+    //Themeing
+    func saveDarkModeOption(isOn: Bool) {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    do {
+                        try realm.write {
+                            options.darkMode = isOn
+                        }
+                    } catch {
+                        print("failed to update dark mode")
+                    }
+                }
+            }
+        }
+    }
+    
+    func getDarkModeStatus() -> Bool {
+        var darkMode = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    darkMode = options.darkMode
+                }
+            }
+        }
+        return darkMode
     }
 
 }
