@@ -89,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 print("oldSchemaVersion: \(oldSchemaVersion)")
                 if (oldSchemaVersion < 2) {
                     print("Migration block running")
-                    DispatchQueue(label: self.realmDispatchQueueLabel).sync {
+                    DispatchQueue(label: self.realmDispatchQueueLabel).async {
                         autoreleasepool {
                             let realm = try! Realm()
                             let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
