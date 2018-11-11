@@ -137,6 +137,47 @@ class OptionsTableViewController: UITableViewController {
             default:
                 self.smartSnoozeSwitch.setOn(!smartSnoozeSwitch.isOn, animated: true)
                 setSmartSnooze()
+                if getSmartSnoozeStatus() {
+                    DispatchQueue(label: realmDispatchQueueLabel).async {
+                        autoreleasepool {
+                            let realm = try! Realm()
+                            let items = realm.objects(Items.self)
+                            items.forEach({ (item) in
+                                
+                                self.removeNotification(uuidString: [item.uuidString])
+                                
+                                if self.getSegmentNotification(segment: 0) {
+                                    self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 0, uuidString: item.uuidString)
+                                }
+                                if self.getSegmentNotification(segment: 1) {
+                                    self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 1, uuidString: item.uuidString)
+                                }
+                                if self.getSegmentNotification(segment: 2) {
+                                    self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 2, uuidString: item.uuidString)
+                                }
+                                if self.getSegmentNotification(segment: 3) {
+                                    self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 3, uuidString: item.uuidString)
+                                }
+                            })
+                        }
+                    }
+                } else {
+                    
+                    DispatchQueue(label: realmDispatchQueueLabel).sync {
+                        autoreleasepool {
+                            let realm = try! Realm()
+                            let items = realm.objects(Items.self)
+                            items.forEach({ (item) in
+                                removeNotification(uuidString: [item.uuidString])
+                            })
+                        }
+                    }
+                    
+                    addOrRemoveNotifications(isOn: self.getSegmentNotification(segment: 0), segment: 0)
+                    addOrRemoveNotifications(isOn: self.getSegmentNotification(segment: 1), segment: 1)
+                    addOrRemoveNotifications(isOn: self.getSegmentNotification(segment: 2), segment: 2)
+                    addOrRemoveNotifications(isOn: self.getSegmentNotification(segment: 3), segment: 3)
+                }
             }
         }
     }
@@ -513,9 +554,24 @@ class OptionsTableViewController: UITableViewController {
             autoreleasepool {
                 let realm = try! Realm()
                 let items = realm.objects(Items.self).filter("segment = \(segment)")
-                for item in 0..<items.count {
-                    self.scheduleNewNotification(title: items[item].title!, notes: items[item].notes, segment: items[item].segment, uuidString: items[item].uuidString)
-                }
+                items.forEach({ (item) in
+                    if self.getSmartSnoozeStatus() {
+                        if self.getSegmentNotification(segment: 0) {
+                            self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 0, uuidString: item.uuidString)
+                        }
+                        if self.getSegmentNotification(segment: 1) {
+                            self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 1, uuidString: item.uuidString)
+                        }
+                        if self.getSegmentNotification(segment: 2) {
+                            self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 2, uuidString: item.uuidString)
+                        }
+                        if self.getSegmentNotification(segment: 3) {
+                            self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 3, uuidString: item.uuidString)
+                        }
+                    } else {
+                        self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString)
+                    }
+                })
             }
         }
     }
@@ -682,34 +738,40 @@ class OptionsTableViewController: UITableViewController {
         }
     }
 
-    //MARK: Items Realm
+    func getSegmentNotification(segment: Int) -> Bool {
+        var enabled = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+                    switch segment {
+                    case 1:
+                        enabled = options.afternoonNotificationsOn
+                    case 2:
+                        enabled = options.eveningNotificationsOn
+                    case 3:
+                        enabled = options.nightNotificationsOn
+                    default:
+                        enabled = options.morningNotificationsOn
+                    }
+                }
+            }
+        }
+        return enabled
+    }
     
-//    var time: [Date?] = []
-//
-//    func loadTimes() {
-//        DispatchQueue(label: realmDispatchQueueLabel).async {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-//                //self.optionsObject = options
-//                self.time = [options?.morningStartTime, options?.afternoonStartTime, options?.eveningStartTime, options?.nightStartTime]
-//            }
-//        }
-//    }
-
-//    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
-//        var time: Date
-//        let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.timeStyle = .short
-//
-//        if let setTime = timeOption {
-//            time = setTime
-//        } else {
-//            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
-//        }
-//
-//        return time
-//    }
+    //Smart Snooze
+    func getSmartSnoozeStatus() -> Bool {
+        var snooze = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+                    snooze = options.smartSnooze
+                }
+            }
+        }
+        return snooze
+    }
 
 }

@@ -39,6 +39,8 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         print("Running viewDidLoad")
         super.viewDidLoad()
         
+        self.runSmartSnooze()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil )
         
         self.tabBarController?.delegate = self
@@ -56,7 +58,8 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     }
     
     @objc func appBecameActive() {
-        //TODO: smartSnoozeMove()
+        self.runSmartSnooze()
+        
         loadItems(segment: self.segment)
         updateBadge()
         tableView.reloadData()
@@ -279,26 +282,143 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
 //    }
     
     //MARK: - Smart Snooze
+    //Run this first
+    func runSmartSnooze() {
+        print("runSmartSnooze")
+        if getSmartSnoozeStatus() {
+            print("smartSnooze true")
+            var segmentsToSnooze: [Int] = []
+            let currentSegment = getCurrentSegmentFromTime()
+            print("currentSegment: \(currentSegment)")
+            switch currentSegment {
+            case 1:
+                segmentsToSnooze = [0]
+            case 2:
+                segmentsToSnooze = [0,1]
+            case 3:
+                segmentsToSnooze = [0,1,2]
+            default:
+                segmentsToSnooze = [1,2,3]
+            }
+            
+            segmentsToSnooze.forEach { (segment) in
+                smartSnoozeMove(fromSegment: segment, toSegment: currentSegment)
+            }
+            
+        }
+    }
+    //This does the work
+    func smartSnoozeMove(fromSegment: Int, toSegment: Int) {
+        print("running smartSnoozeMove from segment \(fromSegment) to \(toSegment)")
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let items = realm.objects(Items.self).filter("segment = \(fromSegment)")
+                items.forEach({ (item) in
+                    if let itemDate = item.dateModified {
+                        if itemDate < Date().addingTimeInterval(-(2 * 3600)) {
+                            do {
+                                try realm.write {
+                                    item.segment = toSegment
+                                }
+                            } catch {
+                                print("failed to smartSnooze items")
+                            }
+                        }
+                    }
+                })
+            }
+        }
+        updateBadge()
+    }
     
-//    func smartSnoozeMove() {
-//        
-//    }
-//    
-//    func getOptionTimes(segment: Int) -> DateComponents {
-//        var time = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: nil, month: nil, day: nil, hour: nil, minute: nil, second: nil, nanosecond: nil, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-////                switch segment {
-////                case 1:
-////
-////                default:
-////                    time.hour =
-////                }
-//            }
-//        }
-//        return time
-//    }
+    func getSmartSnoozeStatus() -> Bool {
+        var snooze = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+                    snooze = options.smartSnooze
+                }
+            }
+        }
+        return snooze
+    }
+    
+    func getDateFromComponents(hour: Int, minute: Int) -> Date {
+        var dateComponent = DateComponents()
+        dateComponent.calendar = Calendar.autoupdatingCurrent
+        dateComponent.timeZone = TimeZone.autoupdatingCurrent
+        dateComponent.hour = hour
+        dateComponent.minute = minute
+        return dateComponent.date!
+    }
+    
+    func getCurrentSegmentFromTime() -> Int {
+        //let morning = getDateFromComponents(hour: getOptionHour(segment: 0), minute: getOptionMinute(segment: 0))
+        let afternoon = getDateFromComponents(hour: getOptionHour(segment: 1), minute: getOptionMinute(segment: 1))
+        let evening = getDateFromComponents(hour: getOptionHour(segment: 2), minute: getOptionMinute(segment: 2))
+        let night = getDateFromComponents(hour: getOptionHour(segment: 3), minute: getOptionMinute(segment: 3))
+        
+        var currentSegment = 0
+        
+        switch Date() {
+        case _ where Date() < afternoon:
+            currentSegment = 0
+        case _ where Date() < evening:
+            currentSegment = 1
+        case _ where Date() < night:
+            currentSegment = 2
+        case _ where Date() > night:
+            currentSegment = 3
+        default:
+            currentSegment = 0
+        }
+        return currentSegment
+    }
+    
+    func getOptionHour(segment: Int) -> Int {
+        var hour = Int()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    switch segment {
+                    case 1:
+                        hour = options.afternoonHour
+                    case 2:
+                        hour = options.eveningHour
+                    case 3:
+                        hour = options.nightHour
+                    default:
+                        hour = options.morningHour
+                    }
+                }
+            }
+        }
+        return hour
+    }
+    
+    func getOptionMinute(segment: Int) -> Int {
+        var minute = Int()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                switch segment {
+                case 1:
+                    minute = (options?.afternoonMinute)!
+                case 2:
+                    minute = (options?.eveningMinute)!
+                case 3:
+                    minute = (options?.nightMinute)!
+                default:
+                    minute = (options?.morningMinute)!
+                }
+                
+            }
+        }
+        return minute
+    }
     
 }

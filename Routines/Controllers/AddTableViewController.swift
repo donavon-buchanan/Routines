@@ -167,7 +167,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             newItem.uuidString = uuidString
             //save to realm
             saveItem(item: newItem)
-            scheduleNewNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+            if getSmartSnoozeStatus() {
+                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 0, uuidString: self.item!.uuidString)
+                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 1, uuidString: self.item!.uuidString)
+                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 2, uuidString: self.item!.uuidString)
+                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 3, uuidString: self.item!.uuidString)
+            } else {
+                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString)
+            }
         } else {
             updateItem()
         }
@@ -199,7 +206,22 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
         self.removeNotification(uuidString: self.item!.uuidString)
         
-        self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString)
+        if getSmartSnoozeStatus() {
+            if getSegmentNotification(segment: 0) {
+               self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 0, uuidString: self.item!.uuidString)
+            }
+            if getSegmentNotification(segment: 1) {
+                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 1, uuidString: self.item!.uuidString)
+            }
+            if getSegmentNotification(segment: 2) {
+                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 2, uuidString: self.item!.uuidString)
+            }
+            if getSegmentNotification(segment: 3) {
+                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 3, uuidString: self.item!.uuidString)
+            }
+        } else {
+            self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString)
+        }
     }
     
     //MARK: - Manage Notifications
@@ -405,19 +427,40 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         return count
     }
     
-//    func updateItemUUID(item: Items, uuidString: String) {
-//        DispatchQueue(label: realmDispatchQueueLabel).async {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                do {
-//                    try realm.write {
-//                        item.uuidString = uuidString
-//                    }
-//                } catch {
-//                    print("failed to update UUID for item")
-//                }
-//            }
-//        }
-//    }
+    func getSegmentNotification(segment: Int) -> Bool {
+        var enabled = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+                    switch segment {
+                    case 1:
+                        enabled = options.afternoonNotificationsOn
+                    case 2:
+                        enabled = options.eveningNotificationsOn
+                    case 3:
+                        enabled = options.nightNotificationsOn
+                    default:
+                        enabled = options.morningNotificationsOn
+                    }
+                }
+            }
+        }
+        return enabled
+    }
+    
+    //Smart Snooze
+    func getSmartSnoozeStatus() -> Bool {
+        var snooze = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+                    snooze = options.smartSnooze
+                }
+            }
+        }
+        return snooze
+    }
 
 }

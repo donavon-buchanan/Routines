@@ -252,6 +252,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
         if let newTitle = title {
+            //TODO: Might need to come back to this for Smart Snooze. For now, leave it alone
             scheduleNewNotification(title: newTitle, notes: notes!, segment: itemSegment!, uuidString: itemuuidString!)
         }
     }

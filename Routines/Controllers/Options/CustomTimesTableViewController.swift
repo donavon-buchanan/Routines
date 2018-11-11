@@ -348,9 +348,24 @@ class CustomTimesTableViewController: UITableViewController {
             autoreleasepool {
                 let realm = try! Realm()
                 let items = realm.objects(Items.self).filter("segment = \(segment)")
-                for item in 0..<items.count {
-                    self.scheduleNewNotification(title: items[item].title!, notes: items[item].notes, segment: items[item].segment, uuidString: items[item].uuidString)
-                }
+                items.forEach({ (item) in
+                    if self.getSmartSnoozeStatus() {
+                        if self.getSegmentNotification(segment: 0) {
+                            self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 0, uuidString: item.uuidString)
+                        }
+                        if self.getSegmentNotification(segment: 1) {
+                            self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 1, uuidString: item.uuidString)
+                        }
+                        if self.getSegmentNotification(segment: 2) {
+                            self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 2, uuidString: item.uuidString)
+                        }
+                        if self.getSegmentNotification(segment: 3) {
+                            self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 3, uuidString: item.uuidString)
+                        }
+                    } else {
+                        self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString)
+                    }
+                })
             }
         }
     }
@@ -487,6 +502,42 @@ class CustomTimesTableViewController: UITableViewController {
                 }
             }
         }
+    }
+    
+    func getSegmentNotification(segment: Int) -> Bool {
+        var enabled = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+                    switch segment {
+                    case 1:
+                        enabled = options.afternoonNotificationsOn
+                    case 2:
+                        enabled = options.eveningNotificationsOn
+                    case 3:
+                        enabled = options.nightNotificationsOn
+                    default:
+                        enabled = options.morningNotificationsOn
+                    }
+                }
+            }
+        }
+        return enabled
+    }
+    
+    //Smart Snooze
+    func getSmartSnoozeStatus() -> Bool {
+        var snooze = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+                    snooze = options.smartSnooze
+                }
+            }
+        }
+        return snooze
     }
 
 }
