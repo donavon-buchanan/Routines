@@ -291,9 +291,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func registerNotificationCategoriesAndActions() {
         //let center = UNUserNotificationCenter.current()
         
-        let completeAction = UNNotificationAction(identifier: "complete", title: "Complete", options: UNNotificationActionOptions(rawValue: 0))
+        let completeAction = UNNotificationAction(identifier: "complete", title: "Completed", options: UNNotificationActionOptions(rawValue: 0))
         
-        let snoozeAction = UNNotificationAction(identifier: "snooze", title: "Snooze", options: UNNotificationActionOptions(rawValue: 0))
+        let snoozeAction = UNNotificationAction(identifier: "snooze", title: "Notify Me Later", options: UNNotificationActionOptions(rawValue: 0))
         
         let morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction,completeAction], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
         let afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction,completeAction], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))

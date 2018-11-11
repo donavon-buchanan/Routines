@@ -17,6 +17,7 @@
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
 		F84681FE21868C4B00BE3E19 /* HexColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84681FD21868C4B00BE3E19 /* HexColor.swift */; };
 		F85213B5218F5EE600291CFE /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85213B4218F5EE600291CFE /* NavigationViewController.swift */; };
+		F8AC82DF2198B4CD00E946E6 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AC82DE2198B4CD00E946E6 /* Date.swift */; };
 		F8AD192621967D6900280004 /* Dates.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD192521967D6900280004 /* Dates.swift */; };
 		F8AD192821967D7700280004 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD192721967D7700280004 /* Notifications.swift */; };
 		F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831B72155CBB000DAF60E /* AppDelegate.swift */; };
@@ -42,6 +43,7 @@
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
 		F84681FD21868C4B00BE3E19 /* HexColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColor.swift; sourceTree = "<group>"; };
 		F85213B4218F5EE600291CFE /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
+		F8AC82DE2198B4CD00E946E6 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		F8AD192521967D6900280004 /* Dates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dates.swift; sourceTree = "<group>"; };
 		F8AD192721967D7700280004 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		F8B831B42155CBB000DAF60E /* Routines.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routines.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +103,7 @@
 			children = (
 				F84681FD21868C4B00BE3E19 /* HexColor.swift */,
 				F8F278512187D56400D2AC46 /* UITableViewExtension.swift */,
+				F8AC82DE2198B4CD00E946E6 /* Date.swift */,
 			);
 			path = "Other Extensions";
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 				F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */,
 				F814CF5A2192A8E000E3C0F5 /* TabBarViewController.swift in Sources */,
 				F84681FE21868C4B00BE3E19 /* HexColor.swift in Sources */,
+				F8AC82DF2198B4CD00E946E6 /* Date.swift in Sources */,
 				F8AD192621967D6900280004 /* Dates.swift in Sources */,
 				F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */,
 				F8AD192821967D7700280004 /* Notifications.swift in Sources */,

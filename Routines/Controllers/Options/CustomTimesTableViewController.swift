@@ -349,22 +349,7 @@ class CustomTimesTableViewController: UITableViewController {
                 let realm = try! Realm()
                 let items = realm.objects(Items.self).filter("segment = \(segment)")
                 items.forEach({ (item) in
-                    if self.getSmartSnoozeStatus() {
-                        if self.getSegmentNotification(segment: 0) {
-                            self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 0, uuidString: item.uuidString)
-                        }
-                        if self.getSegmentNotification(segment: 1) {
-                            self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 1, uuidString: item.uuidString)
-                        }
-                        if self.getSegmentNotification(segment: 2) {
-                            self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 2, uuidString: item.uuidString)
-                        }
-                        if self.getSegmentNotification(segment: 3) {
-                            self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: 3, uuidString: item.uuidString)
-                        }
-                    } else {
-                        self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString)
-                    }
+                    self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString)
                 })
             }
         }

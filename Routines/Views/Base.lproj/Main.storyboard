@@ -477,7 +477,7 @@
                                 </cells>
                             </tableViewSection>
                             <tableViewSection id="9gB-gB-5f2" userLabel="Smart Snooze">
-                                <string key="footerTitle">Enabling Smart Snooze will automatically move incomplete tasks to the next period. Tasks less than two hours old will not be moved.</string>
+                                <string key="footerTitle">Enabling Auto Snooze will automatically move incomplete tasks to the next period. Tasks created for periods which have already passed will not be moved until the following day. Notifications will still only occur for the originally set time unless manually snoozed.</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="smartSnoozeCell" id="fzW-Eo-Deo">
                                         <rect key="frame" x="0.0" y="478.66666666666674" width="375" height="60"/>
@@ -489,7 +489,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="142" translatesAutoresizingMaskIntoConstraints="NO" id="ayx-df-fvP">
                                                     <rect key="frame" x="16" y="11" width="343" height="38"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Smart Snooze" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7H-qR-S1Q">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Auto Snooze" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7H-qR-S1Q">
                                                             <rect key="frame" x="0.0" y="8.9999999999999982" width="152" height="20.333333333333329"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
@@ -517,7 +517,7 @@
                             <tableViewSection headerTitle="About" id="Mh0-Xn-pCD">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="aboutCell" textLabel="kjr-Gf-k2s" style="IBUITableViewCellStyleDefault" id="JZL-NA-pX6">
-                                        <rect key="frame" x="0.0" y="638.66666666666674" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="670.66666666666674" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JZL-NA-pX6" id="XeW-Nf-qRm">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="60"/>

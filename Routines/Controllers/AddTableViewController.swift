@@ -161,20 +161,19 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         if self.item == nil {
             let newItem = Items()
             newItem.title = title
-            newItem.dateModified = date
             newItem.segment = segment
+            if segment < getCurrentSegmentFromTime() {
+                print("Adding new item for tomorrow")
+                newItem.dateModified = Date().startOfNextDay
+            } else {
+                print("Adding new item for today")
+                newItem.dateModified = Date()
+            }
             newItem.notes = notes
             newItem.uuidString = uuidString
             //save to realm
             saveItem(item: newItem)
-            if getSmartSnoozeStatus() {
-                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 0, uuidString: self.item!.uuidString)
-                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 1, uuidString: self.item!.uuidString)
-                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 2, uuidString: self.item!.uuidString)
-                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 3, uuidString: self.item!.uuidString)
-            } else {
-                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString)
-            }
+            scheduleNewNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
         } else {
             updateItem()
         }
@@ -197,7 +196,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         do {
             try realm.write {
                 self.item!.title = self.taskTextField.text
-                self.item!.dateModified = Date()
+                //For Smart Snooze
+                if self.segmentSelection.selectedSegmentIndex < getCurrentSegmentFromTime() {
+                    print("Updating item for tomorrow")
+                    self.item!.dateModified = Date().startOfNextDay
+                } else {
+                    print("Updating item for today")
+                    self.item!.dateModified = Date()
+                }
                 self.item!.segment = self.segmentSelection.selectedSegmentIndex
                 self.item!.notes = self.notesTextView.text
             }
@@ -206,22 +212,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
         self.removeNotification(uuidString: self.item!.uuidString)
         
-        if getSmartSnoozeStatus() {
-            if getSegmentNotification(segment: 0) {
-               self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 0, uuidString: self.item!.uuidString)
-            }
-            if getSegmentNotification(segment: 1) {
-                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 1, uuidString: self.item!.uuidString)
-            }
-            if getSegmentNotification(segment: 2) {
-                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 2, uuidString: self.item!.uuidString)
-            }
-            if getSegmentNotification(segment: 3) {
-                self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: 3, uuidString: self.item!.uuidString)
-            }
-        } else {
-            self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString)
-        }
+        self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString)
     }
     
     //MARK: - Manage Notifications
@@ -461,6 +452,37 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             }
         }
         return snooze
+    }
+    
+    func getCurrentSegmentFromTime() -> Int {
+        let afternoon = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 1), minute: getOptionMinute(segment: 1), second: 0, of: Date())
+        let evening = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 2), minute: getOptionMinute(segment: 2), second: 0, of: Date())
+        let night = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 3), minute: getOptionMinute(segment: 3), second: 0, of: Date())
+        
+        var currentSegment = 0
+        
+        switch Date() {
+        case _ where Date() < afternoon!:
+            currentSegment = 0
+        case _ where Date() < evening!:
+            currentSegment = 1
+        case _ where Date() < night!:
+            currentSegment = 2
+        case _ where Date() > night!:
+            currentSegment = 3
+        default:
+            currentSegment = 0
+        }
+        return currentSegment
+    }
+    
+    func getDateFromComponents(hour: Int, minute: Int) -> Date {
+        var dateComponent = DateComponents()
+        dateComponent.calendar = Calendar.autoupdatingCurrent
+        dateComponent.timeZone = TimeZone.autoupdatingCurrent
+        dateComponent.hour = hour
+        dateComponent.minute = minute
+        return dateComponent.date!
     }
 
 }

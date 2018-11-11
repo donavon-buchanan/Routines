@@ -39,8 +39,6 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         print("Running viewDidLoad")
         super.viewDidLoad()
         
-        self.runSmartSnooze()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil )
         
         self.tabBarController?.delegate = self
@@ -67,6 +65,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.runSmartSnooze()
         print("View Will Appear")
         //loadItems(segment: self.segment)
         self.tabBarController?.tabBar.isHidden = false
@@ -316,7 +315,8 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 let items = realm.objects(Items.self).filter("segment = \(fromSegment)")
                 items.forEach({ (item) in
                     if let itemDate = item.dateModified {
-                        if itemDate < Date().addingTimeInterval(-(2 * 3600)) {
+                        print("Item Date: \(itemDate), Current Date: \(Date())")
+                        if itemDate < Date() {
                             do {
                                 try realm.write {
                                     item.segment = toSegment
@@ -329,7 +329,6 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 })
             }
         }
-        updateBadge()
     }
     
     func getSmartSnoozeStatus() -> Bool {
@@ -355,21 +354,20 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     }
     
     func getCurrentSegmentFromTime() -> Int {
-        //let morning = getDateFromComponents(hour: getOptionHour(segment: 0), minute: getOptionMinute(segment: 0))
-        let afternoon = getDateFromComponents(hour: getOptionHour(segment: 1), minute: getOptionMinute(segment: 1))
-        let evening = getDateFromComponents(hour: getOptionHour(segment: 2), minute: getOptionMinute(segment: 2))
-        let night = getDateFromComponents(hour: getOptionHour(segment: 3), minute: getOptionMinute(segment: 3))
+        let afternoon = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 1), minute: getOptionMinute(segment: 1), second: 0, of: Date())
+        let evening = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 2), minute: getOptionMinute(segment: 2), second: 0, of: Date())
+        let night = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 3), minute: getOptionMinute(segment: 3), second: 0, of: Date())
         
         var currentSegment = 0
         
         switch Date() {
-        case _ where Date() < afternoon:
+        case _ where Date() < afternoon!:
             currentSegment = 0
-        case _ where Date() < evening:
+        case _ where Date() < evening!:
             currentSegment = 1
-        case _ where Date() < night:
+        case _ where Date() < night!:
             currentSegment = 2
-        case _ where Date() > night:
+        case _ where Date() > night!:
             currentSegment = 3
         default:
             currentSegment = 0
