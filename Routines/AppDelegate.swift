@@ -89,24 +89,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 print("oldSchemaVersion: \(oldSchemaVersion)")
                 if (oldSchemaVersion < 2) {
                     print("Migration block running")
-                    migration.enumerateObjects(ofType: Options.className(), { (newObject, oldObject) in
-                        if let morningStartTime = oldObject!["morningStartTime"] as! Date? {
-                            newObject!["morningHour"] = self.getHour(date: morningStartTime)
-                            newObject!["morningMinute"] = self.getMinute(date: morningStartTime)
+                    DispatchQueue(label: self.realmDispatchQueueLabel).sync {
+                        autoreleasepool {
+                            let realm = try! Realm()
+                            let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                            
+                            do {
+                                try realm.write {
+                                    if let morningTime = options?.morningStartTime {
+                                        options?.morningHour = self.getHour(date: morningTime)
+                                        options?.morningMinute = self.getMinute(date: morningTime)
+                                    }
+                                    if let afternoonTime = options?.afternoonStartTime {
+                                        options?.afternoonHour = self.getHour(date: afternoonTime)
+                                        options?.afternoonMinute = self.getMinute(date: afternoonTime)
+                                    }
+                                    if let eveningTime = options?.eveningStartTime {
+                                        options?.eveningHour = self.getHour(date: eveningTime)
+                                        options?.eveningMinute = self.getMinute(date: eveningTime)
+                                    }
+                                    if let nightTime = options?.nightStartTime {
+                                        options?.nightHour = self.getHour(date: nightTime)
+                                        options?.nightMinute = self.getMinute(date: nightTime)
+                                    }
+                                }
+                            } catch {
+                                print("Error with migration")
+                            }
+                            
                         }
-                        if let afternoonStartTime = oldObject!["afternoonStartTime"] as! Date? {
-                            newObject!["afternoonHour"] = self.getHour(date: afternoonStartTime)
-                            newObject!["afternoonMinute"] = self.getMinute(date: afternoonStartTime)
-                        }
-                        if let eveningStartTime = oldObject!["eveningStartTime"] as! Date? {
-                            newObject!["eveningHour"] = self.getHour(date: eveningStartTime)
-                            newObject!["eveningMinute"] = self.getMinute(date: eveningStartTime)
-                        }
-                        if let nightStartTime = oldObject!["nightStartTime"] as! Date? {
-                            newObject!["nightHour"] = self.getHour(date: nightStartTime)
-                            newObject!["nightMinute"] = self.getMinute(date: nightStartTime)
-                        }
-                    })
+                    }
                 }
         })
         
