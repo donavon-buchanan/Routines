@@ -113,6 +113,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             //textField.backgroundColor = .white
         }
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

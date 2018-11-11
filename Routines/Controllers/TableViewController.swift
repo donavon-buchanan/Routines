@@ -65,6 +65,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setNavTitle()
         self.runSmartSnooze()
         print("View Will Appear")
         //loadItems(segment: self.segment)
@@ -78,6 +79,20 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         print("viewDidAppear \n")
         changeSegment(segment: passedSegment)
         reloadTableView()
+    }
+    
+    func setNavTitle() {
+        print("Setting table title")
+        switch self.segment {
+        case 1:
+            self.title = "Afternoon"
+        case 2:
+            self.title = "Evening"
+        case 3:
+            self.title = "Night"
+        default:
+            self.title = "Morning"
+        }
     }
     
     
