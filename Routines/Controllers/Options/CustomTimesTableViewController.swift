@@ -146,7 +146,7 @@ class CustomTimesTableViewController: UITableViewController {
     //MARK: - Options Realm
     
     func updateSavedTimes(segment: Int, hour: Int, minute: Int) {
-        print("updateSavedTimes received: \(String(describing: time))")
+        print("updateSavedTimes received: Hour - \(hour), minute - \(minute)")
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -167,7 +167,6 @@ class CustomTimesTableViewController: UITableViewController {
                             options?.morningHour = hour
                             options?.morningMinute = minute
                         }
-                        //print("updateSavedTime: Options \(String(describing: options))")
                     }
                 } catch {
                     print("updateSavedTimes failed")
@@ -298,23 +297,11 @@ class CustomTimesTableViewController: UITableViewController {
         }
         
         var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.current
-        self.loadOptions()
+        dateComponents.calendar = Calendar.autoupdatingCurrent
+        dateComponents.timeZone = TimeZone.autoupdatingCurrent
         
-        switch segment {
-        case 1:
-            dateComponents.hour = afternoonHour
-            dateComponents.minute = afternoonMinute
-        case 2:
-            dateComponents.hour = eveningHour
-            dateComponents.minute = eveningMinute
-        case 3:
-            dateComponents.hour = nightHour
-            dateComponents.minute = nightMinute
-        default:
-            dateComponents.hour = morningHour
-            dateComponents.minute = morningMinute
-        }
+        dateComponents.hour = getOptionHour(segment: segment)
+        dateComponents.minute = getOptionMinute(segment: segment)
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         

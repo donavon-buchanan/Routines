@@ -306,38 +306,33 @@ class OptionsTableViewController: UITableViewController {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                var timeOption: DateComponents?
+                var timeOption = DateComponents()
+                timeOption.calendar = Calendar.autoupdatingCurrent
+                timeOption.timeZone = TimeZone.autoupdatingCurrent
                 
                 switch timePeriod {
                 case 1:
-                    timeOption?.hour = options?.afternoonHour
-                    timeOption?.minute = options?.afternoonMinute
+                    timeOption.hour = options?.afternoonHour
+                    timeOption.minute = options?.afternoonMinute
                 case 2:
-                    timeOption?.hour = options?.eveningHour
-                    timeOption?.minute = options?.eveningMinute
+                    timeOption.hour = options?.eveningHour
+                    timeOption.minute = options?.eveningMinute
                 case 3:
-                    timeOption?.hour = options?.nightHour
-                    timeOption?.minute = options?.nightMinute
+                    timeOption.hour = options?.nightHour
+                    timeOption.minute = options?.nightMinute
                 default:
-                    timeOption?.hour = options?.morningHour
-                    timeOption?.minute = options?.morningMinute
+                    timeOption.hour = options?.morningHour
+                    timeOption.minute = options?.morningMinute
                 }
                 
                 let periods = ["morning", "afternoon", "evening", "night"]
                 let dateFormatter = DateFormatter()
-                //dateFormatter.timeStyle = .short
+                dateFormatter.timeStyle = .short
                 dateFormatter.locale = Locale.autoupdatingCurrent
                 dateFormatter.setLocalizedDateFormatFromTemplate("HH:mm")
+                print("timeOption DateComponents: \(String(describing: timeOption))")
                 
-                if let dateTime = timeOption {
-                    
-                    time = "Your \(periods[timePeriod]) begins at \(DateFormatter.localizedString(from: dateTime.date!, dateStyle: .short, timeStyle: .short))"
-                } else {
-                    
-                    let defaultTime = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
-                    
-                    time = "Your \(periods[timePeriod]) begins at \(getLocalTimeString(date: defaultTime))"
-                }
+                time = "Your \(periods[timePeriod]) begins at \(DateFormatter.localizedString(from: timeOption.date!, dateStyle: .none, timeStyle: .short))"
             }
         }
         
@@ -467,23 +462,11 @@ class OptionsTableViewController: UITableViewController {
         }
         
         var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.current
-        self.loadOptions()
+        dateComponents.calendar = Calendar.autoupdatingCurrent
+        dateComponents.timeZone = TimeZone.autoupdatingCurrent
         
-        switch segment {
-        case 1:
-            dateComponents.hour = afternoonHour
-            dateComponents.minute = afternoonMinute
-        case 2:
-            dateComponents.hour = eveningHour
-            dateComponents.minute = eveningMinute
-        case 3:
-            dateComponents.hour = nightHour
-            dateComponents.minute = nightMinute
-        default:
-            dateComponents.hour = morningHour
-            dateComponents.minute = morningMinute
-        }
+        dateComponents.hour = getOptionHour(segment: segment)
+        dateComponents.minute = getOptionMinute(segment: segment)
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         

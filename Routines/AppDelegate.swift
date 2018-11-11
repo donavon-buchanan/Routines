@@ -87,25 +87,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // a schema version lower than the one set above
             migrationBlock: { migration, oldSchemaVersion in
                 print("oldSchemaVersion: \(oldSchemaVersion)")
-                if (oldSchemaVersion == 1) {
+                if (oldSchemaVersion < 2) {
                     print("Migration block running")
                     migration.enumerateObjects(ofType: Options.className(), { (newObject, oldObject) in
-                        let morningStartTime = oldObject!["morningStartTime"] as! Date?
-                        let afternoonStartTime = oldObject!["afternoonStartTime"] as! Date?
-                        let eveningStartTime = oldObject!["eveningStartTime"] as! Date?
-                        let nightStartTime = oldObject!["nightStartTime"] as! Date?
-                        
-                        newObject!["morningHour"] = self.getHour(date: morningStartTime)
-                        newObject!["morningMinute"] = self.getMinute(date: morningStartTime)
-                        
-                        newObject!["afternoonHour"] = self.getHour(date: afternoonStartTime)
-                        newObject!["afternoonMinute"] = self.getMinute(date: afternoonStartTime)
-                        
-                        newObject!["eveningHour"] = self.getHour(date: eveningStartTime)
-                        newObject!["eveningMinute"] = self.getMinute(date: eveningStartTime)
-                        
-                        newObject!["nightHour"] = self.getHour(date: nightStartTime)
-                        newObject!["nightMinute"] = self.getMinute(date: nightStartTime)
+                        if let morningStartTime = oldObject!["morningStartTime"] as! Date? {
+                            newObject!["morningHour"] = self.getHour(date: morningStartTime)
+                            newObject!["morningMinute"] = self.getMinute(date: morningStartTime)
+                        }
+                        if let afternoonStartTime = oldObject!["afternoonStartTime"] as! Date? {
+                            newObject!["afternoonHour"] = self.getHour(date: afternoonStartTime)
+                            newObject!["afternoonMinute"] = self.getMinute(date: afternoonStartTime)
+                        }
+                        if let eveningStartTime = oldObject!["eveningStartTime"] as! Date? {
+                            newObject!["eveningHour"] = self.getHour(date: eveningStartTime)
+                            newObject!["eveningMinute"] = self.getMinute(date: eveningStartTime)
+                        }
+                        if let nightStartTime = oldObject!["nightStartTime"] as! Date? {
+                            newObject!["nightHour"] = self.getHour(date: nightStartTime)
+                            newObject!["nightMinute"] = self.getMinute(date: nightStartTime)
+                        }
                     })
                 }
         })
@@ -436,30 +436,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.current
+        dateComponents.calendar = Calendar.autoupdatingCurrent
+        dateComponents.timeZone = TimeZone.autoupdatingCurrent
         
-        switch segment {
-        case 1:
-            if let time = self.timeArray[1] {
-                dateComponents.hour = time.hour
-                dateComponents.minute = time.minute
-            }
-        case 2:
-            if let time = self.timeArray[2] {
-                dateComponents.hour = time.hour
-                dateComponents.minute = time.minute
-            }
-        case 3:
-            if let time = self.timeArray[3] {
-                dateComponents.hour = time.hour
-                dateComponents.minute = time.minute
-            }
-        default:
-            if let time = self.timeArray[0] {
-                dateComponents.hour = time.hour
-                dateComponents.minute = time.minute
-            }
-        }
+        dateComponents.hour = getOptionHour(segment: segment)
+        dateComponents.minute = getOptionMinute(segment: segment)
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         

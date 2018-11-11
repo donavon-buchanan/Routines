@@ -15,28 +15,30 @@ class AboutTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tableView.register(AboutTableViewCell.self, forCellReuseIdentifier: "versionCell")
+        versionNumberLabel.text = setVersionNumberLabel()
         setViewBackgroundGraphic()
 
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        let versionCell = tableView.dequeueReusableCell(withIdentifier: "versionCell") as! AboutTableViewCell
-        //versionCell.textLabel?.text = setVersionNumberLabel()
-        versionCell.setLabel(labelString: setVersionNumberLabel())
-        self.versionNumberLabel.text = versionCell.textLabel?.text
-        return versionCell
-    }
+//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "versionCell")
+//        cell?.textLabel?.text = setVersionNumberLabel()
+//        return cell!
+//    }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 3
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var numberOfRows: Int
         switch section {
         case 0:
+            numberOfRows = 1
+        case 1:
+            numberOfRows = 5
+        case 2:
             numberOfRows = 1
         default:
             numberOfRows = 0
