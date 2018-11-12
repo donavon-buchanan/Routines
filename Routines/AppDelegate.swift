@@ -10,7 +10,6 @@ import UIKit
 import RealmSwift
 import UserNotifications
 import UserNotificationsUI
-import Theme
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate{
@@ -48,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+        updateAppBadgeCount()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -65,6 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        //updateAppBadgeCount()
     }
     
 //    //MARK: - Options Realm
@@ -490,6 +491,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
         
         
+    }
+    
+    func updateAppBadgeCount() {
+        print("updating app badge number")
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                var badgeCount = 0
+                let realm = try! Realm()
+                let items = realm.objects(Items.self)
+                items.forEach({ (item) in
+                    if let itemDate = item.dateModified {
+                        if itemDate < Date() {
+                            badgeCount += 1
+                        }
+                    }
+                })
+                DispatchQueue.main.async {
+                    autoreleasepool {
+                        UIApplication.shared.applicationIconBadgeNumber = badgeCount
+                    }
+                }
+            }
+        }
     }
     
     
