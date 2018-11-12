@@ -7,18 +7,17 @@
 //
 
 import UIKit
+import UserNotifications
 
-class NavigationViewController: UINavigationController {
+class NavigationViewController: UINavigationController, UNUserNotificationCenterDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.navigationBar.shadowImage = UIImage()
-//        self.navigationBar.backgroundColor = .white
-//        self.view.backgroundColor = .white
-//        self.navigationBar.isTranslucent = false
         // Do any additional setup after loading the view.
+//        center.delegate = self
     }
     
+//    let center = UNUserNotificationCenter.current()
 
     /*
     // MARK: - Navigation
@@ -29,5 +28,13 @@ class NavigationViewController: UINavigationController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+//    //Notification Settings Screen
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
+//        print("Opening settings")
+//        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//        let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsView") as! OptionsTableViewController
+//        self.pushViewController(optionsViewController, animated: true)
+//    }
 
 }

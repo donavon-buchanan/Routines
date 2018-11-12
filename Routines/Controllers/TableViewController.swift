@@ -39,6 +39,8 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         
         NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil )
         
+        //center.delegate = self
+        
         self.tabBarController?.delegate = self
         self.navigationController?.delegate = self
         self.segment = self.tabBarController?.selectedIndex ?? 0
@@ -260,6 +262,14 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
             }
         }
     }
+    
+    //Notification Settings Screen
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
+//        print("Opening settings")
+//        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//        let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsView") as! OptionsTableViewController
+//        self.navigationController?.pushViewController(optionsViewController, animated: true)
+//    }
     
     
     //MARK: - Realm

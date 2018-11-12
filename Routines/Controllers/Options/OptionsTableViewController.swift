@@ -45,6 +45,12 @@ class OptionsTableViewController: UITableViewController {
         }
     }
     
+    @IBOutlet weak var badgeSwitch: UISwitch!
+    @IBAction func badgeSwitchToggled(_ sender: UISwitch) {
+        saveBadgeOption(isOn: sender.isOn)
+    }
+    
+    
     
     @IBOutlet weak var smartSnoozeSwitch: UISwitch!
     @IBAction func smartSnoozeSwitchToggled(_ sender: UISwitch) {
@@ -77,25 +83,25 @@ class OptionsTableViewController: UITableViewController {
 //        return 5
 //    }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var numberOfRows: Int
-        switch section {
-        case 0:
-            numberOfRows = 1
-        case 1:
-            numberOfRows = 4
-        case 2:
-            numberOfRows = 1
-        case 3:
-            numberOfRows = 1
-        case 4:
-            numberOfRows = 1
-        default:
-            numberOfRows = 0
-        }
-        
-        return numberOfRows
-    }
+//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        var numberOfRows: Int
+//        switch section {
+//        case 0:
+//            numberOfRows = 1
+//        case 1:
+//            numberOfRows = 4
+//        case 2:
+//            numberOfRows = 1
+//        case 3:
+//            numberOfRows = 1
+//        case 4:
+//            numberOfRows = 1
+//        default:
+//            numberOfRows = 0
+//        }
+//
+//        return numberOfRows
+//    }
     
     //Make the full width of the cell toggle the switch along with typical haptic
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -136,31 +142,25 @@ class OptionsTableViewController: UITableViewController {
                 haptic.impactOccurred()
             }
         }
+        //Badge
+        if indexPath.section == 2 {
+            badgeSwitch.setOn(!badgeSwitch.isOn, animated: true)
+            saveBadgeOption(isOn: badgeSwitch.isOn)
+        }
         
         //Smart Snooze
-        if indexPath.section == 2 {
+        if indexPath.section == 3 {
             self.smartSnoozeSwitch.setOn(!smartSnoozeSwitch.isOn, animated: true)
             setSmartSnooze()
         }
         
-        if indexPath.section == 3 {
+        if indexPath.section == 4 {
             self.darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
             saveDarkModeOption(isOn: darkModeSwtich.isOn)
         }
     }
 
     //MARK: - Options Realm
-    
-//    //Options Properties
-//    let optionsRealm = try! Realm()
-//    var optionsObject: Options?
-//    //var firstItemAdded: Bool?
-//    let optionsKey = "optionsKey"
-//
-//    //Load Options
-//    func loadOptions() {
-//        optionsObject = optionsRealm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-//    }
     
     func updateNotificationOptions(segment: Int, isOn: Bool) {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -216,6 +216,8 @@ class OptionsTableViewController: UITableViewController {
                 self.afternoonSwitch.setOn(self.getSwitchFromOptions(segment: 1), animated: false)
                 self.eveningSwitch.setOn(self.getSwitchFromOptions(segment: 2), animated: false)
                 self.nightSwitch.setOn(self.getSwitchFromOptions(segment: 3), animated: false)
+                
+                self.badgeSwitch.setOn(self.getBadgeOption(), animated: false)
                 
                 self.smartSnoozeSwitch.setOn(self.smartSnoozeStatus(), animated: false)
                 
@@ -537,6 +539,36 @@ class OptionsTableViewController: UITableViewController {
             removeNotificationsForSegment(segment: segment)
         }
     }
+    
+    func getBadgeOption() -> Bool {
+        var badge = true
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    badge = options.badge
+                }
+            }
+        }
+        return badge
+    }
+    
+    func saveBadgeOption(isOn: Bool) {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    do {
+                        try realm.write {
+                            options.badge = isOn
+                        }
+                    } catch {
+                        print("Error saving badge option")
+                    }
+                }
+            }
+        }
+    }
 
 //    func addRemoveNotificationsOnToggle(segment: Int, isOn: Bool) {
 //        DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -714,7 +746,7 @@ class OptionsTableViewController: UITableViewController {
         return enabled
     }
     
-    //Smart Snooze
+    //Mark: - Smart Snooze
     func getSmartSnoozeStatus() -> Bool {
         var snooze = false
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -728,7 +760,7 @@ class OptionsTableViewController: UITableViewController {
         return snooze
     }
     
-    //Themeing
+    //Mark: - Themeing
     func saveDarkModeOption(isOn: Bool) {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {

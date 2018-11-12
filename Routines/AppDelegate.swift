@@ -90,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 3,
+            schemaVersion: 4,
             
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -130,7 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
                 
-                if (oldSchemaVersion < 3) {
+                if (oldSchemaVersion < 4) {
                     
                 }
                 
@@ -254,7 +254,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             autoreleasepool {
                 let realm = try! Realm()
                 if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
-                    let segment = item.segment
+                    //TODO: Could cause out of bounds error? Or actually, it's not an array. The item may just become invisible.
+                    let segment = getCurrentSegmentFromTime()
                     var newSegment = Int()
                     
                     switch segment {
@@ -489,30 +490,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     //Notification Settings Screen
     func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
-        
-        
+        print("Opening settings")
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsView") as! OptionsTableViewController
+        let rootVC = self.window?.rootViewController as! TabBarViewController
+        //Set the selected index so you know what child will be on screen
+        rootVC.selectedIndex = 0
+        //This is kind of a cheat, but it works
+        let navVC = rootVC.children[0] as! NavigationViewController
+        navVC.pushViewController(optionsViewController, animated: true)
+    }
+    
+    func getBadgeOption() -> Bool {
+        var badge = true
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    badge = options.badge
+                }
+            }
+        }
+        return badge
     }
     
     func updateAppBadgeCount() {
-        print("updating app badge number")
-        DispatchQueue(label: realmDispatchQueueLabel).async {
-            autoreleasepool {
-                var badgeCount = 0
-                let realm = try! Realm()
-                let items = realm.objects(Items.self)
-                items.forEach({ (item) in
-                    if let itemDate = item.dateModified {
-                        if itemDate < Date() {
-                            badgeCount += 1
+        if getBadgeOption() {
+            print("updating app badge number")
+            DispatchQueue(label: realmDispatchQueueLabel).async {
+                autoreleasepool {
+                    var badgeCount = 0
+                    let realm = try! Realm()
+                    let items = realm.objects(Items.self)
+                    items.forEach({ (item) in
+                        if let itemDate = item.dateModified {
+                            if itemDate < Date() {
+                                badgeCount += 1
+                            }
                         }
-                    }
-                })
-                DispatchQueue.main.async {
-                    autoreleasepool {
-                        UIApplication.shared.applicationIconBadgeNumber = badgeCount
+                    })
+                    DispatchQueue.main.async {
+                        autoreleasepool {
+                            UIApplication.shared.applicationIconBadgeNumber = badgeCount
+                        }
                     }
                 }
             }
+        } else {
+            UIApplication.shared.applicationIconBadgeNumber = 0
         }
     }
     
@@ -546,6 +571,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         dateFormatter.dateFormat = "mm"
         let minutes = dateFormatter.string(from: date!)
         return Int(minutes)!
+    }
+    
+    func getCurrentSegmentFromTime() -> Int {
+        let afternoon = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 1), minute: getOptionMinute(segment: 1), second: 0, of: Date())
+        let evening = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 2), minute: getOptionMinute(segment: 2), second: 0, of: Date())
+        let night = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 3), minute: getOptionMinute(segment: 3), second: 0, of: Date())
+        
+        var currentSegment = 0
+        
+        switch Date() {
+        case _ where Date() < afternoon!:
+            currentSegment = 0
+        case _ where Date() < evening!:
+            currentSegment = 1
+        case _ where Date() < night!:
+            currentSegment = 2
+        case _ where Date() > night!:
+            currentSegment = 3
+        default:
+            currentSegment = 0
+        }
+        return currentSegment
     }
     
 }

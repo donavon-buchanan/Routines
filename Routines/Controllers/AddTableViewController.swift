@@ -168,7 +168,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             let newItem = Items()
             newItem.title = title
             newItem.segment = segment
-            if segment < getCurrentSegmentFromTime() {
+            if segment <= getCurrentSegmentFromTime() {
                 print("Adding new item for tomorrow")
                 newItem.dateModified = Date().startOfNextDay
             } else {
@@ -203,7 +203,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             try realm.write {
                 self.item!.title = self.taskTextField.text
                 //For Smart Snooze
-                if self.segmentSelection.selectedSegmentIndex < getCurrentSegmentFromTime() {
+                if self.segmentSelection.selectedSegmentIndex <= getCurrentSegmentFromTime() {
                     print("Updating item for tomorrow")
                     self.item!.dateModified = Date().startOfNextDay
                 } else {

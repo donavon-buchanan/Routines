@@ -33,6 +33,8 @@ import RealmSwift
     dynamic var eveningNotificationsOn: Bool = true
     dynamic var nightNotificationsOn: Bool = true
     
+    dynamic var badge: Bool = true
+    
     dynamic var firstItemAdded: Bool = false
     
     dynamic var smartSnooze: Bool = false
