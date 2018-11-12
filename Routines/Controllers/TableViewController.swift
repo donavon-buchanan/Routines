@@ -20,8 +20,6 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     let realmDispatchQueueLabel: String = "background"
     
-    //let segmentStringArray: [String] = ["Morning", "Afternoon", "Evening", "Night", "All Day"]
-    
     //Set segment after adding an item
     var passedSegment: Int?
     func changeSegment(segment: Int?) {

@@ -1,34 +1,26 @@
 PODS:
-  - ObserverSet (1.0.3)
   - Realm (3.11.1):
     - Realm/Headers (= 3.11.1)
   - Realm/Headers (3.11.1)
   - RealmSwift (3.11.1):
     - Realm (= 3.11.1)
   - SwipeCellKit (2.5.0)
-  - Theme (4.2.0):
-    - ObserverSet
 
 DEPENDENCIES:
   - RealmSwift
   - SwipeCellKit
-  - Theme
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - ObserverSet
     - Realm
     - RealmSwift
     - SwipeCellKit
-    - Theme
 
 SPEC CHECKSUMS:
-  ObserverSet: aa7bef62743c13e60fc748b7a64f68386e4e912b
   Realm: 037c5919b9ceb59d6beed5d3b031096856b119b3
   RealmSwift: c9580133e73ef40ed340401af2dbc9a5790dfea7
   SwipeCellKit: d8f2617538ce3021cb0a11d1b93856a06a2f2e20
-  Theme: 66efe55d29323f987272a0f28ef7b10b81b0519f
 
-PODFILE CHECKSUM: 6bda4c31652cca1ab74e8e7ce12a779e5bd8061f
+PODFILE CHECKSUM: 3df68baa0b340f8fb022329218d202476ca3691d
 
 COCOAPODS: 1.5.2

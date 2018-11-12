@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 import UserNotifications
 import UserNotificationsUI
+import Theme
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate{
@@ -24,6 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         requestNotificationPermission()
         registerNotificationCategoriesAndActions()
+        
+        //Theme
+        
+        
         return true
     }
 
@@ -33,6 +38,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         //checkToCreateOptions()
         loadOptions()
+        
+        //self.window?.tintColor = .red
+        self.window?.backgroundColor = .white
 
         return true
     }
