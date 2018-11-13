@@ -395,24 +395,24 @@ class OptionsTableViewController: UITableViewController {
 //    }
     
     //MARK: - Manage Notifications
-    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, afternoonUUID: String, eveningUUID: String, nightUUID: String) {
+    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, afternoonUUID: String, eveningUUID: String, nightUUID: String, firstDate: Date) {
         
         if getSegmentNotificationOption(segment: 0) {
-            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: uuidString)
+            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: uuidString, firstDate: firstDate)
         }
         if getSegmentNotificationOption(segment: 1) {
-            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: afternoonUUID)
+            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: afternoonUUID, firstDate: firstDate)
         }
         if getSegmentNotificationOption(segment: 2) {
-            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: eveningUUID)
+            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: eveningUUID, firstDate: firstDate)
         }
         if getSegmentNotificationOption(segment: 3) {
-            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: nightUUID)
+            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: nightUUID, firstDate: firstDate)
         }
     }
 
     //This is the one to run when setting up a brand new notification
-    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
         
         print("running scheduleNewNotification")
         let notificationCenter = UNUserNotificationCenter.current()
@@ -432,28 +432,28 @@ class OptionsTableViewController: UITableViewController {
                     switch segment {
                     case 1:
                         if (options?.afternoonNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
                             print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     case 2:
                         if (options?.eveningNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
                             print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     case 3:
                         if (options?.nightNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
                             print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     default:
                         if (options?.morningNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
                             print("Afternoon Notifications toggled off. Aborting")
                             return
@@ -465,7 +465,7 @@ class OptionsTableViewController: UITableViewController {
         }
     }
     
-    func createNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+    func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
         print("createNotification running")
         let content = UNMutableNotificationContent()
         content.title = title
@@ -490,6 +490,11 @@ class OptionsTableViewController: UITableViewController {
         
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.autoupdatingCurrent
+        //Keep notifications from occurring too early for tasks created for tomorrow
+        if firstDate > Date() {
+            print("Notification set to tomorrow")
+            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
+        }
         dateComponents.timeZone = TimeZone.autoupdatingCurrent
         
         dateComponents.hour = getOptionHour(segment: segment)
@@ -539,9 +544,9 @@ class OptionsTableViewController: UITableViewController {
                 let items = realm.objects(Items.self).filter("segment = \(segment)")
                 items.forEach({ (item) in
                     if self.getAutoSnoozeStatus() {
-                        self.scheduleAutoSnoozeNotifications(title: item.title!, notes: item.notes, uuidString: item.uuidString, afternoonUUID: item.afternoonUUID, eveningUUID: item.eveningUUID, nightUUID: item.nightUUID)
+                        self.scheduleAutoSnoozeNotifications(title: item.title!, notes: item.notes, uuidString: item.uuidString, afternoonUUID: item.afternoonUUID, eveningUUID: item.eveningUUID, nightUUID: item.nightUUID, firstDate: item.dateModified!)
                     } else {
-                        self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString)
+                        self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString, firstDate: item.dateModified!)
                     }
                 })
             }

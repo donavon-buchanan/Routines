@@ -372,6 +372,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         dateComponents.calendar = Calendar.autoupdatingCurrent
         //Keep notifications from occurring too early for tasks created for tomorrow
         if firstDate > Date() {
+            print("Notification set to tomorrow")
             dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
         }
         dateComponents.timeZone = TimeZone.autoupdatingCurrent

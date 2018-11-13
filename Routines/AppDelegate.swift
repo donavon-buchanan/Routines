@@ -310,6 +310,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         var afternoonUUID = String()
         var eveningUUID = String()
         var nightUUID = String()
+        var dateModified: Date?
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -339,6 +340,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     afternoonUUID = item.afternoonUUID
                     eveningUUID = item.eveningUUID
                     nightUUID = item.nightUUID
+                    dateModified = item.dateModified
                     print("snoozeItem Completed")
                 })
                 self.updateAppBadgeCount()
@@ -347,9 +349,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let newTitle = title {
             //TODO: Might need to come back to this for Smart Snooze. For now, leave it alone
             if getAutoSnoozeStatus() {
-                scheduleAutoSnoozeNotifications(title: newTitle, notes: notes, uuidString: itemuuidString, afternoonUUID: afternoonUUID, eveningUUID: eveningUUID, nightUUID: nightUUID)
+                scheduleAutoSnoozeNotifications(title: newTitle, notes: notes, uuidString: itemuuidString, afternoonUUID: afternoonUUID, eveningUUID: eveningUUID, nightUUID: nightUUID, firstDate: dateModified!)
             } else {
-                scheduleNewNotification(title: newTitle, notes: notes, segment: itemSegment, uuidString: itemuuidString)
+                scheduleNewNotification(title: newTitle, notes: notes, segment: itemSegment, uuidString: itemuuidString, firstDate: dateModified!)
             }
         }
     }
@@ -457,18 +459,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
     }
     
-    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, afternoonUUID: String, eveningUUID: String, nightUUID: String) {
+    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, afternoonUUID: String, eveningUUID: String, nightUUID: String, firstDate: Date) {
         if getSegmentNotificationOption(segment: 0) {
-            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: uuidString)
+            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: uuidString, firstDate: firstDate)
         }
         if getSegmentNotificationOption(segment: 1) {
-            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: afternoonUUID)
+            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: afternoonUUID, firstDate: firstDate)
         }
         if getSegmentNotificationOption(segment: 2) {
-            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: eveningUUID)
+            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: eveningUUID, firstDate: firstDate)
         }
         if getSegmentNotificationOption(segment: 3) {
-            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: nightUUID)
+            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: nightUUID, firstDate: firstDate)
         }
     }
     
@@ -518,7 +520,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         center.removePendingNotificationRequests(withIdentifiers: uuidString)
     }
     
-    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
         
         print("running scheduleNewNotification")
         let notificationCenter = UNUserNotificationCenter.current()
@@ -538,28 +540,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     switch segment {
                     case 1:
                         if (options?.afternoonNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
                             print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     case 2:
                         if (options?.eveningNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
                             print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     case 3:
                         if (options?.nightNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
                             print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     default:
                         if (options?.morningNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
                             print("Afternoon Notifications toggled off. Aborting")
                             return
@@ -571,7 +573,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
     
-    func createNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+    func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
         print("createNotification running")
         let content = UNMutableNotificationContent()
         content.title = title
@@ -596,6 +598,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.autoupdatingCurrent
+        //Keep notifications from occurring too early for tasks created for tomorrow
+        if firstDate > Date() {
+            print("Notification set to tomorrow")
+            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
+        }
         dateComponents.timeZone = TimeZone.autoupdatingCurrent
         
         dateComponents.hour = getOptionHour(segment: segment)
