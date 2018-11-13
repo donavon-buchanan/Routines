@@ -219,19 +219,23 @@ class CustomTimesTableViewController: UITableViewController {
     }
     
     //MARK: - Adjust Notifications
-    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, afternoonUUID: String, eveningUUID: String, nightUUID: String, firstDate: Date) {
+    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, firstDate: Date) {
         
         if getSegmentNotificationOption(segment: 0) {
-            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: uuidString, firstDate: firstDate)
+            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate)
+            print("morning uuid: "+"\(uuidString)0")
         }
         if getSegmentNotificationOption(segment: 1) {
-            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: afternoonUUID, firstDate: firstDate)
+            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate)
+            print("afternoon uuid: "+"\(uuidString)1")
         }
         if getSegmentNotificationOption(segment: 2) {
-            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: eveningUUID, firstDate: firstDate)
+            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate)
+            print("evening uuid: "+"\(uuidString)2")
         }
         if getSegmentNotificationOption(segment: 3) {
-            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: nightUUID, firstDate: firstDate)
+            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: "\(uuidString)3", firstDate: firstDate)
+            print("night uuid: "+"\(uuidString)3")
         }
     }
     
@@ -398,7 +402,7 @@ class CustomTimesTableViewController: UITableViewController {
                 let items = realm.objects(Items.self)//.filter("segment = \(segment)")
                 items.forEach({ (item) in
                     if self.getAutoSnoozeStatus() {
-                        self.scheduleAutoSnoozeNotifications(title: item.title!, notes: item.notes, uuidString: item.uuidString, afternoonUUID: item.afternoonUUID, eveningUUID: item.eveningUUID, nightUUID: item.nightUUID, firstDate: item.dateModified!)
+                        self.scheduleAutoSnoozeNotifications(title: item.title!, notes: item.notes, uuidString: item.uuidString, firstDate: item.dateModified!)
                     } else {
                         if self.getSegmentNotificationOption(segment: segment) {
                             self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString, firstDate: item.dateModified!)

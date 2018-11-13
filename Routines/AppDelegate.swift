@@ -139,7 +139,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 5,
+            schemaVersion: 6,
             
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -179,7 +179,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
                 
-                if (oldSchemaVersion < 5) {
+                if (oldSchemaVersion < 6) {
                     
                 }
                 
@@ -276,47 +276,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func completeItem(uuidString: String) {
+        //Remove added digit to get actual uuidString key
+        let id = String(uuidString.dropLast())
         print("running completeItem")
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
-                let items = realm.objects(Items.self).filter("uuidString == \(uuidString) OR afternoonUUD == \(uuidString) OR eveningUUID == \(uuidString) OR nightUUID == \(uuidString)")
-                print("completeItem found \(items.count) items")
-                items.forEach({ (item) in
+                print("Completing item with key: \(id)")
+                if let item = realm.object(ofType: Items.self, forPrimaryKey: id) {
                     print("Completing item")
+                    print(item)
                     do {
                         try realm.write {
-                            if !item.repeats {
-                                realm.delete(item)
-                                self.removeNotification(uuidString: [item.uuidString, item.afternoonUUID, item.eveningUUID, item.nightUUID])
-                            }
+                            realm.delete(item)
                         }
                     } catch {
                         print("failed to remove item with Complete action")
                     }
-                })
-                self.updateAppBadgeCount()
+                }
             }
             print("completeItem completed")
         }
+        //Add suffix back to uuidString
+        self.removeNotification(uuidString: ["\(id)0", "\(id)1", "\(id)2", "\(id)3"])
+        self.updateAppBadgeCount()
     }
     
     func snoozeItem(uuidString: String) {
+        let id = String(uuidString.dropLast())
         print("running snoozeItem")
         var title : String?
         var notes : String?
         var itemSegment = Int()
         var itemuuidString = String()
-        var afternoonUUID = String()
-        var eveningUUID = String()
-        var nightUUID = String()
         var dateModified: Date?
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let items = realm.objects(Items.self).filter("uuidString == \(uuidString) OR afternoonUUD == \(uuidString) OR eveningUUID == \(uuidString) OR nightUUID == \(uuidString)")
-                print("snoozeItem found \(items.count) items")
-                items.forEach({ (item) in
+                if let item = realm.object(ofType: Items.self, forPrimaryKey: id) {
                     //TODO: Could cause out of bounds error? Or actually, it's not an array. The item may just become invisible.
                     let segment = self.getCurrentSegmentFromTime()
                     var newSegment = Int()
@@ -337,23 +334,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     notes = item.notes
                     itemSegment = item.segment
                     itemuuidString = item.uuidString
-                    afternoonUUID = item.afternoonUUID
-                    eveningUUID = item.eveningUUID
-                    nightUUID = item.nightUUID
                     dateModified = item.dateModified
                     print("snoozeItem Completed")
-                })
-                self.updateAppBadgeCount()
+                    
+                }
             }
         }
         if let newTitle = title {
             //TODO: Might need to come back to this for Smart Snooze. For now, leave it alone
             if getAutoSnoozeStatus() {
-                scheduleAutoSnoozeNotifications(title: newTitle, notes: notes, uuidString: itemuuidString, afternoonUUID: afternoonUUID, eveningUUID: eveningUUID, nightUUID: nightUUID, firstDate: dateModified!)
+                scheduleAutoSnoozeNotifications(title: newTitle, notes: notes, uuidString: itemuuidString, firstDate: dateModified!)
             } else {
                 scheduleNewNotification(title: newTitle, notes: notes, segment: itemSegment, uuidString: itemuuidString, firstDate: dateModified!)
             }
         }
+        self.updateAppBadgeCount()
     }
     
     //MARK: - Manage Notifications
@@ -459,18 +454,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
     }
     
-    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, afternoonUUID: String, eveningUUID: String, nightUUID: String, firstDate: Date) {
+    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, firstDate: Date) {
         if getSegmentNotificationOption(segment: 0) {
-            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: uuidString, firstDate: firstDate)
+            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate)
         }
         if getSegmentNotificationOption(segment: 1) {
-            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: afternoonUUID, firstDate: firstDate)
+            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate)
         }
         if getSegmentNotificationOption(segment: 2) {
-            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: eveningUUID, firstDate: firstDate)
+            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate)
         }
         if getSegmentNotificationOption(segment: 3) {
-            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: nightUUID, firstDate: firstDate)
+            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: "\(uuidString)3", firstDate: firstDate)
         }
     }
     

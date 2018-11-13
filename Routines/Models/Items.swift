@@ -26,8 +26,8 @@ import RealmSwift
         return "uuidString"
     }
     
-    dynamic var afternoonUUID: String = UUID().uuidString
-    dynamic var eveningUUID: String = UUID().uuidString
-    dynamic var nightUUID: String = UUID().uuidString
+//    dynamic var afternoonUUID: String = UUID().uuidString
+//    dynamic var eveningUUID: String = UUID().uuidString
+//    dynamic var nightUUID: String = UUID().uuidString
     
 }

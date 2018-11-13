@@ -25,8 +25,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     //segment from add segue
     var editingSegment: Int?
     
-    var uuidString = String()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,11 +35,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             taskTextField.text = item?.title
             segmentSelection.selectedSegmentIndex = item?.segment ?? 0
             notesTextView.text = item?.notes
-            self.uuidString = (item?.uuidString)!
             //print("Item's uuidString is \((item?.uuidString)!)")
-        } else {
-            self.uuidString = UUID().uuidString
-            print("new item uuidString: \(self.uuidString)")
         }
         
         //load in segment from add segue
@@ -147,7 +141,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
     
     @objc func saveButtonPressed() {
-        addNewItem(title: self.taskTextField.text!, date: Date(), segment: self.segmentSelection.selectedSegmentIndex, notes: self.notesTextView.text, uuidString: self.uuidString)
+        addNewItem(title: self.taskTextField.text!, date: Date(), segment: self.segmentSelection.selectedSegmentIndex, notes: self.notesTextView.text)
         //print("Adding item with uuidString: \(self.uuidString)")
         self.tabBarController?.tabBar.isHidden = false
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
@@ -160,7 +154,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         //scheduleNewNotification(title: taskTextField.text!, notes: notesTextView.text, segment: segmentSelection.selectedSegmentIndex, uuidString: self.uuidString)
     }
     
-    func addNewItem(title: String, date: Date, segment: Int, notes: String, uuidString: String) {
+    func addNewItem(title: String, date: Date, segment: Int, notes: String) {
         print("Running addNewItem")
         //if it's a new item, add it as new to the realm
         //otherwise, update the existing item
@@ -168,7 +162,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             let newItem = Items()
             newItem.title = title
             newItem.segment = segment
-            if segment <= getCurrentSegmentFromTime() {
+            if segment < getCurrentSegmentFromTime() {
                 print("Adding new item for tomorrow")
                 newItem.dateModified = Date().startOfNextDay
             } else {
@@ -176,11 +170,11 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
                 newItem.dateModified = Date()
             }
             newItem.notes = notes
-            
+            print("new item's uuidString: \(newItem.uuidString)")
             //save to realm
             saveItem(item: newItem)
             if getAutoSnoozeStatus() {
-                scheduleAutoSnoozeNotifications(title: title, notes: notes, uuidString: newItem.uuidString, afternoonUUID: newItem.afternoonUUID, eveningUUID: newItem.eveningUUID, nightUUID: newItem.nightUUID, firstDate: newItem.dateModified!)
+                scheduleAutoSnoozeNotifications(title: title, notes: notes, uuidString: newItem.uuidString, firstDate: newItem.dateModified!)
             } else {
                 scheduleNewNotification(title: title, notes: notes, segment: segment, uuidString: newItem.uuidString, firstDate: newItem.dateModified!)
             }
@@ -207,7 +201,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             try realm.write {
                 self.item!.title = self.taskTextField.text
                 //For Smart Snooze
-                if self.segmentSelection.selectedSegmentIndex <= getCurrentSegmentFromTime() {
+                if self.segmentSelection.selectedSegmentIndex < getCurrentSegmentFromTime() {
                     print("Updating item for tomorrow")
                     self.item!.dateModified = Date().startOfNextDay
                 } else {
@@ -220,10 +214,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         } catch {
             print("Error updating item: \(error)")
         }
-        self.removeNotification(uuidString: [self.item!.uuidString, self.item!.afternoonUUID, self.item!.eveningUUID, self.item!.nightUUID])
+        self.removeNotification(uuidString: ["\(self.item!.uuidString)0", "\(self.item!.uuidString)1", "\(self.item!.uuidString)2", "\(self.item!.uuidString)3"])
         
         if getAutoSnoozeStatus() {
-            scheduleAutoSnoozeNotifications(title: self.item!.title!, notes: self.item!.notes, uuidString: self.item!.uuidString, afternoonUUID: self.item!.afternoonUUID, eveningUUID: self.item!.eveningUUID, nightUUID: self.item!.nightUUID, firstDate: self.item!.dateModified!)
+            scheduleAutoSnoozeNotifications(title: self.item!.title!, notes: self.item!.notes, uuidString: self.item!.uuidString, firstDate: self.item!.dateModified!)
         } else {
             self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString, firstDate: self.item!.dateModified!)
         }
@@ -274,19 +268,23 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         return isOn
     }
     
-    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, afternoonUUID: String, eveningUUID: String, nightUUID: String, firstDate: Date) {
+    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, firstDate: Date) {
         
         if getSegmentNotificationOption(segment: 0) {
-            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: uuidString, firstDate: firstDate)
+            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate)
+            print("morning uuid: "+"\(uuidString)0")
         }
         if getSegmentNotificationOption(segment: 1) {
-            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: afternoonUUID, firstDate: firstDate)
+            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate)
+            print("afternoon uuid: "+"\(uuidString)1")
         }
         if getSegmentNotificationOption(segment: 2) {
-            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: eveningUUID, firstDate: firstDate)
+            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate)
+            print("evening uuid: "+"\(uuidString)2")
         }
         if getSegmentNotificationOption(segment: 3) {
-            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: nightUUID, firstDate: firstDate)
+            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: "\(uuidString)3", firstDate: firstDate)
+            print("night uuid: "+"\(uuidString)3")
         }
     }
     
@@ -548,7 +546,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         case _ where Date() > night!:
             currentSegment = 3
         default:
-            currentSegment = 0
+            currentSegment = 3
         }
         return currentSegment
     }

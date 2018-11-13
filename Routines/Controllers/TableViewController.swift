@@ -208,7 +208,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 do {
                     try! realm.write {
                         if let item = self.items?[indexPath.row] {
-                            self.removeNotification(uuidString: [item.uuidString, item.afternoonUUID, item.eveningUUID, item.nightUUID])
+                            self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3"])
                             realm.delete(item)
                         }
                     }
@@ -276,15 +276,15 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     }
     
     func removeDeliveredNotifications() {
-        let center = UNUserNotificationCenter.current()
-        center.getDeliveredNotifications { (notifications) in
-            for notification in notifications {
-                //TODO: If repeats, remove and then add again
-                //Get the ID and then get the properties of the specific object
-                //Need to get all the same notification functions used in other views to be able to create
-                center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
-            }
-        }
+//        let center = UNUserNotificationCenter.current()
+//        center.getDeliveredNotifications { (notifications) in
+//            for notification in notifications {
+//                //TODO: If repeats, remove and then add again
+//                //Get the ID and then get the properties of the specific object
+//                //Need to get all the same notification functions used in other views to be able to create
+//                center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
+//            }
+//        }
     }
     
     //Notification Settings Screen
