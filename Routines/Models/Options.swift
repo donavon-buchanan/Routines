@@ -41,6 +41,8 @@ import RealmSwift
     
     dynamic var darkMode: Bool = false
     
+    dynamic var selectedIndex: Int = 0
+    
     dynamic var optionsKey = UUID().uuidString
     override static func primaryKey() -> String? {
         return "optionsKey"

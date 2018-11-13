@@ -25,4 +25,9 @@ import RealmSwift
     override static func primaryKey() -> String? {
         return "uuidString"
     }
+    
+    dynamic var afternoonUUID: String = UUID().uuidString
+    dynamic var eveningUUID: String = UUID().uuidString
+    dynamic var nightUUID: String = UUID().uuidString
+    
 }
