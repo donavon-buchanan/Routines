@@ -315,26 +315,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 let realm = try! Realm()
                 if let item = realm.object(ofType: Items.self, forPrimaryKey: id) {
                     //TODO: Could cause out of bounds error? Or actually, it's not an array. The item may just become invisible.
-                    let segment = self.getCurrentSegmentFromTime()
+                    let segment = item.segment
                     var newSegment = Int()
                     
                     switch segment {
                     case 3:
                         newSegment = 0
+                        itemSegment = 0
+                        //Auto snooze will rip it back into Night if we don't set it to next day
+                        dateModified = item.dateModified?.startOfNextDay
                     default:
                         newSegment = segment+1
+                        itemSegment = segment+1
+                        dateModified = item.dateModified
                     }
                     
                     do {
                         try! realm.write {
                             item.segment = newSegment
+                            //Make sure to save the new date in case it was changed
+                            item.dateModified = dateModified
                         }
                     }
                     title = item.title
                     notes = item.notes
-                    itemSegment = item.segment
                     itemuuidString = item.uuidString
-                    dateModified = item.dateModified
                     print("snoozeItem Completed")
                     
                 }
