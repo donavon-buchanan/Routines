@@ -373,28 +373,31 @@ class CustomTimesTableViewController: UITableViewController {
     }
     
     func removeNotificationsForSegment(segment: Int) {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
-            autoreleasepool {
-                let realm = try! Realm()
-                let items = realm.objects(Items.self).filter("segment = \(segment)")
-                items.forEach({ (item) in
-                    self.removeNotification(uuidString: [item.uuidString, item.afternoonUUID, item.eveningUUID, item.nightUUID])
-                })
-            }
-        }
-        
+//        DispatchQueue(label: realmDispatchQueueLabel).async {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let items = realm.objects(Items.self).filter("segment = \(segment)")
+//                items.forEach({ (item) in
+//                    self.removeNotification(uuidString: [item.uuidString, item.afternoonUUID, item.eveningUUID, item.nightUUID])
+//                })
+//            }
+//        }
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
     }
     
     func enableNotificationsForSegment(segment: Int) {
         DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
-                let items = realm.objects(Items.self).filter("segment = \(segment)")
+                let items = realm.objects(Items.self)//.filter("segment = \(segment)")
                 items.forEach({ (item) in
                     if self.getAutoSnoozeStatus() {
                         self.scheduleAutoSnoozeNotifications(title: item.title!, notes: item.notes, uuidString: item.uuidString, afternoonUUID: item.afternoonUUID, eveningUUID: item.eveningUUID, nightUUID: item.nightUUID)
                     } else {
-                        self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString)
+                        if self.getSegmentNotificationOption(segment: segment) {
+                            self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString)
+                        }
                     }
                 })
             }
