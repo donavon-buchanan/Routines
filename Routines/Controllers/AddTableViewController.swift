@@ -180,9 +180,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             //save to realm
             saveItem(item: newItem)
             if getAutoSnoozeStatus() {
-                scheduleAutoSnoozeNotifications(title: title, notes: notes, uuidString: newItem.uuidString, afternoonUUID: newItem.afternoonUUID, eveningUUID: newItem.eveningUUID, nightUUID: newItem.nightUUID)
+                scheduleAutoSnoozeNotifications(title: title, notes: notes, uuidString: newItem.uuidString, afternoonUUID: newItem.afternoonUUID, eveningUUID: newItem.eveningUUID, nightUUID: newItem.nightUUID, firstDate: newItem.dateModified!)
             } else {
-                scheduleNewNotification(title: title, notes: notes, segment: segment, uuidString: newItem.uuidString)
+                scheduleNewNotification(title: title, notes: notes, segment: segment, uuidString: newItem.uuidString, firstDate: newItem.dateModified!)
             }
         } else {
             updateItem()
@@ -223,9 +223,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         self.removeNotification(uuidString: [self.item!.uuidString, self.item!.afternoonUUID, self.item!.eveningUUID, self.item!.nightUUID])
         
         if getAutoSnoozeStatus() {
-            scheduleAutoSnoozeNotifications(title: self.item!.title!, notes: self.item!.notes, uuidString: self.item!.uuidString, afternoonUUID: self.item!.afternoonUUID, eveningUUID: self.item!.eveningUUID, nightUUID: self.item!.nightUUID)
+            scheduleAutoSnoozeNotifications(title: self.item!.title!, notes: self.item!.notes, uuidString: self.item!.uuidString, afternoonUUID: self.item!.afternoonUUID, eveningUUID: self.item!.eveningUUID, nightUUID: self.item!.nightUUID, firstDate: self.item!.dateModified!)
         } else {
-            self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString)
+            self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString, firstDate: self.item!.dateModified!)
         }
     }
     
@@ -274,23 +274,23 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         return isOn
     }
     
-    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, afternoonUUID: String, eveningUUID: String, nightUUID: String) {
+    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, afternoonUUID: String, eveningUUID: String, nightUUID: String, firstDate: Date) {
         
         if getSegmentNotificationOption(segment: 0) {
-            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: uuidString)
+            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: uuidString, firstDate: firstDate)
         }
         if getSegmentNotificationOption(segment: 1) {
-            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: afternoonUUID)
+            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: afternoonUUID, firstDate: firstDate)
         }
         if getSegmentNotificationOption(segment: 2) {
-         scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: eveningUUID)
+            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: eveningUUID, firstDate: firstDate)
         }
         if getSegmentNotificationOption(segment: 3) {
-            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: nightUUID)
+            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: nightUUID, firstDate: firstDate)
         }
     }
     
-    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
         
         print("running scheduleNewNotification")
         let notificationCenter = UNUserNotificationCenter.current()
@@ -310,28 +310,28 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
                     switch segment {
                     case 1:
                         if (options?.afternoonNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
                             print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     case 2:
                         if (options?.eveningNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
                             print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     case 3:
                         if (options?.nightNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
                             print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     default:
                         if (options?.morningNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
                             print("Afternoon Notifications toggled off. Aborting")
                             return
@@ -345,7 +345,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
     }
     
-    func createNotification(title: String, notes: String?, segment: Int, uuidString: String) {
+    func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
         print("createNotification running")
         let content = UNMutableNotificationContent()
         content.title = title
@@ -370,8 +370,11 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.autoupdatingCurrent
+        //Keep notifications from occurring too early for tasks created for tomorrow
+        if firstDate > Date() {
+            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
+        }
         dateComponents.timeZone = TimeZone.autoupdatingCurrent
-        
         dateComponents.hour = getOptionHour(segment: segment)
         dateComponents.minute = getOptionMinute(segment: segment)
         

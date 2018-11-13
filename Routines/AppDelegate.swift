@@ -277,10 +277,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func completeItem(uuidString: String) {
         print("running completeItem")
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let items = realm.objects(Items.self).filter("uuidString = \(uuidString) OR afternoonUUD = \(uuidString) OR eveningUUID = \(uuidString) OR nightUUID = \(uuidString)")
+                let items = realm.objects(Items.self).filter("uuidString == \(uuidString) OR afternoonUUD == \(uuidString) OR eveningUUID == \(uuidString) OR nightUUID == \(uuidString)")
+                print("completeItem found \(items.count) items")
                 items.forEach({ (item) in
                     print("Completing item")
                     do {
@@ -312,7 +313,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let items = realm.objects(Items.self).filter("uuidString = \(uuidString) OR afternoonUUD = \(uuidString) OR eveningUUID = \(uuidString) OR nightUUID = \(uuidString)")
+                let items = realm.objects(Items.self).filter("uuidString == \(uuidString) OR afternoonUUD == \(uuidString) OR eveningUUID == \(uuidString) OR nightUUID == \(uuidString)")
+                print("snoozeItem found \(items.count) items")
                 items.forEach({ (item) in
                     //TODO: Could cause out of bounds error? Or actually, it's not an array. The item may just become invisible.
                     let segment = self.getCurrentSegmentFromTime()
