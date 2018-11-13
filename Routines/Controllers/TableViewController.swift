@@ -449,7 +449,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         case _ where Date() > night!:
             currentSegment = 3
         default:
-            currentSegment = 0
+            currentSegment = 3
         }
         return currentSegment
     }
