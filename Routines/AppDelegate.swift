@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         updateAppBadgeCount()
-        saveSelectedTab()
+        //saveSelectedTab()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -58,6 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -67,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        //updateAppBadgeCount()
+        
     }
     
     func restoreSelectedTab() {
@@ -82,6 +83,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
         rootVC.selectedIndex = selectedIndex
+    }
+    
+    func getSelectedTab() -> Int {
+        var selectedIndex = 0
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    selectedIndex = options.selectedIndex
+                }
+            }
+        }
+        return selectedIndex
     }
     
     func saveSelectedTab() {
@@ -263,17 +277,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func completeItem(uuidString: String) {
         print("running completeItem")
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
                 if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
                     print("Completing item")
                     do {
                         try! realm.write {
-                            realm.delete(item)
+                            if !item.repeats {
+                                realm.delete(item)
+                            }
                         }
                     }
                 }
+                self.updateAppBadgeCount()
             }
             print("completeItem completed")
         }
@@ -285,12 +302,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         var notes : String?
         var itemSegment : Int?
         var itemuuidString : String?
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
                 if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
                     //TODO: Could cause out of bounds error? Or actually, it's not an array. The item may just become invisible.
-                    let segment = getCurrentSegmentFromTime()
+                    let segment = self.getCurrentSegmentFromTime()
                     var newSegment = Int()
                     
                     switch segment {
@@ -311,6 +328,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     itemuuidString = item.uuidString
                     print("snoozeItem Completed")
                 }
+                self.updateAppBadgeCount()
             }
         }
         if let newTitle = title {
@@ -530,10 +548,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsView") as! OptionsTableViewController
         let rootVC = self.window?.rootViewController as! TabBarViewController
         //Set the selected index so you know what child will be on screen
-        rootVC.selectedIndex = 0
+        let index = getSelectedTab()
+        rootVC.selectedIndex = index
         //This is kind of a cheat, but it works
-        let navVC = rootVC.children[0] as! NavigationViewController
-        navVC.pushViewController(optionsViewController, animated: true)
+        let navVC = rootVC.children[index] as! NavigationViewController
+        navVC.pushViewController(optionsViewController, animated: false)
     }
     
     func getBadgeOption() -> Bool {

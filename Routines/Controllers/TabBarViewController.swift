@@ -7,15 +7,14 @@
 //
 
 import UIKit
+//import RealmSwift
 
-class TabBarViewController: UITabBarController {
+class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
     }
-    
 
     /*
     // MARK: - Navigation
@@ -27,4 +26,7 @@ class TabBarViewController: UITabBarController {
     }
     */
 
+    // MARK: - Realm
+//    let realmDispatchQueueLabel: String = "background"
+//    let optionsKey = "optionsKey"
 }

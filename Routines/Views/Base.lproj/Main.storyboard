@@ -476,7 +476,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="iUA-Pd-bH7" userLabel="Badge">
+                            <tableViewSection footerTitle="Badge count represents the number of items that have been snoozed or left incomplete." id="iUA-Pd-bH7" userLabel="Badge">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="badgeCell" id="zb3-aP-Vf7">
                                         <rect key="frame" x="0.0" y="478.66666666666674" width="375" height="60"/>
@@ -517,7 +517,7 @@
                                 <string key="footerTitle">Enabling Auto Snooze will automatically move incomplete tasks to the next period. Tasks created for periods which have already begun will not be moved until the following day. Notifications will still only occur for the originally set time unless manually snoozed.</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="smartSnoozeCell" id="fzW-Eo-Deo">
-                                        <rect key="frame" x="0.0" y="574.66666666666674" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="602.66666666666674" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fzW-Eo-Deo" id="0e8-Fu-3ej">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
@@ -554,7 +554,7 @@
                             <tableViewSection headerTitle="Style" id="cQu-xu-L8m">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="styleCell" id="EtT-PD-IKk">
-                                        <rect key="frame" x="0.0" y="766.66666666666674" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="794.66666666666674" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="EtT-PD-IKk" id="GcJ-9q-cHn">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="59.666666666666664"/>
@@ -591,7 +591,7 @@
                             <tableViewSection headerTitle="About" id="Mh0-Xn-pCD">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="aboutCell" textLabel="kjr-Gf-k2s" style="IBUITableViewCellStyleDefault" id="JZL-NA-pX6">
-                                        <rect key="frame" x="0.0" y="882.66666666666674" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="910.66666666666674" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JZL-NA-pX6" id="XeW-Nf-qRm">
                                             <rect key="frame" x="0.0" y="0.0" width="349" height="59.666666666666664"/>

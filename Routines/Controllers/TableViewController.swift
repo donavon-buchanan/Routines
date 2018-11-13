@@ -96,6 +96,29 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         }
     }
     
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        saveSelectedTab(index: tabBarController.selectedIndex)
+    }
+    
+    func saveSelectedTab(index: Int) {
+        print("saving tab as index: \(index)")
+        //let selectedIndex = self.tabBarController?.selectedIndex
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    do {
+                        try realm.write {
+                            options.selectedIndex = index
+                        }
+                    } catch {
+                        print("Error saving selected tab")
+                    }
+                }
+            }
+        }
+    }
+    
     
     
 //    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
