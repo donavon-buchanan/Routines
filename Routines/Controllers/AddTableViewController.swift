@@ -176,10 +176,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
                 newItem.dateModified = Date()
             }
             newItem.notes = notes
-            newItem.uuidString = uuidString
+            
             //save to realm
             saveItem(item: newItem)
-            scheduleNewNotification(title: title, notes: notes, segment: segment, uuidString: uuidString)
+            if getAutoSnoozeStatus() {
+                scheduleAutoSnoozeNotifications(title: title, notes: notes, uuidString: newItem.uuidString, afternoonUUID: newItem.afternoonUUID, eveningUUID: newItem.eveningUUID, nightUUID: newItem.nightUUID)
+            } else {
+                scheduleNewNotification(title: title, notes: notes, segment: segment, uuidString: newItem.uuidString)
+            }
         } else {
             updateItem()
         }
@@ -216,12 +220,75 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         } catch {
             print("Error updating item: \(error)")
         }
-        self.removeNotification(uuidString: self.item!.uuidString)
+        self.removeNotification(uuidString: [self.item!.uuidString, self.item!.afternoonUUID, self.item!.eveningUUID, self.item!.nightUUID])
         
-        self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString)
+        if getAutoSnoozeStatus() {
+            scheduleAutoSnoozeNotifications(title: self.item!.title!, notes: self.item!.notes, uuidString: self.item!.uuidString, afternoonUUID: self.item!.afternoonUUID, eveningUUID: self.item!.eveningUUID, nightUUID: self.item!.nightUUID)
+        } else {
+            self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString)
+        }
     }
     
     //MARK: - Manage Notifications
+    
+    func getAutoSnoozeStatus() -> Bool {
+        var snooze = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+                    snooze = options.smartSnooze
+                }
+            }
+        }
+        return snooze
+    }
+    
+    //TODO: This is near identical to another function here
+    func getSegmentNotificationOption(segment: Int) -> Bool {
+        var isOn = true
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                switch segment {
+                case 1:
+                    if let on = options?.afternoonNotificationsOn {
+                        isOn = on
+                    }
+                case 2:
+                    if let on = options?.eveningNotificationsOn {
+                        isOn = on
+                    }
+                case 3:
+                    if let on = options?.nightNotificationsOn {
+                        isOn = on
+                    }
+                default:
+                    if let on = options?.morningNotificationsOn {
+                        isOn = on
+                    }
+                }
+            }
+        }
+        return isOn
+    }
+    
+    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, afternoonUUID: String, eveningUUID: String, nightUUID: String) {
+        
+        if getSegmentNotificationOption(segment: 0) {
+            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: uuidString)
+        }
+        if getSegmentNotificationOption(segment: 1) {
+            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: afternoonUUID)
+        }
+        if getSegmentNotificationOption(segment: 2) {
+         scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: eveningUUID)
+        }
+        if getSegmentNotificationOption(segment: 3) {
+            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: nightUUID)
+        }
+    }
     
     func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
         
@@ -326,10 +393,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         
     }
     
-    func removeNotification(uuidString: String) {
+    func removeNotification(uuidString: [String]) {
         print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: [uuidString])
+        center.removePendingNotificationRequests(withIdentifiers: uuidString)
     }
     
     //MARK: - Options Realm

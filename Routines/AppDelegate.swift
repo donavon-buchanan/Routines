@@ -286,6 +286,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         try! realm.write {
                             if !item.repeats {
                                 realm.delete(item)
+                                self.removeNotification(uuidString: [item.uuidString, item.afternoonUUID, item.eveningUUID, item.nightUUID])
                             }
                         }
                     }
@@ -300,9 +301,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         print("running snoozeItem")
         var title : String?
         var notes : String?
-        var itemSegment : Int?
-        var itemuuidString : String?
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        var itemSegment = Int()
+        var itemuuidString = String()
+        var afternoonUUID = String()
+        var eveningUUID = String()
+        var nightUUID = String()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
@@ -326,6 +330,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     notes = item.notes
                     itemSegment = item.segment
                     itemuuidString = item.uuidString
+                    afternoonUUID = item.afternoonUUID
+                    eveningUUID = item.eveningUUID
+                    nightUUID = item.nightUUID
                     print("snoozeItem Completed")
                 }
                 self.updateAppBadgeCount()
@@ -333,7 +340,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         if let newTitle = title {
             //TODO: Might need to come back to this for Smart Snooze. For now, leave it alone
-            scheduleNewNotification(title: newTitle, notes: notes!, segment: itemSegment!, uuidString: itemuuidString!)
+            if getAutoSnoozeStatus() {
+                scheduleAutoSnoozeNotifications(title: newTitle, notes: notes, uuidString: itemuuidString, afternoonUUID: afternoonUUID, eveningUUID: eveningUUID, nightUUID: nightUUID)
+            } else {
+                scheduleNewNotification(title: newTitle, notes: notes, segment: itemSegment, uuidString: itemuuidString)
+            }
         }
     }
     
@@ -438,6 +449,67 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         completionHandler()
         
+    }
+    
+    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, afternoonUUID: String, eveningUUID: String, nightUUID: String) {
+        if getSegmentNotificationOption(segment: 0) {
+            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: uuidString)
+        }
+        if getSegmentNotificationOption(segment: 1) {
+            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: afternoonUUID)
+        }
+        if getSegmentNotificationOption(segment: 2) {
+            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: eveningUUID)
+        }
+        if getSegmentNotificationOption(segment: 3) {
+            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: nightUUID)
+        }
+    }
+    
+    func getSegmentNotificationOption(segment: Int) -> Bool {
+        var isOn = true
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                switch segment {
+                case 1:
+                    if let on = options?.afternoonNotificationsOn {
+                        isOn = on
+                    }
+                case 2:
+                    if let on = options?.eveningNotificationsOn {
+                        isOn = on
+                    }
+                case 3:
+                    if let on = options?.nightNotificationsOn {
+                        isOn = on
+                    }
+                default:
+                    if let on = options?.morningNotificationsOn {
+                        isOn = on
+                    }
+                }
+            }
+        }
+        return isOn
+    }
+    
+//    func removeAllNotificationsForItem(uuidString: String) {
+//        DispatchQueue(label: realmDispatchQueueLabel).async {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
+//
+//                }
+//            }
+//        }
+//    }
+    
+    func removeNotification(uuidString: [String]) {
+        print("Removing Notifications")
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: uuidString)
     }
     
     func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
@@ -595,7 +667,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
     
-    
+    func getAutoSnoozeStatus() -> Bool {
+        var snooze = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+                    snooze = options.smartSnooze
+                }
+            }
+        }
+        return snooze
+    }
     
     //MARK: - Conversion functions
     func getTime(timePeriod: Int, timeOption: Date?) -> Date {

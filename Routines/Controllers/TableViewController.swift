@@ -56,7 +56,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     }
     
     @objc func appBecameActive() {
-        self.runSmartSnooze()
+        self.runAutoSnooze()
         setAppearance()
         loadItems(segment: self.segment)
         updateBadge()
@@ -67,7 +67,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         super.viewWillAppear(animated)
         setNavTitle()
         setAppearance()
-        self.runSmartSnooze()
+        self.runAutoSnooze()
         print("View Will Appear")
         //loadItems(segment: self.segment)
         self.tabBarController?.tabBar.isHidden = false
@@ -207,9 +207,10 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 let realm = try! Realm()
                 do {
                     try! realm.write {
-                        let item = self.items?[indexPath.row]
-                        self.removeNotification(uuidString: [item!.uuidString])
-                        realm.delete(item!)
+                        if let item = self.items?[indexPath.row] {
+                            self.removeNotification(uuidString: [item.uuidString, item.afternoonUUID, item.eveningUUID, item.nightUUID])
+                            realm.delete(item)
+                        }
                     }
                 }
             }
@@ -268,7 +269,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     let center = UNUserNotificationCenter.current()
     
-    public func removeNotification(uuidString: [String]) {
+    func removeNotification(uuidString: [String]) {
         print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidString)
@@ -360,10 +361,10 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     //MARK: - Smart Snooze
     //Run this first
-    func runSmartSnooze() {
-        print("runSmartSnooze")
-        if getSmartSnoozeStatus() {
-            print("smartSnooze true")
+    func runAutoSnooze() {
+        print("runAutoSnooze")
+        if getAutoSnoozeStatus() {
+            print("autoSnooze true")
             var segmentsToSnooze: [Int] = []
             let currentSegment = getCurrentSegmentFromTime()
             print("currentSegment: \(currentSegment)")
@@ -379,13 +380,13 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
             }
             
             segmentsToSnooze.forEach { (segment) in
-                smartSnoozeMove(fromSegment: segment, toSegment: currentSegment)
+                autoSnoozeMove(fromSegment: segment, toSegment: currentSegment)
             }
             
         }
     }
     //This does the work
-    func smartSnoozeMove(fromSegment: Int, toSegment: Int) {
+    func autoSnoozeMove(fromSegment: Int, toSegment: Int) {
         print("running smartSnoozeMove from segment \(fromSegment) to \(toSegment)")
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -409,7 +410,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         }
     }
     
-    func getSmartSnoozeStatus() -> Bool {
+    func getAutoSnoozeStatus() -> Bool {
         var snooze = false
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
