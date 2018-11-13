@@ -219,6 +219,51 @@ class CustomTimesTableViewController: UITableViewController {
     }
     
     //MARK: - Adjust Notifications
+    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, afternoonUUID: String, eveningUUID: String, nightUUID: String) {
+        
+        if getSegmentNotificationOption(segment: 0) {
+            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: uuidString)
+        }
+        if getSegmentNotificationOption(segment: 1) {
+            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: afternoonUUID)
+        }
+        if getSegmentNotificationOption(segment: 2) {
+            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: eveningUUID)
+        }
+        if getSegmentNotificationOption(segment: 3) {
+            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: nightUUID)
+        }
+    }
+    
+    func getSegmentNotificationOption(segment: Int) -> Bool {
+        var isOn = true
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                switch segment {
+                case 1:
+                    if let on = options?.afternoonNotificationsOn {
+                        isOn = on
+                    }
+                case 2:
+                    if let on = options?.eveningNotificationsOn {
+                        isOn = on
+                    }
+                case 3:
+                    if let on = options?.nightNotificationsOn {
+                        isOn = on
+                    }
+                default:
+                    if let on = options?.morningNotificationsOn {
+                        isOn = on
+                    }
+                }
+            }
+        }
+        return isOn
+    }
+    
     //This is the one to run when setting up a brand new notification
     func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String) {
         
@@ -330,14 +375,11 @@ class CustomTimesTableViewController: UITableViewController {
     func removeNotificationsForSegment(segment: Int) {
         DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
-                var uuidStrings: [String] = []
                 let realm = try! Realm()
                 let items = realm.objects(Items.self).filter("segment = \(segment)")
-                for item in 0..<items.count {
-                    uuidStrings.append(items[item].uuidString)
-                }
-                //Might need to move this. But lets try it
-                self.removeNotification(uuidString: uuidStrings)
+                items.forEach({ (item) in
+                    self.removeNotification(uuidString: [item.uuidString, item.afternoonUUID, item.eveningUUID, item.nightUUID])
+                })
             }
         }
         
@@ -349,7 +391,11 @@ class CustomTimesTableViewController: UITableViewController {
                 let realm = try! Realm()
                 let items = realm.objects(Items.self).filter("segment = \(segment)")
                 items.forEach({ (item) in
-                    self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString)
+                    if self.getAutoSnoozeStatus() {
+                        self.scheduleAutoSnoozeNotifications(title: item.title!, notes: item.notes, uuidString: item.uuidString, afternoonUUID: item.afternoonUUID, eveningUUID: item.eveningUUID, nightUUID: item.nightUUID)
+                    } else {
+                        self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString)
+                    }
                 })
             }
         }
@@ -512,7 +558,7 @@ class CustomTimesTableViewController: UITableViewController {
     }
     
     //Smart Snooze
-    func getSmartSnoozeStatus() -> Bool {
+    func getAutoSnoozeStatus() -> Bool {
         var snooze = false
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
