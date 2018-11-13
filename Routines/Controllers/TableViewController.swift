@@ -394,7 +394,6 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 let items = realm.objects(Items.self).filter("segment = \(fromSegment)")
                 items.forEach({ (item) in
                     if let itemDate = item.dateModified {
-                        print("Item Date: \(itemDate), Current Date: \(Date())")
                         if itemDate < Date() {
                             do {
                                 try realm.write {

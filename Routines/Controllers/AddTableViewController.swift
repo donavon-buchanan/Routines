@@ -154,6 +154,23 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         //scheduleNewNotification(title: taskTextField.text!, notes: notesTextView.text, segment: segmentSelection.selectedSegmentIndex, uuidString: self.uuidString)
     }
     
+    func firstTriggerDate(segment: Int) -> Date {
+        let tomorrow = Date().startOfNextDay
+        var dateComponents = DateComponents()
+        if segment < getCurrentSegmentFromTime() {
+            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: tomorrow)
+        } else {
+            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: Date())
+        }
+        dateComponents.calendar = Calendar.autoupdatingCurrent
+        dateComponents.timeZone = TimeZone.autoupdatingCurrent
+        dateComponents.hour = getOptionHour(segment: segment)
+        dateComponents.minute = getOptionMinute(segment: segment)
+        dateComponents.second = 0
+        print("Setting first trigger date for: \(dateComponents)")
+        return dateComponents.date!
+    }
+    
     func addNewItem(title: String, date: Date, segment: Int, notes: String) {
         print("Running addNewItem")
         //if it's a new item, add it as new to the realm
@@ -162,13 +179,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             let newItem = Items()
             newItem.title = title
             newItem.segment = segment
-            if segment < getCurrentSegmentFromTime() {
-                print("Adding new item for tomorrow")
-                newItem.dateModified = Date().startOfNextDay
-            } else {
-                print("Adding new item for today")
-                newItem.dateModified = Date()
-            }
+            newItem.dateModified = firstTriggerDate(segment: segment)
             newItem.notes = notes
             print("new item's uuidString: \(newItem.uuidString)")
             //save to realm
@@ -201,14 +212,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             try realm.write {
                 self.item!.title = self.taskTextField.text
                 //For Smart Snooze
-                if self.segmentSelection.selectedSegmentIndex < getCurrentSegmentFromTime() {
-                    print("Updating item for tomorrow")
-                    self.item!.dateModified = Date().startOfNextDay
-                } else {
-                    print("Updating item for today")
-                    self.item!.dateModified = Date()
-                }
                 self.item!.segment = self.segmentSelection.selectedSegmentIndex
+                self.item!.dateModified = firstTriggerDate(segment: self.segmentSelection.selectedSegmentIndex)
                 self.item!.notes = self.notesTextView.text
             }
         } catch {
@@ -269,7 +274,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
     
     func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, firstDate: Date) {
-        
+        //This is where you need to test if a segment is > current segment
         if getSegmentNotificationOption(segment: 0) {
             scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate)
             print("morning uuid: "+"\(uuidString)0")
@@ -369,10 +374,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.autoupdatingCurrent
         //Keep notifications from occurring too early for tasks created for tomorrow
-        if firstDate > Date() {
-            print("Notification set to tomorrow")
-            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
-        }
+        dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
         dateComponents.timeZone = TimeZone.autoupdatingCurrent
         dateComponents.hour = getOptionHour(segment: segment)
         dateComponents.minute = getOptionMinute(segment: segment)
