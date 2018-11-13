@@ -280,17 +280,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
-                if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
+                let items = realm.objects(Items.self).filter("uuidString = \(uuidString) OR afternoonUUD = \(uuidString) OR eveningUUID = \(uuidString) OR nightUUID = \(uuidString)")
+                items.forEach({ (item) in
                     print("Completing item")
                     do {
-                        try! realm.write {
+                        try realm.write {
                             if !item.repeats {
                                 realm.delete(item)
                                 self.removeNotification(uuidString: [item.uuidString, item.afternoonUUID, item.eveningUUID, item.nightUUID])
                             }
                         }
+                    } catch {
+                        print("failed to remove item with Complete action")
                     }
-                }
+                })
                 self.updateAppBadgeCount()
             }
             print("completeItem completed")
@@ -309,7 +312,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
+                let items = realm.objects(Items.self).filter("uuidString = \(uuidString) OR afternoonUUD = \(uuidString) OR eveningUUID = \(uuidString) OR nightUUID = \(uuidString)")
+                items.forEach({ (item) in
                     //TODO: Could cause out of bounds error? Or actually, it's not an array. The item may just become invisible.
                     let segment = self.getCurrentSegmentFromTime()
                     var newSegment = Int()
@@ -334,7 +338,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     eveningUUID = item.eveningUUID
                     nightUUID = item.nightUUID
                     print("snoozeItem Completed")
-                }
+                })
                 self.updateAppBadgeCount()
             }
         }
