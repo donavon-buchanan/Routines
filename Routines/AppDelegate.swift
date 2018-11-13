@@ -343,7 +343,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let newTitle = title {
             //TODO: Might need to come back to this for Smart Snooze. For now, leave it alone
             if getAutoSnoozeStatus() {
-                scheduleAutoSnoozeNotifications(title: newTitle, notes: notes, uuidString: itemuuidString, firstDate: dateModified!)
+                scheduleAutoSnoozeNotifications(title: newTitle, notes: notes, segment: itemSegment, uuidString: itemuuidString, firstDate: dateModified!)
             } else {
                 scheduleNewNotification(title: newTitle, notes: notes, segment: itemSegment, uuidString: itemuuidString, firstDate: dateModified!)
             }
@@ -454,18 +454,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
     }
     
-    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, firstDate: Date) {
-        if getSegmentNotificationOption(segment: 0) {
-            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate)
+    func scheduleAutoSnoozeNotifications(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
+        //This is where you need to test if a segment is > current segment
+        let dayOfFirstDate = Calendar.autoupdatingCurrent.dateComponents([.day], from: firstDate)
+        print("dayOfFirstDate: \(dayOfFirstDate)")
+        let today = Calendar.autoupdatingCurrent.dateComponents([.day], from: Date())
+        print("today: \(today)")
+        if segment > 0 && dayOfFirstDate == today{
+            if getSegmentNotificationOption(segment: 0) {
+                scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate.startOfNextDay)
+                print("morning uuid: "+"\(uuidString)0")
+            }
+        } else {
+            if getSegmentNotificationOption(segment: 0) {
+                scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate)
+                print("morning uuid: "+"\(uuidString)0")
+            }
         }
-        if getSegmentNotificationOption(segment: 1) {
-            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate)
+        if segment > 1 && dayOfFirstDate == today{
+            if getSegmentNotificationOption(segment: 1) {
+                scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate.startOfNextDay)
+                print("afternoon uuid: "+"\(uuidString)1")
+            }
+        } else {
+            if getSegmentNotificationOption(segment: 1) {
+                scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate)
+                print("afternoon uuid: "+"\(uuidString)1")
+            }
         }
-        if getSegmentNotificationOption(segment: 2) {
-            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate)
+        if segment > 2 && dayOfFirstDate == today {
+            if getSegmentNotificationOption(segment: 2) {
+                scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate.startOfNextDay)
+                print("evening uuid: "+"\(uuidString)2")
+            }
+        } else {
+            if getSegmentNotificationOption(segment: 2) {
+                scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate)
+                print("evening uuid: "+"\(uuidString)2")
+            }
         }
         if getSegmentNotificationOption(segment: 3) {
             scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: "\(uuidString)3", firstDate: firstDate)
+            print("night uuid: "+"\(uuidString)3")
         }
     }
     

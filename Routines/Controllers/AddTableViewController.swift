@@ -157,13 +157,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     func firstTriggerDate(segment: Int) -> Date {
         let tomorrow = Date().startOfNextDay
         var dateComponents = DateComponents()
-        if segment < getCurrentSegmentFromTime() {
-            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: tomorrow)
+        //TODO: This might cause problems
+        if segment <= getCurrentSegmentFromTime() {
+            print("Setting item date for tomorrow")
+            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: tomorrow)
         } else {
-            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: Date())
+            print("Setting item date for today")
+            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: Date())
         }
-        dateComponents.calendar = Calendar.autoupdatingCurrent
-        dateComponents.timeZone = TimeZone.autoupdatingCurrent
         dateComponents.hour = getOptionHour(segment: segment)
         dateComponents.minute = getOptionMinute(segment: segment)
         dateComponents.second = 0
@@ -185,7 +186,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             //save to realm
             saveItem(item: newItem)
             if getAutoSnoozeStatus() {
-                scheduleAutoSnoozeNotifications(title: title, notes: notes, uuidString: newItem.uuidString, firstDate: newItem.dateModified!)
+                scheduleAutoSnoozeNotifications(title: title, notes: notes, segment: segment, uuidString: newItem.uuidString, firstDate: newItem.dateModified!)
             } else {
                 scheduleNewNotification(title: title, notes: notes, segment: segment, uuidString: newItem.uuidString, firstDate: newItem.dateModified!)
             }
@@ -222,7 +223,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         self.removeNotification(uuidString: ["\(self.item!.uuidString)0", "\(self.item!.uuidString)1", "\(self.item!.uuidString)2", "\(self.item!.uuidString)3"])
         
         if getAutoSnoozeStatus() {
-            scheduleAutoSnoozeNotifications(title: self.item!.title!, notes: self.item!.notes, uuidString: self.item!.uuidString, firstDate: self.item!.dateModified!)
+            scheduleAutoSnoozeNotifications(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString, firstDate: self.item!.dateModified!)
         } else {
             self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString, firstDate: self.item!.dateModified!)
         }
@@ -273,19 +274,44 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         return isOn
     }
     
-    func scheduleAutoSnoozeNotifications(title: String, notes: String?, uuidString: String, firstDate: Date) {
+    func scheduleAutoSnoozeNotifications(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
         //This is where you need to test if a segment is > current segment
-        if getSegmentNotificationOption(segment: 0) {
-            scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate)
-            print("morning uuid: "+"\(uuidString)0")
+        let dayOfFirstDate = Calendar.autoupdatingCurrent.dateComponents([.day], from: firstDate)
+        print("dayOfFirstDate: \(dayOfFirstDate)")
+        let today = Calendar.autoupdatingCurrent.dateComponents([.day], from: Date())
+        print("today: \(today)")
+        if segment > 0 && dayOfFirstDate == today{
+            if getSegmentNotificationOption(segment: 0) {
+                scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate.startOfNextDay)
+                print("morning uuid: "+"\(uuidString)0")
+            }
+        } else {
+            if getSegmentNotificationOption(segment: 0) {
+                scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate)
+                print("morning uuid: "+"\(uuidString)0")
+            }
         }
-        if getSegmentNotificationOption(segment: 1) {
-            scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate)
-            print("afternoon uuid: "+"\(uuidString)1")
+        if segment > 1 && dayOfFirstDate == today{
+            if getSegmentNotificationOption(segment: 1) {
+                scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate.startOfNextDay)
+                print("afternoon uuid: "+"\(uuidString)1")
+            }
+        } else {
+            if getSegmentNotificationOption(segment: 1) {
+                scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate)
+                print("afternoon uuid: "+"\(uuidString)1")
+            }
         }
-        if getSegmentNotificationOption(segment: 2) {
-            scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate)
-            print("evening uuid: "+"\(uuidString)2")
+        if segment > 2 && dayOfFirstDate == today {
+            if getSegmentNotificationOption(segment: 2) {
+                scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate.startOfNextDay)
+                print("evening uuid: "+"\(uuidString)2")
+            }
+        } else {
+            if getSegmentNotificationOption(segment: 2) {
+                scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate)
+                print("evening uuid: "+"\(uuidString)2")
+            }
         }
         if getSegmentNotificationOption(segment: 3) {
             scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: "\(uuidString)3", firstDate: firstDate)
@@ -550,6 +576,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         default:
             currentSegment = 3
         }
+        print("getCurrentSegmentFromTime: \(currentSegment)")
         return currentSegment
     }
     
