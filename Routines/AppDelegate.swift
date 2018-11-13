@@ -394,10 +394,57 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         let snoozeAction = UNNotificationAction(identifier: "snooze", title: "Notify Me Later", options: UNNotificationActionOptions(rawValue: 0))
         
-        let morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction,completeAction], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
-        let afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction,completeAction], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
-        let eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction,completeAction], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
-        let nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction,completeAction], intentIdentifiers: [], options: UNNotificationCategoryOptions(rawValue: 0))
+        let morningSummaryFormat = "%u more morning tasks"
+        let morningPreviewPlaceholder = "%u morning tasks"
+        
+        let afternoonSummaryFormat = "%u more afternoon tasks"
+        let afternoonPreviewPlaceholder = "%u afternoon tasks"
+        
+        let eveningSummaryFormat = "%u more evening tasks"
+        let eveningPreviewPlaceholder = "%u evening tasks"
+        
+        let nightSummaryFormat = "%u more night tasks"
+        let nightPreviewPlaceholder = "%u night tasks"
+        
+        var morningCategory : UNNotificationCategory
+        if #available(iOS 12.0, *) {
+            morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction,completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: morningPreviewPlaceholder, categorySummaryFormat: morningSummaryFormat, options: [])
+        } else if #available(iOS 11.0, *) {
+            morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction,completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: morningPreviewPlaceholder, options: [])
+        } else {
+            // Fallback on earlier versions
+            morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction,completeAction], intentIdentifiers: [], options: [])
+        }
+        
+        var afternoonCategory : UNNotificationCategory
+        if #available(iOS 12.0, *) {
+            afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction,completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: afternoonPreviewPlaceholder, categorySummaryFormat: afternoonSummaryFormat, options: [])
+        } else if #available(iOS 11.0, *) {
+            afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction,completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: afternoonPreviewPlaceholder, options: [])
+        } else {
+            // Fallback on earlier versions
+            afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction,completeAction], intentIdentifiers: [], options: [])
+        }
+        
+        var eveningCategory : UNNotificationCategory
+        if #available(iOS 12.0, *) {
+            eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction,completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: eveningPreviewPlaceholder, categorySummaryFormat: eveningSummaryFormat, options: [])
+        } else if #available(iOS 11.0, *) {
+            eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction,completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: eveningPreviewPlaceholder, options: [])
+        } else {
+            // Fallback on earlier versions
+            eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction,completeAction], intentIdentifiers: [], options: [])
+        }
+        
+        var nightCategory : UNNotificationCategory
+        if #available(iOS 12.0, *) {
+            nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction,completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: nightPreviewPlaceholder, categorySummaryFormat: nightSummaryFormat, options: [])
+        } else if #available(iOS 11.0, *) {
+            nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction,completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: nightPreviewPlaceholder, options: [])
+        } else {
+            // Fallback on earlier versions
+            nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction,completeAction], intentIdentifiers: [], options: [])
+        }
         
         center.setNotificationCategories([morningCategory,afternoonCategory,eveningCategory,nightCategory])
     }
