@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ObserverSetVersionNumber;
-FOUNDATION_EXPORT const unsigned char ObserverSetVersionString[];
+FOUNDATION_EXPORT double HueVersionNumber;
+FOUNDATION_EXPORT const unsigned char HueVersionString[];
 

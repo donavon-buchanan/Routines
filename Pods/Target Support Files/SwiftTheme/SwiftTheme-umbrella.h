@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ThemeVersionNumber;
-FOUNDATION_EXPORT const unsigned char ThemeVersionString[];
+FOUNDATION_EXPORT double SwiftThemeVersionNumber;
+FOUNDATION_EXPORT const unsigned char SwiftThemeVersionString[];
 
