@@ -14,6 +14,8 @@ import SwiftTheme
 
 class OptionsTableViewController: UITableViewController {
     
+    @IBOutlet var cellLabels: [UILabel]!
+    
     @IBOutlet weak var morningSwitch: UISwitch!
     @IBOutlet weak var afternoonSwitch: UISwitch!
     @IBOutlet weak var eveningSwitch: UISwitch!
@@ -66,7 +68,9 @@ class OptionsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        cellLabels.forEach { (label) in
+            label.theme_textColor = GlobalPicker.cellTextColors
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -147,17 +151,20 @@ class OptionsTableViewController: UITableViewController {
         if indexPath.section == 2 {
             badgeSwitch.setOn(!badgeSwitch.isOn, animated: true)
             saveBadgeOption(isOn: badgeSwitch.isOn)
+            haptic.impactOccurred()
         }
         
         //Smart Snooze
         if indexPath.section == 3 {
             self.smartSnoozeSwitch.setOn(!smartSnoozeSwitch.isOn, animated: true)
             setSmartSnooze()
+            haptic.impactOccurred()
         }
         
         if indexPath.section == 4 {
             self.darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
             saveDarkModeOption(isOn: darkModeSwtich.isOn)
+            haptic.impactOccurred()
         }
     }
 
@@ -827,6 +834,7 @@ class OptionsTableViewController: UITableViewController {
                 }
             }
         }
+        setAppearance(tab: getSelectedTab())
     }
     
     func getDarkModeStatus() -> Bool {
@@ -842,6 +850,43 @@ class OptionsTableViewController: UITableViewController {
         return darkMode
     }
     
+    func getSelectedTab() -> Int {
+        var selectedIndex = 0
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    selectedIndex = options.selectedIndex
+                }
+            }
+        }
+        return selectedIndex
+    }
     
+    func setAppearance(tab: Int) {
+        if getDarkModeStatus() {
+            switch tab {
+            case 1:
+                Themes.switchTo(theme: .afternoonDark)
+            case 2:
+                Themes.switchTo(theme: .eveningDark)
+            case 3:
+                Themes.switchTo(theme: .nightDark)
+            default:
+                Themes.switchTo(theme: .morningDark)
+            }
+        } else {
+            switch tab {
+            case 1:
+                Themes.switchTo(theme: .afternoonLight)
+            case 2:
+                Themes.switchTo(theme: .eveningLight)
+            case 3:
+                Themes.switchTo(theme: .nightLight)
+            default:
+                Themes.switchTo(theme: .morningLight)
+            }
+        }
+    }
 
 }

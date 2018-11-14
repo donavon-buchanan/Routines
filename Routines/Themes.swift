@@ -43,7 +43,7 @@ enum Themes: Int {
     //Mark: Switch Dark
     //TODO: Pass in segment here
     static func isDarkMode() -> Bool {
-        return current == .morningDark
+        return (options?.darkMode)!
     }
     
     //Mark: Save & Restore

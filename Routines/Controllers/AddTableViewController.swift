@@ -28,6 +28,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if #available(iOS 11.0, *) {
+            self.navigationItem.largeTitleDisplayMode = .never
+        }
+        
         self.tabBarController?.tabBar.isHidden = true
         //If item is loaded, fill in values for editing
         if item != nil {

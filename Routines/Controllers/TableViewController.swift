@@ -150,6 +150,8 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 cell.detailTextLabel?.text = nil
             }
         }
+        cell.textLabel?.theme_textColor = GlobalPicker.cellTextColors
+        cell.theme_backgroundColor = GlobalPicker.backgroundColor
         
         return cell
     }
@@ -314,37 +316,31 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
 //    //MARK: - Themeing
     
     func setAppearance() {
-        switch self.segment {
-        case 1:
-            setAfternoonColors()
-        case 2:
-            setEveningColors()
-        case 3:
-            setNightColors()
-        default:
-            setMorningColors()
+        if getDarkModeStatus() {
+            switch self.segment {
+            case 1:
+                Themes.switchTo(theme: .afternoonDark)
+            case 2:
+                Themes.switchTo(theme: .eveningDark)
+            case 3:
+                Themes.switchTo(theme: .nightDark)
+            default:
+                Themes.switchTo(theme: .morningDark)
+            }
+        } else {
+            switch self.segment {
+            case 1:
+                Themes.switchTo(theme: .afternoonLight)
+            case 2:
+                Themes.switchTo(theme: .eveningLight)
+            case 3:
+                Themes.switchTo(theme: .nightLight)
+            default:
+                Themes.switchTo(theme: .morningLight)
+            }
         }
     }
-    
-    func setMorningColors() {
 
-    }
-    
-    func setAfternoonColors() {
-
-    }
-    
-    func setEveningColors() {
-
-    }
-    
-    func setNightColors() {
-
-    }
-    
-    func setDarkMode() {
-
-    }
     
     func getDarkModeStatus() -> Bool {
         var darkMode = false

@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 import UserNotifications
-import UserNotificationsUI
+import SwiftTheme
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate{
@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     let center = UNUserNotificationCenter.current()
     
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
         
         center.delegate = self
         
@@ -37,9 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         //checkToCreateOptions()
         loadOptions()
-        
-        //self.window?.tintColor = .red
-        self.window?.backgroundColor = .white
+        setUpTheme()
 
         return true
     }
@@ -68,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        
+        //Themes.saveLastTheme()
     }
     
     func restoreSelectedTab() {
@@ -139,7 +138,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 6,
+            schemaVersion: 8,
             
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -179,7 +178,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
                 
-                if (oldSchemaVersion < 6) {
+                if (oldSchemaVersion < 8) {
                     
                 }
                 
@@ -820,6 +819,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             currentSegment = 0
         }
         return currentSegment
+    }
+    
+    //MARK: - Themes
+    func setUpTheme() {
+        
+        //Themes.restoreLastTheme()
+        
+        // status bar
+        
+        UIApplication.shared.theme_setStatusBarStyle([.default, .default, .default, .default, .lightContent, .lightContent, .lightContent, .lightContent, .lightContent], animated: true)
+        
+        // navigation bar
+        
+        let navigationBar = UINavigationBar.appearance()
+        
+        let shadow = NSShadow()
+        shadow.shadowOffset = CGSize(width: 0, height: 0)
+        
+        let titleAttributes = GlobalPicker.barTextColors.map { hexString in
+            return [
+                NSAttributedString.Key.foregroundColor: UIColor(rgba: hexString),
+                //NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+                
+                NSAttributedString.Key.shadow: shadow
+            ]
+        }
+        
+        self.window?.theme_backgroundColor = GlobalPicker.backgroundColor
+        navigationBar.shadowImage = UIImage()
+        navigationBar.isTranslucent = false
+        navigationBar.theme_tintColor = GlobalPicker.barTextColor
+        navigationBar.theme_barTintColor = GlobalPicker.barTintColor
+        navigationBar.theme_titleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
+        navigationBar.theme_largeTitleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
+        
+        // tab bar
+        let tabBar = UITabBar.appearance()
+        
+        tabBar.theme_tintColor = GlobalPicker.barTextColor
+        tabBar.theme_barTintColor = GlobalPicker.barTintColor
+        
+        //tables
+        let table = UITableView.appearance()
+        table.theme_backgroundColor = GlobalPicker.barTintColor
+        
+        //Cells
+        let cell = UITableViewCell.appearance()
+        cell.theme_backgroundColor = GlobalPicker.cellBackground
+        cell.theme_tintColor = GlobalPicker.barTextColor
+        //switches
+        let switchUI = UISwitch.appearance()
+        switchUI.theme_onTintColor = GlobalPicker.barTextColor
+        switchUI.theme_backgroundColor = GlobalPicker.cellBackground
     }
     
 }
