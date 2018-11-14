@@ -10,6 +10,7 @@ import UIKit
 import UserNotifications
 import UserNotificationsUI
 import RealmSwift
+import SwiftTheme
 
 class OptionsTableViewController: UITableViewController {
     
@@ -829,7 +830,7 @@ class OptionsTableViewController: UITableViewController {
     }
     
     func getDarkModeStatus() -> Bool {
-        var darkMode = false
+        var darkMode = true
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -840,5 +841,7 @@ class OptionsTableViewController: UITableViewController {
         }
         return darkMode
     }
+    
+    
 
 }

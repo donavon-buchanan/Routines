@@ -39,7 +39,8 @@ import RealmSwift
     
     dynamic var smartSnooze: Bool = false
     
-    dynamic var darkMode: Bool = false
+    dynamic var darkMode: Bool = true
+    dynamic var themeIndex: Int = 0
     
     dynamic var selectedIndex: Int = 0
     

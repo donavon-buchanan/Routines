@@ -17,8 +17,7 @@
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
 		F85213B5218F5EE600291CFE /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85213B4218F5EE600291CFE /* NavigationViewController.swift */; };
 		F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */; };
-		F8AD192621967D6900280004 /* Dates.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD192521967D6900280004 /* Dates.swift */; };
-		F8AD192821967D7700280004 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD192721967D7700280004 /* Notifications.swift */; };
+		F8B30787219C0DAB00437AAA /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B30786219C0DAB00437AAA /* Themes.swift */; };
 		F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831B72155CBB000DAF60E /* AppDelegate.swift */; };
 		F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831BB2155CBB000DAF60E /* Main.storyboard */; };
 		F8B831C22155CBB100DAF60E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831C02155CBB100DAF60E /* LaunchScreen.storyboard */; };
@@ -42,8 +41,7 @@
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
 		F85213B4218F5EE600291CFE /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
-		F8AD192521967D6900280004 /* Dates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dates.swift; sourceTree = "<group>"; };
-		F8AD192721967D7700280004 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
+		F8B30786219C0DAB00437AAA /* Themes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themes.swift; sourceTree = "<group>"; };
 		F8B831B42155CBB000DAF60E /* Routines.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routines.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8B831B72155CBB000DAF60E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8B831BC2155CBB000DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -127,8 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				F8B831B72155CBB000DAF60E /* AppDelegate.swift */,
-				F8AD192521967D6900280004 /* Dates.swift */,
-				F8AD192721967D7700280004 /* Notifications.swift */,
+				F8B30786219C0DAB00437AAA /* Themes.swift */,
 				F8B831CB2155CBD000DAF60E /* Models */,
 				F8B831C92155CBBD00DAF60E /* Controllers */,
 				F8B831CA2155CBC700DAF60E /* Views */,
@@ -312,15 +309,14 @@
 				F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */,
 				F814CF5A2192A8E000E3C0F5 /* TabBarViewController.swift in Sources */,
 				F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */,
-				F8AD192621967D6900280004 /* Dates.swift in Sources */,
 				F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */,
-				F8AD192821967D7700280004 /* Notifications.swift in Sources */,
 				F8F278522187D56400D2AC46 /* UITableViewExtension.swift in Sources */,
 				F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */,
 				F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */,
 				F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */,
 				F807D3CF2160964E00FF36D9 /* OptionsTableViewController.swift in Sources */,
 				F807D3CD216073E300FF36D9 /* Options.swift in Sources */,
+				F8B30787219C0DAB00437AAA /* Themes.swift in Sources */,
 				F8125CCA215F56E700ED3FA6 /* SwipeTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
