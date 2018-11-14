@@ -57,9 +57,9 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     @objc func appBecameActive() {
         self.runAutoSnooze()
-        setAppearance()
-        loadItems(segment: self.segment)
-        updateBadge()
+        //setAppearance()
+        //loadItems(segment: self.segment)
+        //updateBadge()
         tableView.reloadData()
     }
     
@@ -67,7 +67,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         super.viewWillAppear(animated)
         setNavTitle()
         setAppearance()
-        self.runAutoSnooze()
+        //self.runAutoSnooze()
         print("View Will Appear")
         //loadItems(segment: self.segment)
         self.tabBarController?.tabBar.isHidden = false
@@ -210,7 +210,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 do {
                     try! realm.write {
                         if let item = self.items?[indexPath.row] {
-                            self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3"])
+                            self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3", item.uuidString])
                             realm.delete(item)
                         }
                     }
@@ -316,6 +316,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
 //    //MARK: - Themeing
     
     func setAppearance() {
+        print("Setting theme")
         if getDarkModeStatus() {
             switch self.segment {
             case 1:

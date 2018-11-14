@@ -297,7 +297,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             print("completeItem completed")
         }
         //Add suffix back to uuidString
-        self.removeNotification(uuidString: ["\(id)0", "\(id)1", "\(id)2", "\(id)3"])
+        self.removeNotification(uuidString: ["\(id)0", "\(id)1", "\(id)2", "\(id)3", id])
         self.updateAppBadgeCount()
     }
     
