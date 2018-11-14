@@ -10,5 +10,7 @@ target 'Routines' do
   # Pods for Routines
   pod 'RealmSwift'
   pod 'SwipeCellKit'
+  pod 'Hue'
+  pod 'SwiftTheme'
 
 end
