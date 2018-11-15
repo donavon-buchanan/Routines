@@ -26,6 +26,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         if let newSegment = segment {
             passedSegment = nil
             self.tabBarController?.selectedIndex = newSegment
+            saveSelectedTab(index: newSegment)
         }
     }
     
