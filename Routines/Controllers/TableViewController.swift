@@ -60,7 +60,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         self.runAutoSnooze()
         //setAppearance()
         //loadItems(segment: self.segment)
-        //updateBadge()
+        updateBadge()
         tableView.reloadData()
     }
     
