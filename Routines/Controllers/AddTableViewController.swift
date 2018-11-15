@@ -21,6 +21,11 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     
     @IBOutlet var cells: [UITableViewCell]!
     
+    @IBAction func segmentSelected(_ sender: UISegmentedControl) {
+        setAppearance(segment: sender.selectedSegmentIndex)
+    }
+    
+    
     
     let realmDispatchQueueLabel: String = "background"
     
@@ -607,6 +612,47 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         dateComponent.hour = hour
         dateComponent.minute = minute
         return dateComponent.date!
+    }
+    
+    //Mark: Theme
+    public func setAppearance(segment: Int) {
+        print("Setting theme")
+        if getDarkModeStatus() {
+            switch segment {
+            case 1:
+                Themes.switchTo(theme: .afternoonDark)
+            case 2:
+                Themes.switchTo(theme: .eveningDark)
+            case 3:
+                Themes.switchTo(theme: .nightDark)
+            default:
+                Themes.switchTo(theme: .morningDark)
+            }
+        } else {
+            switch segment {
+            case 1:
+                Themes.switchTo(theme: .afternoonLight)
+            case 2:
+                Themes.switchTo(theme: .eveningLight)
+            case 3:
+                Themes.switchTo(theme: .nightLight)
+            default:
+                Themes.switchTo(theme: .morningLight)
+            }
+        }
+    }
+    
+    func getDarkModeStatus() -> Bool {
+        var darkMode = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    darkMode = options.darkMode
+                }
+            }
+        }
+        return darkMode
     }
 
 }

@@ -66,21 +66,20 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setNavTitle()
-        setAppearance()
-        //self.runAutoSnooze()
+        changeSegment(segment: passedSegment)
+        //slideInView(from: getSelectedTab(), to: self.segment)
         print("View Will Appear")
-        //loadItems(segment: self.segment)
         self.tabBarController?.tabBar.isHidden = false
         updateBadge()
         removeDeliveredNotifications()
+        setNavTitle()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("viewDidAppear \n")
-        changeSegment(segment: passedSegment)
         reloadTableView()
+        setAppearance()
     }
     
     func setNavTitle() {
@@ -96,6 +95,25 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
             self.title = "Morning"
         }
     }
+    
+//    func slideInView(from: Int, to: Int) {
+//        //TODO: These are going to have to be view based to make the transition smoother.
+//        self.tableView.layoutIfNeeded()
+//        print("going from \(from) to \(to)")
+//        UIView.animate(withDuration: 0.5) {
+//            let slideInTableView = CATransition()
+//            slideInTableView.duration = 0.5
+//            slideInTableView.type = CATransitionType.moveIn
+//            if from < to {
+//                slideInTableView.subtype = CATransitionSubtype.fromRight
+//            } else {
+//                slideInTableView.subtype = CATransitionSubtype.fromLeft
+//            }
+//            self.tableView.layer.add(slideInTableView, forKey: "slideInTableView")
+//            self.tableView.layoutIfNeeded()
+//        }
+//
+//    }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         saveSelectedTab(index: tabBarController.selectedIndex)
@@ -118,6 +136,19 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 }
             }
         }
+    }
+    
+    func getSelectedTab() -> Int {
+        var index = Int()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    index = options.selectedIndex
+                }
+            }
+        }
+        return index
     }
     
     
