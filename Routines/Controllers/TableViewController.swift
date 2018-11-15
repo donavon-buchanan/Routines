@@ -49,6 +49,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         
         footerView.backgroundColor = .clear
         self.tableView.tableFooterView = footerView
+        self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         
         setViewBackgroundGraphic()
         
@@ -315,7 +316,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
 //    //MARK: - Themeing
     
-    func setAppearance() {
+    public func setAppearance() {
         print("Setting theme")
         if getDarkModeStatus() {
             switch self.segment {

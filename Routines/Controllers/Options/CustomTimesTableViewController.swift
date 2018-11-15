@@ -20,6 +20,9 @@ class CustomTimesTableViewController: UITableViewController {
     @IBOutlet weak var eveningDatePicker: UIDatePicker!
     @IBOutlet weak var nightDatePicker: UIDatePicker!
     
+    @IBOutlet var datePickers: [UIDatePicker]!
+    
+    
     @IBAction func morningTimeSet(_ sender: UIDatePicker) {
         updateSavedTimes(segment: 0, hour: getHour(date: morningDatePicker.date), minute: getMinute(date: morningDatePicker.date))
         print("Picker sent: \(String(describing: sender.date))")
@@ -47,7 +50,16 @@ class CustomTimesTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        if getDarkModeStatus() {
+            datePickers.forEach { (picker) in
+                picker.setValue(UIColor.white, forKeyPath: "textColor")
+            }
+        } else {
+            datePickers.forEach { (picker) in
+                picker.setValue(UIColor.black, forKeyPath: "textColor")
+            }
+        }
+        self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,27 +78,27 @@ class CustomTimesTableViewController: UITableViewController {
         saveAllTimes()
     }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var numberOfRows: Int
-        switch section {
-        case 0:
-            numberOfRows = 1
-        case 1:
-            numberOfRows = 1
-        case 2:
-            numberOfRows = 1
-        case 3:
-            numberOfRows = 1
-        default:
-            numberOfRows = 1
-        }
-        
-        return numberOfRows
-    }
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        return 4
+//    }
+//
+//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        var numberOfRows: Int
+//        switch section {
+//        case 0:
+//            numberOfRows = 1
+//        case 1:
+//            numberOfRows = 1
+//        case 2:
+//            numberOfRows = 1
+//        case 3:
+//            numberOfRows = 1
+//        default:
+//            numberOfRows = 1
+//        }
+//
+//        return numberOfRows
+//    }
     
     //Save all times
     func saveAllTimes() {
@@ -606,6 +618,32 @@ class CustomTimesTableViewController: UITableViewController {
             }
         }
         return snooze
+    }
+    
+    func getSelectedTab() -> Int {
+        var selectedIndex = 0
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    selectedIndex = options.selectedIndex
+                }
+            }
+        }
+        return selectedIndex
+    }
+    
+    func getDarkModeStatus() -> Bool {
+        var darkMode = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    darkMode = options.darkMode
+                }
+            }
+        }
+        return darkMode
     }
 
 }

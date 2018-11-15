@@ -18,6 +18,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     @IBOutlet weak var segmentSelection: UISegmentedControl!
     @IBOutlet weak var notesTextView: UITextView!
     
+    @IBOutlet var cells: [UITableViewCell]!
+    
+    
     let realmDispatchQueueLabel: String = "background"
     
     var item : Items?
@@ -27,6 +30,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+        cells.forEach { (cell) in
+            cell.theme_backgroundColor = GlobalPicker.backgroundColor
+        }
         
         if #available(iOS 11.0, *) {
             self.navigationItem.largeTitleDisplayMode = .never

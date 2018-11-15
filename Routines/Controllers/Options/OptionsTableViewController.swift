@@ -71,6 +71,7 @@ class OptionsTableViewController: UITableViewController {
         cellLabels.forEach { (label) in
             label.theme_textColor = GlobalPicker.cellTextColors
         }
+        self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
     }
     
     override func viewWillAppear(_ animated: Bool) {

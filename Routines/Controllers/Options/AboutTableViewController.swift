@@ -12,39 +12,36 @@ class AboutTableViewController: UITableViewController {
     
     @IBOutlet weak var versionNumberLabel: UILabel!
     
+    @IBOutlet var cells: [UITableViewCell]!
+    
+    @IBOutlet var labels: [UILabel]!
+    
+    @IBOutlet weak var gearImage: UIImageView!
+    @IBOutlet weak var morningImage: UIImageView!
+    @IBOutlet weak var afternoonImage: UIImageView!
+    @IBOutlet weak var eveningImage: UIImageView!
+    @IBOutlet weak var nightImage: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         versionNumberLabel.text = setVersionNumberLabel()
         setViewBackgroundGraphic()
-
-    }
-    
-//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "versionCell")
-//        cell?.textLabel?.text = setVersionNumberLabel()
-//        return cell!
-//    }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
-    }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var numberOfRows: Int
-        switch section {
-        case 0:
-            numberOfRows = 1
-        case 1:
-            numberOfRows = 5
-        case 2:
-            numberOfRows = 1
-        default:
-            numberOfRows = 0
+        
+        cells.forEach { (cell) in
+            cell.theme_backgroundColor = GlobalPicker.cellBackground
         }
         
-        return numberOfRows
+        labels.forEach { (label) in
+            label.theme_textColor = GlobalPicker.cellTextColors
+        }
+        
+        gearImage.theme_image = GlobalPicker.gear
+        morningImage.theme_image = GlobalPicker.morning
+        afternoonImage.theme_image = GlobalPicker.afternoon
+        eveningImage.theme_image = GlobalPicker.evening
+        nightImage.theme_image = GlobalPicker.night
+
     }
     
     func setVersionNumberLabel() -> String {

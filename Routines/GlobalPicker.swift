@@ -9,13 +9,21 @@
 import SwiftTheme
 
 enum GlobalPicker {
-    static let backgroundColor: ThemeColorPicker = ["#fbeed7", "#fff", "#fff", "#fff", "#000", "#000", "#000", "#000", "#000"]
-    static let textColor: ThemeColorPicker = ["#f47645", "#000", "#000", "#000", "#f47645", "#ECF0F1", "#ECF0F1", "#ECF0F1", "#ECF0F1"]
+    static let backgroundColor: ThemeColorPicker = ["#FFFDF7", "#fff", "#FFF7F1", "#222831", "#000", "#000", "#000", "#000", "#000"]
+    static let barTintColor: ThemeColorPicker = ["#FFFDF7", "#fff", "#FFF7F1", "#222831", "#000", "#000", "#000", "#000", "#000"]
     
-    static let barTextColors = ["#f47645", "#000", "#000", "#000", "#f47645", "#FFF", "#FFF", "#FFF", "#FFF"]
+    static let textColor: ThemeColorPicker = ["#f47645", "#26baee", "#62a388", "#7971ea", "#f47645", "#26baee", "#62a388", "#5454c5", "#FFF"]
+    static let barTextColors : [String] = ["#f47645", "#26baee", "#62a388", "#7971ea", "#f47645", "#26baee", "#62a388", "#5454c5", "#FFF"]
     static let barTextColor = ThemeColorPicker.pickerWithColors(barTextColors)
-    static let barTintColor: ThemeColorPicker = ["#fbeed7", "#F4C600", "#56ABE4", "#01040D", "#000", "#000", "#000", "#000", "#000"]
     
-    static let cellTextColors: ThemeColorPicker = ["#000", "#000", "#000", "#000", "#FFF", "#FFF", "#FFF", "#FFF", "#FFF"]
-    static let cellBackground: ThemeColorPicker = ["#F8E6C7", "#fff", "#fff", "#fff", "#000", "#000", "#000", "#000", "#000"]
+    static let barStyle = ThemeBarStylePicker.pickerWithStyles([.default, .default, .default, .black, .black, .black, .black, .black, .black])
+    
+    static let cellTextColors: ThemeColorPicker = ["#000", "#000", "#000", "#fff", "#FFF", "#FFF", "#FFF", "#FFF", "#FFF"]
+    static let cellBackground: ThemeColorPicker = ["#fff", "#F5F5F5", "#FFFAF6", "#2D3541", "#000", "#000", "#000", "#000", "#000"]
+    
+    static let gear = ThemeImagePicker(arrayLiteral: "gear", "gear", "gear", "gear", "gear-white", "gear-white", "gear-white", "gear-white", "gear-white")
+    static let morning = ThemeImagePicker(arrayLiteral: "morning", "morning", "morning", "morning", "morning-white", "morning-white", "morning-white", "morning-white", "morning-white")
+    static let afternoon = ThemeImagePicker(arrayLiteral: "afternoon", "afternoon", "afternoon", "afternoon", "afternoon-white", "afternoon-white", "afternoon-white", "afternoon-white", "afternoon-white")
+    static let evening = ThemeImagePicker(arrayLiteral: "evening", "evening", "evening", "evening", "evening-white", "evening-white", "evening-white", "evening-white", "evening-white")
+    static let night = ThemeImagePicker(arrayLiteral: "night", "night", "night", "night", "night-white", "night-white", "night-white", "night-white", "night-white")
 }

@@ -828,7 +828,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // status bar
         
-        UIApplication.shared.theme_setStatusBarStyle([.default, .default, .default, .default, .lightContent, .lightContent, .lightContent, .lightContent, .lightContent], animated: true)
+        UIApplication.shared.theme_setStatusBarStyle([.default, .default, .default, .lightContent, .lightContent, .lightContent, .lightContent, .lightContent, .lightContent], animated: true)
         
         // navigation bar
         
@@ -847,10 +847,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         self.window?.theme_backgroundColor = GlobalPicker.backgroundColor
-        navigationBar.shadowImage = UIImage()
-        navigationBar.isTranslucent = false
+        //navigationBar.shadowImage = UIImage()
+        //navigationBar.isTranslucent = false
+        navigationBar.theme_barStyle = GlobalPicker.barStyle
         navigationBar.theme_tintColor = GlobalPicker.barTextColor
-        navigationBar.theme_barTintColor = GlobalPicker.barTintColor
+        //navigationBar.theme_barTintColor = GlobalPicker.barTintColor
         navigationBar.theme_titleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
         navigationBar.theme_largeTitleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
         
@@ -858,20 +859,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let tabBar = UITabBar.appearance()
         
         tabBar.theme_tintColor = GlobalPicker.barTextColor
-        tabBar.theme_barTintColor = GlobalPicker.barTintColor
-        
-        //tables
-        let table = UITableView.appearance()
-        table.theme_backgroundColor = GlobalPicker.barTintColor
+        tabBar.theme_barStyle = GlobalPicker.barStyle
+        //tabBar.theme_barTintColor = GlobalPicker.barTintColor
         
         //Cells
         let cell = UITableViewCell.appearance()
         cell.theme_backgroundColor = GlobalPicker.cellBackground
         cell.theme_tintColor = GlobalPicker.barTextColor
+        
         //switches
         let switchUI = UISwitch.appearance()
         switchUI.theme_onTintColor = GlobalPicker.barTextColor
         switchUI.theme_backgroundColor = GlobalPicker.cellBackground
+        
+    }
+    
+    func getDarkModeStatus() -> Bool {
+        var darkMode = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    darkMode = options.darkMode
+                }
+            }
+        }
+        return darkMode
     }
     
 }
