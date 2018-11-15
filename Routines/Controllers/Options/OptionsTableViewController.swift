@@ -57,7 +57,7 @@ class OptionsTableViewController: UITableViewController {
     
     @IBOutlet weak var smartSnoozeSwitch: UISwitch!
     @IBAction func smartSnoozeSwitchToggled(_ sender: UISwitch) {
-        setSmartSnooze()
+        setAutoSnooze()
     }
     
     @IBOutlet weak var darkModeSwtich: UISwitch!
@@ -155,10 +155,10 @@ class OptionsTableViewController: UITableViewController {
             haptic.impactOccurred()
         }
         
-        //Smart Snooze
+        //Auto Snooze
         if indexPath.section == 3 {
             self.smartSnoozeSwitch.setOn(!smartSnoozeSwitch.isOn, animated: true)
-            setSmartSnooze()
+            setAutoSnooze()
             haptic.impactOccurred()
         }
         
@@ -228,7 +228,7 @@ class OptionsTableViewController: UITableViewController {
                 
                 self.badgeSwitch.setOn(self.getBadgeOption(), animated: false)
                 
-                self.smartSnoozeSwitch.setOn(self.smartSnoozeStatus(), animated: false)
+                self.smartSnoozeSwitch.setOn(self.autoSnoozeStatus(), animated: false)
                 
                 self.darkModeSwtich.setOn(self.getDarkModeStatus(), animated: false)
                 
@@ -242,7 +242,7 @@ class OptionsTableViewController: UITableViewController {
     
     
     //MARK: smartSnooze
-    func smartSnoozeStatus() -> Bool {
+    func autoSnoozeStatus() -> Bool {
         var status = false
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -256,30 +256,31 @@ class OptionsTableViewController: UITableViewController {
         return status
     }
     
-    func getSmartSnoozeSwitch() -> Bool {
-        var isOn = false
-        DispatchQueue.main.sync {
-            autoreleasepool {
-                isOn = smartSnoozeSwitch.isOn
-            }
-        }
-        return isOn
+    func getAutoSnoozeSwitch() -> Bool {
+        return smartSnoozeSwitch.isOn
     }
     
-    func setSmartSnooze() {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+    func setAutoSnooze() {
+        let autoSnoozeSwitch = getAutoSnoozeSwitch()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
                 do {
                     try realm.write {
-                        options?.smartSnooze = self.getSmartSnoozeSwitch()
+                        options?.smartSnooze = autoSnoozeSwitch
                     }
                 } catch {
                     print("failed to update smartSnooze")
                 }
             }
         }
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 0), segment: 0)
+        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 1), segment: 1)
+        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 2), segment: 2)
+        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 3), segment: 3)
     }
     
     //END: smartSnooze

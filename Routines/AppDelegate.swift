@@ -275,8 +275,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func completeItem(uuidString: String) {
-        //Remove added digit to get actual uuidString key
-        let id = String(uuidString.dropLast())
+        //Remove added digit if necessary to get actual uuidString key
+        var id : String {
+            if uuidString.count > 12 {
+                return String(uuidString.dropLast())
+            } else {
+                return uuidString
+            }
+        }
         print("running completeItem")
         DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
@@ -302,7 +308,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func snoozeItem(uuidString: String) {
-        let id = String(uuidString.dropLast())
+        //Remove added digit if necessary to get actual uuidString key
+        var id : String {
+            if uuidString.count > 12 {
+                return String(uuidString.dropLast())
+            } else {
+                return uuidString
+            }
+        }
         print("running snoozeItem")
         var title : String?
         var notes : String?
