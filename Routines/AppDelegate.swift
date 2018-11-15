@@ -871,7 +871,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let switchUI = UISwitch.appearance()
         switchUI.theme_onTintColor = GlobalPicker.barTextColor
         switchUI.theme_backgroundColor = GlobalPicker.cellBackground
-        
     }
     
     func getDarkModeStatus() -> Bool {

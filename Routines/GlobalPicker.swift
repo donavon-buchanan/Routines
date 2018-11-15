@@ -18,8 +18,12 @@ enum GlobalPicker {
     
     static let barStyle = ThemeBarStylePicker.pickerWithStyles([.default, .default, .default, .black, .black, .black, .black, .black, .black])
     
+    static let keyboardStyle = ThemeKeyboardAppearancePicker.pickerWithStyles([.default, .default, .default, .dark, .dark, .dark, .dark, .dark, .dark])
+    
     static let cellTextColors: ThemeColorPicker = ["#000", "#000", "#000", "#fff", "#FFF", "#FFF", "#FFF", "#FFF", "#FFF"]
     static let cellBackground: ThemeColorPicker = ["#fff", "#F5F5F5", "#FFFAF6", "#2D3541", "#000", "#000", "#000", "#000", "#000"]
+    
+    static let textInputBackground: ThemeColorPicker = ["#fff", "#fff", "#fff", "#393e46", "#393e46", "#393e46", "#393e46", "#393e46", "#393e46"]
     
     static let gear = ThemeImagePicker(arrayLiteral: "gear", "gear", "gear", "gear", "gear-white", "gear-white", "gear-white", "gear-white", "gear-white")
     static let morning = ThemeImagePicker(arrayLiteral: "morning", "morning", "morning", "morning", "morning-white", "morning-white", "morning-white", "morning-white", "morning-white")

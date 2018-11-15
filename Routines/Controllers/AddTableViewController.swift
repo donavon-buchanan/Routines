@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 import UserNotifications
 import UserNotificationsUI
+//import Hue
 
 class AddTableViewController: UITableViewController, UITextViewDelegate, UITextFieldDelegate {
     
@@ -64,8 +65,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         
         notesTextView.layer.cornerRadius = 6
         notesTextView.layer.masksToBounds = true
-        notesTextView.layer.borderWidth = 0.25
-        notesTextView.layer.borderColor = UIColor.lightGray.cgColor
+        notesTextView.layer.borderWidth = 0.1
+        notesTextView.layer.borderColor = UIColor.darkGray.cgColor
         
         if taskTextField.hasText == false {
             //taskTextField.backgroundColor = UIColor.groupTableViewBackground
@@ -82,6 +83,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         //add a tap recognizer to stop editing when tapping outside the textView
         let viewTap = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         self.view.addGestureRecognizer(viewTap)
+        
+        self.taskTextField.theme_keyboardAppearance = GlobalPicker.keyboardStyle
+        self.taskTextField.theme_textColor = GlobalPicker.cellTextColors
+        self.taskTextField.theme_backgroundColor = GlobalPicker.textInputBackground
+        
+        self.notesTextView.theme_keyboardAppearance = GlobalPicker.keyboardStyle
+        self.notesTextView.theme_textColor = GlobalPicker.cellTextColors
+        self.notesTextView.theme_backgroundColor = GlobalPicker.textInputBackground
     }
     
     override func viewWillAppear(_ animated: Bool) {
