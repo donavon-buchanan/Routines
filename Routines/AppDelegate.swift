@@ -747,16 +747,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             print("updating app badge number")
             DispatchQueue(label: realmDispatchQueueLabel).async {
                 autoreleasepool {
-                    var badgeCount = 0
                     let realm = try! Realm()
-                    let items = realm.objects(Items.self)
-                    items.forEach({ (item) in
-                        if let itemDate = item.dateModified {
-                            if itemDate < Date() {
-                                badgeCount += 1
-                            }
-                        }
-                    })
+                    let badgeCount = realm.objects(Items.self).filter("dateModified < %@",Date()).count
                     DispatchQueue.main.async {
                         autoreleasepool {
                             UIApplication.shared.applicationIconBadgeNumber = badgeCount

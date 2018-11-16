@@ -283,7 +283,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 if let tabs = self.tabBarController?.tabBar.items {
                     
                     for tab in 0..<tabs.count {
-                        let count = self.getSegmentCount(segment: tab)
+                        let count = self.getCountForTab(tab)
                         print("Count for tab \(tab) is \(count)")
                         if count > 0 {
                             tabs[tab].badgeValue = "\(count)"
@@ -296,9 +296,9 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         }
     }
     
-    func getSegmentCount(segment: Int) -> Int {
+    func getCountForTab(_ tab: Int) -> Int {
         let realm = try! Realm()
-        return realm.objects(Items.self).filter("segment = \(segment)").count
+        return realm.objects(Items.self).filter("segment = %@ AND dateModified < %@",tab ,Date()).count
     }
     
     //MARK: - Manage Notifications

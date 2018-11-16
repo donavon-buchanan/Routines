@@ -182,8 +182,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     func firstTriggerDate(segment: Int) -> Date {
         let tomorrow = Date().startOfNextDay
         var dateComponents = DateComponents()
+        var segmentTime = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: Date())
+        segmentTime.hour = getOptionHour(segment: segment)
+        segmentTime.minute = getOptionMinute(segment: segment)
+        segmentTime.second = 0
         //TODO: This might cause problems
-        if segment <= getCurrentSegmentFromTime() {
+        if Date() > segmentTime.date! {
             print("Setting item date for tomorrow")
             dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: tomorrow)
         } else {
@@ -239,7 +243,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
                 self.item!.title = self.taskTextField.text
                 //For Smart Snooze
                 self.item!.segment = self.segmentSelection.selectedSegmentIndex
-                self.item!.dateModified = firstTriggerDate(segment: self.segmentSelection.selectedSegmentIndex)
+                //self.item!.dateModified = firstTriggerDate(segment: self.segmentSelection.selectedSegmentIndex)
                 self.item!.notes = self.notesTextView.text
             }
         } catch {
