@@ -244,6 +244,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                     try! realm.write {
                         if let item = self.items?[indexPath.row] {
                             self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3", item.uuidString])
+                            print("removing item with key: \(item.uuidString)")
                             realm.delete(item)
                         }
                     }

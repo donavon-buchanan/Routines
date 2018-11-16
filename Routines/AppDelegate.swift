@@ -277,7 +277,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func completeItem(uuidString: String) {
         //Remove added digit if necessary to get actual uuidString key
         var id : String {
-            if uuidString.count > 12 {
+            if uuidString.count > 36 {
                 return String(uuidString.dropLast())
             } else {
                 return uuidString
@@ -310,7 +310,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func snoozeItem(uuidString: String) {
         //Remove added digit if necessary to get actual uuidString key
         var id : String {
-            if uuidString.count > 12 {
+            if uuidString.count > 36 {
                 return String(uuidString.dropLast())
             } else {
                 return uuidString
@@ -406,17 +406,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         let snoozeAction = UNNotificationAction(identifier: "snooze", title: "Notify Me Later", options: UNNotificationActionOptions(rawValue: 0))
         
-        let morningSummaryFormat = "%u more morning tasks"
-        let morningPreviewPlaceholder = "%u morning tasks"
+        let morningSummaryFormat = "%u more Morning tasks"
+        let morningPreviewPlaceholder = "%u Morning tasks"
         
-        let afternoonSummaryFormat = "%u more afternoon tasks"
-        let afternoonPreviewPlaceholder = "%u afternoon tasks"
+        let afternoonSummaryFormat = "%u more Afternoon tasks"
+        let afternoonPreviewPlaceholder = "%u Afternoon tasks"
         
-        let eveningSummaryFormat = "%u more evening tasks"
-        let eveningPreviewPlaceholder = "%u evening tasks"
+        let eveningSummaryFormat = "%u more Evening tasks"
+        let eveningPreviewPlaceholder = "%u Evening tasks"
         
-        let nightSummaryFormat = "%u more night tasks"
-        let nightPreviewPlaceholder = "%u night tasks"
+        let nightSummaryFormat = "%u more Night tasks"
+        let nightPreviewPlaceholder = "%u Night tasks"
         
         var morningCategory : UNNotificationCategory
         if #available(iOS 12.0, *) {
