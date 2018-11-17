@@ -852,8 +852,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         self.window?.theme_backgroundColor = GlobalPicker.backgroundColor
-        //navigationBar.shadowImage = UIImage()
-        //navigationBar.isTranslucent = false
         navigationBar.theme_barStyle = GlobalPicker.barStyle
         navigationBar.theme_tintColor = GlobalPicker.barTextColor
         //navigationBar.theme_barTintColor = GlobalPicker.barTintColor
@@ -865,7 +863,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         tabBar.theme_tintColor = GlobalPicker.barTextColor
         tabBar.theme_barStyle = GlobalPicker.barStyle
-        //tabBar.theme_barTintColor = GlobalPicker.barTintColor
+        tabBar.theme_barTintColor = GlobalPicker.barTintColor
         
         //Cells
         let cell = UITableViewCell.appearance()

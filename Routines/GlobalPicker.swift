@@ -10,10 +10,10 @@ import SwiftTheme
 
 enum GlobalPicker {
     static let backgroundColor: ThemeColorPicker = ["#FFFDF7", "#fff", "#FFF7F1", "#222831", "#000", "#000", "#000", "#000", "#000"]
-    static let barTintColor: ThemeColorPicker = ["#FFFDF7", "#fff", "#FFF7F1", "#222831", "#000", "#000", "#000", "#000", "#000"]
+    static let barTintColor: ThemeColorPicker = ["#FFFDF7", "#fff", "#FFF7F1", "#1C2026", "#000", "#000", "#000", "#000", "#000"]
     
-    static let textColor: ThemeColorPicker = ["#f47645", "#26baee", "#62a388", "#7971ea", "#f47645", "#26baee", "#62a388", "#5454c5", "#FFF"]
-    static let barTextColors : [String] = ["#f47645", "#26baee", "#62a388", "#7971ea", "#f47645", "#26baee", "#62a388", "#5454c5", "#FFF"]
+    static let textColor: ThemeColorPicker = ["#f47645", "#26baee", "#62a388", "#7971ea", "#f47645", "#26baee", "#62a388", "#7971ea", "#FFF"]
+    static let barTextColors : [String] = ["#f47645", "#26baee", "#62a388", "#7971ea", "#f47645", "#26baee", "#62a388", "#7971ea", "#FFF"]
     static let barTextColor = ThemeColorPicker.pickerWithColors(barTextColors)
     
     static let barStyle = ThemeBarStylePicker.pickerWithStyles([.default, .default, .default, .black, .black, .black, .black, .black, .black])
@@ -30,4 +30,5 @@ enum GlobalPicker {
     static let afternoon = ThemeImagePicker(arrayLiteral: "afternoon", "afternoon", "afternoon", "afternoon", "afternoon-white", "afternoon-white", "afternoon-white", "afternoon-white", "afternoon-white")
     static let evening = ThemeImagePicker(arrayLiteral: "evening", "evening", "evening", "evening", "evening-white", "evening-white", "evening-white", "evening-white", "evening-white")
     static let night = ThemeImagePicker(arrayLiteral: "night", "night", "night", "night", "night-white", "night-white", "night-white", "night-white", "night-white")
+    //static let shadowImages = ThemeImagePicker(images: UIImage(), UIImage(), UIImage(), UIImage())
 }
