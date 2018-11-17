@@ -284,7 +284,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
         print("running completeItem")
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 print("Completing item with key: \(id)")
@@ -304,6 +304,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         //Add suffix back to uuidString
         self.removeNotification(uuidString: ["\(id)0", "\(id)1", "\(id)2", "\(id)3", id])
+        
+        //Decrement badge if there is one
+        let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber
+        if currentBadgeCount > 0 {
+            UIApplication.shared.applicationIconBadgeNumber -= 1
+        }
+        
+        OptionsTableViewController().refreshNotifications()
         self.updateAppBadgeCount()
     }
     
@@ -365,6 +373,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 scheduleNewNotification(title: newTitle, notes: notes, segment: itemSegment, uuidString: itemuuidString, firstDate: dateModified!)
             }
         }
+        //Decrement badge if there is one
+        let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber
+        if currentBadgeCount > 0 {
+            UIApplication.shared.applicationIconBadgeNumber -= 1
+        }
+        OptionsTableViewController().refreshNotifications()
         self.updateAppBadgeCount()
     }
     
@@ -669,6 +683,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         content.sound = UNNotificationSound.default
         content.threadIdentifier = String(segment)
         
+        content.badge = NSNumber(integerLiteral: setBadgeNumber(segment: segment))
+        
         if let notesText = notes {
             content.body = notesText
         }
@@ -743,23 +759,42 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func updateAppBadgeCount() {
-        if getBadgeOption() {
-            print("updating app badge number")
-            DispatchQueue(label: realmDispatchQueueLabel).async {
-                autoreleasepool {
-                    let realm = try! Realm()
-                    let badgeCount = realm.objects(Items.self).filter("dateModified < %@",Date()).count
-                    DispatchQueue.main.async {
-                        autoreleasepool {
-                            UIApplication.shared.applicationIconBadgeNumber = badgeCount
-                        }
-                    }
+        
+    }
+    
+    open func setBadgeNumber(segment: Int) -> Int {
+        var badgeCount = Int()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                //Get all the items in or under the current segment.
+                let items = realm.objects(Items.self).filter("segment <= %@", segment)
+                //Get what should the the furthest future trigger date
+                if let lastFutureDate = items.last?.dateModified {
+                    badgeCount = items.filter("dateModified <= %@", lastFutureDate).count
                 }
             }
-        } else {
-            UIApplication.shared.applicationIconBadgeNumber = 0
         }
+        return badgeCount
     }
+//    func updateAppBadgeCount() {
+//        if getBadgeOption() {
+//            print("updating app badge number")
+//            DispatchQueue(label: realmDispatchQueueLabel).async {
+//                autoreleasepool {
+//                    let realm = try! Realm()
+//                    let badgeCount = realm.objects(Items.self).filter("dateModified < %@",Date()).count
+//                    DispatchQueue.main.async {
+//                        autoreleasepool {
+//                            UIApplication.shared.applicationIconBadgeNumber = badgeCount
+//                        }
+//                    }
+//                }
+//            }
+//        } else {
+//            UIApplication.shared.applicationIconBadgeNumber = 0
+//        }
+//    }
     
     func getAutoSnoozeStatus() -> Bool {
         var snooze = false

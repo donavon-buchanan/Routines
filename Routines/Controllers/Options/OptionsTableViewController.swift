@@ -269,6 +269,13 @@ class OptionsTableViewController: UITableViewController {
         return smartSnoozeSwitch.isOn
     }
     
+    open func refreshNotifications() {
+        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 0), segment: 0)
+        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 1), segment: 1)
+        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 2), segment: 2)
+        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 3), segment: 3)
+    }
+    
     func setAutoSnooze() {
         let autoSnoozeSwitch = getAutoSnoozeSwitch()
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -286,15 +293,12 @@ class OptionsTableViewController: UITableViewController {
         }
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests()
-        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 0), segment: 0)
-        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 1), segment: 1)
-        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 2), segment: 2)
-        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 3), segment: 3)
+        refreshNotifications()
     }
     
     //END: smartSnooze
     
-    func getSegmentNotificationOption(segment: Int) -> Bool {
+    open func getSegmentNotificationOption(segment: Int) -> Bool {
         var isOn = true
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -520,6 +524,8 @@ class OptionsTableViewController: UITableViewController {
         content.sound = UNNotificationSound.default
         content.threadIdentifier = String(segment)
         
+        content.badge = NSNumber(integerLiteral: AppDelegate().setBadgeNumber(segment: segment))
+        
         if let notesText = notes {
             content.body = notesText
         }
@@ -601,7 +607,7 @@ class OptionsTableViewController: UITableViewController {
         }
     }
     
-    func addOrRemoveNotifications(isOn: Bool, segment: Int) {
+    open func addOrRemoveNotifications(isOn: Bool, segment: Int) {
         if isOn {
             enableNotificationsForSegment(segment: segment)
         } else {
