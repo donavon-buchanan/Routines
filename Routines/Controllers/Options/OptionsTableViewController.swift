@@ -15,6 +15,8 @@ import SwiftTheme
 class OptionsTableViewController: UITableViewController {
     
     @IBOutlet var cellLabels: [UILabel]!
+    @IBOutlet var switches: [UISwitch]!
+    
     
     @IBOutlet weak var morningSwitch: UISwitch!
     @IBOutlet weak var afternoonSwitch: UISwitch!
@@ -68,9 +70,16 @@ class OptionsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Colors
         cellLabels.forEach { (label) in
             label.theme_textColor = GlobalPicker.cellTextColors
         }
+        switches.forEach { (UISwitch) in
+            //band-aid for graphical glitch when toggling dark mode
+            UISwitch.layer.cornerRadius = 15
+            UISwitch.layer.masksToBounds = true
+        }
+        
         self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
     }
     

@@ -875,6 +875,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //switches
         let switchUI = UISwitch.appearance()
         switchUI.theme_onTintColor = GlobalPicker.barTextColor
+        switchUI.theme_tintColor = GlobalPicker.barTextColor
         switchUI.theme_backgroundColor = GlobalPicker.cellBackground
     }
     
