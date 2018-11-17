@@ -11,6 +11,7 @@ import SwiftTheme
 enum GlobalPicker {
     static let backgroundColor: ThemeColorPicker = ["#FFFDF7", "#fff", "#FFF7F1", "#222831", "#000", "#000", "#000", "#000", "#000"]
     static let barTintColor: ThemeColorPicker = ["#FFFDF7", "#fff", "#FFF7F1", "#1C2026", "#000", "#000", "#000", "#000", "#000"]
+    static let tabBarTintColor: ThemeColorPicker = ["#F8F8F7", "#fff", "#F7F7F4", "#1C2026", "#131415", "#131415", "#131415", "#131415", "#131415"]
     
     static let textColor: ThemeColorPicker = ["#f47645", "#26baee", "#62a388", "#7971ea", "#f47645", "#26baee", "#62a388", "#7971ea", "#FFF"]
     static let barTextColors : [String] = ["#f47645", "#26baee", "#62a388", "#7971ea", "#f47645", "#26baee", "#62a388", "#7971ea", "#FFF"]

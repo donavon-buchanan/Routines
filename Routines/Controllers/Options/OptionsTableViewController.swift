@@ -50,11 +50,6 @@ class OptionsTableViewController: UITableViewController {
         }
     }
     
-    @IBOutlet weak var badgeSwitch: UISwitch!
-    @IBAction func badgeSwitchToggled(_ sender: UISwitch) {
-        saveBadgeOption(isOn: sender.isOn)
-    }
-    
     
     
     @IBOutlet weak var smartSnoozeSwitch: UISwitch!
@@ -92,31 +87,6 @@ class OptionsTableViewController: UITableViewController {
         super.viewDidAppear(animated)
 
     }
-    
-    //TODO: Make this dependant on if pro has been purchased when those options are ready
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        return 5
-//    }
-    
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        var numberOfRows: Int
-//        switch section {
-//        case 0:
-//            numberOfRows = 1
-//        case 1:
-//            numberOfRows = 4
-//        case 2:
-//            numberOfRows = 1
-//        case 3:
-//            numberOfRows = 1
-//        case 4:
-//            numberOfRows = 1
-//        default:
-//            numberOfRows = 0
-//        }
-//
-//        return numberOfRows
-//    }
     
     //Make the full width of the cell toggle the switch along with typical haptic
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -157,21 +127,14 @@ class OptionsTableViewController: UITableViewController {
                 haptic.impactOccurred()
             }
         }
-        //Badge
-        if indexPath.section == 2 {
-            badgeSwitch.setOn(!badgeSwitch.isOn, animated: true)
-            saveBadgeOption(isOn: badgeSwitch.isOn)
-            haptic.impactOccurred()
-        }
-        
         //Auto Snooze
-        if indexPath.section == 3 {
+        if indexPath.section == 2 {
             self.smartSnoozeSwitch.setOn(!smartSnoozeSwitch.isOn, animated: true)
             setAutoSnooze()
             haptic.impactOccurred()
         }
         
-        if indexPath.section == 4 {
+        if indexPath.section == 3 {
             self.darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
             saveDarkModeOption(isOn: darkModeSwtich.isOn)
             haptic.impactOccurred()
@@ -234,8 +197,6 @@ class OptionsTableViewController: UITableViewController {
                 self.afternoonSwitch.setOn(self.getSegmentNotificationOption(segment: 1), animated: false)
                 self.eveningSwitch.setOn(self.getSegmentNotificationOption(segment: 2), animated: false)
                 self.nightSwitch.setOn(self.getSegmentNotificationOption(segment: 3), animated: false)
-                
-                self.badgeSwitch.setOn(self.getBadgeOption(), animated: false)
                 
                 self.smartSnoozeSwitch.setOn(self.autoSnoozeStatus(), animated: false)
                 
@@ -614,58 +575,6 @@ class OptionsTableViewController: UITableViewController {
             removeNotificationsForSegment(segment: segment)
         }
     }
-    
-    func getBadgeOption() -> Bool {
-        var badge = true
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
-                    badge = options.badge
-                }
-            }
-        }
-        return badge
-    }
-    
-    func saveBadgeOption(isOn: Bool) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
-                    do {
-                        try realm.write {
-                            options.badge = isOn
-                        }
-                    } catch {
-                        print("Error saving badge option")
-                    }
-                }
-            }
-        }
-    }
-
-//    func addRemoveNotificationsOnToggle(segment: Int, isOn: Bool) {
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let items = realm.objects(Items.self).filter("segment = \(segment)")
-//                if isOn {
-//                    print("Turning notifications on for segment \(segment)")
-//                    for item in 0..<items.count {
-//                        self.scheduleNewNotification(title: items[item].title!, notes: items[item].notes, segment: segment, uuidString: items[item].uuidString)
-//                    }
-//                } else {
-//                    print("Turning notifications off for segment \(segment)")
-//                    var uuidStrings: [String]?
-//                    for item in 0..<items.count {
-//                        uuidStrings?.append(items[item].uuidString)
-//                    }
-//                    self.removeNotification(uuidString: uuidStrings)
-//                }
-//            }
-//        }
-//    }
     
     //MARK: - Conversion functions
     let defaultTimeStrings = ["07:00", "12:00", "17:00", "21:00"]

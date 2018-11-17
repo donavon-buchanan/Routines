@@ -898,7 +898,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         tabBar.theme_tintColor = GlobalPicker.barTextColor
         tabBar.theme_barStyle = GlobalPicker.barStyle
-        tabBar.theme_barTintColor = GlobalPicker.barTintColor
+        tabBar.theme_barTintColor = GlobalPicker.tabBarTintColor
         
         //Cells
         let cell = UITableViewCell.appearance()
