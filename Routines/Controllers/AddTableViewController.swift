@@ -45,7 +45,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             self.navigationItem.largeTitleDisplayMode = .never
         }
         
-        self.tabBarController?.tabBar.isHidden = true
+        //self.tabBarController?.tabBar.isHidden = true
         //If item is loaded, fill in values for editing
         if item != nil {
             print("item was non-nil")
@@ -168,7 +168,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     @objc func saveButtonPressed() {
         addNewItem(title: self.taskTextField.text!, date: Date(), segment: self.segmentSelection.selectedSegmentIndex, notes: self.notesTextView.text)
         //print("Adding item with uuidString: \(self.uuidString)")
-        self.tabBarController?.tabBar.isHidden = false
+        //self.tabBarController?.tabBar.isHidden = false
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
  

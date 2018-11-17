@@ -70,7 +70,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         changeSegment(segment: passedSegment)
         //slideInView(from: getSelectedTab(), to: self.segment)
         print("View Will Appear")
-        self.tabBarController?.tabBar.isHidden = false
+        //self.tabBarController?.tabBar.isHidden = false
         updateBadge()
         removeDeliveredNotifications()
         setNavTitle()
