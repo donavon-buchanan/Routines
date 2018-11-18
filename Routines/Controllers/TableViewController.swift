@@ -295,7 +295,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 }
             }
         }
-        AppDelegate().updateAppBadgeCount()
+        //AppDelegate().updateAppBadgeCount()
     }
     
     func getCountForTab(_ tab: Int) -> Int {

@@ -792,7 +792,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     open func updateAppBadgeCount() {
         if getBadgeOption() {
             print("updating app badge number")
-            DispatchQueue(label: realmDispatchQueueLabel).async {
+            DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
                     let badgeCount = realm.objects(Items.self).filter("dateModified < %@",Date()).count
