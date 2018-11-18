@@ -170,7 +170,7 @@
                                 </cells>
                             </tableViewSection>
                             <tableViewSection id="Cdy-rr-nKo" userLabel="Disable Auto Snooze">
-                                <string key="footerTitle">Enabling this switch will prevent Auto Snooze from automatically moving this task. Auto Snooze will continue to send reminders for this item.</string>
+                                <string key="footerTitle">Enabling this switch will prevent Auto Snooze from automatically moving this task. Auto Snooze will continue to send reminders for this task.</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="vcq-aH-HrX">
                                         <rect key="frame" x="0.0" y="443.33333333333337" width="375" height="54"/>
