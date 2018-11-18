@@ -683,7 +683,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         content.sound = UNNotificationSound.default
         content.threadIdentifier = String(segment)
         
-        content.badge = NSNumber(integerLiteral: setBadgeNumber(segment: segment))
+        content.badge = NSNumber(integerLiteral: setBadgeNumber())
         
         if let notesText = notes {
             content.body = notesText
@@ -758,43 +758,55 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return badge
     }
     
-    func updateAppBadgeCount() {
-        
-    }
-    
-    open func setBadgeNumber(segment: Int) -> Int {
+    open func setBadgeNumber() -> Int {
         var badgeCount = Int()
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 //Get all the items in or under the current segment.
-                let items = realm.objects(Items.self).filter("segment <= %@", segment)
+                let items = realm.objects(Items.self)//.filter("segment <= %@", segment)
                 //Get what should the the furthest future trigger date
                 if let lastFutureDate = items.last?.dateModified {
                     badgeCount = items.filter("dateModified <= %@", lastFutureDate).count
                 }
             }
         }
+        print("setBadgeNumber found \(badgeCount) items")
         return badgeCount
     }
-//    func updateAppBadgeCount() {
-//        if getBadgeOption() {
-//            print("updating app badge number")
-//            DispatchQueue(label: realmDispatchQueueLabel).async {
-//                autoreleasepool {
-//                    let realm = try! Realm()
-//                    let badgeCount = realm.objects(Items.self).filter("dateModified < %@",Date()).count
-//                    DispatchQueue.main.async {
-//                        autoreleasepool {
-//                            UIApplication.shared.applicationIconBadgeNumber = badgeCount
-//                        }
-//                    }
-//                }
-//            }
-//        } else {
-//            UIApplication.shared.applicationIconBadgeNumber = 0
+    
+//    //Doesn't work. Create notification seems to just time out
+//    open func setBadgeNumber() -> Int {
+//        var badge = 0
+//        let semaphore = DispatchSemaphore(value: 0)
+//        let center = UNUserNotificationCenter.current()
+//        center.getPendingNotificationRequests { (requests) in
+//            badge = requests.count
+//            semaphore.signal()
 //        }
+//        semaphore.wait()
+//        print("Setting notification badge to: \(badge)")
+//        return badge
 //    }
+    
+    func updateAppBadgeCount() {
+        if getBadgeOption() {
+            print("updating app badge number")
+            DispatchQueue(label: realmDispatchQueueLabel).async {
+                autoreleasepool {
+                    let realm = try! Realm()
+                    let badgeCount = realm.objects(Items.self).filter("dateModified < %@",Date()).count
+                    DispatchQueue.main.async {
+                        autoreleasepool {
+                            UIApplication.shared.applicationIconBadgeNumber = badgeCount
+                        }
+                    }
+                }
+            }
+        } else {
+            UIApplication.shared.applicationIconBadgeNumber = 0
+        }
+    }
     
     func getAutoSnoozeStatus() -> Bool {
         var snooze = false

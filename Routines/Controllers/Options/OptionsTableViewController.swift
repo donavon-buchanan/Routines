@@ -231,6 +231,8 @@ class OptionsTableViewController: UITableViewController {
     }
     
     open func refreshNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
         addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 0), segment: 0)
         addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 1), segment: 1)
         addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 2), segment: 2)
@@ -252,8 +254,7 @@ class OptionsTableViewController: UITableViewController {
                 }
             }
         }
-        let center = UNUserNotificationCenter.current()
-        center.removeAllPendingNotificationRequests()
+        
         refreshNotifications()
     }
     
@@ -485,7 +486,7 @@ class OptionsTableViewController: UITableViewController {
         content.sound = UNNotificationSound.default
         content.threadIdentifier = String(segment)
         
-        content.badge = NSNumber(integerLiteral: AppDelegate().setBadgeNumber(segment: segment))
+        content.badge = NSNumber(integerLiteral: AppDelegate().setBadgeNumber())
         
         if let notesText = notes {
             content.body = notesText

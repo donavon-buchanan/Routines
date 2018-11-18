@@ -410,7 +410,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         content.sound = UNNotificationSound.default
         content.threadIdentifier = String(segment)
         
-        content.badge = NSNumber(integerLiteral: AppDelegate().setBadgeNumber(segment: segment))
+        content.badge = NSNumber(integerLiteral: AppDelegate().setBadgeNumber())
         
         if let notesText = notes {
             content.body = notesText

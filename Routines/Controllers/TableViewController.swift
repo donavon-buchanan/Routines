@@ -67,9 +67,10 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("View Will Appear")
         changeSegment(segment: passedSegment)
         //slideInView(from: getSelectedTab(), to: self.segment)
-        print("View Will Appear")
+        runAutoSnooze()
         //self.tabBarController?.tabBar.isHidden = false
         updateBadge()
         removeDeliveredNotifications()
@@ -251,7 +252,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 }
             }
         }
-        
+        OptionsTableViewController().refreshNotifications()
         self.updateBadge()
     }
     
@@ -312,15 +313,15 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     }
     
     func removeDeliveredNotifications() {
-//        let center = UNUserNotificationCenter.current()
-//        center.getDeliveredNotifications { (notifications) in
-//            for notification in notifications {
-//                //TODO: If repeats, remove and then add again
-//                //Get the ID and then get the properties of the specific object
-//                //Need to get all the same notification functions used in other views to be able to create
-//                center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
-//            }
-//        }
+        let center = UNUserNotificationCenter.current()
+        center.getDeliveredNotifications { (notifications) in
+            for notification in notifications {
+                //TODO: If repeats, remove and then add again
+                //Get the ID and then get the properties of the specific object
+                //Need to get all the same notification functions used in other views to be able to create
+                center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
+            }
+        }
     }
     
     //Notification Settings Screen
