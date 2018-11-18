@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var window: UIWindow?
     
     let center = UNUserNotificationCenter.current()
+    var shortcutItemToProcess : UIApplicationShortcutItem?
     
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
@@ -39,6 +40,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //checkToCreateOptions()
         loadOptions()
         setUpTheme()
+        
+        // If launchOptions contains the appropriate launch options key, a Home screen quick action
+        // is responsible for launching the app. Store the action for processing once the app has
+        // completed initialization.
+        if let shortcutItem = launchOptions?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
+            shortcutItemToProcess = shortcutItem
+        }
 
         return true
     }
@@ -62,6 +70,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         //restoreSelectedTab(tab: nil)
+        
+        if let shortcutItem = shortcutItemToProcess {
+            if shortcutItem.type == "AddAction" {
+                goToAdd()
+            }
+            if shortcutItem.type == "SettingsAction" {
+                goToSettings()
+            }
+        }
+        
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -727,7 +745,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     //Notification Settings Screen
-    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
+    fileprivate func goToSettings() {
         print("Opening settings")
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsView") as! OptionsTableViewController
@@ -739,7 +757,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let navVC = rootVC.children[index] as! NavigationViewController
         navVC.pushViewController(optionsViewController, animated: false)
         //TODO: Change func so that it can default to monochrome option here
-        TableViewController().setAppearance(segment: index)
+        Themes.switchTo(theme: .monochromeDark)
+    }
+    
+    fileprivate func goToAdd() {
+        print("Opening Add view")
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let addViewController = storyBoard.instantiateViewController(withIdentifier: "addView") as! AddTableViewController
+        let rootVC = self.window?.rootViewController as! TabBarViewController
+        //Set the selected index so you know what child will be on screen
+        let index = getSelectedTab()
+        rootVC.selectedIndex = index
+        //This is kind of a cheat, but it works
+        let navVC = rootVC.children[index] as! NavigationViewController
+        navVC.pushViewController(addViewController, animated: false)
+        //TODO: Change func so that it can default to monochrome option here
+        TableViewController().setAppearance(segment: 0)
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
+        goToSettings()
+    }
+    
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        // Alternatively, a shortcut item may be passed in through this delegate method if the app was
+        // still in memory when the Home screen quick action was used. Again, store it for processing.
+        shortcutItemToProcess = shortcutItem
     }
     
     func getBadgeOption() -> Bool {
@@ -938,8 +981,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         //switches
         let switchUI = UISwitch.appearance()
-        switchUI.theme_onTintColor = GlobalPicker.barTextColor
-        switchUI.theme_tintColor = GlobalPicker.barTextColor
+        switchUI.theme_onTintColor = GlobalPicker.switchTintColor
+        switchUI.theme_tintColor = GlobalPicker.switchTintColor
         switchUI.theme_backgroundColor = GlobalPicker.cellBackground
     }
     

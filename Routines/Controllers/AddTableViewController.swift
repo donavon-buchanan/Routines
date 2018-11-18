@@ -46,6 +46,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Set right bar item as "Save"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveButtonPressed))
+        //Disable button until all values are filled
+        self.navigationItem.rightBarButtonItem?.isEnabled = false
+        
         self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         cells.forEach { (cell) in
             cell.theme_backgroundColor = GlobalPicker.backgroundColor

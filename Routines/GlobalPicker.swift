@@ -17,6 +17,8 @@ enum GlobalPicker {
     static let barTextColors : [String] = ["#f47645", "#26baee", "#62a388", "#7971ea", "#f47645", "#26baee", "#62a388", "#7971ea", "#FFF"]
     static let barTextColor = ThemeColorPicker.pickerWithColors(barTextColors)
     
+    static let switchTintColor = ThemeColorPicker.pickerWithColors(["#f47645", "#26baee", "#62a388", "#7971ea", "#f47645", "#26baee", "#62a388", "#7971ea", "#BBB"])
+    
     static let barStyle = ThemeBarStylePicker.pickerWithStyles([.default, .default, .default, .black, .black, .black, .black, .black, .black])
     
     static let keyboardStyle = ThemeKeyboardAppearancePicker.pickerWithStyles([.default, .default, .default, .dark, .dark, .dark, .dark, .dark, .dark])

@@ -199,18 +199,10 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
             //set segment based on current tab
             guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
             destination.editingSegment = selectedTab
-            //Set right bar item as "Save"
-            destination.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: destination, action: #selector(destination.saveButtonPressed))
-            //Disable button until all values are filled
-            destination.navigationItem.rightBarButtonItem?.isEnabled = false
         }
 
         if segue.identifier == "editSegue" {
             let destination = segue.destination as! AddTableViewController
-            //Set right bar item as "Save"
-            destination.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: destination, action: #selector(destination.saveButtonPressed))
-            //Disable button until a value is changed
-            destination.navigationItem.rightBarButtonItem?.isEnabled = false
             //pass in current item
             if let indexPath = tableView.indexPathForSelectedRow {
                 destination.item = items?[indexPath.row]
