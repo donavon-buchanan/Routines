@@ -51,6 +51,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             cell.theme_backgroundColor = GlobalPicker.backgroundColor
         }
         disableAutoSnoozeLabel.theme_textColor = GlobalPicker.cellTextColors
+        disableAutoSnoozeSwitch.layer.cornerRadius = 15
+        disableAutoSnoozeSwitch.layer.masksToBounds = true
         
         if #available(iOS 11.0, *) {
             self.navigationItem.largeTitleDisplayMode = .never
