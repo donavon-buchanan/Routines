@@ -18,6 +18,7 @@ import RealmSwift
     dynamic var segment: Int = 0
     dynamic var snoozeUntil: Date?
     dynamic var repeats: Bool = false
+    dynamic var disableAutoSnooze: Bool = false
     dynamic var notes: String?
     
     //Notification identifier

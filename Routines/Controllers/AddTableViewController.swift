@@ -19,6 +19,16 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     @IBOutlet weak var segmentSelection: UISegmentedControl!
     @IBOutlet weak var notesTextView: UITextView!
     
+    
+    @IBOutlet weak var disableAutoSnoozeSwitch: UISwitch!
+    @IBAction func disableAutoSnoozeToggled(_ sender: UISwitch) {
+        if self.item != nil {
+            navigationItem.rightBarButtonItem?.isEnabled = true
+            updateItem()
+        }
+    }
+    @IBOutlet weak var disableAutoSnoozeLabel: UILabel!
+    
     @IBOutlet var cells: [UITableViewCell]!
     
     @IBAction func segmentSelected(_ sender: UISegmentedControl) {
@@ -40,6 +50,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         cells.forEach { (cell) in
             cell.theme_backgroundColor = GlobalPicker.backgroundColor
         }
+        disableAutoSnoozeLabel.theme_textColor = GlobalPicker.cellTextColors
         
         if #available(iOS 11.0, *) {
             self.navigationItem.largeTitleDisplayMode = .never
@@ -53,6 +64,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             segmentSelection.selectedSegmentIndex = item?.segment ?? 0
             notesTextView.text = item?.notes
             //print("Item's uuidString is \((item?.uuidString)!)")
+            disableAutoSnoozeSwitch.setOn(item?.disableAutoSnooze ?? false, animated: false)
         }
         
         //load in segment from add segue
@@ -211,6 +223,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             newItem.segment = segment
             newItem.dateModified = firstTriggerDate(segment: segment)
             newItem.notes = notes
+            newItem.disableAutoSnooze = disableAutoSnoozeSwitch.isOn
             print("new item's uuidString: \(newItem.uuidString)")
             //save to realm
             saveItem(item: newItem)
@@ -241,10 +254,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         do {
             try realm.write {
                 self.item!.title = self.taskTextField.text
-                //For Smart Snooze
                 self.item!.segment = self.segmentSelection.selectedSegmentIndex
-                //self.item!.dateModified = firstTriggerDate(segment: self.segmentSelection.selectedSegmentIndex)
                 self.item!.notes = self.notesTextView.text
+                self.item!.disableAutoSnooze = disableAutoSnoozeSwitch.isOn
             }
         } catch {
             print("Error updating item: \(error)")

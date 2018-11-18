@@ -366,7 +366,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         } else {
             switch segment {
             case 0:
-                Themes.switchTo(theme: .morningDark)
+                Themes.switchTo(theme: .morningLight)
             case 1:
                 Themes.switchTo(theme: .afternoonLight)
             case 2:
@@ -425,7 +425,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let items = realm.objects(Items.self).filter("segment = \(fromSegment)")
+                let items = realm.objects(Items.self).filter("segment = \(fromSegment) AND disableAutoSnooze = %@", false)
                 items.forEach({ (item) in
                     if let itemDate = item.dateModified {
                         if itemDate < Date() {

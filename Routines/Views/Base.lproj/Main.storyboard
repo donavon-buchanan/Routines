@@ -169,6 +169,44 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="Cdy-rr-nKo" userLabel="Disable Auto Snooze">
+                                <string key="footerTitle">Enabling this switch will prevent Auto Snooze from automatically moving this task. Auto Snooze will continue to send reminders for this item.</string>
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="vcq-aH-HrX">
+                                        <rect key="frame" x="0.0" y="443.33333333333337" width="375" height="54"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vcq-aH-HrX" id="PGB-Py-pYO">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3PM-6m-oIX">
+                                                    <rect key="frame" x="16" y="11" width="343" height="32"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Disable Auto Snooze" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HU5-Hc-8tR">
+                                                            <rect key="frame" x="0.0" y="5.9999999999999982" width="294" height="20.333333333333329"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vDF-7W-QTO">
+                                                            <rect key="frame" x="294" y="0.6666666666666643" width="51" height="31"/>
+                                                            <connections>
+                                                                <action selector="disableAutoSnoozeToggled:" destination="A8c-r3-V1W" eventType="valueChanged" id="5AA-zi-1Ry"/>
+                                                            </connections>
+                                                        </switch>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="3PM-6m-oIX" secondAttribute="trailing" id="15b-bd-P96"/>
+                                                <constraint firstItem="3PM-6m-oIX" firstAttribute="top" secondItem="PGB-Py-pYO" secondAttribute="topMargin" id="6hJ-UP-y34"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="3PM-6m-oIX" secondAttribute="bottom" id="f7A-qQ-QTm"/>
+                                                <constraint firstItem="3PM-6m-oIX" firstAttribute="leading" secondItem="PGB-Py-pYO" secondAttribute="leadingMargin" id="q9r-83-m4M"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="A8c-r3-V1W" id="7au-6x-YMZ"/>
@@ -176,6 +214,8 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="disableAutoSnoozeLabel" destination="HU5-Hc-8tR" id="Re9-dG-MXi"/>
+                        <outlet property="disableAutoSnoozeSwitch" destination="vDF-7W-QTO" id="2qJ-PD-btc"/>
                         <outlet property="notesTextView" destination="5iE-Oy-Fuc" id="9Q2-Os-Y9c"/>
                         <outlet property="segmentSelection" destination="ee6-Ut-pWz" id="Oke-MH-Y6V"/>
                         <outlet property="taskTextField" destination="CU9-wA-X3j" id="baT-I0-9je"/>
