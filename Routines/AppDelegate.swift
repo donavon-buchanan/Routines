@@ -789,7 +789,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        return badge
 //    }
     
-    func updateAppBadgeCount() {
+    open func updateAppBadgeCount() {
         if getBadgeOption() {
             print("updating app badge number")
             DispatchQueue(label: realmDispatchQueueLabel).async {
