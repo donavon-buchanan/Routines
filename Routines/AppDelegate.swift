@@ -57,12 +57,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        //restoreSelectedTab()
+        //restoreSelectedTab(tab: nil)
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -71,9 +70,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         updateAppBadgeCount()
     }
     
-    func restoreSelectedTab(tab: Int) {
+    func restoreSelectedTab(tab: Int?) {
         let rootVC = self.window?.rootViewController as! TabBarViewController
-        rootVC.selectedIndex = tab
+        if let selectedTab = tab {
+            rootVC.selectedIndex = selectedTab
+        } else {
+            rootVC.selectedIndex = getSelectedTab()
+        }
     }
     
     func getSelectedTab() -> Int {
@@ -735,6 +738,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //This is kind of a cheat, but it works
         let navVC = rootVC.children[index] as! NavigationViewController
         navVC.pushViewController(optionsViewController, animated: false)
+        //TODO: Change func so that it can default to monochrome option here
+        TableViewController().setAppearance(segment: index)
     }
     
     func getBadgeOption() -> Bool {

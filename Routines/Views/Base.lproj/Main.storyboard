@@ -994,7 +994,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="15" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JZC-X6-h1b">
+                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JZC-X6-h1b">
                                                     <rect key="frame" x="60" y="0.0" width="255" height="100"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="559998000.64045894">
                                                         <!--2018-09-30 11:00:00 +0000-->
@@ -1028,7 +1028,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="15" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBb-mY-CLe">
+                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBb-mY-CLe">
                                                     <rect key="frame" x="60" y="0.0" width="255" height="100"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="560016000.52806199">
                                                         <!--2018-09-30 16:00:00 +0000-->

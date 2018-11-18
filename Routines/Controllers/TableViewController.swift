@@ -78,7 +78,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         super.viewDidAppear(animated)
         print("viewDidAppear \n")
         reloadTableView()
-        setAppearance()
+        setAppearance(segment: self.segment)
     }
     
     func setNavTitle() {
@@ -343,15 +343,17 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     var items: Results<Items>?
     var segment = Int()
     func loadItems(segment: Int) {
-        items = self.realm.objects(Items.self).filter("segment = \(segment)")
+        items = self.realm.objects(Items.self).filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true)
     }
     
 //    //MARK: - Themeing
     
-    public func setAppearance() {
+    open func setAppearance(segment: Int) {
         print("Setting theme")
         if getDarkModeStatus() {
-            switch self.segment {
+            switch segment {
+            case 0:
+                Themes.switchTo(theme: .morningDark)
             case 1:
                 Themes.switchTo(theme: .afternoonDark)
             case 2:
@@ -359,10 +361,12 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
             case 3:
                 Themes.switchTo(theme: .nightDark)
             default:
-                Themes.switchTo(theme: .morningDark)
+                Themes.switchTo(theme: .monochromeDark)
             }
         } else {
-            switch self.segment {
+            switch segment {
+            case 0:
+                Themes.switchTo(theme: .morningDark)
             case 1:
                 Themes.switchTo(theme: .afternoonLight)
             case 2:
@@ -370,7 +374,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
             case 3:
                 Themes.switchTo(theme: .nightLight)
             default:
-                Themes.switchTo(theme: .morningLight)
+                Themes.switchTo(theme: .monochromeDark)
             }
         }
     }
