@@ -59,8 +59,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     @objc func appBecameActive() {
         self.runAutoSnooze()
-        //setAppearance()
-        //loadItems(segment: self.segment)
+        removeDeliveredNotifications()
         updateBadge()
         tableView.reloadData()
     }
@@ -69,9 +68,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         super.viewWillAppear(animated)
         print("View Will Appear")
         changeSegment(segment: passedSegment)
-        //slideInView(from: getSelectedTab(), to: self.segment)
         runAutoSnooze()
-        //self.tabBarController?.tabBar.isHidden = false
         updateBadge()
         removeDeliveredNotifications()
         setNavTitle()

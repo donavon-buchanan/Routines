@@ -62,26 +62,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        restoreSelectedTab()
+        //restoreSelectedTab()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         //Themes.saveLastTheme()
+        updateAppBadgeCount()
     }
     
-    func restoreSelectedTab() {
+    func restoreSelectedTab(tab: Int) {
         let rootVC = self.window?.rootViewController as! TabBarViewController
-        var selectedIndex = 0
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
-                    selectedIndex = options.selectedIndex
-                }
-            }
-        }
-        rootVC.selectedIndex = selectedIndex
+        rootVC.selectedIndex = tab
     }
     
     func getSelectedTab() -> Int {
@@ -485,7 +477,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             case "snooze":
                 snoozeItem(uuidString: response.notification.request.identifier)
             default:
-                break
+                self.restoreSelectedTab(tab: self.getItemSegment(id: response.notification.request.identifier))
             }
             
         }
@@ -498,7 +490,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             case "snooze":
                 snoozeItem(uuidString: response.notification.request.identifier)
             default:
-                break
+                self.restoreSelectedTab(tab: self.getItemSegment(id: response.notification.request.identifier))
             }
         }
         
@@ -510,7 +502,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             case "snooze":
                 snoozeItem(uuidString: response.notification.request.identifier)
             default:
-                break
+                self.restoreSelectedTab(tab: self.getItemSegment(id: response.notification.request.identifier))
             }
         }
         
@@ -522,7 +514,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             case "snooze":
                 snoozeItem(uuidString: response.notification.request.identifier)
             default:
-                break
+                self.restoreSelectedTab(tab: self.getItemSegment(id: response.notification.request.identifier))
             }
         }
         
@@ -758,6 +750,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return badge
     }
     
+    
+    
     open func setBadgeNumber() -> Int {
         var badgeCount = Int()
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -871,6 +865,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             currentSegment = 0
         }
         return currentSegment
+    }
+    
+    func getItemSegment(id: String) -> Int {
+        var identifier : String {
+            if id.count > 36 {
+                return String(id.dropLast())
+            } else {
+                return id
+            }
+        }
+        var segment = Int()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let item = realm.object(ofType: Items.self, forPrimaryKey: identifier) {
+                    segment = item.segment
+                }
+            }
+        }
+        return segment
     }
     
     //MARK: - Themes
