@@ -78,6 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if shortcutItem.type == "SettingsAction" {
                 goToSettings()
             }
+            shortcutItemToProcess = nil
         }
         
     }
