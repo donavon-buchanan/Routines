@@ -776,6 +776,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //This is kind of a cheat, but it works
         let navVC = rootVC.children[index] as! NavigationViewController
         navVC.pushViewController(addViewController, animated: true)
+        addViewController.editingSegment = index
         TableViewController().setAppearance(segment: index)
     }
     
