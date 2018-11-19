@@ -700,7 +700,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let content = UNMutableNotificationContent()
         content.title = title
         content.sound = UNNotificationSound.default
-        content.threadIdentifier = String(segment)
+        content.threadIdentifier = String(getItemSegment(id: uuidString))
         
         content.badge = NSNumber(integerLiteral: setBadgeNumber())
         
