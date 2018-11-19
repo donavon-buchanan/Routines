@@ -365,7 +365,7 @@ class CustomTimesTableViewController: UITableViewController {
         let content = UNMutableNotificationContent()
         content.title = title
         content.sound = UNNotificationSound.default
-        content.threadIdentifier = String(segment)
+        content.threadIdentifier = String(AppDelegate().getItemSegment(id: uuidString))
         
         content.badge = NSNumber(integerLiteral: AppDelegate().setBadgeNumber())
         

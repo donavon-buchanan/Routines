@@ -920,7 +920,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return currentSegment
     }
     
-    func getItemSegment(id: String) -> Int {
+    open func getItemSegment(id: String) -> Int {
         var identifier : String {
             if id.count > 36 {
                 return String(id.dropLast())
