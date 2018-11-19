@@ -1,34 +1,30 @@
 PODS:
-  - Hue (3.0.1)
-  - Realm (3.11.1):
-    - Realm/Headers (= 3.11.1)
-  - Realm/Headers (3.11.1)
-  - RealmSwift (3.11.1):
-    - Realm (= 3.11.1)
+  - Realm (3.11.2):
+    - Realm/Headers (= 3.11.2)
+  - Realm/Headers (3.11.2)
+  - RealmSwift (3.11.2):
+    - Realm (= 3.11.2)
   - SwiftTheme (0.4.3)
   - SwipeCellKit (2.5.0)
 
 DEPENDENCIES:
-  - Hue
   - RealmSwift
   - SwiftTheme
   - SwipeCellKit
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - Hue
     - Realm
     - RealmSwift
     - SwiftTheme
     - SwipeCellKit
 
 SPEC CHECKSUMS:
-  Hue: 93e852fa6211ab35922ad8c293f51c43d6c79eb2
-  Realm: 037c5919b9ceb59d6beed5d3b031096856b119b3
-  RealmSwift: c9580133e73ef40ed340401af2dbc9a5790dfea7
+  Realm: 864477d028db77f7c5a0cba64a4892ad53db128a
+  RealmSwift: 12b8262fc08020b47de4fd88eb3d5c9425b34ec7
   SwiftTheme: 628345b948068a48d330d76dffb1a990ea5f90aa
   SwipeCellKit: d8f2617538ce3021cb0a11d1b93856a06a2f2e20
 
-PODFILE CHECKSUM: 36a02fab454c6609d8fb313452e84bf7bc80319a
+PODFILE CHECKSUM: 6c6eb2f2aa4feecab217f446c28405d5b94a7083
 
 COCOAPODS: 1.5.2

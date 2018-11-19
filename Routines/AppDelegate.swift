@@ -81,6 +81,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             shortcutItemToProcess = nil
         }
         
+        //If presentedVC is nil, that means that Settings or Add were not called, so load the proper tab
+        if self.window?.rootViewController?.presentedViewController == nil {
+            restoreSelectedTab(tab: nil)
+        }
+        
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -89,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         updateAppBadgeCount()
     }
     
-    func restoreSelectedTab(tab: Int?) {
+    open func restoreSelectedTab(tab: Int?) {
         let rootVC = self.window?.rootViewController as! TabBarViewController
         if let selectedTab = tab {
             rootVC.selectedIndex = selectedTab
@@ -756,9 +761,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         rootVC.selectedIndex = index
         //This is kind of a cheat, but it works
         let navVC = rootVC.children[index] as! NavigationViewController
-        navVC.pushViewController(optionsViewController, animated: false)
-        //TODO: Change func so that it can default to monochrome option here
-        Themes.switchTo(theme: .monochromeDark)
+        navVC.pushViewController(optionsViewController, animated: true)
+        TableViewController().setAppearance(segment: index)
     }
     
     fileprivate func goToAdd() {
@@ -771,9 +775,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         rootVC.selectedIndex = index
         //This is kind of a cheat, but it works
         let navVC = rootVC.children[index] as! NavigationViewController
-        navVC.pushViewController(addViewController, animated: false)
-        //TODO: Change func so that it can default to monochrome option here
-        TableViewController().setAppearance(segment: 0)
+        navVC.pushViewController(addViewController, animated: true)
+        TableViewController().setAppearance(segment: index)
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
