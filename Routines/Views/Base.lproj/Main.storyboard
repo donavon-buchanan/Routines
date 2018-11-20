@@ -1027,7 +1027,7 @@
             <objects>
                 <tableViewController title="Start Times" hidesBottomBarWhenPushed="YES" id="ZDC-uB-bXL" customClass="CustomTimesTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="none" rowHeight="100" estimatedRowHeight="100" sectionHeaderHeight="18" sectionFooterHeight="18" id="UM3-HS-pGL">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <color key="sectionIndexBackgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -1174,6 +1174,8 @@
                             <outlet property="delegate" destination="ZDC-uB-bXL" id="zrr-CG-TsK"/>
                         </connections>
                     </tableView>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="afternoonDatePicker" destination="IBb-mY-CLe" id="LfT-cy-w4d"/>
                         <outlet property="eveningDatePicker" destination="clr-jV-EhA" id="Yl2-YJ-YVw"/>

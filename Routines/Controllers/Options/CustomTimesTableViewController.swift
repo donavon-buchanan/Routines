@@ -61,12 +61,14 @@ class CustomTimesTableViewController: UITableViewController {
             picker.setValue(textColor, forKeyPath: "textColor")
         }
         self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(displayResetAction))
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //loadOptions()
-        setUpUI()
+        setUpUI(animated: false)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -77,6 +79,37 @@ class CustomTimesTableViewController: UITableViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         saveAllTimes()
+    }
+    
+    @objc func displayResetAction() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Reset Times to Default", style: .destructive, handler: { (action) in
+            self.resetTimes()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func resetTimes() {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let newOptions = Options()
+                let realm = try! Realm()
+                let optionsKey = "optionsKey"
+                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+                try! realm.write {
+                    options?.morningHour = newOptions.morningHour
+                    options?.morningMinute = newOptions.morningMinute
+                    options?.afternoonHour = newOptions.afternoonHour
+                    options?.afternoonMinute = newOptions.afternoonMinute
+                    options?.eveningHour = newOptions.eveningHour
+                    options?.eveningMinute = newOptions.eveningMinute
+                    options?.nightHour = newOptions.nightHour
+                    options?.nightMinute = newOptions.nightMinute
+                }
+            }
+        }
+        setUpUI(animated: true)
     }
     
 //    override func numberOfSections(in tableView: UITableView) -> Int {
@@ -188,18 +221,18 @@ class CustomTimesTableViewController: UITableViewController {
         }
     }
     
-    func setUpUI() {
+    func setUpUI(animated: Bool) {
         if let morningTime = getTimesFromOptions(segment: 0) {
-            self.morningDatePicker.setDate(morningTime, animated: false)
+            self.morningDatePicker.setDate(morningTime, animated: animated)
         }
         if let afternoonTime = getTimesFromOptions(segment: 1) {
-            self.afternoonDatePicker.setDate(afternoonTime, animated: false)
+            self.afternoonDatePicker.setDate(afternoonTime, animated: animated)
         }
         if let eveningTime = getTimesFromOptions(segment: 2) {
-            self.eveningDatePicker.setDate(eveningTime, animated: false)
+            self.eveningDatePicker.setDate(eveningTime, animated: animated)
         }
         if let nightTime = getTimesFromOptions(segment: 3) {
-            self.nightDatePicker.setDate(nightTime, animated: false)
+            self.nightDatePicker.setDate(nightTime, animated: animated)
         }
     }
     
