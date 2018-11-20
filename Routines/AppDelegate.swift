@@ -81,10 +81,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             shortcutItemToProcess = nil
         }
         
-        //If presentedVC is nil, that means that Settings or Add were not called, so load the proper tab
-        if self.window?.rootViewController?.presentedViewController == nil {
-            restoreSelectedTab(tab: nil)
-        }
+//        //If presentedVC is nil, that means that Settings or Add were not called, so load the proper tab
+//        if self.window?.rootViewController?.presentedViewController == nil {
+//            restoreSelectedTab(tab: getCurrentSegmentFromTime())
+//        }
         
     }
 
@@ -504,7 +504,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             case "snooze":
                 snoozeItem(uuidString: response.notification.request.identifier)
             default:
-                self.restoreSelectedTab(tab: self.getItemSegment(id: response.notification.request.identifier))
+                self.restoreSelectedTab(tab: self.getNotificationSegment(id: response.notification.request.identifier))
             }
             
         }
@@ -517,7 +517,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             case "snooze":
                 snoozeItem(uuidString: response.notification.request.identifier)
             default:
-                self.restoreSelectedTab(tab: self.getItemSegment(id: response.notification.request.identifier))
+                self.restoreSelectedTab(tab: self.getNotificationSegment(id: response.notification.request.identifier))
             }
         }
         
@@ -529,7 +529,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             case "snooze":
                 snoozeItem(uuidString: response.notification.request.identifier)
             default:
-                self.restoreSelectedTab(tab: self.getItemSegment(id: response.notification.request.identifier))
+                self.restoreSelectedTab(tab: self.getNotificationSegment(id: response.notification.request.identifier))
             }
         }
         
@@ -541,7 +541,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             case "snooze":
                 snoozeItem(uuidString: response.notification.request.identifier)
             default:
-                self.restoreSelectedTab(tab: self.getItemSegment(id: response.notification.request.identifier))
+                self.restoreSelectedTab(tab: self.getNotificationSegment(id: response.notification.request.identifier))
             }
         }
         
@@ -935,6 +935,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 if let item = realm.object(ofType: Items.self, forPrimaryKey: identifier) {
                     segment = item.segment
                 }
+            }
+        }
+        return segment
+    }
+    
+    open func getNotificationSegment(id: String) -> Int {
+        var segment : Int {
+            //If it's an auto snooze notification, just get the last character as an Int and go to that segment
+            if id.count > 36 {
+                return Int(String(id.last!)) ?? 0
+            } else {
+                //If it's not auto snooze, need to fetch the segment property of the item
+                return getItemSegment(id: id)
             }
         }
         return segment

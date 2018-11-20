@@ -17,6 +17,21 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     
+    @IBAction func longPressToClear(_ sender: Any) {
+        let alert = UIAlertController(title: "Clear These Tasks", message: "Do you want to clear all tasks in this tab?", preferredStyle: .actionSheet)
+        let clearAction = UIAlertAction(title: "Clear", style: .destructive) { (action) in
+            self.clearTable()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(clearAction)
+        alert.addAction(cancelAction)
+        if let count = items?.count {
+            if count > 0 {
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
     
     let realmDispatchQueueLabel: String = "background"
     
@@ -185,6 +200,22 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         cell.theme_backgroundColor = GlobalPicker.backgroundColor
         
         return cell
+    }
+    
+    @objc func clearTable() {
+        items?.forEach({ (item) in
+            DispatchQueue(label: realmDispatchQueueLabel).sync {
+                autoreleasepool {
+                    let realm = try! Realm()
+                    try! realm.write {
+                        realm.delete(item)
+                    }
+                }
+            }
+        })
+        let indexPaths = self.tableView.indexPathsForVisibleRows
+        self.tableView.deleteRows(at: indexPaths!, with: .left)
+        updateBadge()
     }
 
     

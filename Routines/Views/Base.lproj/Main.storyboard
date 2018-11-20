@@ -18,6 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="kKH-bE-y9t"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" textLabel="1bE-X7-WW3" detailTextLabel="LyM-j3-HSs" style="IBUITableViewCellStyleSubtitle" id="7pz-fE-Rks" customClass="SwipeTableViewCell" customModule="SwipeCellKit">
@@ -52,6 +53,7 @@
                         <connections>
                             <outlet property="dataSource" destination="e3v-kc-NWN" id="jIU-Fl-vbJ"/>
                             <outlet property="delegate" destination="e3v-kc-NWN" id="VaK-D5-ige"/>
+                            <outletCollection property="gestureRecognizers" destination="rSg-dh-f1f" appends="YES" id="AKs-cA-pSs"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="zZQ-20-1Ec">
@@ -68,6 +70,11 @@
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SEk-qH-xtl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="rSg-dh-f1f">
+                    <connections>
+                        <action selector="longPressToClear:" destination="e3v-kc-NWN" id="Td0-0D-yAm"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="102" y="159"/>
         </scene>
@@ -1034,7 +1041,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="15" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JZC-X6-h1b">
+                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JZC-X6-h1b">
                                                     <rect key="frame" x="60" y="0.0" width="255" height="100"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="559998000.64045894">
                                                         <!--2018-09-30 11:00:00 +0000-->
@@ -1068,7 +1075,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="15" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBb-mY-CLe">
+                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBb-mY-CLe">
                                                     <rect key="frame" x="60" y="0.0" width="255" height="100"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="560016000.52806199">
                                                         <!--2018-09-30 16:00:00 +0000-->
@@ -1102,7 +1109,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="15" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="clr-jV-EhA">
+                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="clr-jV-EhA">
                                                     <rect key="frame" x="60" y="0.0" width="255" height="100"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="560034000.29647398">
                                                         <!--2018-09-30 21:00:00 +0000-->
@@ -1136,7 +1143,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="15" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6wg-G3-W4t">
+                                                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6wg-G3-W4t">
                                                     <rect key="frame" x="60" y="0.0" width="255" height="100"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="560048400.94189596">
                                                         <!--2018-10-01 01:00:00 +0000-->
