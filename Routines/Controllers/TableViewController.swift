@@ -208,21 +208,27 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     }
     
     @objc func clearTable() {
-        items?.forEach({ (item) in
-            DispatchQueue(label: realmDispatchQueueLabel).sync {
+        self.items?.forEach({ (item) in
+            DispatchQueue(label: self.realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
                     try! realm.write {
                         realm.delete(item)
                     }
+                    let indexPath = self.tableView.indexPathForRow(at: CGPoint(x: 0, y: 0))
+                    self.tableView.deleteRows(at: [indexPath!], with: UITableView.RowAnimation.left)
                 }
             }
         })
-        let indexPaths = self.tableView.indexPathsForVisibleRows
-        self.tableView.deleteRows(at: indexPaths!, with: .left)
-        updateBadge()
+        
+        self.updateBadge()
     }
 
+//    //Delay func
+//    func delay(_ delay:Double, closure:@escaping ()->()) {
+//        DispatchQueue.main.asyncAfter(
+//            deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
+//    }
     
     // MARK: - Navigation
 
