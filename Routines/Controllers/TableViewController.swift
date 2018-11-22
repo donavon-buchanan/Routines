@@ -228,6 +228,10 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         }
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("Selected index paths: \(String(describing: tableView.indexPathsForSelectedRows))")
+    }
+    
     @objc func showClearAlert() {
         
         var segmentName : String {
@@ -275,9 +279,17 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     @objc func deleteSelectedRows() {
         if let indexPaths = self.tableView.indexPathsForSelectedRows {
+            var itemArray : [Items] = []
             indexPaths.forEach({ (indexPath) in
-                updateModel(at: indexPath)
+                //The index paths are static during enumeration, but the item indexes are not
+                //Add them to an array first, delete only what's in the array, and then update the table UI
+                if let itemAtIndex = self.items?[indexPath.row] {
+                    itemArray.append(itemAtIndex)
+                }
             })
+            itemArray.forEach { (item) in
+                self.deleteItem(item: item)
+            }
             tableView.deleteRows(at: indexPaths, with: .left)
         }
     }
@@ -326,7 +338,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     //Override empty delete func from super
     override func updateModel(at indexPath: IndexPath) {
-        //super.updateModel(at: indexPath)
+        print("Removing item with indexPath: \(indexPath)")
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -384,7 +396,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 }
             }
         }
-        //AppDelegate().updateAppBadgeCount()
+        AppDelegate().updateAppBadgeCount()
     }
     
     func getCountForTab(_ tab: Int) -> Int {
@@ -436,6 +448,22 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     var segment = Int()
     func loadItems(segment: Int) {
         items = self.realm.objects(Items.self).filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true)
+    }
+    
+    private func deleteItem(item: Items) {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                do {
+                    try realm.write {
+                        self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3", item.uuidString])
+                        realm.delete(item)
+                    }
+                } catch {
+                    print("failed to delete item")
+                }
+            }
+        }
     }
     
 //    //MARK: - Themeing
