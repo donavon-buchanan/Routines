@@ -265,7 +265,6 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 autoreleasepool {
                     let realm = try! Realm()
                     try! realm.write {
-                        self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3", item.uuidString])
                         realm.delete(item)
                     }
                     let indexPath = self.tableView.indexPathForRow(at: CGPoint(x: 0, y: 0))
@@ -274,6 +273,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
             }
         })
         endEdit()
+        OptionsTableViewController().refreshNotifications()
         self.updateBadge()
     }
     
@@ -292,6 +292,8 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
             }
             tableView.deleteRows(at: indexPaths, with: .left)
         }
+        OptionsTableViewController().refreshNotifications()
+        self.updateBadge()
     }
 
 //    //Delay func
@@ -456,7 +458,6 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 let realm = try! Realm()
                 do {
                     try realm.write {
-                        self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3", item.uuidString])
                         realm.delete(item)
                     }
                 } catch {
