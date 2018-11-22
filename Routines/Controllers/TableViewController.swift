@@ -204,23 +204,17 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        if tableView.isEditing {
-//            self.navigationItem.rightBarButtonItem?.isEnabled = true
-//        }
-    }
-    
-    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-//        if tableView.isEditing {
-//            if let numberOfSelected = tableView.indexPathsForSelectedRows?.count {
-//                if numberOfSelected == 0 {
-//                    self.navigationItem.rightBarButtonItem?.isEnabled = false
+//    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+//        DispatchQueue(label: realmDispatchQueueLabel).async {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//
+//                try! realm.write {
+//
 //                }
-//            } else {
-//                self.navigationItem.rightBarButtonItem?.isEnabled = false
 //            }
 //        }
-    }
+//    }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "editSegue" {
@@ -267,6 +261,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 autoreleasepool {
                     let realm = try! Realm()
                     try! realm.write {
+                        self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3", item.uuidString])
                         realm.delete(item)
                     }
                     let indexPath = self.tableView.indexPathForRow(at: CGPoint(x: 0, y: 0))
