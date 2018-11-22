@@ -16,27 +16,37 @@ import NotificationCenter
 class TableViewController: SwipeTableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
+    @IBOutlet var settingsBarButtonItem: UIBarButtonItem!
+    @IBOutlet var addbarButtonItem: UIBarButtonItem!
     
-    @IBAction func longPressToClear(_ sender: UILongPressGestureRecognizer) {
+    
+    @IBAction func longPressToEdit(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
-            let haptic = UIImpactFeedbackGenerator(style: .medium)
-            haptic.impactOccurred()
-            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            let clearAction = UIAlertAction(title: "Clear These Tasks", style: .destructive) { (action) in
-                self.clearTable()
-            }
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            alert.addAction(clearAction)
-            alert.addAction(cancelAction)
-            
             if let count = items?.count {
                 if count > 0 {
-                    self.present(alert, animated: true, completion: nil)
+                    if !self.tableView.isEditing {
+                        self.tableView.setEditing(true, animated: true)
+                        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(showClearAlert))
+                        let trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteSelectedRows))
+                        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(endEdit))
+                        self.navigationItem.rightBarButtonItems = [doneButton, trashButton]
+                    } else {
+                        endEdit()
+                    }
+                } else {
+                    endEdit()
                 }
+            } else {
+                endEdit()
             }
         }
     }
     
+    @objc func endEdit() {
+        self.tableView.setEditing(false, animated: true)
+        self.navigationItem.leftBarButtonItem = settingsBarButtonItem
+        self.navigationItem.rightBarButtonItems = [addbarButtonItem]
+    }
     
     let realmDispatchQueueLabel: String = "background"
     
@@ -57,6 +67,8 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     override func viewDidLoad() {
         print("Running viewDidLoad")
         super.viewDidLoad()
+        
+        self.tableView.allowsMultipleSelectionDuringEditing = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil )
         
@@ -114,25 +126,6 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
             self.title = "Morning"
         }
     }
-    
-//    func slideInView(from: Int, to: Int) {
-//        //TODO: These are going to have to be view based to make the transition smoother.
-//        self.tableView.layoutIfNeeded()
-//        print("going from \(from) to \(to)")
-//        UIView.animate(withDuration: 0.5) {
-//            let slideInTableView = CATransition()
-//            slideInTableView.duration = 0.5
-//            slideInTableView.type = CATransitionType.moveIn
-//            if from < to {
-//                slideInTableView.subtype = CATransitionSubtype.fromRight
-//            } else {
-//                slideInTableView.subtype = CATransitionSubtype.fromLeft
-//            }
-//            self.tableView.layer.add(slideInTableView, forKey: "slideInTableView")
-//            self.tableView.layoutIfNeeded()
-//        }
-//
-//    }
     
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         saveSelectedTab(index: tabBarController.selectedIndex)
@@ -203,11 +196,72 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         }
         cell.textLabel?.theme_textColor = GlobalPicker.cellTextColors
         cell.theme_backgroundColor = GlobalPicker.backgroundColor
+        let cellSelectedBackgroundView = UIView()
+        cellSelectedBackgroundView.theme_backgroundColor = GlobalPicker.cellBackground
+        cell.selectedBackgroundView = cellSelectedBackgroundView
+        cell.multipleSelectionBackgroundView = cellSelectedBackgroundView
         
         return cell
     }
     
-    @objc func clearTable() {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        if tableView.isEditing {
+//            self.navigationItem.rightBarButtonItem?.isEnabled = true
+//        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+//        if tableView.isEditing {
+//            if let numberOfSelected = tableView.indexPathsForSelectedRows?.count {
+//                if numberOfSelected == 0 {
+//                    self.navigationItem.rightBarButtonItem?.isEnabled = false
+//                }
+//            } else {
+//                self.navigationItem.rightBarButtonItem?.isEnabled = false
+//            }
+//        }
+    }
+    
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if identifier == "editSegue" {
+            if self.tableView.isEditing {
+                return false
+            } else {
+                return true
+            }
+        } else {
+            return true
+        }
+    }
+    
+    @objc func showClearAlert() {
+        
+        var segmentName : String {
+            let segment = self.segment
+            switch segment {
+            case 1:
+                return "afternoon"
+            case 2:
+                return "evening"
+            case 3:
+                return "night"
+            default:
+                return "morning"
+            }
+        }
+        
+        let alert = UIAlertController(title: "Are you sure?", message: "This will clear all your \(segmentName) tasks at once.", preferredStyle: .alert)
+        let clearAction = UIAlertAction(title: "Do it!", style: .destructive) { (action) in
+            self.clearAll()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+        alert.addAction(clearAction)
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func clearAll() {
         self.items?.forEach({ (item) in
             DispatchQueue(label: self.realmDispatchQueueLabel).sync {
                 autoreleasepool {
@@ -220,8 +274,17 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                 }
             }
         })
-        
+        endEdit()
         self.updateBadge()
+    }
+    
+    @objc func deleteSelectedRows() {
+        if let indexPaths = self.tableView.indexPathsForSelectedRows {
+            indexPaths.forEach({ (indexPath) in
+                updateModel(at: indexPath)
+            })
+            tableView.deleteRows(at: indexPaths, with: .left)
+        }
     }
 
 //    //Delay func

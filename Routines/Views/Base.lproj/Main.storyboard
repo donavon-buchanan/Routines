@@ -46,7 +46,7 @@
                                 </tableViewCellContentView>
                                 <viewLayoutGuide key="safeArea" id="mgs-e5-Htd"/>
                                 <connections>
-                                    <segue destination="A8c-r3-V1W" kind="show" identifier="editSegue" id="lP2-JT-oTl"/>
+                                    <segue destination="A8c-r3-V1W" kind="show" identifier="editSegue" id="axw-H5-5nW"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -68,11 +68,15 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="addbarButtonItem" destination="XO1-Lz-EWV" id="keO-Yz-T6L"/>
+                        <outlet property="settingsBarButtonItem" destination="fje-qN-BIw" id="6xw-C2-lOi"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SEk-qH-xtl" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="rSg-dh-f1f">
                     <connections>
-                        <action selector="longPressToClear:" destination="e3v-kc-NWN" id="Td0-0D-yAm"/>
+                        <action selector="longPressToEdit:" destination="e3v-kc-NWN" id="Td0-0D-yAm"/>
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
@@ -1226,7 +1230,7 @@
         <image name="night-selected" width="23" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="CCO-Gm-Wv4"/>
+        <segue reference="axw-H5-5nW"/>
         <segue reference="mrq-CI-P72"/>
     </inferredMetricsTieBreakers>
 </document>
