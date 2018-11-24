@@ -23,6 +23,7 @@
 		F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831BB2155CBB000DAF60E /* Main.storyboard */; };
 		F8B831C22155CBB100DAF60E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831C02155CBB100DAF60E /* LaunchScreen.storyboard */; };
 		F8B831CD2155CBE300DAF60E /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831CC2155CBE300DAF60E /* Items.swift */; };
+		F8CBBA5721A9058D00A4FFFD /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */; };
 		F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */; };
 		F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */; };
 		F8F278522187D56400D2AC46 /* UITableViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F278512187D56400D2AC46 /* UITableViewExtension.swift */; };
@@ -50,6 +51,7 @@
 		F8B831C12155CBB100DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F8B831C32155CBB100DAF60E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F8B831CC2155CBE300DAF60E /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
+		F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTableViewController.swift; sourceTree = "<group>"; };
 		F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTableViewCell.swift; sourceTree = "<group>"; };
 		F8F278512187D56400D2AC46 /* UITableViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewExtension.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				F85213B4218F5EE600291CFE /* NavigationViewController.swift */,
 				F8125CC9215F56E700ED3FA6 /* SwipeTableViewController.swift */,
 				F816DB332155CFBA009C6907 /* TableViewController.swift */,
+				F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */,
 				F82770D221585D3000420C50 /* AddTableViewController.swift */,
 				F807D3D22160A06600FF36D9 /* Options */,
 			);
@@ -315,6 +318,7 @@
 				F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */,
 				F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */,
 				F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */,
+				F8CBBA5721A9058D00A4FFFD /* TaskTableViewCell.swift in Sources */,
 				F807D3CF2160964E00FF36D9 /* OptionsTableViewController.swift in Sources */,
 				F8B30789219C13B500437AAA /* GlobalPicker.swift in Sources */,
 				F807D3CD216073E300FF36D9 /* Options.swift in Sources */,

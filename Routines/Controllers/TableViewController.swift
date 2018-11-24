@@ -19,6 +19,11 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     @IBOutlet var settingsBarButtonItem: UIBarButtonItem!
     @IBOutlet var addbarButtonItem: UIBarButtonItem!
     
+    @IBOutlet weak var cellTitle: UILabel!
+    @IBOutlet weak var cellSubtitle: UILabel!
+    @IBOutlet weak var cellIndicatorImage: UIImageView!
+    
+    
     
     @IBAction func longPressToEdit(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
@@ -184,22 +189,48 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = super.tableView(tableView, cellForRowAt: indexPath)
         
-        cell.textLabel?.text = self.items?[indexPath.row].title
-        if let subtitle = self.items?[indexPath.row].notes {
-            if subtitle.count > 0 {
-                cell.detailTextLabel?.text = subtitle
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TaskTableViewCell
+        
+        let cellTitle : String = (self.items?[indexPath.row].title)!
+        var cellSubtitle : String? {
+            if let subtitle = self.items?[indexPath.row].notes {
+                if subtitle.count > 0 {
+                    return subtitle
+                } else {
+                    return nil
+                }
             } else {
-                cell.detailTextLabel?.text = nil
+                return nil
             }
         }
-        cell.textLabel?.theme_textColor = GlobalPicker.cellTextColors
+        
+        var indicatorImage : UIImage? {
+            let imageView = UIImageView()
+            if (self.items?[indexPath.row].repeats)! {
+                imageView.theme_image = GlobalPicker.repeatsCell
+                return imageView.image
+            } else if (self.items?[indexPath.row].disableAutoSnooze)! {
+                imageView.theme_image = GlobalPicker.anchorCell
+                return imageView.image
+            } else {
+                return nil
+            }
+        }
+        
+        cell.delegate = self
+        
+        cell.cellTitleLabel?.text = cellTitle
+        cell.cellSubtitleLabel?.text = cellSubtitle
+        cell.cellIndicatorImage?.image = indicatorImage
+        
+        cell.cellTitleLabel?.theme_textColor = GlobalPicker.cellTextColors
         cell.theme_backgroundColor = GlobalPicker.backgroundColor
         let cellSelectedBackgroundView = UIView()
         cellSelectedBackgroundView.theme_backgroundColor = GlobalPicker.cellBackground
         cell.selectedBackgroundView = cellSelectedBackgroundView
         cell.multipleSelectionBackgroundView = cellSelectedBackgroundView
+        
         
         return cell
     }

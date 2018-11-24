@@ -21,6 +21,19 @@ import RealmSwift
     dynamic var disableAutoSnooze: Bool = false
     dynamic var notes: String?
     
+    //Date Components
+    dynamic var year : Int?
+    dynamic var month: Int?
+    dynamic var day: Int?
+    dynamic var hour: Int?
+    dynamic var minute: Int?
+    dynamic var weekday: Int?
+    dynamic var weekdayOrdinal: Int?
+    dynamic var quarter: Int?
+    dynamic var weekOfMonth: Int?
+    dynamic var weekOfYear: Int?
+    
+    
     //Notification identifier
     dynamic var uuidString: String = UUID().uuidString
     override static func primaryKey() -> String? {

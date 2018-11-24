@@ -33,15 +33,15 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
 //        // #warning Incomplete implementation, return the number of rows
 //        return 0
 //    }
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SwipeTableViewCell
-        
-        //SwipeTableViewCell delegate
-        cell.delegate = self
-        
-        return cell
-    }
+//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TaskTableViewCell
+//        
+//        //SwipeTableViewCell delegate
+//        cell.delegate = self
+//        
+//        return cell
+//    }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard orientation == .right else { return nil}
