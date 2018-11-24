@@ -21,9 +21,18 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     
     
     @IBOutlet weak var disableAutoSnoozeSwitch: UISwitch!
+    fileprivate func setAnchorColor() {
+        if disableAutoSnoozeSwitch.isOn {
+            anchorImageView.theme_tintColor = GlobalPicker.barTextColor
+        } else {
+            anchorImageView.tintColor = .lightGray
+        }
+    }
+    
     @IBAction func disableAutoSnoozeToggled(_ sender: UISwitch) {
         if self.item != nil {
             navigationItem.rightBarButtonItem?.isEnabled = true
+            setAnchorColor()
             updateItem()
         }
     }
@@ -35,7 +44,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         setAppearance(segment: sender.selectedSegmentIndex)
     }
     
-    
+    @IBOutlet weak var anchorImageView: UIImageView!
     
     let realmDispatchQueueLabel: String = "background"
     
@@ -46,6 +55,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Tint on anchor
+        anchorImageView.image = UIImage(imageLiteralResourceName: "anchor-grey").withRenderingMode(.alwaysTemplate)
+        setAnchorColor()
         
         //Set right bar item as "Save"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveButtonPressed))
@@ -73,6 +85,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             notesTextView.text = item?.notes
             //print("Item's uuidString is \((item?.uuidString)!)")
             disableAutoSnoozeSwitch.setOn(item?.disableAutoSnooze ?? false, animated: false)
+            setAnchorColor()
         }
         
         //load in segment from add segue
@@ -107,6 +120,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         
         //add a tap recognizer to stop editing when tapping outside the textView
         let viewTap = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        viewTap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(viewTap)
         
         self.taskTextField.theme_keyboardAppearance = GlobalPicker.keyboardStyle
@@ -156,6 +170,19 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 3 {
+            let haptic = UIImpactFeedbackGenerator(style: .light)
+            haptic.impactOccurred()
+            self.disableAutoSnoozeSwitch.setOn(!self.disableAutoSnoozeSwitch.isOn, animated: true)
+            setAnchorColor()
+            if self.item != nil {
+                navigationItem.rightBarButtonItem?.isEnabled = true
+                updateItem()
+            }
+        }
     }
     
     // MARK: - Navigation

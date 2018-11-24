@@ -210,7 +210,7 @@
                             <tableViewSection id="Cdy-rr-nKo" userLabel="Disable Auto Snooze">
                                 <string key="footerTitle">Enabling this switch will prevent Auto Snooze from automatically moving this task. Auto Snooze will continue to send reminders for this task.</string>
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="vcq-aH-HrX">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="vcq-aH-HrX">
                                         <rect key="frame" x="0.0" y="443.33333333333337" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vcq-aH-HrX" id="PGB-Py-pYO">
@@ -221,18 +221,36 @@
                                                     <rect key="frame" x="16" y="11" width="343" height="32"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ignore Auto Snooze" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HU5-Hc-8tR">
-                                                            <rect key="frame" x="0.0" y="5.9999999999999982" width="294" height="20.333333333333329"/>
+                                                            <rect key="frame" x="0.0" y="5.9999999999999982" width="256" height="20.333333333333329"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vDF-7W-QTO">
-                                                            <rect key="frame" x="294" y="0.6666666666666643" width="51" height="31"/>
-                                                            <connections>
-                                                                <action selector="disableAutoSnoozeToggled:" destination="A8c-r3-V1W" eventType="valueChanged" id="5AA-zi-1Ry"/>
-                                                            </connections>
-                                                        </switch>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="KzK-qL-NG1">
+                                                            <rect key="frame" x="256" y="0.0" width="87" height="32"/>
+                                                            <subviews>
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UgR-S5-Xvq">
+                                                                    <rect key="frame" x="0.0" y="2" width="28" height="28"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="28" id="Asu-Bw-9Cp"/>
+                                                                        <constraint firstAttribute="width" constant="28" id="axN-zS-MEz"/>
+                                                                    </constraints>
+                                                                </imageView>
+                                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vDF-7W-QTO">
+                                                                    <rect key="frame" x="38" y="0.6666666666666643" width="51" height="31"/>
+                                                                    <connections>
+                                                                        <action selector="disableAutoSnoozeToggled:" destination="A8c-r3-V1W" eventType="valueChanged" id="5AA-zi-1Ry"/>
+                                                                    </connections>
+                                                                </switch>
+                                                            </subviews>
+                                                        </stackView>
                                                     </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="KzK-qL-NG1" firstAttribute="trailing" secondItem="3PM-6m-oIX" secondAttribute="trailingMargin" id="6fP-DK-Hs6"/>
+                                                        <constraint firstItem="KzK-qL-NG1" firstAttribute="leading" secondItem="HU5-Hc-8tR" secondAttribute="trailing" id="7NV-al-gut"/>
+                                                        <constraint firstItem="KzK-qL-NG1" firstAttribute="top" secondItem="3PM-6m-oIX" secondAttribute="topMargin" id="Jhh-MF-IJ2"/>
+                                                        <constraint firstAttribute="bottomMargin" secondItem="KzK-qL-NG1" secondAttribute="bottom" id="kIi-CN-DB4"/>
+                                                    </constraints>
                                                 </stackView>
                                             </subviews>
                                             <constraints>
@@ -245,6 +263,46 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="dyV-UY-6E5" userLabel="Repeat">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Ld2-5h-hcf">
+                                        <rect key="frame" x="0.0" y="577.33333333333337" width="375" height="54"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ld2-5h-hcf" id="Ijn-dM-N4C">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="54"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TkL-0Z-g9Q">
+                                                    <rect key="frame" x="16" y="11" width="317" height="32"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Repeat" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TbN-8U-dEf">
+                                                            <rect key="frame" x="0.0" y="5.9999999999999982" width="56.333333333333336" height="20.333333333333329"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9B1-Ni-V4d" userLabel="How Often">
+                                                            <rect key="frame" x="267" y="0.0" width="50" height="32"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="TkL-0Z-g9Q" secondAttribute="bottom" id="7IR-sC-Rh9"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="TkL-0Z-g9Q" secondAttribute="trailing" id="FRW-ap-LZn"/>
+                                                <constraint firstItem="TkL-0Z-g9Q" firstAttribute="top" secondItem="Ijn-dM-N4C" secondAttribute="topMargin" id="RIM-Mv-1TD"/>
+                                                <constraint firstItem="TkL-0Z-g9Q" firstAttribute="leading" secondItem="Ijn-dM-N4C" secondAttribute="leadingMargin" id="xmO-eQ-tuH"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="nCa-ub-MTc" kind="show" identifier="repeatSegue" id="GOg-UG-JLD"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="A8c-r3-V1W" id="7au-6x-YMZ"/>
@@ -252,6 +310,7 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="anchorImageView" destination="UgR-S5-Xvq" id="P6H-gV-gIH"/>
                         <outlet property="disableAutoSnoozeLabel" destination="HU5-Hc-8tR" id="Re9-dG-MXi"/>
                         <outlet property="disableAutoSnoozeSwitch" destination="vDF-7W-QTO" id="2qJ-PD-btc"/>
                         <outlet property="notesTextView" destination="5iE-Oy-Fuc" id="9Q2-Os-Y9c"/>
@@ -267,6 +326,34 @@
                 <exit id="o9Q-Hw-Tfw" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="974" y="159"/>
+        </scene>
+        <!--Repeat Table View Controller-->
+        <scene sceneID="1WV-bi-75L">
+            <objects>
+                <tableViewController hidesBottomBarWhenPushed="YES" id="nCa-ub-MTc" customClass="RepeatTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="54" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="32g-Lf-g5g">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="cell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="v9H-gl-DQs">
+                                <rect key="frame" x="0.0" y="55.333333333333343" width="375" height="54"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="v9H-gl-DQs" id="OKz-Vh-lHr">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="nCa-ub-MTc" id="4d8-vp-7Na"/>
+                            <outlet property="delegate" destination="nCa-ub-MTc" id="krq-ie-jfE"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8Kx-5p-qKi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1830" y="159"/>
         </scene>
         <!--Morning-->
         <scene sceneID="eiy-SR-jk8">
