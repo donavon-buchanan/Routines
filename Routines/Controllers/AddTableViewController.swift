@@ -32,9 +32,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     @IBAction func disableAutoSnoozeToggled(_ sender: UISwitch) {
         if self.item != nil {
             navigationItem.rightBarButtonItem?.isEnabled = true
-            setAnchorColor()
             updateItem()
         }
+        setAnchorColor()
     }
     @IBOutlet weak var disableAutoSnoozeLabel: UILabel!
     
@@ -42,6 +42,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     
     @IBAction func segmentSelected(_ sender: UISegmentedControl) {
         setAppearance(segment: sender.selectedSegmentIndex)
+        setAnchorColor()
     }
     
     @IBOutlet weak var anchorImageView: UIImageView!
@@ -56,7 +57,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     override func viewDidLoad() {
         super.viewDidLoad()
         //Tint on anchor
-        anchorImageView.image = UIImage(imageLiteralResourceName: "anchor-grey").withRenderingMode(.alwaysTemplate)
+        anchorImageView.image = anchorImageView.image?.withRenderingMode(.alwaysTemplate)
         setAnchorColor()
         
         //Set right bar item as "Save"

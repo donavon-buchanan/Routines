@@ -48,7 +48,7 @@
                                                         </label>
                                                     </subviews>
                                                 </stackView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jtF-uI-8Sz">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="anchor" translatesAutoresizingMaskIntoConstraints="NO" id="jtF-uI-8Sz">
                                                     <rect key="frame" x="289" y="7" width="28" height="28"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
@@ -229,7 +229,7 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="KzK-qL-NG1">
                                                             <rect key="frame" x="256" y="0.0" width="87" height="32"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UgR-S5-Xvq">
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="anchor" translatesAutoresizingMaskIntoConstraints="NO" id="UgR-S5-Xvq">
                                                                     <rect key="frame" x="0.0" y="2" width="28" height="28"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="28" id="Asu-Bw-9Cp"/>
@@ -1335,6 +1335,7 @@
         <image name="add button" width="28" height="28"/>
         <image name="afternoon" width="23" height="23"/>
         <image name="afternoon-selected" width="23" height="23"/>
+        <image name="anchor" width="23" height="23"/>
         <image name="evening" width="23" height="23"/>
         <image name="evening-selected" width="23" height="23"/>
         <image name="gear" width="28" height="28"/>

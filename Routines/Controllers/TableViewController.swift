@@ -21,7 +21,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     
     @IBOutlet weak var cellTitle: UILabel!
     @IBOutlet weak var cellSubtitle: UILabel!
-    @IBOutlet weak var cellIndicatorImage: UIImageView!
+    @IBOutlet var cellIndicatorImage: UIImageView!
     
     
     

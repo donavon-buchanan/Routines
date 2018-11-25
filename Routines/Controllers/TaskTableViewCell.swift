@@ -13,6 +13,6 @@ class TaskTableViewCell: SwipeTableViewCell {
 
     @IBOutlet weak var cellTitleLabel: UILabel!
     @IBOutlet weak var cellSubtitleLabel: UILabel!
-    @IBOutlet weak var cellIndicatorImage: UIImageView!
+    @IBOutlet var cellIndicatorImage: UIImageView!
     
 }
