@@ -13,16 +13,11 @@ import UserNotifications
 import UserNotificationsUI
 import NotificationCenter
 
-class TableViewController: SwipeTableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
+class TableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
     
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     @IBOutlet var settingsBarButtonItem: UIBarButtonItem!
     @IBOutlet var addbarButtonItem: UIBarButtonItem!
-    
-    @IBOutlet weak var cellTitle: UILabel!
-    @IBOutlet weak var cellSubtitle: UILabel!
-    @IBOutlet var cellIndicatorImage: UIImageView!
-    
     
     
     @IBAction func longPressToEdit(_ sender: UILongPressGestureRecognizer) {
@@ -92,6 +87,8 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         setViewBackgroundGraphic()
         
         loadItems(segment: self.segment)
+        
+        tableView.estimatedRowHeight = 64
     }
     
     @objc func appBecameActive() {
@@ -104,7 +101,6 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("View Will Appear")
-        changeSegment(segment: passedSegment)
         runAutoSnooze()
         updateBadge()
         removeDeliveredNotifications()
@@ -116,6 +112,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         print("viewDidAppear \n")
         reloadTableView()
         setAppearance(segment: self.segment)
+        //changeSegment(segment: passedSegment)
     }
     
     func setNavTitle() {
@@ -218,7 +215,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
             }
         }
         
-        cell.delegate = self
+        //cell.delegate = self
         
         cell.cellTitleLabel?.text = cellTitle
         cell.cellSubtitleLabel?.text = cellSubtitle
@@ -233,6 +230,41 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
         
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let completeAction = UITableViewRowAction(style: .destructive, title: "Complete") { (action, indexPath) in
+            self.updateModel(at: indexPath)
+            tableView.deleteRows(at: [indexPath], with: .left)
+        }
+
+        completeAction.backgroundColor = UIColor(red:0.38,green:0.70,blue:0.22,alpha:5.00)
+        return [completeAction]
+    }
+    
+//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        if (editingStyle == .delete) {
+//            updateModel(at: indexPath)
+//            self.tableView.deleteRows(at: [indexPath], with: .left)
+//        }
+//    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        if let notes = items?[indexPath.row].notes {
+            if notes.count > 0 {
+                return UITableView.automaticDimension
+            } else {
+                return 64
+            }
+        } else {
+            return 64
+        }
+        
     }
     
 //    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
@@ -344,6 +376,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
             //set segment based on current tab
             guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
             destination.editingSegment = selectedTab
+            //destination.segue = segue
         }
 
         if segue.identifier == "editSegue" {
@@ -351,6 +384,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
             //pass in current item
             if let indexPath = tableView.indexPathForSelectedRow {
                 destination.item = items?[indexPath.row]
+                //destination.segue = segue
             }
         }
     }
@@ -370,7 +404,8 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
 //    }
     
     //Override empty delete func from super
-    override func updateModel(at indexPath: IndexPath) {
+    func updateModel(at indexPath: IndexPath) {
+        //super.updateModel(at: indexPath)
         print("Removing item with indexPath: \(indexPath)")
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -573,7 +608,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
     }
     //This does the work
     func autoSnoozeMove(fromSegment: Int, toSegment: Int) {
-        print("running smartSnoozeMove from segment \(fromSegment) to \(toSegment)")
+        print("running autoSnoozeMove from segment \(fromSegment) to \(toSegment)")
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -586,7 +621,7 @@ class TableViewController: SwipeTableViewController, UINavigationControllerDeleg
                                     item.segment = toSegment
                                 }
                             } catch {
-                                print("failed to smartSnooze items")
+                                print("failed to autoSnooze items")
                             }
                         }
                     }

@@ -8,14 +8,16 @@
 
 import UIKit
 
-class RepeatTableViewController: TableViewController {
+class RepeatTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if #available(iOS 11.0, *) {
-            self.navigationController?.navigationBar.prefersLargeTitles = false
-        }
+        
+        setUpUI()
+    }
+    
+    func setUpUI() {
+        self.title = "Repeat"
     }
 
     // MARK: - Table view data source

@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         registerNotificationCategoriesAndActions()
         
         //Theme
-        
+        setUpTheme()
         
         return true
     }
@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         //checkToCreateOptions()
         loadOptions()
-        setUpTheme()
+        //setUpTheme()
         
         // If launchOptions contains the appropriate launch options key, a Home screen quick action
         // is responsible for launching the app. Store the action for processing once the app has

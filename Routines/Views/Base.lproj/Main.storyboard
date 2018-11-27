@@ -14,7 +14,7 @@
         <scene sceneID="GDV-PT-QEl">
             <objects>
                 <tableViewController storyboardIdentifier="taskTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e3v-kc-NWN" userLabel="Tasks" customClass="TableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="64" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="88k-hj-4fi">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="64" estimatedRowHeight="64" sectionHeaderHeight="28" sectionFooterHeight="28" id="88k-hj-4fi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -28,47 +28,48 @@
                                     <rect key="frame" x="0.0" y="0.0" width="341" height="63.666666666666664"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="wCB-a3-8un">
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="wCB-a3-8un">
                                             <rect key="frame" x="16" y="11" width="317" height="42"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="v1o-h3-VYP">
-                                                    <rect key="frame" x="0.0" y="1.6666666666666679" width="289" height="38.666666666666657"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ri-sk-eGh" userLabel="Title">
-                                                            <rect key="frame" x="0.0" y="0.0" width="289" height="20.333333333333332"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEr-4p-QCB" userLabel="Subtitle">
-                                                            <rect key="frame" x="0.0" y="24.333333333333336" width="289" height="14.333333333333336"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </stackView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="anchor" translatesAutoresizingMaskIntoConstraints="NO" id="jtF-uI-8Sz">
-                                                    <rect key="frame" x="289" y="7" width="28" height="28"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="anchor" translatesAutoresizingMaskIntoConstraints="NO" id="jtF-uI-8Sz">
+                                                    <rect key="frame" x="0.0" y="7" width="0.0" height="28"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
                                                     </accessibility>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="28" id="bXN-Zv-Pup"/>
-                                                        <constraint firstAttribute="width" constant="28" id="nFN-tS-dUQ"/>
+                                                        <constraint firstAttribute="width" id="nFN-tS-dUQ"/>
                                                     </constraints>
                                                 </imageView>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="v1o-h3-VYP">
+                                                    <rect key="frame" x="18" y="1" width="299" height="40"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ri-sk-eGh" userLabel="Title">
+                                                            <rect key="frame" x="0.0" y="0.0" width="299" height="20.333333333333332"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEr-4p-QCB" userLabel="Subtitle">
+                                                            <rect key="frame" x="0.0" y="24.333333333333339" width="299" height="15.666666666666668"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="wCB-a3-8un" secondAttribute="trailing" id="6z6-CC-dfC"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="wCB-a3-8un" secondAttribute="bottom" id="O2n-nm-Rr3"/>
-                                        <constraint firstItem="wCB-a3-8un" firstAttribute="leading" secondItem="fSe-63-Vch" secondAttribute="leadingMargin" id="x2H-vK-Aaq"/>
-                                        <constraint firstItem="wCB-a3-8un" firstAttribute="top" secondItem="fSe-63-Vch" secondAttribute="topMargin" id="xqm-04-ldI"/>
+                                        <constraint firstItem="wCB-a3-8un" firstAttribute="top" secondItem="fSe-63-Vch" secondAttribute="topMargin" id="4X7-gg-hqw"/>
+                                        <constraint firstItem="wCB-a3-8un" firstAttribute="leading" secondItem="fSe-63-Vch" secondAttribute="leadingMargin" id="BmQ-vP-L7q"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="wCB-a3-8un" secondAttribute="bottom" id="Cgd-zf-fUX"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="wCB-a3-8un" secondAttribute="trailing" id="Hvs-Dz-Roz"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <viewLayoutGuide key="safeArea" id="mgs-e5-Htd"/>
+                                <inset key="separatorInset" minX="34" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="cellIndicatorImage" destination="jtF-uI-8Sz" id="ZUG-q1-ucB"/>
                                     <outlet property="cellSubtitleLabel" destination="cEr-4p-QCB" id="2Ce-ut-TrO"/>
@@ -239,7 +240,7 @@
                                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vDF-7W-QTO">
                                                                     <rect key="frame" x="38" y="0.6666666666666643" width="51" height="31"/>
                                                                     <connections>
-                                                                        <action selector="disableAutoSnoozeToggled:" destination="A8c-r3-V1W" eventType="valueChanged" id="5AA-zi-1Ry"/>
+                                                                        <action selector="ignoreAutoSnoozeToggled:" destination="A8c-r3-V1W" eventType="valueChanged" id="5AA-zi-1Ry"/>
                                                                     </connections>
                                                                 </switch>
                                                             </subviews>
@@ -311,9 +312,11 @@
                     </tableView>
                     <connections>
                         <outlet property="anchorImageView" destination="UgR-S5-Xvq" id="P6H-gV-gIH"/>
-                        <outlet property="disableAutoSnoozeLabel" destination="HU5-Hc-8tR" id="Re9-dG-MXi"/>
                         <outlet property="disableAutoSnoozeSwitch" destination="vDF-7W-QTO" id="2qJ-PD-btc"/>
+                        <outlet property="ignoreAutoSnoozeLabel" destination="HU5-Hc-8tR" id="Re9-dG-MXi"/>
                         <outlet property="notesTextView" destination="5iE-Oy-Fuc" id="9Q2-Os-Y9c"/>
+                        <outlet property="repeatHowOftenLabel" destination="9B1-Ni-V4d" id="abK-pz-OqP"/>
+                        <outlet property="repeatLabel" destination="TbN-8U-dEf" id="KWh-hd-8iD"/>
                         <outlet property="segmentSelection" destination="ee6-Ut-pWz" id="Oke-MH-Y6V"/>
                         <outlet property="taskTextField" destination="CU9-wA-X3j" id="baT-I0-9je"/>
                         <outletCollection property="cells" destination="Njk-SZ-nFt" collectionClass="NSMutableArray" id="5No-5l-qJE"/>
@@ -327,10 +330,10 @@
             </objects>
             <point key="canvasLocation" x="974" y="159"/>
         </scene>
-        <!--Repeat Table View Controller-->
+        <!--Repeat-->
         <scene sceneID="1WV-bi-75L">
             <objects>
-                <tableViewController hidesBottomBarWhenPushed="YES" id="nCa-ub-MTc" customClass="RepeatTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Repeat" hidesBottomBarWhenPushed="YES" id="nCa-ub-MTc" customClass="RepeatTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="54" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="32g-Lf-g5g">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1346,6 +1349,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="axw-H5-5nW"/>
-        <segue reference="mrq-CI-P72"/>
+        <segue reference="AXD-IN-9f2"/>
     </inferredMetricsTieBreakers>
 </document>

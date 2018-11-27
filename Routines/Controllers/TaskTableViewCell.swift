@@ -9,7 +9,7 @@
 import UIKit
 import SwipeCellKit
 
-class TaskTableViewCell: SwipeTableViewCell {
+class TaskTableViewCell: UITableViewCell {
 
     @IBOutlet weak var cellTitleLabel: UILabel!
     @IBOutlet weak var cellSubtitleLabel: UILabel!

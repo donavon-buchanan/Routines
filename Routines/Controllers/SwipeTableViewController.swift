@@ -8,6 +8,7 @@
 
 import UIKit
 import SwipeCellKit
+import RealmSwift
 
 class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegate {
 
@@ -46,7 +47,7 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
         guard orientation == .right else { return nil}
         
-        let completeAction = SwipeAction(style: .destructive, title: nil) { (action, indexPath) in
+        let completeAction = SwipeAction(style: .destructive, title: "Complete") { (action, indexPath) in
             // handle action by updating model with deletion
             self.updateModel(at: indexPath)
             action.fulfill(with: .delete)
@@ -69,9 +70,8 @@ class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegat
     //continue dragging to delete
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
         var options = SwipeTableOptions()
-        options.expansionStyle = .destructiveAfterFill
+        options.expansionStyle = .destructive
         options.transitionStyle = .border
-        options.expansionDelegate = ScaleAndAlphaExpansion.default
         return options
     }
     

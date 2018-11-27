@@ -29,14 +29,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
     }
     
-    @IBAction func disableAutoSnoozeToggled(_ sender: UISwitch) {
+    @IBAction func ignoreAutoSnoozeToggled(_ sender: UISwitch) {
         if self.item != nil {
             navigationItem.rightBarButtonItem?.isEnabled = true
             updateItem()
         }
         setAnchorColor()
     }
-    @IBOutlet weak var disableAutoSnoozeLabel: UILabel!
+    @IBOutlet weak var ignoreAutoSnoozeLabel: UILabel!
     
     @IBOutlet var cells: [UITableViewCell]!
     
@@ -47,18 +47,33 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     
     @IBOutlet weak var anchorImageView: UIImageView!
     
+    @IBOutlet weak var repeatLabel: UILabel!
+    @IBOutlet weak var repeatHowOftenLabel: UILabel!
+    
     let realmDispatchQueueLabel: String = "background"
     
     var item : Items?
     //var timeArray: [DateComponents?] = []
     //segment from add segue
     var editingSegment: Int?
+    //var segue: UIStoryboardSegue?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    fileprivate func setUpUI() {
         //Tint on anchor
         anchorImageView.image = anchorImageView.image?.withRenderingMode(.alwaysTemplate)
         setAnchorColor()
+        
+        ignoreAutoSnoozeLabel.theme_textColor = GlobalPicker.cellTextColors
+        repeatLabel.theme_textColor = GlobalPicker.cellTextColors
+        repeatHowOftenLabel.textColor = .lightGray
+        disableAutoSnoozeSwitch.layer.cornerRadius = 15
+        disableAutoSnoozeSwitch.layer.masksToBounds = true
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setUpUI()
         
         //Set right bar item as "Save"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveButtonPressed))
@@ -69,9 +84,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         cells.forEach { (cell) in
             cell.theme_backgroundColor = GlobalPicker.backgroundColor
         }
-        disableAutoSnoozeLabel.theme_textColor = GlobalPicker.cellTextColors
-        disableAutoSnoozeSwitch.layer.cornerRadius = 15
-        disableAutoSnoozeSwitch.layer.masksToBounds = true
         
         if #available(iOS 11.0, *) {
             self.navigationItem.largeTitleDisplayMode = .never
@@ -87,6 +99,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             //print("Item's uuidString is \((item?.uuidString)!)")
             disableAutoSnoozeSwitch.setOn(item?.disableAutoSnooze ?? false, animated: false)
             setAnchorColor()
+            
+            self.title = "Edit Task"
+        } else {
+            self.title = "Add New Task"
         }
         
         //load in segment from add segue
@@ -221,10 +237,11 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
  
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        print("running prepare for segue")
-        let destinationVC = segue.destination as! TableViewController
-        destinationVC.passedSegment = segmentSelection.selectedSegmentIndex
-        //scheduleNewNotification(title: taskTextField.text!, notes: notesTextView.text, segment: segmentSelection.selectedSegmentIndex, uuidString: self.uuidString)
+        if segue.identifier == "unwindToTableViewController" {
+            let destinationVC = segue.destination as! TableViewController
+            //destinationVC.passedSegment = segmentSelection.selectedSegmentIndex
+            destinationVC.changeSegment(segment: segmentSelection.selectedSegmentIndex)
+        }
     }
     
     func firstTriggerDate(segment: Int) -> Date {
@@ -707,6 +724,17 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             }
         }
         return darkMode
+    }
+    
+    func getRepeatString() -> String {
+        
+        if let currentItem = item {
+            let repeatDate = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: currentItem.year, month: currentItem.month, day: currentItem.day, hour: currentItem.hour, minute: currentItem.minute, second: nil, nanosecond: nil, weekday: currentItem.weekday, weekdayOrdinal: currentItem.weekdayOrdinal, quarter: currentItem.quarter, weekOfMonth: currentItem.weekOfMonth, weekOfYear: currentItem.weekOfYear, yearForWeekOfYear: nil)
+            let formatter = DateComponentsFormatter()
+            return formatter.string(from: repeatDate) ?? ""
+        } else {
+            return ""
+        }
     }
 
 }
