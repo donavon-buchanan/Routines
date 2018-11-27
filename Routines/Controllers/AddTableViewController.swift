@@ -59,7 +59,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     //var segue: UIStoryboardSegue?
     
     fileprivate func setUpUI() {
-        //Tint on anchor
+        //Tint on snoozeStrike
         anchorImageView.image = anchorImageView.image?.withRenderingMode(.alwaysTemplate)
         setAnchorColor()
         

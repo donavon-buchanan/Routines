@@ -202,16 +202,16 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             }
         }
         
-        var indicatorImage : UIImage? {
+        var indicatorImage : UIImageView {
             let imageView = UIImageView()
             if (self.items?[indexPath.row].repeats)! {
-                imageView.theme_image = GlobalPicker.repeatsCell
-                return imageView.image
+                imageView.image = UIImage(imageLiteralResourceName: "repeat")
+                return imageView
             } else if (self.items?[indexPath.row].disableAutoSnooze)! {
-                imageView.theme_image = GlobalPicker.anchorCell
-                return imageView.image
+                imageView.image = UIImage(imageLiteralResourceName: "snooze-strike")
+                return imageView
             } else {
-                return nil
+                return UIImageView()
             }
         }
         
@@ -219,7 +219,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         
         cell.cellTitleLabel?.text = cellTitle
         cell.cellSubtitleLabel?.text = cellSubtitle
-        cell.cellIndicatorImage?.image = indicatorImage
+        cell.cellIndicatorImage.image? = indicatorImage.image?.withRenderingMode(.alwaysTemplate) ?? UIImage()
+        cell.cellIndicatorImage.theme_tintColor = GlobalPicker.cellTextColors
         
         cell.cellTitleLabel?.theme_textColor = GlobalPicker.cellTextColors
         cell.theme_backgroundColor = GlobalPicker.backgroundColor
@@ -283,7 +284,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        }
 //        ignoreAction.backgroundColor = .orange
 //        let anchorImageView = UIImageView()
-//        anchorImageView.image = UIImage(imageLiteralResourceName: "anchor").withRenderingMode(.alwaysTemplate)
+//        anchorImageView.image = UIImage(imageLiteralResourceName: "snoozeStrike").withRenderingMode(.alwaysTemplate)
 //        anchorImageView.theme_tintColor = GlobalPicker.cellTextColors
 //        ignoreAction.image = anchorImageView.image
 //        let backgroundColorView = UIView()

@@ -28,16 +28,16 @@
                                     <rect key="frame" x="0.0" y="0.0" width="341" height="63.666666666666664"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="wCB-a3-8un">
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="wCB-a3-8un">
                                             <rect key="frame" x="4" y="17" width="329" height="30"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="anchor" translatesAutoresizingMaskIntoConstraints="NO" id="jtF-uI-8Sz">
-                                                    <rect key="frame" x="0.0" y="3.6666666666666679" width="28" height="23"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snooze-strike" translatesAutoresizingMaskIntoConstraints="NO" id="jtF-uI-8Sz">
+                                                    <rect key="frame" x="0.0" y="3.6666666666666679" width="23" height="23"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
                                                     </accessibility>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="28" id="nFN-tS-dUQ"/>
+                                                        <constraint firstAttribute="width" constant="23" id="nFN-tS-dUQ"/>
                                                     </constraints>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="v1o-h3-VYP">
@@ -229,7 +229,7 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="KzK-qL-NG1">
                                                             <rect key="frame" x="256" y="0.0" width="87" height="32"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="anchor" translatesAutoresizingMaskIntoConstraints="NO" id="UgR-S5-Xvq">
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snooze-strike" translatesAutoresizingMaskIntoConstraints="NO" id="UgR-S5-Xvq">
                                                                     <rect key="frame" x="0.0" y="2" width="28" height="28"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="28" id="Asu-Bw-9Cp"/>
@@ -1337,7 +1337,6 @@
         <image name="add button" width="28" height="28"/>
         <image name="afternoon" width="23" height="23"/>
         <image name="afternoon-selected" width="23" height="23"/>
-        <image name="anchor" width="23" height="23"/>
         <image name="evening" width="23" height="23"/>
         <image name="evening-selected" width="23" height="23"/>
         <image name="gear" width="28" height="28"/>
@@ -1345,6 +1344,7 @@
         <image name="morning-selected" width="23" height="23"/>
         <image name="night" width="23" height="23"/>
         <image name="night-selected" width="23" height="23"/>
+        <image name="snooze-strike" width="23" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="axw-H5-5nW"/>
