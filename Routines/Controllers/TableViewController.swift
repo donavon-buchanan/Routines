@@ -255,29 +255,43 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @available(iOS 11.0, *)
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let completeAction = UIContextualAction(style: .destructive, title: "Complete") { (action, view, completion) in
+        let completeAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completion) in
             self.updateModel(at: indexPath)
+            self.tableView.deleteRows(at: [indexPath], with: .left)
+            completion(true)
+        }
+        let snoozeAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completion) in
+            self.snoozeItem(indexPath: indexPath)
             self.tableView.deleteRows(at: [indexPath], with: .left)
             completion(true)
         }
         //TODO: Image is not centered
         completeAction.image = UIImage(imageLiteralResourceName: "checkmark")
         completeAction.backgroundColor = UIColor(red:0.30,green:0.43,blue:1.00,alpha:1.00)
-        let actions = UISwipeActionsConfiguration(actions: [completeAction])
+        snoozeAction.backgroundColor = .orange
+        snoozeAction.image = UIImage(imageLiteralResourceName: "snooze")
+        let actions = UISwipeActionsConfiguration(actions: [completeAction,snoozeAction])
         return actions
     }
     
-    @available(iOS 11.0, *)
-    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let snoozeAction = UIContextualAction(style: .destructive, title: "Snooze") { (action, view, completion) in
-            self.snoozeItem(indexPath: indexPath)
-            self.tableView.deleteRows(at: [indexPath], with: .right)
-            completion(true)
-        }
-        snoozeAction.backgroundColor = .orange
-        let actions = UISwipeActionsConfiguration(actions: [snoozeAction])
-        return actions
-    }
+//    @available(iOS 11.0, *)
+//    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        let ignoreAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completion) in
+//            self.snoozeItem(indexPath: indexPath)
+//            self.tableView.deleteRows(at: [indexPath], with: .right)
+//            completion(true)
+//        }
+//        ignoreAction.backgroundColor = .orange
+//        let anchorImageView = UIImageView()
+//        anchorImageView.image = UIImage(imageLiteralResourceName: "anchor").withRenderingMode(.alwaysTemplate)
+//        anchorImageView.theme_tintColor = GlobalPicker.cellTextColors
+//        ignoreAction.image = anchorImageView.image
+//        let backgroundColorView = UIView()
+//        backgroundColorView.theme_backgroundColor = GlobalPicker.barTextColor
+//        ignoreAction.backgroundColor = backgroundColorView.backgroundColor
+//        let actions = UISwipeActionsConfiguration(actions: [ignoreAction])
+//        return actions
+//    }
     
 //    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 //        if (editingStyle == .delete) {
@@ -482,6 +496,22 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         }
         OptionsTableViewController().refreshNotifications()
         self.updateBadge()
+    }
+    
+    func setItemToIgnore(indexPath: IndexPath, ignore: Bool) {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                do {
+                    try! realm.write {
+                        if let item = self.items?[indexPath.row] {
+                            item.disableAutoSnooze = ignore
+                        }
+                    }
+                }
+            }
+        }
+        OptionsTableViewController().refreshNotifications()
     }
     
     //TODO: Animated reload would be nice
