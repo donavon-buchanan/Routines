@@ -8,7 +8,6 @@
 
 import UIKit
 import RealmSwift
-import SwipeCellKit
 import UserNotifications
 import UserNotificationsUI
 import NotificationCenter
@@ -18,6 +17,39 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     @IBOutlet var settingsBarButtonItem: UIBarButtonItem!
     @IBOutlet var addbarButtonItem: UIBarButtonItem!
+    
+    var linesBarButtonSelected = false
+    
+    @IBAction func linesBarButtonPressed(_ sender: UIBarButtonItem) {
+        if linesBarButtonSelected {
+            showTabBar()
+            setNavTitle()
+            linesBarButtonSelected = false
+            loadItems(segment: self.segment)
+            tableView.reloadData()
+        } else {
+            hideTabBar()
+            self.title = "All Tasks"
+            linesBarButtonSelected = true
+            DispatchQueue(label: realmDispatchQueueLabel).sync {
+                autoreleasepool {
+                    let realm = try! Realm()
+                    self.items = realm.objects(Items.self)
+                }
+            }
+        }
+        tableView.reloadData()
+    }
+    
+    func hideTabBar() {
+        tabBarController?.tabBar.isHidden = true
+        UIView.transition(with: tabBarController!.view, duration: 0.35, options: .transitionCrossDissolve, animations: nil)
+    }
+    
+    func showTabBar() {
+        tabBarController?.tabBar.isHidden = false
+        UIView.transition(with: tabBarController!.view, duration: 0.35, options: .transitionCrossDissolve, animations: nil)
+    }
     
     
     @IBAction func longPressToEdit(_ sender: UILongPressGestureRecognizer) {
@@ -240,12 +272,10 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let completeAction = UITableViewRowAction(style: .destructive, title: "Complete") { (action, indexPath) in
             self.updateModel(at: indexPath)
-            tableView.deleteRows(at: [indexPath], with: .left)
         }
 
         let snoozeAction = UITableViewRowAction(style: .default, title: "Snooze") { (action, indexPath) in
             self.snoozeItem(indexPath: indexPath)
-            tableView.deleteRows(at: [indexPath], with: .left)
         }
 
         completeAction.backgroundColor = UIColor(red:0.38,green:0.70,blue:0.22,alpha:1.00)
@@ -258,12 +288,10 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         
         let completeAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completion) in
             self.updateModel(at: indexPath)
-            self.tableView.deleteRows(at: [indexPath], with: .left)
             completion(true)
         }
         let snoozeAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completion) in
             self.snoozeItem(indexPath: indexPath)
-            self.tableView.deleteRows(at: [indexPath], with: .left)
             completion(true)
         }
         //TODO: Image is not centered
@@ -469,6 +497,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 }
             }
         }
+        tableView.deleteRows(at: [indexPath], with: .left)
         OptionsTableViewController().refreshNotifications()
         self.updateBadge()
     }
@@ -494,6 +523,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                     }
                 }
             }
+        }
+        if !linesBarButtonSelected {
+            tableView.deleteRows(at: [indexPath], with: .left)
         }
         OptionsTableViewController().refreshNotifications()
         self.updateBadge()
