@@ -242,8 +242,41 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             tableView.deleteRows(at: [indexPath], with: .left)
         }
 
-        completeAction.backgroundColor = UIColor(red:0.38,green:0.70,blue:0.22,alpha:5.00)
-        return [completeAction]
+        let snoozeAction = UITableViewRowAction(style: .default, title: "Snooze") { (action, indexPath) in
+            self.snoozeItem(indexPath: indexPath)
+            tableView.deleteRows(at: [indexPath], with: .left)
+        }
+
+        completeAction.backgroundColor = UIColor(red:0.38,green:0.70,blue:0.22,alpha:1.00)
+        snoozeAction.backgroundColor = UIColor.orange
+        return [completeAction,snoozeAction]
+    }
+    
+    @available(iOS 11.0, *)
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let completeAction = UIContextualAction(style: .destructive, title: "Complete") { (action, view, completion) in
+            self.updateModel(at: indexPath)
+            self.tableView.deleteRows(at: [indexPath], with: .left)
+            completion(true)
+        }
+        //TODO: Image is not centered
+        completeAction.image = UIImage(imageLiteralResourceName: "checkmark")
+        completeAction.backgroundColor = UIColor(red:0.30,green:0.43,blue:1.00,alpha:1.00)
+        let actions = UISwipeActionsConfiguration(actions: [completeAction])
+        return actions
+    }
+    
+    @available(iOS 11.0, *)
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let snoozeAction = UIContextualAction(style: .destructive, title: "Snooze") { (action, view, completion) in
+            self.snoozeItem(indexPath: indexPath)
+            self.tableView.deleteRows(at: [indexPath], with: .right)
+            completion(true)
+        }
+        snoozeAction.backgroundColor = .orange
+        let actions = UISwipeActionsConfiguration(actions: [snoozeAction])
+        return actions
     }
     
 //    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -416,6 +449,32 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                             self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3", item.uuidString])
                             print("removing item with key: \(item.uuidString)")
                             realm.delete(item)
+                        }
+                    }
+                }
+            }
+        }
+        OptionsTableViewController().refreshNotifications()
+        self.updateBadge()
+    }
+    
+    func snoozeItem(indexPath: IndexPath) {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                do {
+                    try! realm.write {
+                        if let item = self.items?[indexPath.row] {
+                            switch item.segment {
+                            case 0:
+                                item.segment = 1
+                            case 1:
+                                item.segment = 2
+                            case 2:
+                                item.segment = 3
+                            default:
+                                item.segment = 0
+                            }
                         }
                     }
                 }
