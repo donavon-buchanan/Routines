@@ -3,18 +3,20 @@ PODS:
   - NotificationBannerSwift (1.8.0):
     - MarqueeLabel/Swift (~> 3.2.0)
     - SnapKit (~> 4.0.1)
-  - Realm (3.11.2):
-    - Realm/Headers (= 3.11.2)
-  - Realm/Headers (3.11.2)
-  - RealmSwift (3.11.2):
-    - Realm (= 3.11.2)
+  - Realm (3.12.0):
+    - Realm/Headers (= 3.12.0)
+  - Realm/Headers (3.12.0)
+  - RealmSwift (3.12.0):
+    - Realm (= 3.12.0)
   - SnapKit (4.0.1)
   - SwiftTheme (0.4.3)
+  - ViewAnimator (2.2.0)
 
 DEPENDENCIES:
   - NotificationBannerSwift
   - RealmSwift
   - SwiftTheme
+  - ViewAnimator
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -24,15 +26,17 @@ SPEC REPOS:
     - RealmSwift
     - SnapKit
     - SwiftTheme
+    - ViewAnimator
 
 SPEC CHECKSUMS:
   MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
   NotificationBannerSwift: 49fc4be7fabada55b189b50e72184c92edd5f7f7
-  Realm: 864477d028db77f7c5a0cba64a4892ad53db128a
-  RealmSwift: 12b8262fc08020b47de4fd88eb3d5c9425b34ec7
+  Realm: cdaef23c4ddb36ab1ddffed23f5a7f3332fc5585
+  RealmSwift: 5576324033f0aa5ef1e0a839a3da2281dff47a7f
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   SwiftTheme: 628345b948068a48d330d76dffb1a990ea5f90aa
+  ViewAnimator: a849844cc3698620e1a562b510ed0c28aeafcdc5
 
-PODFILE CHECKSUM: a5167aa4b20847e4a03a92b0f2987c2990af5818
+PODFILE CHECKSUM: 607a3c969fd16e8058191b4677d986f6d0404b3f
 
 COCOAPODS: 1.5.2

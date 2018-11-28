@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 import UserNotifications
 import NotificationBannerSwift
+import ViewAnimator
 
 
 class TableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
@@ -24,30 +25,39 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     
     @IBAction func linesBarButtonPressed(_ sender: UIBarButtonItem) {
         if linesBarButtonSelected {
-            showTabBar()
             setNavTitle()
             linesBarButtonSelected = false
             self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
             loadItems(segment: self.segment)
             tableView.reloadData()
+            animateCells()
+            changeTabBar(hidden: false, animated: true)
+            
         } else {
-            hideTabBar()
             self.title = "All Tasks"
             linesBarButtonSelected = true
             self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button-filled")
             loadAllItems()
+            changeTabBar(hidden: true, animated: true)
+            
         }
         tableView.reloadData()
+        animateCells()
     }
     
-    func hideTabBar() {
-        tabBarController?.tabBar.isHidden = true
-        UIView.transition(with: tabBarController!.view, duration: 0.3, options: .transitionCrossDissolve, animations: nil)
-    }
-    
-    func showTabBar() {
-        tabBarController?.tabBar.isHidden = false
-        UIView.transition(with: tabBarController!.view, duration: 0.3, options: .transitionCrossDissolve, animations: nil)
+    func changeTabBar(hidden:Bool, animated: Bool){
+        guard let tabBar = self.tabBarController?.tabBar else { return; }
+        if tabBar.isHidden == hidden{ return }
+        let frame = tabBar.frame
+        let offset = hidden ? frame.size.height : -frame.size.height
+        let duration:TimeInterval = (animated ? 0.3 : 0.0)
+        tabBar.isHidden = false
+        
+        UIView.animate(withDuration: duration, animations: {
+            tabBar.frame = frame.offsetBy(dx: 0, dy: offset)
+        }, completion: { (true) in
+            tabBar.isHidden = hidden
+        })
     }
     
     
@@ -96,6 +106,17 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     let footerView = UIView()
     //var selectedTab = 0
 
+    fileprivate func animateCells() {
+        self.view.setNeedsLayout()
+        self.view.layoutIfNeeded()
+        let fromAnimation = AnimationType.from(direction: .right, offset: 50.0)
+        let zoomAnimation = AnimationType.zoom(scale: 0.1)
+        //let rotateAnimation = AnimationType.rotate(angle: CGFloat.pi/6)
+        
+        let cells = tableView.visibleCells
+        UIView.animate(views: cells, animations: [fromAnimation,zoomAnimation])
+    }
+    
     override func viewDidLoad() {
         print("Running viewDidLoad")
         super.viewDidLoad()
