@@ -17,7 +17,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     @IBOutlet var settingsBarButtonItem: UIBarButtonItem!
     @IBOutlet var addbarButtonItem: UIBarButtonItem!
-    @IBOutlet weak var linesBarButtonItem: UIBarButtonItem!
+    @IBOutlet var linesBarButtonItem: UIBarButtonItem!
     
     
     var linesBarButtonSelected = false
@@ -81,7 +81,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @objc func endEdit() {
         self.tableView.setEditing(false, animated: true)
         self.navigationItem.leftBarButtonItem = settingsBarButtonItem
-        self.navigationItem.rightBarButtonItems = [addbarButtonItem]
+        self.navigationItem.rightBarButtonItems = [addbarButtonItem,linesBarButtonItem]
     }
     
     let realmDispatchQueueLabel: String = "background"

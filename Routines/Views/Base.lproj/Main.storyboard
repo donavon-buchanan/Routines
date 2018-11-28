@@ -21,7 +21,7 @@
                         <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="kKH-bE-y9t"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" id="7pz-fE-Rks" customClass="TaskTableViewCell" customModule="Routines" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" id="7pz-fE-Rks" customClass="TaskTableViewCell" customModule="Routines" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="64"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7pz-fE-Rks" id="fSe-63-Vch">
@@ -90,7 +90,7 @@
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem image="add button" id="XO1-Lz-EWV">
+                            <barButtonItem systemItem="add" id="XO1-Lz-EWV">
                                 <connections>
                                     <segue destination="A8c-r3-V1W" kind="show" identifier="addSegue" id="CCO-Gm-Wv4"/>
                                 </connections>
@@ -1342,13 +1342,12 @@
         </scene>
     </scenes>
     <resources>
-        <image name="add button" width="28" height="28"/>
         <image name="afternoon" width="23" height="23"/>
         <image name="afternoon-selected" width="23" height="23"/>
         <image name="evening" width="23" height="23"/>
         <image name="evening-selected" width="23" height="23"/>
-        <image name="gear" width="28" height="28"/>
-        <image name="lines-button" width="23" height="23"/>
+        <image name="gear" width="26" height="26"/>
+        <image name="lines-button" width="26" height="26"/>
         <image name="morning" width="23" height="23"/>
         <image name="morning-selected" width="23" height="23"/>
         <image name="night" width="23" height="23"/>

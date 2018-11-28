@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "gear-white.png",
+      "filename" : "gear-dark.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "gear-white@2x.png",
+      "filename" : "gear-dark@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "gear-white@3x.png",
+      "filename" : "gear-dark@3x.png",
       "scale" : "3x"
     }
   ],
