@@ -12,5 +12,6 @@ target 'Routines' do
   #pod 'SwipeCellKit'
   #pod 'Hue'
   pod 'SwiftTheme'
+  pod 'NotificationBannerSwift'
 
 end

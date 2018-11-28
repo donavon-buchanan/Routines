@@ -9,8 +9,8 @@
 import UIKit
 import RealmSwift
 import UserNotifications
-import UserNotificationsUI
-import NotificationCenter
+import NotificationBannerSwift
+
 
 class TableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
     
@@ -502,6 +502,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             }
         }
         //tableView.deleteRows(at: [indexPath], with: .left)
+        reloadTableView()
         OptionsTableViewController().refreshNotifications()
         self.updateBadge()
     }
@@ -516,12 +517,20 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                             switch item.segment {
                             case 0:
                                 item.segment = 1
+                                
+                                showBanner(title: "Task Snoozed to Afternoon")
                             case 1:
                                 item.segment = 2
+                                
+                                showBanner(title: "Task Snoozed to Evening")
                             case 2:
                                 item.segment = 3
+                                
+                                showBanner(title: "Task Snoozed to Night")
                             default:
                                 item.segment = 0
+                                
+                                showBanner(title: "Task Snoozed to Morning")
                             }
                         }
                     }
@@ -531,6 +540,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        if !linesBarButtonSelected {
 //            tableView.deleteRows(at: [indexPath], with: .left)
 //        }
+        reloadTableView()
         OptionsTableViewController().refreshNotifications()
         self.updateBadge()
     }
@@ -844,4 +854,10 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         return minute
     }
     
+    //MARK: - Banners
+    
+    func showBanner(title: String?) {
+        let banner = StatusBarNotificationBanner(title: title ?? "Task Snoozed", style: .warning)
+        banner.show()
+    }
 }

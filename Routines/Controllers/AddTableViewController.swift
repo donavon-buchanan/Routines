@@ -9,8 +9,7 @@
 import UIKit
 import RealmSwift
 import UserNotifications
-import UserNotificationsUI
-//import Hue
+import NotificationBannerSwift
 
 class AddTableViewController: UITableViewController, UITextViewDelegate, UITextFieldDelegate {
     
@@ -33,6 +32,15 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         if self.item != nil {
             navigationItem.rightBarButtonItem?.isEnabled = true
             updateItem()
+//            var subtitle : String {
+//                switch sender.isOn {
+//                case true:
+//                    return "Ignoring Auto Snooze for this task."
+//                default:
+//                    return "Disabled Ignore Auto Snooze for this task."
+//                }
+//            }
+            showBanner(title: "Saved!")
         }
         setAnchorColor()
     }
@@ -736,5 +744,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             return ""
         }
     }
-
+    
+    //MARK: - Banners
+    func showBanner(title: String?) {
+        let banner = StatusBarNotificationBanner(title: title ?? "", style: .success)
+        banner.show()
+    }
 }
