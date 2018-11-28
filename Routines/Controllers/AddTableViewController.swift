@@ -247,8 +247,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "unwindToTableViewController" {
             let destinationVC = segue.destination as! TableViewController
-            //destinationVC.passedSegment = segmentSelection.selectedSegmentIndex
-            destinationVC.changeSegment(segment: segmentSelection.selectedSegmentIndex)
+            destinationVC.passedSegment = segmentSelection.selectedSegmentIndex
+            //destinationVC.changeSegment(segment: segmentSelection.selectedSegmentIndex)
         }
     }
     

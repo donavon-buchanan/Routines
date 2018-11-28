@@ -27,15 +27,15 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             showTabBar()
             setNavTitle()
             linesBarButtonSelected = false
-            loadItems(segment: self.segment)
             self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
+            loadItems(segment: self.segment)
             tableView.reloadData()
         } else {
             hideTabBar()
             self.title = "All Tasks"
             linesBarButtonSelected = true
             self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button-filled")
-            loadItems(segment: self.segment)
+            loadAllItems()
         }
         tableView.reloadData()
     }
@@ -85,9 +85,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     var passedSegment: Int?
     func changeSegment(segment: Int?) {
         if let newSegment = segment {
-            passedSegment = nil
-            self.tabBarController?.selectedIndex = newSegment
-            saveSelectedTab(index: newSegment)
+            DispatchQueue.main.async {
+                autoreleasepool {
+                    self.passedSegment = nil
+                    self.tabBarController?.selectedIndex = newSegment
+                    self.saveSelectedTab(index: newSegment)
+                }
+            }
         }
     }
     
@@ -137,12 +141,17 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         removeDeliveredNotifications()
         setNavTitle()
         reloadTableView()
+        //changeSegment(segment: passedSegment)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("viewDidAppear \n")
         setAppearance(segment: self.segment)
+        //changeSegment(segment: passedSegment)
+    }
+    
+    override func viewDidLayoutSubviews() {
         //changeSegment(segment: passedSegment)
     }
     
@@ -185,13 +194,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     
     func getSelectedTab() -> Int {
         var index = Int()
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
-                    index = options.selectedIndex
-                }
-            }
+        if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+            index = options.selectedIndex
         }
         return index
     }
@@ -403,15 +407,12 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     
     private func clearAll() {
         self.items?.forEach({ (item) in
-            DispatchQueue(label: self.realmDispatchQueueLabel).sync {
-                autoreleasepool {
-                    let realm = try! Realm()
-                    try! realm.write {
-                        realm.delete(item)
-                    }
-                    let indexPath = self.tableView.indexPathForRow(at: CGPoint(x: 0, y: 0))
-                    self.tableView.deleteRows(at: [indexPath!], with: UITableView.RowAnimation.left)
+            do {
+                try! realm.write {
+                    realm.delete(item)
                 }
+                let indexPath = self.tableView.indexPathForRow(at: CGPoint(x: 0, y: 0))
+                self.tableView.deleteRows(at: [indexPath!], with: UITableView.RowAnimation.left)
             }
         })
         endEdit()
@@ -466,6 +467,18 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 //destination.segue = segue
             }
         }
+        
+        //Reset the view just before segue
+        if linesBarButtonSelected {
+            self.setNavTitle()
+            DispatchQueue.main.async {
+                autoreleasepool {
+                    self.linesBarButtonSelected = false
+                    self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
+                    self.loadItems(segment: self.segment)
+                }
+            }
+        }
     }
     
     //MARK: - Model Manipulation Methods
@@ -486,17 +499,12 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func updateModel(at indexPath: IndexPath) {
         //super.updateModel(at: indexPath)
         print("Removing item with indexPath: \(indexPath)")
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                do {
-                    try! realm.write {
-                        if let item = self.items?[indexPath.row] {
-                            self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3", item.uuidString])
-                            print("removing item with key: \(item.uuidString)")
-                            realm.delete(item)
-                        }
-                    }
+        do {
+            try! realm.write {
+                if let item = self.items?[indexPath.row] {
+                    self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3", item.uuidString])
+                    print("removing item with key: \(item.uuidString)")
+                    realm.delete(item)
                 }
             }
         }
@@ -507,31 +515,26 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
     
     func snoozeItem(indexPath: IndexPath) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                do {
-                    try! realm.write {
-                        if let item = self.items?[indexPath.row] {
-                            switch item.segment {
-                            case 0:
-                                item.segment = 1
-                                
-                                showBanner(title: "Task Snoozed to Afternoon")
-                            case 1:
-                                item.segment = 2
-                                
-                                showBanner(title: "Task Snoozed to Evening")
-                            case 2:
-                                item.segment = 3
-                                
-                                showBanner(title: "Task Snoozed to Night")
-                            default:
-                                item.segment = 0
-                                
-                                showBanner(title: "Task Snoozed to Morning")
-                            }
-                        }
+        do {
+            try! realm.write {
+                if let item = self.items?[indexPath.row] {
+                    switch item.segment {
+                    case 0:
+                        item.segment = 1
+                        
+                        showBanner(title: "Task Snoozed to Afternoon")
+                    case 1:
+                        item.segment = 2
+                        
+                        showBanner(title: "Task Snoozed to Evening")
+                    case 2:
+                        item.segment = 3
+                        
+                        showBanner(title: "Task Snoozed to Night")
+                    default:
+                        item.segment = 0
+                        
+                        showBanner(title: "Task Snoozed to Morning")
                     }
                 }
             }
@@ -540,20 +543,16 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         if !linesBarButtonSelected {
             tableView.deleteRows(at: [indexPath], with: .left)
         }
+        tableView.reloadData()
         OptionsTableViewController().refreshNotifications()
         self.updateBadge()
     }
     
     func setItemToIgnore(indexPath: IndexPath, ignore: Bool) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                do {
-                    try! realm.write {
-                        if let item = self.items?[indexPath.row] {
-                            item.disableAutoSnooze = ignore
-                        }
-                    }
+        do {
+            try! realm.write {
+                if let item = self.items?[indexPath.row] {
+                    item.disableAutoSnooze = ignore
                 }
             }
         }
@@ -650,25 +649,19 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     var items: Results<Items>?
     var segment = Int()
     func loadItems(segment: Int) {
-        if linesBarButtonSelected {
-            items = self.realm.objects(Items.self).sorted(byKeyPath: "dateModified", ascending: true)
-        } else {
-            items = self.realm.objects(Items.self).filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true)
-        }
+        items = self.realm.objects(Items.self).filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true)
+    }
+    func loadAllItems() {
+        items = self.realm.objects(Items.self).sorted(byKeyPath: "dateModified", ascending: true)
     }
     
     private func deleteItem(item: Items) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                do {
-                    try realm.write {
-                        realm.delete(item)
-                    }
-                } catch {
-                    print("failed to delete item")
-                }
+        do {
+            try realm.write {
+                realm.delete(item)
             }
+        } catch {
+            print("failed to delete item")
         }
     }
     
@@ -708,13 +701,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     
     func getDarkModeStatus() -> Bool {
         var darkMode = false
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
-                    darkMode = options.darkMode
-                }
-            }
+        if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+            darkMode = options.darkMode
         }
         return darkMode
     }
@@ -748,36 +736,26 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     //This does the work
     func autoSnoozeMove(fromSegment: Int, toSegment: Int) {
         print("running autoSnoozeMove from segment \(fromSegment) to \(toSegment)")
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let items = realm.objects(Items.self).filter("segment = \(fromSegment) AND disableAutoSnooze = %@", false)
-                items.forEach({ (item) in
-                    if let itemDate = item.dateModified {
-                        if itemDate < Date() {
-                            do {
-                                try realm.write {
-                                    item.segment = toSegment
-                                }
-                            } catch {
-                                print("failed to autoSnooze items")
-                            }
+        let items = realm.objects(Items.self).filter("segment = \(fromSegment) AND disableAutoSnooze = %@", false)
+        items.forEach({ (item) in
+            if let itemDate = item.dateModified {
+                if itemDate < Date() {
+                    do {
+                        try realm.write {
+                            item.segment = toSegment
                         }
+                    } catch {
+                        print("failed to autoSnooze items")
                     }
-                })
+                }
             }
-        }
+        })
     }
     
     func getAutoSnoozeStatus() -> Bool {
         var snooze = false
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
-                    snooze = options.smartSnooze
-                }
-            }
+        if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+            snooze = options.smartSnooze
         }
         return snooze
     }
@@ -815,21 +793,16 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     
     func getOptionHour(segment: Int) -> Int {
         var hour = Int()
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
-                    switch segment {
-                    case 1:
-                        hour = options.afternoonHour
-                    case 2:
-                        hour = options.eveningHour
-                    case 3:
-                        hour = options.nightHour
-                    default:
-                        hour = options.morningHour
-                    }
-                }
+        if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+            switch segment {
+            case 1:
+                hour = options.afternoonHour
+            case 2:
+                hour = options.eveningHour
+            case 3:
+                hour = options.nightHour
+            default:
+                hour = options.morningHour
             }
         }
         return hour
@@ -837,22 +810,16 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     
     func getOptionMinute(segment: Int) -> Int {
         var minute = Int()
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                switch segment {
-                case 1:
-                    minute = (options?.afternoonMinute)!
-                case 2:
-                    minute = (options?.eveningMinute)!
-                case 3:
-                    minute = (options?.nightMinute)!
-                default:
-                    minute = (options?.morningMinute)!
-                }
-                
-            }
+        let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+        switch segment {
+        case 1:
+            minute = (options?.afternoonMinute)!
+        case 2:
+            minute = (options?.eveningMinute)!
+        case 3:
+            minute = (options?.nightMinute)!
+        default:
+            minute = (options?.morningMinute)!
         }
         return minute
     }

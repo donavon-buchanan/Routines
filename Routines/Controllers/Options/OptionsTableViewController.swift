@@ -76,6 +76,9 @@ class OptionsTableViewController: UITableViewController {
         }
         
         self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+        
+        tableView.estimatedRowHeight = 60
+        tableView.rowHeight = UITableView.automaticDimension
     }
     
     override func viewWillAppear(_ animated: Bool) {
