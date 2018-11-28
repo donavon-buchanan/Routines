@@ -17,6 +17,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @IBAction func unwindToTableViewController(segue:UIStoryboardSegue){}
     @IBOutlet var settingsBarButtonItem: UIBarButtonItem!
     @IBOutlet var addbarButtonItem: UIBarButtonItem!
+    @IBOutlet weak var linesBarButtonItem: UIBarButtonItem!
+    
     
     var linesBarButtonSelected = false
     
@@ -26,11 +28,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             setNavTitle()
             linesBarButtonSelected = false
             loadItems(segment: self.segment)
+            self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
             tableView.reloadData()
         } else {
             hideTabBar()
             self.title = "All Tasks"
             linesBarButtonSelected = true
+            self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button-filled")
             DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
@@ -497,7 +501,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 }
             }
         }
-        tableView.deleteRows(at: [indexPath], with: .left)
+        //tableView.deleteRows(at: [indexPath], with: .left)
         OptionsTableViewController().refreshNotifications()
         self.updateBadge()
     }
@@ -524,9 +528,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 }
             }
         }
-        if !linesBarButtonSelected {
-            tableView.deleteRows(at: [indexPath], with: .left)
-        }
+//        if !linesBarButtonSelected {
+//            tableView.deleteRows(at: [indexPath], with: .left)
+//        }
         OptionsTableViewController().refreshNotifications()
         self.updateBadge()
     }

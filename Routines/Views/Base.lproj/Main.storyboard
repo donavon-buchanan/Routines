@@ -104,6 +104,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addbarButtonItem" destination="XO1-Lz-EWV" id="keO-Yz-T6L"/>
+                        <outlet property="linesBarButtonItem" destination="fnS-sl-edc" id="lLb-an-lKQ"/>
                         <outlet property="settingsBarButtonItem" destination="fje-qN-BIw" id="6xw-C2-lOi"/>
                     </connections>
                 </tableViewController>
