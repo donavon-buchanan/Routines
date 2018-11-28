@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double SwipeCellKitVersionNumber;
-FOUNDATION_EXPORT const unsigned char SwipeCellKitVersionString[];
+FOUNDATION_EXPORT double SnapKitVersionNumber;
+FOUNDATION_EXPORT const unsigned char SnapKitVersionString[];
 
