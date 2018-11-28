@@ -35,12 +35,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             self.title = "All Tasks"
             linesBarButtonSelected = true
             self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button-filled")
-            DispatchQueue(label: realmDispatchQueueLabel).sync {
-                autoreleasepool {
-                    let realm = try! Realm()
-                    self.items = realm.objects(Items.self)
-                }
-            }
+            loadItems(segment: self.segment)
         }
         tableView.reloadData()
     }
@@ -141,12 +136,12 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         updateBadge()
         removeDeliveredNotifications()
         setNavTitle()
+        reloadTableView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("viewDidAppear \n")
-        reloadTableView()
         setAppearance(segment: self.segment)
         //changeSegment(segment: passedSegment)
     }
@@ -289,14 +284,18 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     
     @available(iOS 11.0, *)
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
+
         let completeAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completion) in
             self.updateModel(at: indexPath)
             completion(true)
         }
         let snoozeAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completion) in
             self.snoozeItem(indexPath: indexPath)
-            completion(true)
+            if !self.linesBarButtonSelected {
+                completion(true)
+            } else {
+                completion(false)
+            }
         }
         //TODO: Image is not centered
         completeAction.image = UIImage(imageLiteralResourceName: "checkmark")
@@ -501,8 +500,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 }
             }
         }
-        //tableView.deleteRows(at: [indexPath], with: .left)
-        reloadTableView()
+        //Index path still needs to be updated to prevent trying to delete out of bounds
+        tableView.deleteRows(at: [indexPath], with: .left)
         OptionsTableViewController().refreshNotifications()
         self.updateBadge()
     }
@@ -537,10 +536,10 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 }
             }
         }
-//        if !linesBarButtonSelected {
-//            tableView.deleteRows(at: [indexPath], with: .left)
-//        }
-        reloadTableView()
+        //Don't remove the row if viewing all items because it still exists
+        if !linesBarButtonSelected {
+            tableView.deleteRows(at: [indexPath], with: .left)
+        }
         OptionsTableViewController().refreshNotifications()
         self.updateBadge()
     }
@@ -651,7 +650,11 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     var items: Results<Items>?
     var segment = Int()
     func loadItems(segment: Int) {
-        items = self.realm.objects(Items.self).filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true)
+        if linesBarButtonSelected {
+            items = self.realm.objects(Items.self).sorted(byKeyPath: "dateModified", ascending: true)
+        } else {
+            items = self.realm.objects(Items.self).filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true)
+        }
     }
     
     private func deleteItem(item: Items) {
