@@ -248,7 +248,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         if segue.identifier == "unwindToTableViewController" {
             let destinationVC = segue.destination as! TableViewController
             destinationVC.passedSegment = segmentSelection.selectedSegmentIndex
-            //destinationVC.changeSegment(segment: segmentSelection.selectedSegmentIndex)
         }
     }
     

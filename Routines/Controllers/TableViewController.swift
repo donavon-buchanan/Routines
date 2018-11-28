@@ -42,12 +42,12 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     
     func hideTabBar() {
         tabBarController?.tabBar.isHidden = true
-        UIView.transition(with: tabBarController!.view, duration: 0.35, options: .transitionCrossDissolve, animations: nil)
+        UIView.transition(with: tabBarController!.view, duration: 0.3, options: .transitionCrossDissolve, animations: nil)
     }
     
     func showTabBar() {
         tabBarController?.tabBar.isHidden = false
-        UIView.transition(with: tabBarController!.view, duration: 0.35, options: .transitionCrossDissolve, animations: nil)
+        UIView.transition(with: tabBarController!.view, duration: 0.3, options: .transitionCrossDissolve, animations: nil)
     }
     
     
@@ -85,13 +85,10 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     var passedSegment: Int?
     func changeSegment(segment: Int?) {
         if let newSegment = segment {
-            DispatchQueue.main.async {
-                autoreleasepool {
-                    self.passedSegment = nil
-                    self.tabBarController?.selectedIndex = newSegment
-                    self.saveSelectedTab(index: newSegment)
-                }
-            }
+            self.passedSegment = nil
+            self.tabBarController?.selectedIndex = newSegment
+            UIView.transition(with: tabBarController!.view, duration: 0.3, options: .transitionCrossDissolve, animations: nil)
+            self.saveSelectedTab(index: newSegment)
         }
     }
     
@@ -126,6 +123,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         tableView.estimatedRowHeight = 64
     }
     
+    
+    
     @objc func appBecameActive() {
         self.runAutoSnooze()
         removeDeliveredNotifications()
@@ -148,11 +147,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         super.viewDidAppear(animated)
         print("viewDidAppear \n")
         setAppearance(segment: self.segment)
-        //changeSegment(segment: passedSegment)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        //changeSegment(segment: passedSegment)
+        changeSegment(segment: passedSegment)
     }
     
     func setNavTitle() {

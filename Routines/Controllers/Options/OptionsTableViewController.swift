@@ -76,9 +76,6 @@ class OptionsTableViewController: UITableViewController {
         }
         
         self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
-        
-        tableView.estimatedRowHeight = 60
-        tableView.rowHeight = UITableView.automaticDimension
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -141,6 +138,15 @@ class OptionsTableViewController: UITableViewController {
             self.darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
             saveDarkModeOption(isOn: darkModeSwtich.isOn)
             haptic.impactOccurred()
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 1 {
+            tableView.estimatedRowHeight = 60
+            return UITableView.automaticDimension
+        } else {
+            return 60
         }
     }
 
