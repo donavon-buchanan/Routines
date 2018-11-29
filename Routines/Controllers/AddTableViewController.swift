@@ -248,6 +248,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         if segue.identifier == "unwindToTableViewController" {
             let destinationVC = segue.destination as! TableViewController
             destinationVC.passedSegment = segmentSelection.selectedSegmentIndex
+            //Cell contents can change, so layout the views again to resize the cells
+//            destinationVC.view.setNeedsLayout()
+//            destinationVC.view.layoutIfNeeded()
         }
     }
     

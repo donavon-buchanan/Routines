@@ -32,14 +32,12 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             tableView.reloadData()
             animateCells()
             changeTabBar(hidden: false, animated: true)
-            
         } else {
             self.title = "All Tasks"
             linesBarButtonSelected = true
             self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button-filled")
             loadAllItems()
             changeTabBar(hidden: true, animated: true)
-            
         }
         tableView.reloadData()
         animateCells()
@@ -52,14 +50,18 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         let offset = hidden ? frame.size.height : -frame.size.height
         let duration:TimeInterval = (animated ? 0.3 : 0.0)
         tabBar.isHidden = false
+        self.setViewBackgroundGraphic(enabled: !hidden)
+        extendedLayoutIncludesOpaqueBars = hidden
         
         UIView.animate(withDuration: duration, animations: {
             tabBar.frame = frame.offsetBy(dx: 0, dy: offset)
+            self.tableView.frame = CGRect(x:0,y:0,width: self.view.frame.width, height: self.view.frame.height + offset)
+            self.tableView.setNeedsDisplay()
+            self.tableView.layoutIfNeeded()
         }, completion: { (true) in
             tabBar.isHidden = hidden
         })
     }
-    
     
     @IBAction func longPressToEdit(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
@@ -130,18 +132,17 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         self.tabBarController?.delegate = self
         self.navigationController?.delegate = self
         self.segment = self.tabBarController?.selectedIndex ?? 0
-        //TODO: Fade cells into top nav bar
-        //self.tableView.contentInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
         
         footerView.backgroundColor = .clear
         self.tableView.tableFooterView = footerView
         self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         
-        setViewBackgroundGraphic()
+        setViewBackgroundGraphic(enabled: true)
         
         loadItems(segment: self.segment)
         
         tableView.estimatedRowHeight = 64
+        //tableView.rowHeight = UITableView.automaticDimension
     }
     
     
@@ -169,6 +170,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         print("viewDidAppear \n")
         setAppearance(segment: self.segment)
         changeSegment(segment: passedSegment)
+        //animateCells()
     }
     
     func setNavTitle() {
@@ -279,7 +281,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         cellSelectedBackgroundView.theme_backgroundColor = GlobalPicker.cellBackground
         cell.selectedBackgroundView = cellSelectedBackgroundView
         cell.multipleSelectionBackgroundView = cellSelectedBackgroundView
-        
         
         return cell
     }
@@ -581,17 +582,23 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
     
     //Set background graphic
-    func setViewBackgroundGraphic() {
+    func setViewBackgroundGraphic(enabled: Bool) {
         
-        //let imageSize:CGFloat = UIScreen.main.bounds.width * 0.893
-        
-        let backgroundImageView = UIImageView()
-        let backgroundImage = UIImage(imageLiteralResourceName: "inlay")
-        
-        backgroundImageView.image = backgroundImage
-        backgroundImageView.contentMode = .scaleAspectFit
-        
-        self.tableView.backgroundView = backgroundImageView
+        if enabled {
+            let backgroundImageView = UIImageView()
+            let backgroundImage = UIImage(imageLiteralResourceName: "inlay")
+            
+            backgroundImageView.image = backgroundImage
+            backgroundImageView.contentMode = .scaleAspectFit
+            
+            self.tableView.backgroundView = backgroundImageView
+            self.view.setNeedsDisplay()
+            self.view.layoutIfNeeded()
+            UIView.transition(with: self.view, duration: 0.35, options: .transitionCrossDissolve, animations: nil)
+        } else {
+            self.tableView.backgroundView = UIView()
+            UIView.transition(with: self.view, duration: 0.0, options: .transitionCrossDissolve, animations: nil)
+        }
         
     }
     
@@ -668,7 +675,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         items = self.realm.objects(Items.self).filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true)
     }
     func loadAllItems() {
-        items = self.realm.objects(Items.self).sorted(byKeyPath: "dateModified", ascending: true)
+        items = self.realm.objects(Items.self)//.sorted(byKeyPath: "dateModified", ascending: true)
     }
     
     private func deleteItem(item: Items) {
