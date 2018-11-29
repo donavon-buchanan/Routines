@@ -25,7 +25,7 @@
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="No1-b3-lJC" secondAttribute="trailing" id="9Ed-8Y-x2J"/>
                             <constraint firstItem="No1-b3-lJC" firstAttribute="centerX" secondItem="kI1-rZ-mWf" secondAttribute="centerX" id="iVR-75-QRd"/>
@@ -58,7 +58,7 @@
         <scene sceneID="MaC-Iz-71E">
             <objects>
                 <tabBarController id="lsp-WH-zrr" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="nuC-8l-780">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="nuC-8l-780">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -140,7 +140,7 @@
             <objects>
                 <navigationController id="8jr-ix-HvO" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="morning" selectedImage="morning-selected" id="4QB-5x-kNF"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" largeTitles="YES" id="BP9-ZD-4WK">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="BP9-ZD-4WK">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
