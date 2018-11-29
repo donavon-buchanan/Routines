@@ -273,7 +273,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         cell.cellTitleLabel?.text = cellTitle
         cell.cellSubtitleLabel?.text = cellSubtitle
         cell.cellIndicatorImage.image? = indicatorImage.image?.withRenderingMode(.alwaysTemplate) ?? UIImage()
-        cell.cellIndicatorImage.theme_tintColor = GlobalPicker.cellTextColors
+        cell.cellIndicatorImage.theme_tintColor = GlobalPicker.cellIndicatorTint
         
         cell.cellTitleLabel?.theme_textColor = GlobalPicker.cellTextColors
         cell.theme_backgroundColor = GlobalPicker.backgroundColor
@@ -411,18 +411,21 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             }
         }
         
-        let alert = UIAlertController(title: "Are you sure?", message: "This will clear all your \(segmentName) tasks at once.", preferredStyle: .alert)
-        let clearAction = UIAlertAction(title: "Do it!", style: .destructive) { (action) in
-            self.clearAll()
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alert.addAction(cancelAction)
-        alert.addAction(clearAction)
+//        let alert = UIAlertController(title: "Are you sure?", message: "This will clear all your \(segmentName) tasks at once.", preferredStyle: .alert)
+//        let clearAction = UIAlertAction(title: "Do it!", style: .destructive) { (action) in
+//            self.clearAll()
+//        }
+//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+//        alert.addAction(cancelAction)
+//        alert.addAction(clearAction)
+//
+//        self.present(alert, animated: true, completion: nil)
         
-        self.present(alert, animated: true, completion: nil)
+        showAlert(title: "Are you sure?", body: "This will clear all the tasks shown.")
+        
     }
     
-    private func clearAll() {
+    @objc private func clearAll() {
         self.items?.forEach({ (item) in
             do {
                 try! realm.write {
@@ -859,5 +862,35 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             banner.configureContent(title: "", body: title ?? "Task Snoozed")
             return banner
         }
+    }
+    
+    func showAlert(title: String, body: String) {
+        var config = SwiftMessages.Config()
+        config.presentationStyle = .center
+        config.duration = .forever
+        config.dimMode = .gray(interactive: true)
+        
+        let alert = MessageView.viewFromNib(layout: .cardView)
+        alert.configureTheme(.warning)
+        let icon = "🤯"
+        alert.configureContent(title: title, body: body, iconText: icon)
+        alert.titleLabel?.textColor = .black
+        alert.bodyLabel?.textColor = .black
+        
+        alert.button?.backgroundColor = .red
+        alert.button?.setTitleColor(.white, for: .normal)
+        alert.button?.setTitle("Do it!", for: .normal)
+        alert.button?.addTarget(self, action: #selector(clearAll), for: .touchUpInside)
+        
+        alert.buttonTapHandler = { clearButton in SwiftMessages.hide() }
+        
+        // Increase the external margin around the card. In general, the effect of this setting
+        // depends on how the given layout is constrained to the layout margins.
+        alert.layoutMarginAdditions = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+        
+        // Reduce the corner radius (applicable to layouts featuring rounded corners).
+        (alert.backgroundView as? CornerRoundingView)?.cornerRadius = 10
+        
+        SwiftMessages.show(config: config, view: alert)
     }
 }

@@ -25,6 +25,7 @@ enum GlobalPicker {
     
     static let cellTextColors: ThemeColorPicker = ["#000", "#000", "#000", "#fff", "#FFF", "#FFF", "#FFF", "#FFF", "#FFF"]
     static let cellBackground: ThemeColorPicker = ["#F8F8F8", "#F8F8F8", "#F8F8F8", "#2D3541", "#000", "#000", "#000", "#000", "#000"]
+    static let cellIndicatorTint = ThemeColorPicker.pickerWithColors(["#CCC", "#CCC", "#CCC", "#606060", "#606060", "#606060", "#606060", "#606060", "#606060"])
     
     static let textInputBackground: ThemeColorPicker = ["#fff", "#fff", "#fff", "#393e46", "#393e46", "#393e46", "#393e46", "#393e46", "#393e46"]
     
