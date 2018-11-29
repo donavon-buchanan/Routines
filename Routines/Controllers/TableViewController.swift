@@ -172,13 +172,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         removeDeliveredNotifications()
         setNavTitle()
         reloadTableView()
+        setAppearance(segment: self.segment)
         //changeSegment(segment: passedSegment)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("viewDidAppear \n")
-        setAppearance(segment: self.segment)
         changeSegment(segment: passedSegment)
         //animateCells()
     }

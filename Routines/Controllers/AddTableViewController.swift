@@ -67,6 +67,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     //var segue: UIStoryboardSegue?
     
     fileprivate func setUpUI() {
+        if item != nil {
+            setAppearance(segment: item!.segment)
+        }
         //Tint on snoozeStrike
         anchorImageView.image = anchorImageView.image?.withRenderingMode(.alwaysTemplate)
         setAnchorColor()
