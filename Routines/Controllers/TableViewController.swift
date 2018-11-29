@@ -9,8 +9,8 @@
 import UIKit
 import RealmSwift
 import UserNotifications
-import NotificationBannerSwift
 import ViewAnimator
+import SwiftMessages
 
 
 class TableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
@@ -850,7 +850,14 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     //MARK: - Banners
     
     func showBanner(title: String?) {
-        let banner = StatusBarNotificationBanner(title: title ?? "Task Snoozed", style: .warning)
-        banner.show()
+        SwiftMessages.defaultConfig.presentationContext = .window(windowLevel: .statusBar)
+        SwiftMessages.pauseBetweenMessages = 0
+        SwiftMessages.hideAll()
+        SwiftMessages.show { () -> UIView in
+            let banner = MessageView.viewFromNib(layout: .statusLine)
+            banner.configureTheme(.success)
+            banner.configureContent(title: "", body: title ?? "Task Snoozed")
+            return banner
+        }
     }
 }

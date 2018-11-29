@@ -4,11 +4,15 @@ PODS:
   - Realm/Headers (3.12.0)
   - RealmSwift (3.12.0):
     - Realm (= 3.12.0)
+  - SwiftMessages (6.0.1):
+    - SwiftMessages/App (= 6.0.1)
+  - SwiftMessages/App (6.0.1)
   - SwiftTheme (0.4.3)
   - ViewAnimator (2.2.0)
 
 DEPENDENCIES:
   - RealmSwift
+  - SwiftMessages
   - SwiftTheme
   - ViewAnimator
 
@@ -16,15 +20,17 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Realm
     - RealmSwift
+    - SwiftMessages
     - SwiftTheme
     - ViewAnimator
 
 SPEC CHECKSUMS:
   Realm: cdaef23c4ddb36ab1ddffed23f5a7f3332fc5585
   RealmSwift: 5576324033f0aa5ef1e0a839a3da2281dff47a7f
+  SwiftMessages: 42ed7b6e1f2f1ead9ee667dc61a0ae87e4f49570
   SwiftTheme: 628345b948068a48d330d76dffb1a990ea5f90aa
   ViewAnimator: a849844cc3698620e1a562b510ed0c28aeafcdc5
 
-PODFILE CHECKSUM: 9822610242b8b54470b986cc0a7515b8d46c473b
+PODFILE CHECKSUM: af2657312b5a3367580e2319ad9fef19348b2d42
 
 COCOAPODS: 1.5.2

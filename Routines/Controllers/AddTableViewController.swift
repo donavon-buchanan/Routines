@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 import UserNotifications
-import NotificationBannerSwift
+import SwiftMessages
 
 class AddTableViewController: UITableViewController, UITextViewDelegate, UITextFieldDelegate {
     
@@ -749,7 +749,13 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     
     //MARK: - Banners
     func showBanner(title: String?) {
-        let banner = StatusBarNotificationBanner(title: title ?? "", style: .success)
-        banner.show()
+        SwiftMessages.pauseBetweenMessages = 0
+        SwiftMessages.hideAll()
+        SwiftMessages.show { () -> UIView in
+            let banner = MessageView.viewFromNib(layout: .statusLine)
+            banner.configureTheme(.success)
+            banner.configureContent(title: "", body: title ?? "Saved!")
+            return banner
+        }
     }
 }

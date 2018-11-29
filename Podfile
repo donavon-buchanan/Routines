@@ -13,6 +13,7 @@ target 'Routines' do
   #pod 'Hue'
   pod 'SwiftTheme'
   #pod 'NotificationBannerSwift'
+  pod 'SwiftMessages'
   pod 'ViewAnimator'
 
 end
