@@ -19,6 +19,11 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @IBOutlet var settingsBarButtonItem: UIBarButtonItem!
     @IBOutlet var addbarButtonItem: UIBarButtonItem!
     @IBOutlet var linesBarButtonItem: UIBarButtonItem!
+    @IBOutlet var editBarButtonItem: UIBarButtonItem!
+    
+    @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
+        setEditing()
+    }
     
     
     var linesBarButtonSelected = false
@@ -63,16 +68,21 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         })
     }
     
+    fileprivate func setEditing() {
+        self.tableView.setEditing(true, animated: true)
+        let clearButton = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(showClearAlert))
+        self.navigationItem.leftBarButtonItems = [clearButton]
+        let trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteSelectedRows))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(endEdit))
+        self.navigationItem.rightBarButtonItems = [doneButton, trashButton]
+    }
+    
     @IBAction func longPressToEdit(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
             if let count = items?.count {
                 if count > 0 {
                     if !self.tableView.isEditing {
-                        self.tableView.setEditing(true, animated: true)
-                        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(showClearAlert))
-                        let trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteSelectedRows))
-                        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(endEdit))
-                        self.navigationItem.rightBarButtonItems = [doneButton, trashButton]
+                        setEditing()
                     } else {
                         endEdit()
                     }
@@ -87,7 +97,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     
     @objc func endEdit() {
         self.tableView.setEditing(false, animated: true)
-        self.navigationItem.leftBarButtonItem = settingsBarButtonItem
+        self.navigationItem.leftBarButtonItems = [settingsBarButtonItem,editBarButtonItem]
         self.navigationItem.rightBarButtonItems = [addbarButtonItem,linesBarButtonItem]
     }
     
@@ -678,7 +688,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         items = self.realm.objects(Items.self).filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true)
     }
     func loadAllItems() {
-        items = self.realm.objects(Items.self)//.sorted(byKeyPath: "dateModified", ascending: true)
+        //Sort by segment to put in order of the day
+        items = self.realm.objects(Items.self).sorted(byKeyPath: "segment", ascending: true)
     }
     
     private func deleteItem(item: Items) {
