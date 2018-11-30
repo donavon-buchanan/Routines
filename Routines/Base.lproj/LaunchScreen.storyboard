@@ -36,9 +36,14 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="xX2-vo-vJE">
-                        <barButtonItem key="leftBarButtonItem" title="Item" image="gear-white" id="Klk-SI-Yvz">
-                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </barButtonItem>
+                        <leftBarButtonItems>
+                            <barButtonItem title="Item" image="gear-white" id="Klk-SI-Yvz">
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </barButtonItem>
+                            <barButtonItem systemItem="edit" id="dBH-PH-qu6">
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="KOe-jx-t1V">
                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

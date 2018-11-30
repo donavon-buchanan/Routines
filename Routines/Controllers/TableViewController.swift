@@ -30,23 +30,37 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     
     @IBAction func linesBarButtonPressed(_ sender: UIBarButtonItem) {
         if linesBarButtonSelected {
-            setNavTitle()
+            let cellCount = tableView.visibleCells.count
+            //animateTitleChange(title: nil)
+            self.title = setNavTitle()
             linesBarButtonSelected = false
             self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
             loadItems(segment: self.segment)
             tableView.reloadData()
-            animateCells()
+            animateCells(fromCount: cellCount)
             changeTabBar(hidden: false, animated: true)
         } else {
+            let cellCount = tableView.visibleCells.count
+            //animateTitleChange(title: "All Tasks")
             self.title = "All Tasks"
             linesBarButtonSelected = true
             self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button-filled")
             loadAllItems()
             changeTabBar(hidden: true, animated: true)
+            tableView.reloadData()
+            animateCells(fromCount: cellCount)
         }
-        tableView.reloadData()
-        animateCells()
     }
+    
+//    func animateTitleChange(title: String?) {
+//        UIView.transition(with: (self.navigationController?.navigationBar)!, duration: 0.3, options: .transitionCrossDissolve, animations: {
+//            if let newTitle = title {
+//                self.title = newTitle
+//            } else {
+//                self.title = self.setNavTitle()
+//            }
+//        }, completion: nil)
+//    }
     
     func changeTabBar(hidden:Bool, animated: Bool){
         guard let tabBar = self.tabBarController?.tabBar else { return; }
@@ -118,15 +132,17 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     let footerView = UIView()
     //var selectedTab = 0
 
-    fileprivate func animateCells() {
+    fileprivate func animateCells(fromCount: Int) {
         self.view.setNeedsLayout()
         self.view.layoutIfNeeded()
-        let fromAnimation = AnimationType.from(direction: .right, offset: 50.0)
-        let zoomAnimation = AnimationType.zoom(scale: 0.1)
+        let fromAnimation = AnimationType.from(direction: .top, offset: 64)
+        let zoomAnimation = AnimationType.zoom(scale: 0.85)
         //let rotateAnimation = AnimationType.rotate(angle: CGFloat.pi/6)
         
-        let cells = tableView.visibleCells
-        UIView.animate(views: cells, animations: [fromAnimation,zoomAnimation])
+        //Drop the cells that are already visible. Reloading them looks bad
+        let cells = tableView.visibleCells.dropFirst(fromCount)
+        //let nav = self.navigationController?.view
+        UIView.animate(views: Array(cells), animations: [fromAnimation,zoomAnimation])
     }
     
     override func viewDidLoad() {
@@ -170,7 +186,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         runAutoSnooze()
         updateBadge()
         removeDeliveredNotifications()
-        setNavTitle()
+        self.title = setNavTitle()
         reloadTableView()
         setAppearance(segment: self.segment)
         //changeSegment(segment: passedSegment)
@@ -183,17 +199,17 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         //animateCells()
     }
     
-    func setNavTitle() {
+    func setNavTitle() -> String {
         print("Setting table title")
         switch self.segment {
         case 1:
-            self.title = "Afternoon"
+            return "Afternoon"
         case 2:
-            self.title = "Evening"
+            return "Evening"
         case 3:
-            self.title = "Night"
+            return "Night"
         default:
-            self.title = "Morning"
+            return "Morning"
         }
     }
     
@@ -500,7 +516,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         
         //Reset the view just before segue
         if linesBarButtonSelected {
-            self.setNavTitle()
+            self.title = self.setNavTitle()
             DispatchQueue.main.async {
                 autoreleasepool {
                     self.linesBarButtonSelected = false
