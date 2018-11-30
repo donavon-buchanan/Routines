@@ -133,8 +133,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     //var selectedTab = 0
 
     fileprivate func animateCells(fromCount: Int) {
-        self.view.setNeedsLayout()
-        self.view.layoutIfNeeded()
+//        self.view.setNeedsLayout()
+//        self.view.layoutIfNeeded()
         let fromAnimation = AnimationType.from(direction: .top, offset: 64)
         let zoomAnimation = AnimationType.zoom(scale: 0.85)
         //let rotateAnimation = AnimationType.rotate(angle: CGFloat.pi/6)
@@ -143,6 +143,20 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         let cells = tableView.visibleCells.dropFirst(fromCount)
         //let nav = self.navigationController?.view
         UIView.animate(views: Array(cells), animations: [fromAnimation,zoomAnimation])
+    }
+    
+    fileprivate func transitionCells(fromSegment: Int, toSegment: Int) {
+        var fromAnimation : Animation {
+            if fromSegment < toSegment {
+                print("Animating from left")
+                return AnimationType.from(direction: .left, offset: 40)
+            } else {
+                print("Animating from right")
+                return AnimationType.from(direction: .right, offset: 40)
+            }
+        }
+        let views = tableView.visibleCells
+        UIView.animate(views: views, animations: [fromAnimation])
     }
     
     override func viewDidLoad() {
