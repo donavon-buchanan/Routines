@@ -21,6 +21,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @IBOutlet var linesBarButtonItem: UIBarButtonItem!
     @IBOutlet var editBarButtonItem: UIBarButtonItem!
     
+    let timeLabel = UILabel()
+    
     @IBAction func editButtonPressed(_ sender: UIBarButtonItem) {
         setEditing()
     }
@@ -204,6 +206,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         reloadTableView()
         setAppearance(segment: self.segment)
         //changeSegment(segment: passedSegment)
+        setTimeInTitle(timeString: getSegmentTimeString(segment: self.segment))
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -211,6 +214,41 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         print("viewDidAppear \n")
         changeSegment(segment: passedSegment)
         //animateCells()
+    }
+    
+    func setTimeInTitle(timeString: String) {
+        timeLabel.text = timeString
+        timeLabel.theme_textColor = GlobalPicker.barTextColor
+        
+        //need to re-layout title since it can be changed
+        self.navigationItem.titleView?.setNeedsLayout()
+        self.navigationItem.titleView?.setNeedsDisplay()
+        
+        self.navigationItem.titleView = timeLabel
+    }
+    
+    func getSegmentTimeString(segment: Int) -> String {
+        let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+        var timeOption = DateComponents()
+        timeOption.calendar = Calendar.autoupdatingCurrent
+        timeOption.timeZone = TimeZone.autoupdatingCurrent
+        
+        switch segment {
+        case 1:
+            timeOption.hour = options?.afternoonHour
+            timeOption.minute = options?.afternoonMinute
+        case 2:
+            timeOption.hour = options?.eveningHour
+            timeOption.minute = options?.eveningMinute
+        case 3:
+            timeOption.hour = options?.nightHour
+            timeOption.minute = options?.nightMinute
+        default:
+            timeOption.hour = options?.morningHour
+            timeOption.minute = options?.morningMinute
+        }
+        
+        return DateFormatter.localizedString(from: timeOption.date!, dateStyle: .none, timeStyle: .short)
     }
     
     func setNavTitle() -> String {
@@ -713,7 +751,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     //Each view (tab) loads its own set of items.
     //Load from viewDidLoad. Reload table from viewWillAppear
     var items: Results<Items>?
-    var segment = Int()
+    public var segment = Int()
     func loadItems(segment: Int) {
         items = self.realm.objects(Items.self).filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true)
     }

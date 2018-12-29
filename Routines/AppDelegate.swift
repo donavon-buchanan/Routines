@@ -964,6 +964,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     //MARK: - Themes
     func setUpTheme() {
         
+        // tab bar
+        let tabBar = UITabBar.appearance()
+        tabBar.theme_tintColor = GlobalPicker.barTextColor
+        tabBar.theme_barStyle = GlobalPicker.barStyle
+        tabBar.theme_barTintColor = GlobalPicker.tabBarTintColor
+        
         //Themes.restoreLastTheme()
         
         // status bar
@@ -992,13 +998,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //navigationBar.theme_barTintColor = GlobalPicker.barTintColor
         navigationBar.theme_titleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
         navigationBar.theme_largeTitleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
-        
-        // tab bar
-        let tabBar = UITabBar.appearance()
-        
-        tabBar.theme_tintColor = GlobalPicker.barTextColor
-        tabBar.theme_barStyle = GlobalPicker.barStyle
-        tabBar.theme_barTintColor = GlobalPicker.tabBarTintColor
         
         //Cells
         let cell = UITableViewCell.appearance()
