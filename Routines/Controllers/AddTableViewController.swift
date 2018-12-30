@@ -55,8 +55,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     
     @IBOutlet weak var anchorImageView: UIImageView!
     
-    @IBOutlet weak var repeatLabel: UILabel!
-    @IBOutlet weak var repeatHowOftenLabel: UILabel!
+//    @IBOutlet weak var repeatLabel: UILabel!
+//    @IBOutlet weak var repeatHowOftenLabel: UILabel!
     
     let realmDispatchQueueLabel: String = "background"
     
@@ -75,8 +75,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         setAnchorColor()
         
         ignoreAutoSnoozeLabel.theme_textColor = GlobalPicker.cellTextColors
-        repeatLabel.theme_textColor = GlobalPicker.cellTextColors
-        repeatHowOftenLabel.textColor = .lightGray
+//        repeatLabel.theme_textColor = GlobalPicker.cellTextColors
+//        repeatHowOftenLabel.textColor = .lightGray
         disableAutoSnoozeSwitch.layer.cornerRadius = 15
         disableAutoSnoozeSwitch.layer.masksToBounds = true
     }
