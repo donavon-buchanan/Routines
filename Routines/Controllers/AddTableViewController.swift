@@ -57,6 +57,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     
 //    @IBOutlet weak var repeatLabel: UILabel!
 //    @IBOutlet weak var repeatHowOftenLabel: UILabel!
+    @IBOutlet weak var repeatCellTitleLabel: UILabel!
+    @IBOutlet weak var repeatCellDetailLabel: UILabel!
+    
     
     let realmDispatchQueueLabel: String = "background"
     
@@ -75,8 +78,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         setAnchorColor()
         
         ignoreAutoSnoozeLabel.theme_textColor = GlobalPicker.cellTextColors
-//        repeatLabel.theme_textColor = GlobalPicker.cellTextColors
-//        repeatHowOftenLabel.textColor = .lightGray
+        repeatCellTitleLabel.theme_textColor = GlobalPicker.cellTextColors
+        repeatCellDetailLabel.textColor = .lightGray
         disableAutoSnoozeSwitch.layer.cornerRadius = 15
         disableAutoSnoozeSwitch.layer.masksToBounds = true
     }
@@ -254,6 +257,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             //Cell contents can change, so layout the views again to resize the cells
 //            destinationVC.view.setNeedsLayout()
 //            destinationVC.view.layoutIfNeeded()
+        }
+        if segue.identifier == "repeatSegue" {
+            
         }
     }
     

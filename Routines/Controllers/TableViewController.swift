@@ -185,6 +185,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         
         tableView.estimatedRowHeight = 64
         //tableView.rowHeight = UITableView.automaticDimension
+        
+        //Double check to save selected tab and avoid infrequent bug
+        saveSelectedTab(index: self.tabBarController!.selectedIndex)
     }
     
     
@@ -804,7 +807,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     
-    func getDarkModeStatus() -> Bool {
+    public func getDarkModeStatus() -> Bool {
         var darkMode = false
         if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
             darkMode = options.darkMode

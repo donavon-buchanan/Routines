@@ -7,17 +7,69 @@
 //
 
 import UIKit
+import SwiftTheme
 
 class RepeatTableViewController: UITableViewController {
+    
+    //Date Components
+    var year : Int?
+    var month: Int?
+    var day: Int?
+    var hour: Int?
+    var minute: Int?
+    var weekday: Int?
+    var weekdayOrdinal: Int?
+    var quarter: Int?
+    var weekOfMonth: Int?
+    var weekOfYear: Int?
+    
+    var repeats: Bool = false
+    
+    @IBOutlet var cells: [UITableViewCell]!
+    @IBOutlet weak var disableSelectionCell: UITableViewCell!
+    @IBOutlet weak var dailySelectionCell: UITableViewCell!
+    @IBOutlet weak var weeklySelectionCell: UITableViewCell!
+    @IBOutlet weak var monthlySelectionCell: UITableViewCell!
+    @IBOutlet weak var yearlySelectionCell: UITableViewCell!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         setUpUI()
     }
     
     func setUpUI() {
-        self.title = "Repeat"
+        let dummyLabel = UILabel()
+        if TableViewController().getDarkModeStatus() {
+            dummyLabel.theme_textColor = GlobalPicker.barTextColor
+        } else {
+            dummyLabel.theme_textColor = GlobalPicker.cellIndicatorTint
+        }
+        
+        self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+        
+        if self.repeats == false {
+            disableSelectionCell.isHighlighted = true
+        }
+        
+        cells.forEach { (cell) in
+            cell.theme_backgroundColor = GlobalPicker.backgroundColor
+            cell.textLabel?.theme_textColor = GlobalPicker.cellTextColors
+            cell.detailTextLabel?.theme_textColor = GlobalPicker.cellTextColors
+            
+            if cell.isHighlighted {
+                cell.layer.shadowColor = dummyLabel.textColor.cgColor
+                cell.layer.shadowOffset = .zero
+                cell.layer.shadowRadius = 10
+                cell.layer.shadowOpacity = 1
+                cell.layer.masksToBounds = false
+            }
+        }
+        
     }
 
     // MARK: - Table view data source

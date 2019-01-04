@@ -433,9 +433,9 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Repeat" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Hdb-1m-7cT">
-                                                    <rect key="frame" x="16" y="17" width="54" height="20.333333333333332"/>
+                                                    <rect key="frame" x="16.000000000000004" y="17" width="56.333333333333336" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -465,6 +465,8 @@
                         <outlet property="disableAutoSnoozeSwitch" destination="vDF-7W-QTO" id="2qJ-PD-btc"/>
                         <outlet property="ignoreAutoSnoozeLabel" destination="HU5-Hc-8tR" id="Re9-dG-MXi"/>
                         <outlet property="notesTextView" destination="5iE-Oy-Fuc" id="9Q2-Os-Y9c"/>
+                        <outlet property="repeatCellDetailLabel" destination="gKB-mN-ePQ" id="J2a-Pb-ex3"/>
+                        <outlet property="repeatCellTitleLabel" destination="Hdb-1m-7cT" id="GCS-yG-asL"/>
                         <outlet property="segmentSelection" destination="ee6-Ut-pWz" id="Oke-MH-Y6V"/>
                         <outlet property="taskTextField" destination="CU9-wA-X3j" id="baT-I0-9je"/>
                         <outletCollection property="cells" destination="Njk-SZ-nFt" collectionClass="NSMutableArray" id="5No-5l-qJE"/>
@@ -489,7 +491,7 @@
                         <sections>
                             <tableViewSection id="5cN-hH-JW7">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="disableSelectionCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="disableSelectionCell" textLabel="qMw-CI-x86" style="IBUITableViewCellStyleDefault" id="gpC-eU-Hon">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="disableSelectionCell" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="disableSelectionCell" textLabel="qMw-CI-x86" style="IBUITableViewCellStyleDefault" id="gpC-eU-Hon">
                                         <rect key="frame" x="0.0" y="35" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gpC-eU-Hon" id="xPF-x1-9eA">
@@ -506,7 +508,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="dailySelectionCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="dailySelectionCell" textLabel="EXJ-cj-LvI" detailTextLabel="U1k-Pu-FNS" style="IBUITableViewCellStyleValue1" id="v9H-gl-DQs">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="dailySelectionCell" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="dailySelectionCell" textLabel="EXJ-cj-LvI" detailTextLabel="U1k-Pu-FNS" style="IBUITableViewCellStyleValue1" id="v9H-gl-DQs">
                                         <rect key="frame" x="0.0" y="89" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="v9H-gl-DQs" id="OKz-Vh-lHr">
@@ -520,7 +522,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="U1k-Pu-FNS">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="U1k-Pu-FNS">
                                                     <rect key="frame" x="296" y="17" width="44" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -533,7 +535,7 @@
                                             <segue destination="14U-zK-AJ0" kind="show" id="usK-cm-Ff0"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="weeklySelectionCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="weeklySelectionCell" textLabel="qWC-HO-XXa" detailTextLabel="DHK-JX-QEt" style="IBUITableViewCellStyleValue1" id="MbE-fC-mlG">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="weeklySelectionCell" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="weeklySelectionCell" textLabel="qWC-HO-XXa" detailTextLabel="DHK-JX-QEt" style="IBUITableViewCellStyleValue1" id="MbE-fC-mlG">
                                         <rect key="frame" x="0.0" y="143" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MbE-fC-mlG" id="dHA-RI-K4w">
@@ -547,7 +549,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="DHK-JX-QEt">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="DHK-JX-QEt">
                                                     <rect key="frame" x="296" y="17" width="44" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -560,7 +562,7 @@
                                             <segue destination="735-er-4zc" kind="show" id="6O2-ED-QLd"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="monthlySelectionCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="monthlySelectionCell" textLabel="nzZ-Dr-Bud" detailTextLabel="tSi-8y-xtK" style="IBUITableViewCellStyleValue1" id="6XV-DC-dBv">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="monthlySelectionCell" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="monthlySelectionCell" textLabel="nzZ-Dr-Bud" detailTextLabel="tSi-8y-xtK" style="IBUITableViewCellStyleValue1" id="6XV-DC-dBv">
                                         <rect key="frame" x="0.0" y="197" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6XV-DC-dBv" id="VUA-Zs-hgN">
@@ -574,7 +576,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="tSi-8y-xtK">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="tSi-8y-xtK">
                                                     <rect key="frame" x="296" y="17" width="44" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -587,7 +589,7 @@
                                             <segue destination="ZUk-PD-Rlh" kind="show" id="Ohb-YR-6CA"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="yearlySelectionCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="yearlySelectionCell" textLabel="4dn-8c-lEs" detailTextLabel="lLx-T2-VsA" style="IBUITableViewCellStyleValue1" id="Fo2-5C-QcM">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="yearlySelectionCell" preservesSuperviewLayoutMargins="YES" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="yearlySelectionCell" textLabel="4dn-8c-lEs" detailTextLabel="lLx-T2-VsA" style="IBUITableViewCellStyleValue1" id="Fo2-5C-QcM">
                                         <rect key="frame" x="0.0" y="251" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Fo2-5C-QcM" id="Xzf-fV-KY8">
@@ -601,7 +603,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="lLx-T2-VsA">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="lLx-T2-VsA">
                                                     <rect key="frame" x="296" y="17" width="44" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
@@ -622,6 +624,18 @@
                             <outlet property="delegate" destination="nCa-ub-MTc" id="krq-ie-jfE"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="dailySelectionCell" destination="v9H-gl-DQs" id="G8p-4N-ceX"/>
+                        <outlet property="disableSelectionCell" destination="gpC-eU-Hon" id="u1e-Ge-0B9"/>
+                        <outlet property="monthlySelectionCell" destination="6XV-DC-dBv" id="fNA-hO-KwZ"/>
+                        <outlet property="weeklySelectionCell" destination="MbE-fC-mlG" id="ZO7-9q-Pm7"/>
+                        <outlet property="yearlySelectionCell" destination="Fo2-5C-QcM" id="SkD-Ec-kpN"/>
+                        <outletCollection property="cells" destination="MbE-fC-mlG" collectionClass="NSMutableArray" id="uae-aQ-tDS"/>
+                        <outletCollection property="cells" destination="gpC-eU-Hon" collectionClass="NSMutableArray" id="efH-2g-d7n"/>
+                        <outletCollection property="cells" destination="v9H-gl-DQs" collectionClass="NSMutableArray" id="qg0-gy-sSX"/>
+                        <outletCollection property="cells" destination="6XV-DC-dBv" collectionClass="NSMutableArray" id="49S-i6-T7G"/>
+                        <outletCollection property="cells" destination="Fo2-5C-QcM" collectionClass="NSMutableArray" id="tPW-C1-P1h"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Kx-5p-qKi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
