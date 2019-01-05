@@ -52,22 +52,22 @@ class RepeatTableViewController: UITableViewController {
         
         self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         
-        if self.repeats == false {
-            disableSelectionCell.isHighlighted = true
-        }
+//        if self.repeats == false {
+//            disableSelectionCell.isHighlighted = true
+//        }
         
         cells.forEach { (cell) in
             cell.theme_backgroundColor = GlobalPicker.backgroundColor
             cell.textLabel?.theme_textColor = GlobalPicker.cellTextColors
             cell.detailTextLabel?.theme_textColor = GlobalPicker.cellTextColors
             
-            if cell.isHighlighted {
-                cell.layer.shadowColor = dummyLabel.textColor.cgColor
-                cell.layer.shadowOffset = .zero
-                cell.layer.shadowRadius = 10
-                cell.layer.shadowOpacity = 1
-                cell.layer.masksToBounds = false
-            }
+//            if cell.isHighlighted {
+//                cell.layer.shadowColor = dummyLabel.textColor.cgColor
+//                cell.layer.shadowOffset = .zero
+//                cell.layer.shadowRadius = 10
+//                cell.layer.shadowOpacity = 1
+//                cell.layer.masksToBounds = false
+//            }
         }
         
     }
