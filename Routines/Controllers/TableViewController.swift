@@ -222,12 +222,10 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func setTimeInTitle(timeString: String) {
         timeLabel.text = timeString
         timeLabel.theme_textColor = GlobalPicker.barTextColor
+        self.navigationItem.titleView = timeLabel
         
         //need to re-layout title since it can be changed
-        self.navigationItem.titleView?.setNeedsLayout()
-        self.navigationItem.titleView?.setNeedsDisplay()
-        
-        self.navigationItem.titleView = timeLabel
+        self.navigationItem.titleView?.setNeedsUpdateConstraints()
     }
     
     func getSegmentTimeString(segment: Int) -> String {
