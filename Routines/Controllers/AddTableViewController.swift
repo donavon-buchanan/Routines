@@ -46,7 +46,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
     @IBOutlet weak var ignoreAutoSnoozeLabel: UILabel!
     
-    @IBOutlet var cells: [UITableViewCell]!
+    //@IBOutlet var cells: [UITableViewCell]!
     
     @IBAction func segmentSelected(_ sender: UISegmentedControl) {
         setAppearance(segment: sender.selectedSegmentIndex)
@@ -95,9 +95,11 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         
         self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
-        cells.forEach { (cell) in
-            cell.theme_backgroundColor = GlobalPicker.backgroundColor
-        }
+//        cells.forEach { (cell) in
+//            cell.theme_backgroundColor = GlobalPicker.backgroundColor
+//        }
+        let cellAppearance = UITableViewCell.appearance()
+        cellAppearance.theme_backgroundColor = GlobalPicker.backgroundColor
         
         if #available(iOS 11.0, *) {
             self.navigationItem.largeTitleDisplayMode = .never

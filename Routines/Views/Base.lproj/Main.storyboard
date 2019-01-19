@@ -1087,9 +1087,6 @@
                         <outlet property="repeatCellTitleLabel" destination="Hdb-1m-7cT" id="GCS-yG-asL"/>
                         <outlet property="segmentSelection" destination="ee6-Ut-pWz" id="Oke-MH-Y6V"/>
                         <outlet property="taskTextField" destination="CU9-wA-X3j" id="baT-I0-9je"/>
-                        <outletCollection property="cells" destination="Njk-SZ-nFt" collectionClass="NSMutableArray" id="5No-5l-qJE"/>
-                        <outletCollection property="cells" destination="L3m-ad-YEk" collectionClass="NSMutableArray" id="DPt-BV-MnU"/>
-                        <outletCollection property="cells" destination="wRF-7D-3zD" collectionClass="NSMutableArray" id="2ZI-cP-ekj"/>
                         <segue destination="o9Q-Hw-Tfw" kind="unwind" identifier="unwindToTableViewController" unwindAction="unwindToTableViewControllerWithSegue:" id="avt-9M-sEJ"/>
                     </connections>
                 </tableViewController>
