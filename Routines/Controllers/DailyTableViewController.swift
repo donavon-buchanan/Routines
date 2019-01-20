@@ -95,6 +95,7 @@ class DailyTableViewController: UITableViewController {
         
         //Then make the quick selections match when appropriate
         if let selections = tableView.indexPathsForSelectedRows {
+            //Have to run the check against sorted arrays
             switch selections.sorted() {
             case [selectToday()]:
                 self.tableView.deselectRow(at: weekdaysPath, animated: false)
