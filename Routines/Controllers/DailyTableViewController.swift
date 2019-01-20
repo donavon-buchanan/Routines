@@ -82,6 +82,10 @@ class DailyTableViewController: UITableViewController {
     
     func selectionChanged() {
         
+        let weekdaysPathArray = [mondayPath, tuesdayPath, wednesdayPath, thursdayPath, fridayPath]
+        let weekendsPathArray = [saturdayPath,sundayPath]
+        let everydayPathArray = [sundayPath, mondayPath, tuesdayPath, wednesdayPath, thursdayPath, fridayPath, saturdayPath]
+        
         //First deselect all the rows in the quick selection section
         self.tableView.deselectRow(at: todayPath, animated: false)
         self.tableView.deselectRow(at: weekdaysPath, animated: false)
@@ -91,23 +95,23 @@ class DailyTableViewController: UITableViewController {
         
         //Then make the quick selections match when appropriate
         if let selections = tableView.indexPathsForSelectedRows {
-            switch selections {
+            switch selections.sorted() {
             case [selectToday()]:
                 self.tableView.deselectRow(at: weekdaysPath, animated: false)
                 self.tableView.deselectRow(at: weekendsPath, animated: false)
                 self.tableView.deselectRow(at: everyDayPath, animated: false)
                 self.tableView.selectRow(at: todayPath, animated: false, scrollPosition: UITableView.ScrollPosition.none)
-            case [mondayPath, tuesdayPath, wednesdayPath, thursdayPath, fridayPath]:
+            case weekdaysPathArray.sorted():
                 self.tableView.deselectRow(at: weekendsPath, animated: false)
                 self.tableView.deselectRow(at: everyDayPath, animated: false)
                 self.tableView.deselectRow(at: todayPath, animated: false)
                 self.tableView.selectRow(at: weekdaysPath, animated: false, scrollPosition: UITableView.ScrollPosition.none)
-            case [saturdayPath, sundayPath]:
+            case weekendsPathArray.sorted():
                 self.tableView.deselectRow(at: weekdaysPath, animated: false)
                 self.tableView.deselectRow(at: everyDayPath, animated: false)
                 self.tableView.deselectRow(at: todayPath, animated: false)
                 self.tableView.selectRow(at: weekendsPath, animated: false, scrollPosition: UITableView.ScrollPosition.none)
-            case [sundayPath, mondayPath, tuesdayPath, wednesdayPath, thursdayPath, fridayPath, saturdayPath]:
+            case everydayPathArray.sorted():
                 self.tableView.deselectRow(at: weekdaysPath, animated: false)
                 self.tableView.deselectRow(at: weekendsPath, animated: false)
                 self.tableView.deselectRow(at: todayPath, animated: false)
@@ -119,12 +123,6 @@ class DailyTableViewController: UITableViewController {
         }
         
     }
-    
-//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CheckableTableViewCell
-//
-//        return cell
-//    }
     
     //MARK: - Selections
     func selectToday() -> IndexPath {
