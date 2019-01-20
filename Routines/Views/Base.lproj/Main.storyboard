@@ -136,7 +136,7 @@
                         <sections>
                             <tableViewSection headerTitle="Quick Selection" id="FQA-fY-w4e">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="pCS-Yx-r0p" style="IBUITableViewCellStyleDefault" id="YIm-MT-3BD">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" textLabel="pCS-Yx-r0p" style="IBUITableViewCellStyleDefault" id="YIm-MT-3BD" customClass="CheckableTableViewCell" customModule="Routines" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.333333333333343" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="YIm-MT-3BD" id="XsN-co-ylY">
@@ -153,7 +153,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="Esp-EK-ko1" style="IBUITableViewCellStyleDefault" id="SUp-h3-mZT">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" textLabel="Esp-EK-ko1" style="IBUITableViewCellStyleDefault" id="SUp-h3-mZT" customClass="CheckableTableViewCell" customModule="Routines" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="99.333333333333343" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SUp-h3-mZT" id="Sry-En-iRm">
@@ -170,7 +170,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="veJ-WL-tzy" style="IBUITableViewCellStyleDefault" id="Eme-T6-RTm">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" textLabel="veJ-WL-tzy" style="IBUITableViewCellStyleDefault" id="Eme-T6-RTm" customClass="CheckableTableViewCell" customModule="Routines" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="143.33333333333334" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Eme-T6-RTm" id="MB1-jc-tiL">
@@ -187,7 +187,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="VUn-9u-ENT" style="IBUITableViewCellStyleDefault" id="SQV-c0-9lD">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" textLabel="VUn-9u-ENT" style="IBUITableViewCellStyleDefault" id="SQV-c0-9lD" customClass="CheckableTableViewCell" customModule="Routines" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="187.33333333333334" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SQV-c0-9lD" id="NeU-8Y-SWq">
@@ -208,8 +208,25 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Days" id="RsS-Gb-HtP">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="sY1-3R-FXP" style="IBUITableViewCellStyleDefault" id="Jhy-7V-vQx">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" textLabel="hlL-2t-T74" style="IBUITableViewCellStyleDefault" id="ftf-h8-4hb" customClass="CheckableTableViewCell" customModule="Routines" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="287.33333333333337" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ftf-h8-4hb" id="40w-DG-7Xw">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Sunday" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="hlL-2t-T74">
+                                                    <rect key="frame" x="16" y="0.0" width="343" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" textLabel="sY1-3R-FXP" style="IBUITableViewCellStyleDefault" id="Jhy-7V-vQx" customClass="CheckableTableViewCell" customModule="Routines" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="331.33333333333337" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Jhy-7V-vQx" id="8zT-pV-Eo1">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -225,8 +242,8 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="A3e-fG-FVV" style="IBUITableViewCellStyleDefault" id="9mP-fb-Kpg">
-                                        <rect key="frame" x="0.0" y="331.33333333333337" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" textLabel="A3e-fG-FVV" style="IBUITableViewCellStyleDefault" id="9mP-fb-Kpg" customClass="CheckableTableViewCell" customModule="Routines" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="375.33333333333337" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9mP-fb-Kpg" id="MZE-GI-7rL">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -242,8 +259,8 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="fra-Fg-vKV" style="IBUITableViewCellStyleDefault" id="Si3-4A-rCf">
-                                        <rect key="frame" x="0.0" y="375.33333333333337" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" textLabel="fra-Fg-vKV" style="IBUITableViewCellStyleDefault" id="Si3-4A-rCf" customClass="CheckableTableViewCell" customModule="Routines" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="419.33333333333337" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Si3-4A-rCf" id="Cl3-oW-IlI">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -259,8 +276,8 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="CH3-cR-gTN" style="IBUITableViewCellStyleDefault" id="Gty-mS-D6y">
-                                        <rect key="frame" x="0.0" y="419.33333333333337" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" textLabel="CH3-cR-gTN" style="IBUITableViewCellStyleDefault" id="Gty-mS-D6y" customClass="CheckableTableViewCell" customModule="Routines" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="463.33333333333337" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gty-mS-D6y" id="4DJ-sq-pfF">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -276,8 +293,8 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="MOO-6a-BjH" style="IBUITableViewCellStyleDefault" id="bje-wI-rWG">
-                                        <rect key="frame" x="0.0" y="463.33333333333337" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" textLabel="MOO-6a-BjH" style="IBUITableViewCellStyleDefault" id="bje-wI-rWG" customClass="CheckableTableViewCell" customModule="Routines" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="507.33333333333337" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bje-wI-rWG" id="MUn-l9-98d">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -293,31 +310,14 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="NrM-qL-bfN" style="IBUITableViewCellStyleDefault" id="QMw-9N-CbR">
-                                        <rect key="frame" x="0.0" y="507.33333333333337" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" textLabel="NrM-qL-bfN" style="IBUITableViewCellStyleDefault" id="QMw-9N-CbR" customClass="CheckableTableViewCell" customModule="Routines" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="551.33333333333337" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QMw-9N-CbR" id="ug5-Gv-tS6">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Saturday" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="NrM-qL-bfN">
-                                                    <rect key="frame" x="16" y="0.0" width="343" height="44"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" textLabel="hlL-2t-T74" style="IBUITableViewCellStyleDefault" id="ftf-h8-4hb">
-                                        <rect key="frame" x="0.0" y="551.33333333333337" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ftf-h8-4hb" id="40w-DG-7Xw">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Sunday" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="hlL-2t-T74">
                                                     <rect key="frame" x="16" y="0.0" width="343" height="44"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
