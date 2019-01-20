@@ -14,6 +14,7 @@
 		F814CF5A2192A8E000E3C0F5 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F814CF592192A8E000E3C0F5 /* TabBarViewController.swift */; };
 		F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TableViewController.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
+		F843324B21F4680200086BFF /* CheckableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F843324A21F4680200086BFF /* CheckableTableViewCell.swift */; };
 		F85213B5218F5EE600291CFE /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85213B4218F5EE600291CFE /* NavigationViewController.swift */; };
 		F86AFEB821AFD1B4004DC7F2 /* UITabBarControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86AFEB721AFD1B4004DC7F2 /* UITabBarControllerExtension.swift */; };
 		F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */; };
@@ -42,6 +43,7 @@
 		F814CF592192A8E000E3C0F5 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		F816DB332155CFBA009C6907 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TableViewController.swift; sourceTree = "<group>"; };
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
+		F843324A21F4680200086BFF /* CheckableTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckableTableViewCell.swift; sourceTree = "<group>"; };
 		F85213B4218F5EE600291CFE /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		F86AFEB721AFD1B4004DC7F2 /* UITabBarControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBarControllerExtension.swift; sourceTree = "<group>"; };
 		F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				F82770D221585D3000420C50 /* AddTableViewController.swift */,
 				F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */,
 				F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */,
+				F843324A21F4680200086BFF /* CheckableTableViewCell.swift */,
 				F807D3D22160A06600FF36D9 /* Options */,
 			);
 			path = Controllers;
@@ -331,6 +334,7 @@
 				F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */,
 				F8CBBA5721A9058D00A4FFFD /* TaskTableViewCell.swift in Sources */,
 				F807D3CF2160964E00FF36D9 /* OptionsTableViewController.swift in Sources */,
+				F843324B21F4680200086BFF /* CheckableTableViewCell.swift in Sources */,
 				F8B30789219C13B500437AAA /* GlobalPicker.swift in Sources */,
 				F807D3CD216073E300FF36D9 /* Options.swift in Sources */,
 				F8B30787219C0DAB00437AAA /* Themes.swift in Sources */,

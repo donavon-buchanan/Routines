@@ -63,6 +63,7 @@ import RealmSwift
 //            self.disableAutoSnooze = false
 //        }
         //TODO: Just build a check in the view and the auto snooze func to check if repeat is enabled. Ignore if so. But don't actually change the value here.
+        print("Repeat has been set.")
     }
     
 }
