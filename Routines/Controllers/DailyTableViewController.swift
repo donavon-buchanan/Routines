@@ -10,6 +10,8 @@ import UIKit
 
 class DailyTableViewController: UITableViewController {
     
+    
+    
     let cellAppearance = UITableViewCell.appearance()
     let labelAppearance = UILabel.appearance()
     let tableAppearance = UITableView.appearance()
