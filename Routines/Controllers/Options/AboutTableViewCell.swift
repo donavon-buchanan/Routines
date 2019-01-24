@@ -9,7 +9,6 @@
 import UIKit
 
 class AboutTableViewCell: UITableViewCell {
-
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -20,10 +19,8 @@ class AboutTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
-    func setLabel(labelString: String) {
-        self.textLabel?.text = labelString
-    }
-    
 
+    func setLabel(labelString: String) {
+        textLabel?.text = labelString
+    }
 }

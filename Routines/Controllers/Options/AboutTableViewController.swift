@@ -9,62 +9,58 @@
 import UIKit
 
 class AboutTableViewController: UITableViewController {
-    
-    @IBOutlet weak var versionNumberLabel: UILabel!
-    
+    @IBOutlet var versionNumberLabel: UILabel!
+
     @IBOutlet var cells: [UITableViewCell]!
-    
+
     @IBOutlet var labels: [UILabel]!
-    
-    @IBOutlet weak var gearImage: UIImageView!
-    @IBOutlet weak var morningImage: UIImageView!
-    @IBOutlet weak var afternoonImage: UIImageView!
-    @IBOutlet weak var eveningImage: UIImageView!
-    @IBOutlet weak var nightImage: UIImageView!
-    
+
+    @IBOutlet var gearImage: UIImageView!
+    @IBOutlet var morningImage: UIImageView!
+    @IBOutlet var afternoonImage: UIImageView!
+    @IBOutlet var eveningImage: UIImageView!
+    @IBOutlet var nightImage: UIImageView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         versionNumberLabel.text = setVersionNumberLabel()
         setViewBackgroundGraphic()
-        
-        cells.forEach { (cell) in
+
+        cells.forEach { cell in
             cell.theme_backgroundColor = GlobalPicker.cellBackground
         }
-        
-        labels.forEach { (label) in
+
+        labels.forEach { label in
             label.theme_textColor = GlobalPicker.cellTextColors
         }
-        
+
         gearImage.theme_image = GlobalPicker.gear
         morningImage.theme_image = GlobalPicker.morning
         afternoonImage.theme_image = GlobalPicker.afternoon
         eveningImage.theme_image = GlobalPicker.evening
         nightImage.theme_image = GlobalPicker.night
-
     }
-    
+
     func setVersionNumberLabel() -> String {
-        guard let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String else  { fatalError("Failed to get version number")}
-        //print("App Version: \(String(describing: appVersion))")
-        guard let buildNumber = Bundle.main.infoDictionary!["CFBundleVersion"] as? String else  { fatalError("Failed to get build number")}
-        //print("Build NUmber: \(buildNumber)")
+        guard let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String else { fatalError("Failed to get version number") }
+        // print("App Version: \(String(describing: appVersion))")
+        guard let buildNumber = Bundle.main.infoDictionary!["CFBundleVersion"] as? String else { fatalError("Failed to get build number") }
+        // print("Build NUmber: \(buildNumber)")
         let versionString = "Version: \(appVersion), Build: \(buildNumber)"
-        
-        //return "fuck you"
+
+        // return "fuck you"
         return versionString
     }
-    
-    //Set background graphic
+
+    // Set background graphic
     func setViewBackgroundGraphic() {
-        
         let backgroundImageView = UIImageView()
         let backgroundImage = UIImage(imageLiteralResourceName: "inlay")
-        
+
         backgroundImageView.image = backgroundImage
         backgroundImageView.contentMode = .scaleAspectFit
-        
-        self.tableView.backgroundView = backgroundImageView
+
+        tableView.backgroundView = backgroundImageView
     }
-    
 }
