@@ -139,7 +139,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
-// MARK: - Options Realm
+    // MARK: - Options Realm
+
     var timeArray: [DateComponents?] = []
 //    //Options Properties
     // let realm = try! Realm()

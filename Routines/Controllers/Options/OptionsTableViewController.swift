@@ -730,6 +730,7 @@ class OptionsTableViewController: UITableViewController {
     }
 
     // MARK: - Smart Snooze
+
     func getAutoSnoozeStatus() -> Bool {
         var snooze = false
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -744,6 +745,7 @@ class OptionsTableViewController: UITableViewController {
     }
 
     // MARK: - Themeing
+
     func saveDarkModeOption(isOn: Bool) {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {

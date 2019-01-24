@@ -698,6 +698,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     // MARK: Theme
+
     public func setAppearance(segment: Int) {
         print("Setting theme")
         if getDarkModeStatus() {
