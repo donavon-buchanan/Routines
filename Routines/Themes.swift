@@ -42,12 +42,14 @@ enum Themes: Int {
     }
 
     // MARK: Switch Dark
+
     // TODO: Pass in segment here
     static func isDarkMode() -> Bool {
         return (options?.darkMode)!
     }
 
     // MARK: Save & Restore
+
     static func restoreLastTheme() {
         switchTo(theme: Themes(rawValue: (options?.themeIndex)!)!)
     }
