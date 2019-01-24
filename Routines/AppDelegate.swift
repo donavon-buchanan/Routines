@@ -139,7 +139,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
-//    //MARK: - Options Realm
+// MARK: - Options Realm
     var timeArray: [DateComponents?] = []
 //    //Options Properties
     // let realm = try! Realm()
@@ -968,7 +968,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 NSAttributedString.Key.foregroundColor: UIColor(rgba: hexString),
                 // NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
 
-                NSAttributedString.Key.shadow: shadow,
+                NSAttributedString.Key.shadow: shadow
             ]
         }
 

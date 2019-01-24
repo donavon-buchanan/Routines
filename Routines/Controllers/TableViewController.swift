@@ -747,7 +747,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         }
     }
 
-//    //MARK: - Themeing
+// MARK: - Themeing
 
     open func setAppearance(segment: Int) {
         print("Setting theme")

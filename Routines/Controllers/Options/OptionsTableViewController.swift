@@ -668,7 +668,7 @@ class OptionsTableViewController: UITableViewController {
         return count
     }
 
-    // Mark: - Realm
+    // MARK: - Realm
 
     let realmDispatchQueueLabel: String = "background"
     let optionsKey = "optionsKey"
@@ -729,7 +729,7 @@ class OptionsTableViewController: UITableViewController {
         return enabled
     }
 
-    // Mark: - Smart Snooze
+    // MARK: - Smart Snooze
     func getAutoSnoozeStatus() -> Bool {
         var snooze = false
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -743,7 +743,7 @@ class OptionsTableViewController: UITableViewController {
         return snooze
     }
 
-    // Mark: - Themeing
+    // MARK: - Themeing
     func saveDarkModeOption(isOn: Bool) {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {

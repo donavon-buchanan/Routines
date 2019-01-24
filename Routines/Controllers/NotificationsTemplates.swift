@@ -206,7 +206,7 @@
 //    }
 //
 //
-//    //MARK: - Conversion functions
+// MARK: - Conversion functions
 //    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
 //        var time: Date
 //        let defaultTimeStrings = ["07:00", "12:00", "17:00", "21:00 PM"]
@@ -248,7 +248,7 @@
 //        return count
 //    }
 //
-//    //Mark: - Realm
+// MARK: - Realm
 //
 //    let realmDispatchQueueLabel: String = "background"
 //    let optionsKey = "optionsKey"
