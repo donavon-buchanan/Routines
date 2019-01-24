@@ -697,7 +697,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         return dateComponent.date!
     }
 
-    // Mark: Theme
+    // MARK: Theme
     public func setAppearance(segment: Int) {
         print("Setting theme")
         if getDarkModeStatus() {

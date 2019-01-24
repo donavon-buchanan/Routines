@@ -578,7 +578,7 @@ class CustomTimesTableViewController: UITableViewController {
         return count
     }
 
-    // Mark: - Realm
+    // MARK: - Realm
 
     let realmDispatchQueueLabel: String = "background"
     let optionsKey = "optionsKey"
