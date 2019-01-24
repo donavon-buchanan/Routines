@@ -6,9 +6,9 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-//import UIKit
+// import UIKit
 
-//extension UITableViewController {
+// extension UITableViewController {
 
 //    func disableScrolling() {
 //        //keep table from scrolling if it fits on screen
@@ -29,5 +29,5 @@
 //            self.tableView.isScrollEnabled = true
 //        }
 //    }
-    
-//}
+
+// }

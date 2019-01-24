@@ -6,20 +6,19 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-import UIKit
 import RealmSwift
-import UserNotifications
 import SwiftMessages
+import UIKit
+import UserNotifications
 
 class AddTableViewController: UITableViewController, UITextViewDelegate, UITextFieldDelegate {
-    
-    //MARK: - Properties
-    @IBOutlet weak var taskTextField: UITextField!
-    @IBOutlet weak var segmentSelection: UISegmentedControl!
-    @IBOutlet weak var notesTextView: UITextView!
-    
-    
-    @IBOutlet weak var disableAutoSnoozeSwitch: UISwitch!
+    // MARK: - Properties
+
+    @IBOutlet var taskTextField: UITextField!
+    @IBOutlet var segmentSelection: UISegmentedControl!
+    @IBOutlet var notesTextView: UITextView!
+
+    @IBOutlet var disableAutoSnoozeSwitch: UISwitch!
     fileprivate func setAnchorColor() {
         if disableAutoSnoozeSwitch.isOn {
             anchorImageView.theme_tintColor = GlobalPicker.barTextColor
@@ -27,9 +26,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             anchorImageView.tintColor = .lightGray
         }
     }
-    
-    @IBAction func ignoreAutoSnoozeToggled(_ sender: UISwitch) {
-        if self.item != nil {
+
+    @IBAction func ignoreAutoSnoozeToggled(_: UISwitch) {
+        if item != nil {
             navigationItem.rightBarButtonItem?.isEnabled = true
             updateItem()
 //            var subtitle : String {
@@ -44,180 +43,180 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
         setAnchorColor()
     }
-    @IBOutlet weak var ignoreAutoSnoozeLabel: UILabel!
-    
-    //@IBOutlet var cells: [UITableViewCell]!
-    
+
+    @IBOutlet var ignoreAutoSnoozeLabel: UILabel!
+
+    // @IBOutlet var cells: [UITableViewCell]!
+
     @IBAction func segmentSelected(_ sender: UISegmentedControl) {
         setAppearance(segment: sender.selectedSegmentIndex)
         setAnchorColor()
     }
-    
-    @IBOutlet weak var anchorImageView: UIImageView!
-    
+
+    @IBOutlet var anchorImageView: UIImageView!
+
 //    @IBOutlet weak var repeatLabel: UILabel!
 //    @IBOutlet weak var repeatHowOftenLabel: UILabel!
-    @IBOutlet weak var repeatCellTitleLabel: UILabel!
-    @IBOutlet weak var repeatCellDetailLabel: UILabel!
-    
-    
+    @IBOutlet var repeatCellTitleLabel: UILabel!
+    @IBOutlet var repeatCellDetailLabel: UILabel!
+
     let realmDispatchQueueLabel: String = "background"
-    
-    var item : Items?
-    //var timeArray: [DateComponents?] = []
-    //segment from add segue
+
+    var item: Items?
+    // var timeArray: [DateComponents?] = []
+    // segment from add segue
     var editingSegment: Int?
-    //var segue: UIStoryboardSegue?
-    
+    // var segue: UIStoryboardSegue?
+
     fileprivate func setUpUI() {
         if item != nil {
             setAppearance(segment: item!.segment)
         }
-        //Tint on snoozeStrike
+        // Tint on snoozeStrike
         anchorImageView.image = anchorImageView.image?.withRenderingMode(.alwaysTemplate)
         setAnchorColor()
-        
+
         ignoreAutoSnoozeLabel.theme_textColor = GlobalPicker.cellTextColors
         repeatCellTitleLabel.theme_textColor = GlobalPicker.cellTextColors
         repeatCellDetailLabel.textColor = .lightGray
         disableAutoSnoozeSwitch.layer.cornerRadius = 15
         disableAutoSnoozeSwitch.layer.masksToBounds = true
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setUpUI()
-        
-        //Set right bar item as "Save"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(self.saveButtonPressed))
-        //Disable button until all values are filled
-        self.navigationItem.rightBarButtonItem?.isEnabled = false
-        
-        self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+
+        // Set right bar item as "Save"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButtonPressed))
+        // Disable button until all values are filled
+        navigationItem.rightBarButtonItem?.isEnabled = false
+
+        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
 //        cells.forEach { (cell) in
 //            cell.theme_backgroundColor = GlobalPicker.backgroundColor
 //        }
         let cellAppearance = UITableViewCell.appearance()
         cellAppearance.theme_backgroundColor = GlobalPicker.backgroundColor
-        
+
         if #available(iOS 11.0, *) {
             self.navigationItem.largeTitleDisplayMode = .never
         }
-        
-        //self.tabBarController?.tabBar.isHidden = true
-        //If item is loaded, fill in values for editing
+
+        // self.tabBarController?.tabBar.isHidden = true
+        // If item is loaded, fill in values for editing
         if item != nil {
             print("item was non-nil")
             taskTextField.text = item?.title
             segmentSelection.selectedSegmentIndex = item?.segment ?? 0
             notesTextView.text = item?.notes
-            //print("Item's uuidString is \((item?.uuidString)!)")
+            // print("Item's uuidString is \((item?.uuidString)!)")
             disableAutoSnoozeSwitch.setOn(item?.disableAutoSnooze ?? false, animated: false)
             setAnchorColor()
-            
-            self.title = "Edit Task"
+
+            title = "Edit Task"
         } else {
-            self.title = "Add New Task"
+            title = "Add New Task"
         }
-        
-        //load in segment from add segue
+
+        // load in segment from add segue
         if let currentSegmentSelection = editingSegment {
             segmentSelection.selectedSegmentIndex = currentSegmentSelection
         }
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
-        taskTextField.addTarget(self, action: #selector(self.textFieldDidChange), for: .editingChanged)
-        segmentSelection.addTarget(self, action: #selector(self.textFieldDidChange), for: .valueChanged)
+
+        taskTextField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        segmentSelection.addTarget(self, action: #selector(textFieldDidChange), for: .valueChanged)
         notesTextView.delegate = self
         taskTextField.delegate = self
-        
+
         notesTextView.layer.cornerRadius = 6
         notesTextView.layer.masksToBounds = true
         notesTextView.layer.borderWidth = 0.1
         notesTextView.layer.borderColor = UIColor.darkGray.cgColor
-        
+
         if taskTextField.hasText == false {
             //taskTextField.backgroundColor = UIColor.groupTableViewBackground
         }
-        
+
         if notesTextView.hasText == false {
-            //notesTextView.backgroundColor = UIColor.groupTableViewBackground
+            // notesTextView.backgroundColor = UIColor.groupTableViewBackground
         }
-        
-        //Add tap gesture for editing notes
+
+        // Add tap gesture for editing notes
         let textFieldTap = UITapGestureRecognizer(target: self, action: #selector(setNotesEditable))
-        self.notesTextView.addGestureRecognizer(textFieldTap)
-        
-        //add a tap recognizer to stop editing when tapping outside the textView
+        notesTextView.addGestureRecognizer(textFieldTap)
+
+        // add a tap recognizer to stop editing when tapping outside the textView
         let viewTap = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         viewTap.cancelsTouchesInView = false
-        self.view.addGestureRecognizer(viewTap)
-        
-        self.taskTextField.theme_keyboardAppearance = GlobalPicker.keyboardStyle
-        self.taskTextField.theme_textColor = GlobalPicker.cellTextColors
-        self.taskTextField.theme_backgroundColor = GlobalPicker.textInputBackground
-        
-        self.notesTextView.theme_keyboardAppearance = GlobalPicker.keyboardStyle
-        self.notesTextView.theme_textColor = GlobalPicker.cellTextColors
-        self.notesTextView.theme_backgroundColor = GlobalPicker.textInputBackground
+        view.addGestureRecognizer(viewTap)
+
+        taskTextField.theme_keyboardAppearance = GlobalPicker.keyboardStyle
+        taskTextField.theme_textColor = GlobalPicker.cellTextColors
+        taskTextField.theme_backgroundColor = GlobalPicker.textInputBackground
+
+        notesTextView.theme_keyboardAppearance = GlobalPicker.keyboardStyle
+        notesTextView.theme_textColor = GlobalPicker.cellTextColors
+        notesTextView.theme_backgroundColor = GlobalPicker.textInputBackground
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
 
-    @objc func setNotesEditable(_ aRecognizer: UITapGestureRecognizer) {
-        self.notesTextView.dataDetectorTypes = []
-        self.notesTextView.isEditable = true
-        self.notesTextView.becomeFirstResponder()
-        
-        //notesTextView.backgroundColor = UIColor.groupTableViewBackground
+    @objc func setNotesEditable(_: UITapGestureRecognizer) {
+        notesTextView.dataDetectorTypes = []
+        notesTextView.isEditable = true
+        notesTextView.becomeFirstResponder()
+
+        // notesTextView.backgroundColor = UIColor.groupTableViewBackground
     }
-    
-    @objc func viewTapped(_ aRecognizer: UITapGestureRecognizer) {
-        self.view.endEditing(true)
+
+    @objc func viewTapped(_: UITapGestureRecognizer) {
+        view.endEditing(true)
     }
-    
+
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.isEditable = false
         textView.dataDetectorTypes = .all
-        
+
         if textView.hasText {
             //textView.backgroundColor = .white
         }
     }
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
+
+    func textViewDidBeginEditing(_: UITextView) {
         //textView.backgroundColor = UIColor.groupTableViewBackground
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField.hasText {
             //textField.backgroundColor = .white
         }
     }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
+
+    func textFieldShouldReturn(_: UITextField) -> Bool {
+        view.endEditing(true)
         return false
     }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+    override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 3 {
             let haptic = UIImpactFeedbackGenerator(style: .light)
             haptic.impactOccurred()
-            self.disableAutoSnoozeSwitch.setOn(!self.disableAutoSnoozeSwitch.isOn, animated: true)
+            disableAutoSnoozeSwitch.setOn(!disableAutoSnoozeSwitch.isOn, animated: true)
             setAnchorColor()
-            if self.item != nil {
+            if item != nil {
                 navigationItem.rightBarButtonItem?.isEnabled = true
                 updateItem()
             }
         }
     }
-    
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -228,43 +227,41 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 //            destinationVC.setSegment = segmentSelection.selectedSegmentIndex
 //        }
 //    }
-    
+
     @objc func textFieldDidChange() {
         if taskTextField.text!.count > 0 {
-           //itemTitle = taskTextField.text!
+            // itemTitle = taskTextField.text!
             navigationItem.rightBarButtonItem?.isEnabled = true
         } else {
-            //itemTitle = nil
+            // itemTitle = nil
             navigationItem.rightBarButtonItem?.isEnabled = false
         }
     }
-    
-    func textViewDidChange(_ textView: UITextView) {
-        if self.item != nil {
+
+    func textViewDidChange(_: UITextView) {
+        if item != nil {
             navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
-    
+
     @objc func saveButtonPressed() {
-        addNewItem(title: self.taskTextField.text!, date: Date(), segment: self.segmentSelection.selectedSegmentIndex, notes: self.notesTextView.text)
-        //print("Adding item with uuidString: \(self.uuidString)")
-        //self.tabBarController?.tabBar.isHidden = false
+        addNewItem(title: taskTextField.text!, date: Date(), segment: segmentSelection.selectedSegmentIndex, notes: notesTextView.text)
+        // print("Adding item with uuidString: \(self.uuidString)")
+        // self.tabBarController?.tabBar.isHidden = false
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
- 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         if segue.identifier == "unwindToTableViewController" {
             let destinationVC = segue.destination as! TableViewController
             destinationVC.passedSegment = segmentSelection.selectedSegmentIndex
-            //Cell contents can change, so layout the views again to resize the cells
+            // Cell contents can change, so layout the views again to resize the cells
 //            destinationVC.view.setNeedsLayout()
 //            destinationVC.view.layoutIfNeeded()
         }
-        if segue.identifier == "repeatSegue" {
-            
-        }
+        if segue.identifier == "repeatSegue" {}
     }
-    
+
     func firstTriggerDate(segment: Int) -> Date {
         let tomorrow = Date().startOfNextDay
         var dateComponents = DateComponents()
@@ -272,7 +269,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         segmentTime.hour = getOptionHour(segment: segment)
         segmentTime.minute = getOptionMinute(segment: segment)
         segmentTime.second = 0
-        //TODO: This might cause problems
+        // TODO: This might cause problems
         if Date() > segmentTime.date! {
             print("Setting item date for tomorrow")
             dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: tomorrow)
@@ -286,12 +283,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         print("Setting first trigger date for: \(dateComponents)")
         return dateComponents.date!
     }
-    
-    func addNewItem(title: String, date: Date, segment: Int, notes: String) {
+
+    func addNewItem(title: String, date _: Date, segment: Int, notes: String) {
         print("Running addNewItem")
-        //if it's a new item, add it as new to the realm
-        //otherwise, update the existing item
-        if self.item == nil {
+        // if it's a new item, add it as new to the realm
+        // otherwise, update the existing item
+        if item == nil {
             let newItem = Items()
             newItem.title = title
             newItem.segment = segment
@@ -299,7 +296,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             newItem.notes = notes
             newItem.disableAutoSnooze = disableAutoSnoozeSwitch.isOn
             print("new item's uuidString: \(newItem.uuidString)")
-            //save to realm
+            // save to realm
             saveItem(item: newItem)
             if getAutoSnoozeStatus() {
                 scheduleAutoSnoozeNotifications(title: title, notes: notes, segment: segment, uuidString: newItem.uuidString, firstDate: newItem.dateModified!)
@@ -310,7 +307,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             updateItem()
         }
     }
-    
+
     func saveItem(item: Items) {
         print("Running saveItem")
         let realm = try! Realm()
@@ -322,7 +319,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             print("Error saving item: \(error)")
         }
     }
-    
+
     func updateItem() {
         let realm = try! Realm()
         do {
@@ -335,17 +332,17 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         } catch {
             print("Error updating item: \(error)")
         }
-        self.removeNotification(uuidString: ["\(self.item!.uuidString)0", "\(self.item!.uuidString)1", "\(self.item!.uuidString)2", "\(self.item!.uuidString)3"])
-        
+        removeNotification(uuidString: ["\(self.item!.uuidString)0", "\(self.item!.uuidString)1", "\(self.item!.uuidString)2", "\(self.item!.uuidString)3"])
+
         if getAutoSnoozeStatus() {
-            scheduleAutoSnoozeNotifications(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString, firstDate: self.item!.dateModified!)
+            scheduleAutoSnoozeNotifications(title: item!.title!, notes: item!.notes, segment: item!.segment, uuidString: item!.uuidString, firstDate: item!.dateModified!)
         } else {
-            self.scheduleNewNotification(title: self.item!.title!, notes: self.item!.notes, segment: self.item!.segment, uuidString: self.item!.uuidString, firstDate: self.item!.dateModified!)
+            scheduleNewNotification(title: item!.title!, notes: item!.notes, segment: item!.segment, uuidString: item!.uuidString, firstDate: item!.dateModified!)
         }
     }
-    
-    //MARK: - Manage Notifications
-    
+
+    // MARK: - Manage Notifications
+
     func getAutoSnoozeStatus() -> Bool {
         var snooze = false
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -358,8 +355,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
         return snooze
     }
-    
-    //TODO: This is near identical to another function here
+
+    // TODO: This is near identical to another function here
     func getSegmentNotificationOption(segment: Int) -> Bool {
         var isOn = true
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -388,65 +385,64 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
         return isOn
     }
-    
+
     func scheduleAutoSnoozeNotifications(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-        //This is where you need to test if a segment is > current segment
+        // This is where you need to test if a segment is > current segment
         let dayOfFirstDate = Calendar.autoupdatingCurrent.dateComponents([.day], from: firstDate)
         print("dayOfFirstDate: \(dayOfFirstDate)")
         let today = Calendar.autoupdatingCurrent.dateComponents([.day], from: Date())
         print("today: \(today)")
-        if segment > 0 && dayOfFirstDate == today{
+        if segment > 0, dayOfFirstDate == today {
             if getSegmentNotificationOption(segment: 0) {
                 scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate.startOfNextDay)
-                print("morning uuid: "+"\(uuidString)0")
+                print("morning uuid: " + "\(uuidString)0")
             }
         } else {
             if getSegmentNotificationOption(segment: 0) {
                 scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate)
-                print("morning uuid: "+"\(uuidString)0")
+                print("morning uuid: " + "\(uuidString)0")
             }
         }
-        if segment > 1 && dayOfFirstDate == today{
+        if segment > 1, dayOfFirstDate == today {
             if getSegmentNotificationOption(segment: 1) {
                 scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate.startOfNextDay)
-                print("afternoon uuid: "+"\(uuidString)1")
+                print("afternoon uuid: " + "\(uuidString)1")
             }
         } else {
             if getSegmentNotificationOption(segment: 1) {
                 scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate)
-                print("afternoon uuid: "+"\(uuidString)1")
+                print("afternoon uuid: " + "\(uuidString)1")
             }
         }
-        if segment > 2 && dayOfFirstDate == today {
+        if segment > 2, dayOfFirstDate == today {
             if getSegmentNotificationOption(segment: 2) {
                 scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate.startOfNextDay)
-                print("evening uuid: "+"\(uuidString)2")
+                print("evening uuid: " + "\(uuidString)2")
             }
         } else {
             if getSegmentNotificationOption(segment: 2) {
                 scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate)
-                print("evening uuid: "+"\(uuidString)2")
+                print("evening uuid: " + "\(uuidString)2")
             }
         }
         if getSegmentNotificationOption(segment: 3) {
             scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: "\(uuidString)3", firstDate: firstDate)
-            print("night uuid: "+"\(uuidString)3")
+            print("night uuid: " + "\(uuidString)3")
         }
     }
-    
+
     func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-        
         print("running scheduleNewNotification")
         let notificationCenter = UNUserNotificationCenter.current()
-        
-        notificationCenter.getNotificationSettings { (settings) in
-            //DO not schedule notifications if not authorized
+
+        notificationCenter.getNotificationSettings { settings in
+            // DO not schedule notifications if not authorized
             guard settings.authorizationStatus == .authorized else {
-                //self.requestNotificationPermission()
+                // self.requestNotificationPermission()
                 print("Authorization status has changed to unauthorized for notifications")
                 return
             }
-            
+
             DispatchQueue(label: self.realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
@@ -483,25 +479,22 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
                     }
                 }
             }
-            
-            
-            
         }
     }
-    
+
     func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
         print("createNotification running")
         let content = UNMutableNotificationContent()
         content.title = title
         content.sound = UNNotificationSound.default
         content.threadIdentifier = String(AppDelegate().getItemSegment(id: uuidString))
-        
+
         content.badge = NSNumber(integerLiteral: AppDelegate().setBadgeNumber())
-        
+
         if let notesText = notes {
             content.body = notesText
         }
-        
+
         // Assign the category (and the associated actions).
         switch segment {
         case 1:
@@ -513,75 +506,74 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         default:
             content.categoryIdentifier = "morning"
         }
-        
+
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.autoupdatingCurrent
-        //Keep notifications from occurring too early for tasks created for tomorrow
+        // Keep notifications from occurring too early for tasks created for tomorrow
         dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
         dateComponents.timeZone = TimeZone.autoupdatingCurrent
         dateComponents.hour = getOptionHour(segment: segment)
         dateComponents.minute = getOptionMinute(segment: segment)
-        
+
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        
-        //Create the request
+
+        // Create the request
         let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-        
-        //Schedule the request with the system
+
+        // Schedule the request with the system
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.add(request) { (error) in
+        notificationCenter.add(request) { error in
             if error != nil {
-                //TODO: handle notification errors
+                // TODO: handle notification errors
                 print(String(describing: error))
             } else {
                 print("Notification created successfully")
             }
         }
-        
     }
-    
+
     func removeNotification(uuidString: [String]) {
         print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidString)
     }
-    
-    //MARK: - Options Realm
-    
-    //Options Properties
-    //var optionsObject: Options?
-    //var firstItemAdded: Bool?
+
+    // MARK: - Options Realm
+
+    // Options Properties
+    // var optionsObject: Options?
+    // var firstItemAdded: Bool?
     let optionsKey = "optionsKey"
-    
+
     func getTime(timePeriod: Int, timeOption: Date?) -> Date {
         var time: Date
         let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .short
-        
+
         if let setTime = timeOption {
             time = setTime
         } else {
             time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
         }
-        
+
         return time
     }
-    
+
     func getHour(date: Date) -> Int {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH"
         let hour = dateFormatter.string(from: date)
         return Int(hour)!
     }
-    
+
     func getMinute(date: Date) -> Int {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "mm"
         let minutes = dateFormatter.string(from: date)
         return Int(minutes)!
     }
-    
+
     func getOptionHour(segment: Int) -> Int {
         var hour = Int()
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -603,7 +595,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
         return hour
     }
-    
+
     func getOptionMinute(segment: Int) -> Int {
         var minute = Int()
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -620,13 +612,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
                 default:
                     minute = (options?.morningMinute)!
                 }
-                
             }
         }
         return minute
     }
-    
-    //Set the notification badge count
+
+    // Set the notification badge count
     func getSegmentCount(segment: Int) -> Int {
         var count = Int()
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -637,7 +628,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
         return count
     }
-    
+
     func getSegmentNotification(segment: Int) -> Bool {
         var enabled = false
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -659,8 +650,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
         return enabled
     }
-    
-    //Smart Snooze
+
+    // Smart Snooze
     func getSmartSnoozeStatus() -> Bool {
         var snooze = false
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -673,14 +664,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
         return snooze
     }
-    
+
     func getCurrentSegmentFromTime() -> Int {
         let afternoon = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 1), minute: getOptionMinute(segment: 1), second: 0, of: Date())
         let evening = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 2), minute: getOptionMinute(segment: 2), second: 0, of: Date())
         let night = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 3), minute: getOptionMinute(segment: 3), second: 0, of: Date())
-        
+
         var currentSegment = 0
-        
+
         switch Date() {
         case _ where Date() < afternoon!:
             currentSegment = 0
@@ -696,7 +687,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         print("getCurrentSegmentFromTime: \(currentSegment)")
         return currentSegment
     }
-    
+
     func getDateFromComponents(hour: Int, minute: Int) -> Date {
         var dateComponent = DateComponents()
         dateComponent.calendar = Calendar.autoupdatingCurrent
@@ -705,8 +696,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         dateComponent.minute = minute
         return dateComponent.date!
     }
-    
-    //Mark: Theme
+
+    // Mark: Theme
     public func setAppearance(segment: Int) {
         print("Setting theme")
         if getDarkModeStatus() {
@@ -733,7 +724,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             }
         }
     }
-    
+
     func getDarkModeStatus() -> Bool {
         var darkMode = false
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -746,9 +737,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
         return darkMode
     }
-    
+
     func getRepeatString() -> String {
-        
         if let currentItem = item {
             let repeatDate = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: currentItem.year, month: currentItem.month, day: currentItem.day, hour: currentItem.hour, minute: currentItem.minute, second: nil, nanosecond: nil, weekday: currentItem.weekday, weekdayOrdinal: currentItem.weekdayOrdinal, quarter: currentItem.quarter, weekOfMonth: currentItem.weekOfMonth, weekOfYear: currentItem.weekOfYear, yearForWeekOfYear: nil)
             let formatter = DateComponentsFormatter()
@@ -757,8 +747,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             return ""
         }
     }
-    
-    //MARK: - Banners
+
+    // MARK: - Banners
+
     func showBanner(title: String?) {
         SwiftMessages.pauseBetweenMessages = 0
         SwiftMessages.hideAll()

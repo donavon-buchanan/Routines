@@ -10,25 +10,24 @@ import UIKit
 import UserNotifications
 
 class NavigationViewController: UINavigationController, UNUserNotificationCenterDelegate {
-
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 //        center.delegate = self
     }
-    
+
 //    let center = UNUserNotificationCenter.current()
 
     /*
-    // MARK: - Navigation
+     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+
 //    //Notification Settings Screen
 //    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
 //        print("Opening settings")
@@ -36,5 +35,4 @@ class NavigationViewController: UINavigationController, UNUserNotificationCenter
 //        let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsView") as! OptionsTableViewController
 //        self.pushViewController(optionsViewController, animated: true)
 //    }
-
 }

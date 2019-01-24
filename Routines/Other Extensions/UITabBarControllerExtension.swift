@@ -6,15 +6,15 @@
 ////  Copyright © 2018 Donavon Buchanan. All rights reserved.
 ////
 //
-//import UIKit
+// import UIKit
 //
-//extension UITabBarController {
+// extension UITabBarController {
 //    func setTabBarVisible(visible:Bool, duration: TimeInterval, animated:Bool) {
 //        if (tabBarIsVisible() == visible) { return }
 //        let frame = self.tabBar.frame
 //        let height = frame.size.height
 //        let offsetY = (visible ? -height : height)
-//        
+//
 //        // animation
 //        UIViewPropertyAnimator(duration: duration, curve: .linear) {
 //            self.tabBar.frame.offsetBy(dx:0, dy:offsetY)
@@ -23,8 +23,8 @@
 ////            self.view.layoutIfNeeded()
 //            }.startAnimation()
 //    }
-//    
+//
 //    func tabBarIsVisible() ->Bool {
 //        return self.tabBar.frame.origin.y < UIScreen.main.bounds.height
 //    }
-//}
+// }

@@ -6,19 +6,16 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-import UIKit
 import SwiftTheme
+import UIKit
 
 class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
-
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    
-    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        
-    }
-    
+
+    override func tabBar(_: UITabBar, didSelect _: UITabBarItem) {}
+
     open func setAppearance(segment: Int) {
         print("Setting theme")
         if AppDelegate().getDarkModeStatus() {
@@ -49,17 +46,19 @@ class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
             }
         }
     }
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+    /*
+     // MARK: - Navigation
+
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
 
     // MARK: - Realm
+
 //    let realmDispatchQueueLabel: String = "background"
 //    let optionsKey = "optionsKey"
 }
