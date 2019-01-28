@@ -460,30 +460,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     @objc func showClearAlert() {
-        var segmentName: String {
-            let segment = self.segment
-            switch segment {
-            case 1:
-                return "afternoon"
-            case 2:
-                return "evening"
-            case 3:
-                return "night"
-            default:
-                return "morning"
-            }
-        }
-
-//        let alert = UIAlertController(title: "Are you sure?", message: "This will clear all your \(segmentName) tasks at once.", preferredStyle: .alert)
-//        let clearAction = UIAlertAction(title: "Do it!", style: .destructive) { (action) in
-//            self.clearAll()
-//        }
-//        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-//        alert.addAction(cancelAction)
-//        alert.addAction(clearAction)
-//
-//        self.present(alert, animated: true, completion: nil)
-
         showAlert(title: "Are you sure?", body: "This will clear all the tasks shown.")
     }
 
@@ -923,16 +899,15 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         var config = SwiftMessages.Config()
         config.presentationStyle = .center
         config.duration = .forever
-        config.dimMode = .gray(interactive: true)
 
         let alert = MessageView.viewFromNib(layout: .cardView)
-        alert.configureTheme(.warning)
-        let icon = "🤯"
+        let icon = "💥"
+        alert.configureTheme(.info, iconStyle: .default)
         alert.configureContent(title: title, body: body, iconText: icon)
         alert.titleLabel?.textColor = .black
         alert.bodyLabel?.textColor = .black
 
-        alert.button?.backgroundColor = .red
+        // alert.button?.backgroundColor = .red
         alert.button?.setTitleColor(.white, for: .normal)
         alert.button?.setTitle("Do it!", for: .normal)
         alert.button?.addTarget(self, action: #selector(clearAll), for: .touchUpInside)
@@ -945,6 +920,14 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         // Reduce the corner radius (applicable to layouts featuring rounded corners).
         (alert.backgroundView as? CornerRoundingView)?.cornerRadius = 10
+
+        if getDarkModeStatus() {
+            config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
+            config.dimModeAccessibilityLabel = "Dismiss Warning"
+        } else {
+            config.dimMode = .blur(style: .regular, alpha: 1, interactive: true)
+            config.dimModeAccessibilityLabel = "Dismiss Warning"
+        }
 
         SwiftMessages.show(config: config, view: alert)
     }
