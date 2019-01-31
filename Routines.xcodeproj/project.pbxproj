@@ -13,6 +13,7 @@
 		F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3D02160A05600FF36D9 /* CustomTimesTableViewController.swift */; };
 		F814CF5A2192A8E000E3C0F5 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F814CF592192A8E000E3C0F5 /* TabBarViewController.swift */; };
 		F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TableViewController.swift */; };
+		F8216BA82201A98400EC10A2 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8216BA72201A98400EC10A2 /* Notifications.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
 		F843324B21F4680200086BFF /* CheckableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F843324A21F4680200086BFF /* CheckableTableViewCell.swift */; };
 		F85213B5218F5EE600291CFE /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85213B4218F5EE600291CFE /* NavigationViewController.swift */; };
@@ -42,6 +43,7 @@
 		F807D3D02160A05600FF36D9 /* CustomTimesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTimesTableViewController.swift; sourceTree = "<group>"; };
 		F814CF592192A8E000E3C0F5 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		F816DB332155CFBA009C6907 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TableViewController.swift; sourceTree = "<group>"; };
+		F8216BA72201A98400EC10A2 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
 		F843324A21F4680200086BFF /* CheckableTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckableTableViewCell.swift; sourceTree = "<group>"; };
 		F85213B4218F5EE600291CFE /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +106,14 @@
 			path = Options;
 			sourceTree = "<group>";
 		};
+		F8216BA92201A98E00EC10A2 /* Handlers */ = {
+			isa = PBXGroup;
+			children = (
+				F8216BA72201A98400EC10A2 /* Notifications.swift */,
+			);
+			path = Handlers;
+			sourceTree = "<group>";
+		};
 		F84681FC21868C2A00BE3E19 /* Other Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -160,6 +170,7 @@
 				F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */,
 				F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */,
 				F843324A21F4680200086BFF /* CheckableTableViewCell.swift */,
+				F8216BA92201A98E00EC10A2 /* Handlers */,
 				F807D3D22160A06600FF36D9 /* Options */,
 			);
 			path = Controllers;
@@ -371,6 +382,7 @@
 				F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */,
 				F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */,
 				F8CBBA5721A9058D00A4FFFD /* TaskTableViewCell.swift in Sources */,
+				F8216BA82201A98400EC10A2 /* Notifications.swift in Sources */,
 				F807D3CF2160964E00FF36D9 /* OptionsTableViewController.swift in Sources */,
 				F843324B21F4680200086BFF /* CheckableTableViewCell.swift in Sources */,
 				F8B30789219C13B500437AAA /* GlobalPicker.swift in Sources */,
