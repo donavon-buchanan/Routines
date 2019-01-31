@@ -32,6 +32,17 @@ import RealmSwift
     dynamic var weekOfMonth: Int?
     dynamic var weekOfYear: Int?
 
+    // Repeats
+    enum repeatStyle: String {
+        case daily
+        case weekly
+        case monthly
+        case yearly
+        case none
+    }
+
+    dynamic var repeatStyle = "none"
+
     // Notification identifier
     dynamic var uuidString: String = UUID().uuidString
     override static func primaryKey() -> String? {
