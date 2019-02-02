@@ -739,15 +739,15 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         return darkMode
     }
 
-    func getRepeatString() -> String {
-        if let currentItem = item {
-            let repeatDate = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: currentItem.year, month: currentItem.month, day: currentItem.day, hour: currentItem.hour, minute: currentItem.minute, second: nil, nanosecond: nil, weekday: currentItem.weekday, weekdayOrdinal: currentItem.weekdayOrdinal, quarter: currentItem.quarter, weekOfMonth: currentItem.weekOfMonth, weekOfYear: currentItem.weekOfYear, yearForWeekOfYear: nil)
-            let formatter = DateComponentsFormatter()
-            return formatter.string(from: repeatDate) ?? ""
-        } else {
-            return ""
-        }
-    }
+//    func getRepeatString() -> String {
+//        if let currentItem = item {
+//            let repeatDate = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, era: nil, year: currentItem.year, month: currentItem.month, day: currentItem.day, hour: currentItem.hour, minute: currentItem.minute, second: nil, nanosecond: nil, weekday: currentItem.weekday, weekdayOrdinal: currentItem.weekdayOrdinal, quarter: currentItem.quarter, weekOfMonth: currentItem.weekOfMonth, weekOfYear: currentItem.weekOfYear, yearForWeekOfYear: nil)
+//            let formatter = DateComponentsFormatter()
+//            return formatter.string(from: repeatDate) ?? ""
+//        } else {
+//            return ""
+//        }
+//    }
 
     // MARK: - Banners
 

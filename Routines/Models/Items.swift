@@ -20,28 +20,9 @@ import RealmSwift
     dynamic var disableAutoSnooze: Bool = false
     dynamic var notes: String?
 
-    // Date Components
-    dynamic var year: Int?
-    dynamic var month: Int?
-    dynamic var day: Int?
-    dynamic var hour: Int?
-    dynamic var minute: Int?
-    dynamic var weekday: Int?
-    dynamic var weekdayOrdinal: Int?
-    dynamic var quarter: Int?
-    dynamic var weekOfMonth: Int?
-    dynamic var weekOfYear: Int?
-
     // Repeats
-    enum repeatStyle: String {
-        case daily
-        case weekly
-        case monthly
-        case yearly
-        case none
-    }
-
     dynamic var repeatStyle = "none"
+    dynamic var daysToRepeat = List<String>()
 
     // Notification identifier
     dynamic var uuidString: String = UUID().uuidString
@@ -49,55 +30,37 @@ import RealmSwift
         return "uuidString"
     }
 
-//    dynamic var afternoonUUID: String = UUID().uuidString
-//    dynamic var eveningUUID: String = UUID().uuidString
-//    dynamic var nightUUID: String = UUID().uuidString
-
-    func setRepeat(time: DateComponents) {
-        year = time.year
-        month = time.month
-        day = time.day
-        hour = time.hour
-        minute = time.minute
-        weekday = time.weekday
-        weekdayOrdinal = time.weekdayOrdinal
-        quarter = time.quarter
-        weekOfMonth = time.weekOfMonth
-        weekOfYear = time.weekOfYear
-
+    func setRepeat(style: String) {
         repeats = true
-//        if repeats {
-//            self.disableAutoSnooze = true
-//        } else {
-//            self.disableAutoSnooze = false
-//        }
+        repeatStyle = style
         // TODO: Just build a check in the view and the auto snooze func to check if repeat is enabled. Ignore if so. But don't actually change the value here.
         print("Repeat has been set.")
     }
 
-    func repeatDaily(sunday: Bool, monday: Bool, tuesday: Bool, wednesday: Bool, thursday: Bool, friday: Bool, saturday: Bool, time: DateComponents) {
-        var newTime = time
-
+    func repeatDaily(sunday: Bool, monday: Bool, tuesday: Bool, wednesday: Bool, thursday: Bool, friday: Bool, saturday: Bool) {
+        let days = List<String>()
         if sunday {
-            newTime.weekday = 1
+            days.append("sunday")
         }
         if monday {
-            newTime.weekday = 2
+            days.append("monday")
         }
         if tuesday {
-            newTime.weekday = 3
+            days.append("tuesday")
         }
         if wednesday {
-            newTime.weekday = 4
+            days.append("wednesday")
         }
         if thursday {
-            newTime.weekday = 5
+            days.append("thursday")
         }
         if friday {
-            newTime.weekday = 6
+            days.append("friday")
         }
         if saturday {
-            newTime.weekday = 7
+            days.append("saturday")
         }
+        daysToRepeat = days
+        setRepeat(style: "daily")
     }
 }
