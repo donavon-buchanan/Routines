@@ -1,4 +1,5 @@
-pod install
+before_install:
+  - pod install
 language: swift
 os: osx
 osx_image: xcode10.1
