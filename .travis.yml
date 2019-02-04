@@ -1,6 +1,6 @@
 language: swift
 os: osx
 osx_image: xcode10.1
-xcode_project: Routines.xcodeproj
+xcode_project: Routines.xcworkspace
 xcode_scheme: Routines
 xcode_destination: platform=iOS Simulator,OS=12.1,name=iPhone X
