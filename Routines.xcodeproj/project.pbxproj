@@ -17,6 +17,7 @@
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
 		F843324B21F4680200086BFF /* CheckableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F843324A21F4680200086BFF /* CheckableTableViewCell.swift */; };
 		F85213B5218F5EE600291CFE /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85213B4218F5EE600291CFE /* NavigationViewController.swift */; };
+		F85DA34F22084C9800A6716C /* RoutinesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85DA34E22084C9800A6716C /* RoutinesUITests.swift */; };
 		F86AFEB821AFD1B4004DC7F2 /* UITabBarControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86AFEB721AFD1B4004DC7F2 /* UITabBarControllerExtension.swift */; };
 		F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */; };
 		F8B30787219C0DAB00437AAA /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B30786219C0DAB00437AAA /* Themes.swift */; };
@@ -34,6 +35,16 @@
 		F8F3270E215C8509004AC619 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8F3270D215C8509004AC619 /* Media.xcassets */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		F85DA35122084C9800A6716C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8B831AC2155CBB000DAF60E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F8B831B32155CBB000DAF60E;
+			remoteInfo = Routines;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		572EB0D39593DFD9CE92CFA1 /* Pods_Routines.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Routines.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9972F6664CBC7F769D3B0AA1 /* Pods-Routines.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routines.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Routines/Pods-Routines.debug.xcconfig"; sourceTree = "<group>"; };
@@ -47,6 +58,9 @@
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
 		F843324A21F4680200086BFF /* CheckableTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckableTableViewCell.swift; sourceTree = "<group>"; };
 		F85213B4218F5EE600291CFE /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
+		F85DA34C22084C9800A6716C /* RoutinesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoutinesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F85DA34E22084C9800A6716C /* RoutinesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinesUITests.swift; sourceTree = "<group>"; };
+		F85DA35022084C9800A6716C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F86AFEB721AFD1B4004DC7F2 /* UITabBarControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBarControllerExtension.swift; sourceTree = "<group>"; };
 		F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		F8B30786219C0DAB00437AAA /* Themes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themes.swift; sourceTree = "<group>"; };
@@ -67,6 +81,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F85DA34922084C9800A6716C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F8B831B12155CBB000DAF60E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,10 +145,20 @@
 			path = "Other Extensions";
 			sourceTree = "<group>";
 		};
+		F85DA34D22084C9800A6716C /* RoutinesUITests */ = {
+			isa = PBXGroup;
+			children = (
+				F85DA34E22084C9800A6716C /* RoutinesUITests.swift */,
+				F85DA35022084C9800A6716C /* Info.plist */,
+			);
+			path = RoutinesUITests;
+			sourceTree = "<group>";
+		};
 		F8B831AB2155CBB000DAF60E = {
 			isa = PBXGroup;
 			children = (
 				F8B831B62155CBB000DAF60E /* Routines */,
+				F85DA34D22084C9800A6716C /* RoutinesUITests */,
 				F8B831B52155CBB000DAF60E /* Products */,
 				4CEB676FE1334C01DDF0940C /* Pods */,
 				6049E5BF6B515664E2AA6A8D /* Frameworks */,
@@ -138,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				F8B831B42155CBB000DAF60E /* Routines.app */,
+				F85DA34C22084C9800A6716C /* RoutinesUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -196,6 +228,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F85DA34B22084C9800A6716C /* RoutinesUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F85DA35522084C9800A6716C /* Build configuration list for PBXNativeTarget "RoutinesUITests" */;
+			buildPhases = (
+				F85DA34822084C9800A6716C /* Sources */,
+				F85DA34922084C9800A6716C /* Frameworks */,
+				F85DA34A22084C9800A6716C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F85DA35222084C9800A6716C /* PBXTargetDependency */,
+			);
+			name = RoutinesUITests;
+			productName = RoutinesUITests;
+			productReference = F85DA34C22084C9800A6716C /* RoutinesUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		F8B831B32155CBB000DAF60E /* Routines */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F8B831C62155CBB100DAF60E /* Build configuration list for PBXNativeTarget "Routines" */;
@@ -224,10 +274,15 @@
 		F8B831AC2155CBB000DAF60E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1000;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "Donavon Buchanan";
 				TargetAttributes = {
+					F85DA34B22084C9800A6716C = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = F8B831B32155CBB000DAF60E;
+					};
 					F8B831B32155CBB000DAF60E = {
 						CreatedOnToolsVersion = 10.0;
 						ProvisioningStyle = Automatic;
@@ -248,11 +303,19 @@
 			projectRoot = "";
 			targets = (
 				F8B831B32155CBB000DAF60E /* Routines */,
+				F85DA34B22084C9800A6716C /* RoutinesUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F85DA34A22084C9800A6716C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F8B831B22155CBB000DAF60E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -363,6 +426,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F85DA34822084C9800A6716C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F85DA34F22084C9800A6716C /* RoutinesUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F8B831B02155CBB000DAF60E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -393,6 +464,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		F85DA35222084C9800A6716C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F8B831B32155CBB000DAF60E /* Routines */;
+			targetProxy = F85DA35122084C9800A6716C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		F8B831BB2155CBB000DAF60E /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -413,6 +492,38 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		F85DA35322084C9800A6716C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G8WL98TTBE;
+				INFOPLIST_FILE = RoutinesUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = app.donavon.RoutinesUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Routines;
+			};
+			name = Debug;
+		};
+		F85DA35422084C9800A6716C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = G8WL98TTBE;
+				INFOPLIST_FILE = RoutinesUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = app.donavon.RoutinesUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Routines;
+			};
+			name = Release;
+		};
 		F8B831C42155CBB100DAF60E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -567,6 +678,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F85DA35522084C9800A6716C /* Build configuration list for PBXNativeTarget "RoutinesUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F85DA35322084C9800A6716C /* Debug */,
+				F85DA35422084C9800A6716C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F8B831AF2155CBB000DAF60E /* Build configuration list for PBXProject "Routines" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
