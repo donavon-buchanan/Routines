@@ -1,14 +1,14 @@
 PODS:
-  - Realm (3.12.0):
-    - Realm/Headers (= 3.12.0)
-  - Realm/Headers (3.12.0)
-  - RealmSwift (3.12.0):
-    - Realm (= 3.12.0)
-  - SwiftMessages (6.0.1):
-    - SwiftMessages/App (= 6.0.1)
-  - SwiftMessages/App (6.0.1)
+  - Realm (3.13.1):
+    - Realm/Headers (= 3.13.1)
+  - Realm/Headers (3.13.1)
+  - RealmSwift (3.13.1):
+    - Realm (= 3.13.1)
+  - SwiftMessages (6.0.2):
+    - SwiftMessages/App (= 6.0.2)
+  - SwiftMessages/App (6.0.2)
   - SwiftTheme (0.4.3)
-  - ViewAnimator (2.2.0)
+  - ViewAnimator (2.2.2)
 
 DEPENDENCIES:
   - RealmSwift
@@ -25,12 +25,12 @@ SPEC REPOS:
     - ViewAnimator
 
 SPEC CHECKSUMS:
-  Realm: cdaef23c4ddb36ab1ddffed23f5a7f3332fc5585
-  RealmSwift: 5576324033f0aa5ef1e0a839a3da2281dff47a7f
-  SwiftMessages: 42ed7b6e1f2f1ead9ee667dc61a0ae87e4f49570
+  Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
+  RealmSwift: 8a1e6a02b7a08cd17a31e3115143fb69fe5f3fb9
+  SwiftMessages: 8b3cc68dba2f1c91aac1a74c90b10287aac35371
   SwiftTheme: 628345b948068a48d330d76dffb1a990ea5f90aa
-  ViewAnimator: a849844cc3698620e1a562b510ed0c28aeafcdc5
+  ViewAnimator: 6eaa112663b6a2d9e6b2573df65b416dd051cbe4
 
 PODFILE CHECKSUM: af2657312b5a3367580e2319ad9fef19348b2d42
 
-COCOAPODS: 1.5.2
+COCOAPODS: 1.5.3
