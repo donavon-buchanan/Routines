@@ -14,6 +14,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "07CE38A7D04F81EAFFAD7C6F41F351B5"
+               BuildableName = "Pods_Routines.framework"
+               BlueprintName = "Pods-Routines"
+               ReferencedContainer = "container:Pods/Pods.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "F8B831B32155CBB000DAF60E"
                BuildableName = "Routines.app"
                BlueprintName = "Routines"
