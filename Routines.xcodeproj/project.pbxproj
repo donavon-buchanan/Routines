@@ -139,7 +139,6 @@
 		F8F278512187D56400D2AC46 /* UITableViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableViewExtension.swift; sourceTree = "<group>"; };
 		F8F3270D215C8509004AC619 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		F8FF258A220857D10063295F /* Pods_Routines.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_Routines.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F8FF258F220859720063295F /* project.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; name = project.xcworkspace; path = Routines.xcodeproj/project.xcworkspace; sourceTree = "<group>"; };
 		F8FF259122085A180063295F /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -185,7 +184,6 @@
 			isa = PBXGroup;
 			children = (
 				F8FF259122085A180063295F /* Pods.xcodeproj */,
-				F8FF258F220859720063295F /* project.xcworkspace */,
 				F8FF258A220857D10063295F /* Pods_Routines.framework */,
 				F8EB956A2208555600E633F5 /* Pods_Routines.framework */,
 				572EB0D39593DFD9CE92CFA1 /* Pods_Routines.framework */,
