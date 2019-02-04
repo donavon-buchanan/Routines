@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "07CE38A7D04F81EAFFAD7C6F41F351B5"
+               BlueprintIdentifier = "FF3B0A125492AA0EE65C9234AC7053C4"
                BuildableName = "Pods_Routines.framework"
                BlueprintName = "Pods-Routines"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
@@ -42,6 +42,16 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F85DA34B22084C9800A6716C"
+               BuildableName = "RoutinesUITests.xctest"
+               BlueprintName = "RoutinesUITests"
+               ReferencedContainer = "container:Routines.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
