@@ -1,8 +1,3 @@
-<style>
-h1 {
-  font-size: 300%;
-}
-</style>
 <img src="/web-assets/images/icon.iconset/icon_128x128.png" alt="Routines App Icon" height=80> Routines
 ======
 
