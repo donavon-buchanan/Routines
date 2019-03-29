@@ -20,13 +20,17 @@ public extension UIView {
     ///   - finalAlpha: View's alpha after the animation.
     ///   - delay: Time Delay before the animation.
     ///   - duration: TimeInterval the animation takes to complete.
+    ///   - dampingRatio: The damping ratio for the spring animation.
+    ///   - velocity: The initial spring velocity.
     ///   - completion: CompletionBlock after the animation finishes.
-    public func animate(animations: [Animation],
+    func animate(animations: [Animation],
                         reversed: Bool = false,
                         initialAlpha: CGFloat = 0.0,
                         finalAlpha: CGFloat = 1.0,
                         delay: Double = 0,
                         duration: TimeInterval = ViewAnimatorConfig.duration,
+                        usingSpringWithDamping dampingRatio: CGFloat = ViewAnimatorConfig.springDampingRatio,
+                        initialSpringVelocity velocity: CGFloat = ViewAnimatorConfig.initialSpringVelocity,
                         options: UIView.AnimationOptions = [],
                         completion: (() -> Void)? = nil) {
         
@@ -39,7 +43,12 @@ public extension UIView {
 
         alpha = initialAlpha
         
-        UIView.animate(withDuration: duration, delay: delay, options: options, animations: { [weak self] in
+        UIView.animate(withDuration: duration,
+                       delay: delay,
+                       usingSpringWithDamping: dampingRatio,
+                       initialSpringVelocity: velocity,
+                       options: options,
+                       animations: { [weak self] in
             self?.transform = reversed ? transformTo : transformFrom
             self?.alpha = finalAlpha
         }) { _ in
@@ -57,8 +66,10 @@ public extension UIView {
     ///   - delay: Time Delay before the animation.
     ///   - animationInterval: Interval between the animations of each view.
     ///   - duration: TimeInterval the animation takes to complete.
+    ///   - dampingRatio: The damping ratio for the spring animation.
+    ///   - velocity: The initial spring velocity.
     ///   - completion: CompletionBlock after the animation finishes.
-    public static func animate(views: [UIView],
+    static func animate(views: [UIView],
                                animations: [Animation],
                                reversed: Bool = false,
                                initialAlpha: CGFloat = 0.0,
@@ -66,6 +77,8 @@ public extension UIView {
                                delay: Double = 0,
                                animationInterval: TimeInterval = 0.05,
                                duration: TimeInterval = ViewAnimatorConfig.duration,
+                               usingSpringWithDamping dampingRatio: CGFloat = ViewAnimatorConfig.springDampingRatio,
+                               initialSpringVelocity velocity: CGFloat = ViewAnimatorConfig.initialSpringVelocity,
                                options: UIView.AnimationOptions = [],
                                completion: (() -> Void)? = nil) {
 
@@ -86,6 +99,8 @@ public extension UIView {
                              finalAlpha: finalAlpha,
                              delay: Double(index) * animationInterval,
                              duration: duration,
+                             usingSpringWithDamping: dampingRatio,
+                             initialSpringVelocity: velocity,
                              options: options,
                              completion: { dispatchGroup.leave() })
             }

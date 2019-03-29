@@ -22,7 +22,7 @@ import RealmSwift
 
     // Repeats
     dynamic var repeatStyle = "none"
-    dynamic var daysToRepeat = List<String>()
+    var daysToRepeat = List<String>()
 
     // Notification identifier
     dynamic var uuidString: String = UUID().uuidString
