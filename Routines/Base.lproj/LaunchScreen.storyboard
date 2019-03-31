@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lsp-WH-zrr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lsp-WH-zrr">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,21 +17,7 @@
                     <view key="view" contentMode="scaleToFill" id="kI1-rZ-mWf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="inlay" translatesAutoresizingMaskIntoConstraints="NO" id="No1-b3-lJC">
-                                <rect key="frame" x="0.0" y="272" width="375" height="268"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="No1-b3-lJC" secondAttribute="height" multiplier="383:274" id="IKg-WQ-ojn"/>
-                                </constraints>
-                            </imageView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="No1-b3-lJC" secondAttribute="trailing" id="9Ed-8Y-x2J"/>
-                            <constraint firstItem="No1-b3-lJC" firstAttribute="centerX" secondItem="kI1-rZ-mWf" secondAttribute="centerX" id="iVR-75-QRd"/>
-                            <constraint firstItem="No1-b3-lJC" firstAttribute="leading" secondItem="kI1-rZ-mWf" secondAttribute="leading" id="pts-LH-zaG"/>
-                            <constraint firstItem="No1-b3-lJC" firstAttribute="centerY" secondItem="kI1-rZ-mWf" secondAttribute="centerY" id="y0s-g1-NnE"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="eIY-wE-vhf"/>
                     </view>
                     <toolbarItems/>
@@ -164,7 +150,6 @@
         <image name="evening" width="23" height="23"/>
         <image name="evening-selected" width="23" height="23"/>
         <image name="gear-white" width="26" height="26"/>
-        <image name="inlay" width="512" height="512"/>
         <image name="lines-button" width="26" height="26"/>
         <image name="morning" width="23" height="23"/>
         <image name="morning-selected" width="23" height="23"/>
