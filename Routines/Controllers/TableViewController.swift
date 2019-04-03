@@ -467,7 +467,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         items?.forEach({ item in
             do {
                 try! realm.write {
-                    realm.delete(item)
+                    // realm.delete(item)
+                    item.isDeleted = true
                 }
                 if let indexPath = self.tableView.indexPathForRow(at: CGPoint(x: 0, y: 0)) {
                     self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
