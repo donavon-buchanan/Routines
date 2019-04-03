@@ -713,11 +713,11 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // Each view (tab) loads its own set of items.
     // Load from viewDidLoad. Reload table from viewWillAppear
-    
-    /*TODO: Change this back to a list of realm objects and create a new array var for the rest of below to work with.
+
+    /* TODO: Change this back to a list of realm objects and create a new array var for the rest of below to work with.
      The table should load and count from the realm list, not the array.
      Make sure to re-enable reloads and counts.
-    */
+     */
     var items: [Items]?
     public var segment = Int()
 

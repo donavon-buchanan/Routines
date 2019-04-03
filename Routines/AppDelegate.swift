@@ -86,6 +86,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         completionHandler(.newData)
         itemCleanup()
+
+        /* TODO: Add option in Settings.app to clear all existing iCloud data in case a total reset is needed. */
     }
 
     func applicationWillResignActive(_: UIApplication) {
