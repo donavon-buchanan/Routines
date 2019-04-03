@@ -57,6 +57,10 @@ class OptionsTableViewController: UITableViewController {
         saveDarkModeOption(isOn: sender.isOn)
     }
 
+    @objc func dismissView() {
+        dismiss(animated: true, completion: nil)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Colors
@@ -68,6 +72,8 @@ class OptionsTableViewController: UITableViewController {
             UISwitch.layer.cornerRadius = 15
             UISwitch.layer.masksToBounds = true
         }
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissView))
 
         tableView.theme_backgroundColor = GlobalPicker.backgroundColor
     }
