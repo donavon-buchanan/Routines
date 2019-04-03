@@ -6,6 +6,8 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
+import CloudKit
+import IceCream
 import RealmSwift
 import SwiftTheme
 import UIKit
@@ -18,11 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     let center = UNUserNotificationCenter.current()
     var shortcutItemToProcess: UIApplicationShortcutItem?
 
+    var syncEngine: SyncEngine?
+
     func application(_: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         center.delegate = self
 
         requestNotificationPermission()
         registerNotificationCategoriesAndActions()
+
+        // Register for push notifications
 
         // Theme
         setUpTheme()
@@ -33,6 +39,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         migrateRealm()
+
+        // Sync with iCloud
+        syncEngine = SyncEngine(objects: [
+            SyncObject<Items>(),
+            SyncObject<Options>()
+        ])
+        UIApplication.shared.registerForRemoteNotifications()
 
         // checkToCreateOptions()
         loadOptions()
@@ -46,6 +59,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         return true
+    }
+
+    func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        let dict = userInfo as! [String: NSObject]
+        let notification = CKNotification(fromRemoteNotificationDictionary: dict)
+
+        if notification?.subscriptionID == IceCreamConstant.cloudKitSubscriptionID {
+            NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
+        }
+        completionHandler(.newData)
     }
 
     func applicationWillResignActive(_: UIApplication) {
@@ -161,7 +184,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 12,
+            schemaVersion: 13,
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -200,7 +223,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
 
-                if oldSchemaVersion < 12 {}
+//                if oldSchemaVersion < 13 {
+//                    // The enumerateObjects(ofType:_:) method iterates
+//                    // over every Person object stored in the Realm file
+//                    migration.enumerateObjects(ofType: Items.className()) { _, newObject in
+//                        // combine name fields into a single field
+//                        newObject!["isDeleted"] = false }
+//                }
+
+                if oldSchemaVersion < 13 {}
             }
         )
 
@@ -802,7 +833,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 let items = realm.objects(Items.self) // .filter("segment <= %@", segment)
                 // Get what should the the furthest future trigger date
                 if let lastFutureDate = items.last?.dateModified {
-                    badgeCount = items.filter("dateModified <= %@", lastFutureDate).count
+                    badgeCount = items.filter("dateModified <= %@ AND isDeleted = \(false)", lastFutureDate).count
                 }
             }
         }
@@ -830,7 +861,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
-                    let badgeCount = realm.objects(Items.self).filter("dateModified < %@", Date()).count
+                    let badgeCount = realm.objects(Items.self).filter("dateModified < %@ AND isDeleted = \(false)", Date()).count
                     DispatchQueue.main.async {
                         autoreleasepool {
                             UIApplication.shared.applicationIconBadgeNumber = badgeCount

@@ -563,7 +563,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 if let item = self.items?[indexPath.row] {
                     self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3", item.uuidString])
                     print("removing item with key: \(item.uuidString)")
-                    realm.delete(item)
+                    item.isDeleted = true
+                    // realm.delete(item)
                 }
             }
         }
@@ -664,7 +665,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     func getCountForTab(_ tab: Int) -> Int {
         let realm = try! Realm()
-        return realm.objects(Items.self).filter("segment = %@ AND dateModified < %@", tab, Date()).count
+        // TODO: The "isDeleted" filter is going to cause problems. Way too much code repetition. Do better.
+        return realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = %@", tab, Date(), false).count
     }
 
     // MARK: - Manage Notifications
@@ -709,7 +711,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     var items: Results<Items>?
     public var segment = Int()
     func loadItems(segment: Int) {
-        items = realm.objects(Items.self).filter("segment = \(segment)").sorted(byKeyPath: "dateModified", ascending: true)
+        items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
     }
     func loadAllItems() {
         // Sort by segment to put in order of the day
@@ -796,7 +798,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // This does the work
     func autoSnoozeMove(fromSegment: Int, toSegment: Int) {
         print("running autoSnoozeMove from segment \(fromSegment) to \(toSegment)")
-        let items = realm.objects(Items.self).filter("segment = \(fromSegment) AND disableAutoSnooze = %@", false)
+        let items = realm.objects(Items.self).filter("segment = \(fromSegment) AND isDeleted = \(false) AND disableAutoSnooze = %@", false)
         items.forEach({ item in
             if let itemDate = item.dateModified {
                 if itemDate < Date() {
