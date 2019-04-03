@@ -1,4 +1,6 @@
 PODS:
+  - IceCream (1.8.1):
+    - RealmSwift
   - Realm (3.14.0):
     - Realm/Headers (= 3.14.0)
   - Realm/Headers (3.14.0)
@@ -11,6 +13,7 @@ PODS:
   - ViewAnimator (2.4.0)
 
 DEPENDENCIES:
+  - IceCream
   - RealmSwift
   - SwiftMessages
   - SwiftTheme
@@ -18,6 +21,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - IceCream
     - Realm
     - RealmSwift
     - SwiftMessages
@@ -25,12 +29,13 @@ SPEC REPOS:
     - ViewAnimator
 
 SPEC CHECKSUMS:
+  IceCream: 5e393d224a328134a7b5f6c4c227c9f446af9362
   Realm: 221b25919bb5a010a3c597d707f8df3492dcd93a
   RealmSwift: 28f22dfa6a27b9a778cfb09471558b6afcf1022c
   SwiftMessages: 8b3cc68dba2f1c91aac1a74c90b10287aac35371
   SwiftTheme: 628345b948068a48d330d76dffb1a990ea5f90aa
   ViewAnimator: 28b9ef703e280a02852b1271ef36295ea96eae4b
 
-PODFILE CHECKSUM: af2657312b5a3367580e2319ad9fef19348b2d42
+PODFILE CHECKSUM: d17a683f7b5b2a1d9b9b7a83f4d31fcf35bdb64f
 
 COCOAPODS: 1.6.1

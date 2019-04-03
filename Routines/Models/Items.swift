@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import IceCream
 import RealmSwift
 
 // TODO: Figure out inits with Realm
@@ -19,6 +20,9 @@ import RealmSwift
     dynamic var repeats: Bool = false
     dynamic var disableAutoSnooze: Bool = false
     dynamic var notes: String?
+
+    // For syncing
+    dynamic var isDeleted: Bool = false
 
     // Repeats
     dynamic var repeatStyle = "none"
@@ -63,4 +67,12 @@ import RealmSwift
         daysToRepeat = days
         setRepeat(style: "daily")
     }
+}
+
+extension Items: CKRecordConvertible {
+    // Yep, leave it blank!
+}
+
+extension Items: CKRecordRecoverable {
+    // Leave it blank, too.
 }

@@ -6,7 +6,9 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
+import CloudKit
 import Foundation
+import IceCream
 import RealmSwift
 
 @objcMembers class Options: Object {
@@ -47,4 +49,16 @@ import RealmSwift
     override static func primaryKey() -> String? {
         return "optionsKey"
     }
+}
+
+extension Options: CKRecordConvertible {
+    var isDeleted: Bool {
+        return false
+    }
+
+    // Yep, leave it blank!
+}
+
+extension Options: CKRecordRecoverable {
+    // Leave it blank, too.
 }
