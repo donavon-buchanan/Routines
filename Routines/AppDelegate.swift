@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     private func itemCleanup() {
         let realm = try! Realm()
-        DispatchQueue(label: "background").async {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let oldItems = realm.objects(Items.self).filter("isDeleted = \(true)")
                 do {
@@ -45,8 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         requestNotificationPermission()
         registerNotificationCategoriesAndActions()
-
-        // Register for push notifications
 
         // Theme
         setUpTheme()
@@ -87,6 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
         }
         completionHandler(.newData)
+        itemCleanup()
     }
 
     func applicationWillResignActive(_: UIApplication) {

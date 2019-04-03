@@ -91,6 +91,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         super.viewDidLoad()
 
         setUpUI()
+        taskTextField.becomeFirstResponder()
 
         // Set right bar item as "Save"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButtonPressed))
