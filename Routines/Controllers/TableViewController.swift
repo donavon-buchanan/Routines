@@ -718,28 +718,29 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
      The table should load and count from the realm list, not the array.
      Make sure to re-enable reloads and counts.
      */
-    var items: [Items]?
+    // var items: [Items]?
+    var items: Results<Items>? {
+        willSet {}
+
+        didSet {
+            tableView.reloadData()
+        }
+    }
     public var segment = Int()
 
     func loadItems(segment: Int) {
-        let items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
-
-        Observable.array(from: items).subscribe(onNext: { items in
-            /// When data changes in Realm, the following code will be executed
-            // self.items = items.filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
-            self.items = items.filter({ !$0.isDeleted || $0.segment == self.segment })
-            self.tableView.reloadData()
-        }).disposed(by: bag)
+        items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
+        //        Made this more Swift-y by using willSet and didSet above
+//        Observable.array(from: items).subscribe(onNext: { items in
+//            /// When data changes in Realm, the following code will be executed
+//            // self.items = items.filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
+//            self.items = items.filter({ !$0.isDeleted || $0.segment == self.segment })
+//            self.tableView.reloadData()
+//        }).disposed(by: bag)
     }
     func loadAllItems() {
         // Sort by segment to put in order of the day
-        let items = realm.objects(Items.self).filter("isDeleted = \(false)").sorted(byKeyPath: "segment", ascending: true)
-        Observable.array(from: items).subscribe(onNext: { items in
-            /// When data changes in Realm, the following code will be executed
-            // self.items = items.filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
-            self.items = items.filter({ !$0.isDeleted })
-            self.tableView.reloadData()
-        }).disposed(by: bag)
+        items = realm.objects(Items.self).filter("isDeleted = \(false)").sorted(byKeyPath: "segment", ascending: true)
     }
 
     private func deleteItem(item: Items) {
