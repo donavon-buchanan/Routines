@@ -83,6 +83,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         disableAutoSnoozeSwitch.layer.masksToBounds = true
     }
 
+    @objc func dismissView() {
+        performSegue(withIdentifier: "unwindToTableViewController", sender: self)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -92,6 +96,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButtonPressed))
         // Disable button until all values are filled
         navigationItem.rightBarButtonItem?.isEnabled = false
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissView))
 
         tableView.theme_backgroundColor = GlobalPicker.backgroundColor
 //        cells.forEach { (cell) in
@@ -255,6 +260,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         if segue.identifier == "unwindToTableViewController" {
             let destinationVC = segue.destination as! TableViewController
             destinationVC.passedSegment = segmentSelection.selectedSegmentIndex
+            destinationVC.reloadTableView()
             // Cell contents can change, so layout the views again to resize the cells
 //            destinationVC.view.setNeedsLayout()
 //            destinationVC.view.layoutIfNeeded()

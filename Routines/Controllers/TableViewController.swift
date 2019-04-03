@@ -509,7 +509,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         if segue.identifier == "addSegue" {
-            let destination = segue.destination as! AddTableViewController
+            let navVC = segue.destination as! UINavigationController
+            let destination = navVC.topViewController as! AddTableViewController
             // set segment based on current tab
             guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
             destination.editingSegment = selectedTab
@@ -517,7 +518,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         }
 
         if segue.identifier == "editSegue" {
-            let destination = segue.destination as! AddTableViewController
+            let navVC = segue.destination as! UINavigationController
+            let destination = navVC.topViewController as! AddTableViewController
             // pass in current item
             if let indexPath = tableView.indexPathForSelectedRow {
                 destination.item = items?[indexPath.row]
