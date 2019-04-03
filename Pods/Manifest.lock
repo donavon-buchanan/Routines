@@ -6,6 +6,10 @@ PODS:
   - Realm/Headers (3.14.0)
   - RealmSwift (3.14.0):
     - Realm (= 3.14.0)
+  - RxRealm (0.7.6):
+    - RealmSwift (~> 3.0)
+    - RxSwift (~> 4.0)
+  - RxSwift (4.5.0)
   - SwiftMessages (6.0.2):
     - SwiftMessages/App (= 6.0.2)
   - SwiftMessages/App (6.0.2)
@@ -15,6 +19,8 @@ PODS:
 DEPENDENCIES:
   - IceCream
   - RealmSwift
+  - RxRealm
+  - RxSwift
   - SwiftMessages
   - SwiftTheme
   - ViewAnimator
@@ -24,6 +30,8 @@ SPEC REPOS:
     - IceCream
     - Realm
     - RealmSwift
+    - RxRealm
+    - RxSwift
     - SwiftMessages
     - SwiftTheme
     - ViewAnimator
@@ -32,10 +40,12 @@ SPEC CHECKSUMS:
   IceCream: 5e393d224a328134a7b5f6c4c227c9f446af9362
   Realm: 221b25919bb5a010a3c597d707f8df3492dcd93a
   RealmSwift: 28f22dfa6a27b9a778cfb09471558b6afcf1022c
+  RxRealm: 5379eddd74f8d617ca7681d1f8d144af25b432b0
+  RxSwift: f172070dfd1a93d70a9ab97a5a01166206e1c575
   SwiftMessages: 8b3cc68dba2f1c91aac1a74c90b10287aac35371
   SwiftTheme: 628345b948068a48d330d76dffb1a990ea5f90aa
   ViewAnimator: 28b9ef703e280a02852b1271ef36295ea96eae4b
 
-PODFILE CHECKSUM: d17a683f7b5b2a1d9b9b7a83f4d31fcf35bdb64f
+PODFILE CHECKSUM: 0251364af66dcd993068b965fe2e725b410f16d1
 
 COCOAPODS: 1.6.1

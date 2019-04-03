@@ -6,7 +6,10 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
+import IceCream
 import RealmSwift
+import RxRealm
+import RxSwift
 import SwiftMessages
 import UIKit
 import UserNotifications
@@ -214,13 +217,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         // animateCells()
     }
 
-    func setTimeInTitle(timeString: String) {
-        timeLabel.text = timeString
-        timeLabel.theme_textColor = GlobalPicker.barTextColor
-        navigationItem.titleView = timeLabel
-
-        // need to re-layout title since it can be changed
-        navigationItem.titleView?.setNeedsUpdateConstraints()
+    func setTimeInTitle(timeString _: String) {
+//        timeLabel.text = timeString
+//        timeLabel.theme_textColor = GlobalPicker.barTextColor
+//        navigationItem.titleView = timeLabel
+//
+//        // need to re-layout title since it can be changed
+//        navigationItem.titleView?.setNeedsUpdateConstraints()
     }
 
     func getSegmentTimeString(segment: Int) -> String {
@@ -467,12 +470,12 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         items?.forEach({ item in
             do {
                 try! realm.write {
-                    // realm.delete(item)
                     item.isDeleted = true
+                    // realm.delete(item)
                 }
-                if let indexPath = self.tableView.indexPathForRow(at: CGPoint(x: 0, y: 0)) {
-                    self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
-                }
+//                if let indexPath = self.tableView.indexPathForRow(at: CGPoint(x: 0, y: 0)) {
+//                    // self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
+//                }
             }
         })
         endEdit()
@@ -570,7 +573,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             }
         }
         // Index path still needs to be updated to prevent trying to delete out of bounds
-        tableView.deleteRows(at: [indexPath], with: .left)
+        //tableView.deleteRows(at: [indexPath], with: .left)
         OptionsTableViewController().refreshNotifications()
         updateBadge()
     }
@@ -704,25 +707,41 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // Get the default Realm
     lazy var realm = try! Realm()
+    let bag = DisposeBag()
 
     let optionsKey = "optionsKey"
 
     // Each view (tab) loads its own set of items.
     // Load from viewDidLoad. Reload table from viewWillAppear
-    var items: Results<Items>?
+    var items: [Items]?
     public var segment = Int()
+
     func loadItems(segment: Int) {
-        items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
+        let items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
+
+        Observable.array(from: items).subscribe(onNext: { items in
+            /// When data changes in Realm, the following code will be executed
+            // self.items = items.filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
+            self.items = items.filter({ !$0.isDeleted || $0.segment == self.segment })
+            self.tableView.reloadData()
+        }).disposed(by: bag)
     }
     func loadAllItems() {
         // Sort by segment to put in order of the day
-        items = realm.objects(Items.self).sorted(byKeyPath: "segment", ascending: true)
+        let items = realm.objects(Items.self).filter("isDeleted = \(false)").sorted(byKeyPath: "segment", ascending: true)
+        Observable.array(from: items).subscribe(onNext: { items in
+            /// When data changes in Realm, the following code will be executed
+            // self.items = items.filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
+            self.items = items.filter({ !$0.isDeleted })
+            self.tableView.reloadData()
+        }).disposed(by: bag)
     }
 
     private func deleteItem(item: Items) {
         do {
             try realm.write {
-                realm.delete(item)
+                item.isDeleted = true
+                // realm.delete(item)
             }
         } catch {
             print("failed to delete item")
