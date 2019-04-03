@@ -188,6 +188,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         // Double check to save selected tab and avoid infrequent bug
         saveSelectedTab(index: tabBarController!.selectedIndex)
+
+        realmSync()
     }
 
     @objc func appBecameActive() {
@@ -204,7 +206,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         updateBadge()
         removeDeliveredNotifications()
         title = setNavTitle()
-        reloadTableView()
+        // reloadTableView()
         setAppearance(segment: segment)
         // changeSegment(segment: passedSegment)
         setTimeInTitle(timeString: getSegmentTimeString(segment: segment))
@@ -481,6 +483,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         endEdit()
         OptionsTableViewController().refreshNotifications()
         updateBadge()
+        // This is a little messy. Something's not quite right between the realm notification token and clearing all
+        tableView.reloadData()
     }
 
     @objc func deleteSelectedRows() {
@@ -624,9 +628,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     // TODO: Animated reload would be nice
-    func reloadTableView() {
-        tableView.reloadData()
-    }
+//    func reloadTableView() {
+//        //tableView.reloadData()
+//    }
 
     // Set background graphic
     func setViewBackgroundGraphic(enabled: Bool) {
@@ -706,6 +710,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // MARK: - Realm
 
     // Get the default Realm
+    // var realm = try! Realm()
     lazy var realm = try! Realm()
 
     let optionsKey = "optionsKey"
@@ -718,18 +723,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
      Make sure to re-enable reloads and counts.
      */
     // var items: [Items]?
-    var items: Results<Items>? {
-        willSet {}
+    var items: Results<Items>?
 
-        didSet {
-            tableView.reloadData()
-        }
-    }
     public var segment = Int()
 
     func loadItems(segment: Int) {
         items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
-        //        Made this more Swift-y by using willSet and didSet above
+
 //        Observable.array(from: items).subscribe(onNext: { items in
 //            /// When data changes in Realm, the following code will be executed
 //            // self.items = items.filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
@@ -751,6 +751,38 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         } catch {
             print("failed to delete item")
         }
+    }
+
+    var notificationToken: NotificationToken?
+
+    func realmSync() {
+        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
+        // Observe Results Notifications
+        notificationToken = items?.observe { [weak self] (changes: RealmCollectionChange) in
+            guard let tableView = self?.tableView else { return }
+            switch changes {
+            case .initial:
+                // Results are now populated and can be accessed without blocking the UI
+                tableView.reloadData()
+            case let .update(_, deletions, insertions, modifications):
+                // Query results have changed, so apply them to the UITableView
+                tableView.beginUpdates()
+                tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+                                     with: .automatic)
+                tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
+                                     with: .automatic)
+                tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+                                     with: .automatic)
+                tableView.endUpdates()
+            case let .error(error):
+                // An error occurred while opening the Realm file on the background worker thread
+                fatalError("\(error)")
+            }
+        }
+    }
+
+    deinit {
+        notificationToken?.invalidate()
     }
 
     // MARK: - Themeing

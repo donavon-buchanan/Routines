@@ -713,7 +713,7 @@ class OptionsTableViewController: UITableViewController {
         }
     }
 
-    func getSegmentNotification(segment: Int) -> Bool {
+    public func getSegmentNotification(segment: Int) -> Bool {
         var enabled = false
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
