@@ -8,8 +8,8 @@
 
 import IceCream
 import RealmSwift
-import RxRealm
-import RxSwift
+// import RxRealm
+// import RxSwift
 import SwiftMessages
 import UIKit
 import UserNotifications
@@ -707,7 +707,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // Get the default Realm
     lazy var realm = try! Realm()
-    let bag = DisposeBag()
 
     let optionsKey = "optionsKey"
 
