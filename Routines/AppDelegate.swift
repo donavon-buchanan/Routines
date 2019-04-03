@@ -22,6 +22,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var syncEngine: SyncEngine?
 
+    private func itemCleanup() {
+        let realm = try! Realm()
+        DispatchQueue(label: "background").async {
+            autoreleasepool {
+                let oldItems = realm.objects(Items.self).filter("isDeleted = \(true)")
+                do {
+                    try realm.write {
+                        oldItems.forEach({ item in
+                            realm.delete(item)
+                        })
+                    }
+                } catch {
+                    print("failed to clean up items")
+                }
+            }
+        }
+    }
+
     func application(_: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         center.delegate = self
 
@@ -76,6 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         updateAppBadgeCount()
         // saveSelectedTab()
+        itemCleanup()
     }
 
     func applicationDidEnterBackground(_: UIApplication) {
@@ -111,6 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Themes.saveLastTheme()
         updateAppBadgeCount()
+        itemCleanup()
     }
 
 //    func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
