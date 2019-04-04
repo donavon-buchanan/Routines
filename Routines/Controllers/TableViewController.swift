@@ -470,21 +470,21 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     @objc private func clearAll() {
         items?.forEach({ item in
-            do {
-                try! realm.write {
-                    item.isDeleted = true
-                    // realm.delete(item)
-                }
-//                if let indexPath = self.tableView.indexPathForRow(at: CGPoint(x: 0, y: 0)) {
-//                    // self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
+//            do {
+//                try! realm.write {
+//                    item.isDeleted = true
+//                    // realm.delete(item)
 //                }
-            }
+////                if let indexPath = self.tableView.indexPathForRow(at: CGPoint(x: 0, y: 0)) {
+////                    self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
+////                }
+//            }
         })
         endEdit()
         OptionsTableViewController().refreshNotifications()
         updateBadge()
         // This is a little messy. Something's not quite right between the realm notification token and clearing all
-        tableView.reloadData()
+//        tableView.reloadData()
     }
 
     @objc func deleteSelectedRows() {
@@ -766,14 +766,22 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 tableView.reloadData()
             case let .update(_, deletions, insertions, modifications):
                 // Query results have changed, so apply them to the UITableView
-                tableView.beginUpdates()
-                tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
-                                     with: .automatic)
-                tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
-                                     with: .automatic)
-                tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
-                                     with: .automatic)
-                tableView.endUpdates()
+//                tableView.beginUpdates()
+//                tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+//                                     with: .automatic)
+//                tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
+//                                     with: .automatic)
+//                tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+//                                     with: .automatic)
+//                tableView.endUpdates()
+                tableView.performBatchUpdates({
+                    tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+                                         with: .automatic)
+                    tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
+                                         with: .automatic)
+                    tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+                                         with: .automatic)
+                }, completion: nil)
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
                 fatalError("\(error)")
