@@ -26,7 +26,7 @@
 		F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831B72155CBB000DAF60E /* AppDelegate.swift */; };
 		F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831BB2155CBB000DAF60E /* Main.storyboard */; };
 		F8B831C22155CBB100DAF60E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831C02155CBB100DAF60E /* LaunchScreen.storyboard */; };
-		F8B831CD2155CBE300DAF60E /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831CC2155CBE300DAF60E /* Items.swift */; };
+		F8B831CD2155CBE300DAF60E /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831CC2155CBE300DAF60E /* Item.swift */; };
 		F8CBBA5721A9058D00A4FFFD /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */; };
 		F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */; };
 		F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */; };
@@ -53,6 +53,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = F8B831B32155CBB000DAF60E;
 			remoteInfo = Routines;
+		};
+		F8C92C552257CCC000FE33ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8FF259122085A180063295F /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C4D9F78934F3EE42B7AAA950A084A0DA;
+			remoteInfo = IceCream;
 		};
 		F8FF259B22085A180063295F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -132,7 +139,7 @@
 		F8B831BC2155CBB000DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F8B831C12155CBB100DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F8B831C32155CBB100DAF60E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F8B831CC2155CBE300DAF60E /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
+		F8B831CC2155CBE300DAF60E /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatTableViewController.swift; sourceTree = "<group>"; };
 		F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTableViewController.swift; sourceTree = "<group>"; };
@@ -179,7 +186,6 @@
 				6C74944E18894E7B54E060F1 /* Pods-Routines.debug.xcconfig */,
 				8D81E89F34FDFD171727423B /* Pods-Routines.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -297,7 +303,7 @@
 		F8B831CB2155CBD000DAF60E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F8B831CC2155CBE300DAF60E /* Items.swift */,
+				F8B831CC2155CBE300DAF60E /* Item.swift */,
 				F807D3CC216073E300FF36D9 /* Options.swift */,
 			);
 			path = Models;
@@ -306,6 +312,7 @@
 		F8FF259222085A180063295F /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				F8C92C562257CCC000FE33ED /* IceCream.framework */,
 				F8FF259C22085A180063295F /* Pods_Routines.framework */,
 				F8FF259E22085A180063295F /* Realm.framework */,
 				F8FF25A022085A180063295F /* RealmSwift.framework */,
@@ -420,6 +427,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		F8C92C562257CCC000FE33ED /* IceCream.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = IceCream.framework;
+			remoteRef = F8C92C552257CCC000FE33ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		F8FF259C22085A180063295F /* Pods_Routines.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -609,7 +623,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8B831CD2155CBE300DAF60E /* Items.swift in Sources */,
+				F8B831CD2155CBE300DAF60E /* Item.swift in Sources */,
 				F85213B5218F5EE600291CFE /* NavigationViewController.swift in Sources */,
 				F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */,
 				F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */,

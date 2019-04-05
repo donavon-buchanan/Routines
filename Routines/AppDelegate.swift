@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let realm = try! Realm()
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let oldItems = realm.objects(Items.self).filter("isDeleted = \(true)")
+                let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
                 do {
                     try realm.write {
                         oldItems.forEach({ item in
@@ -65,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Sync with iCloud
         syncEngine = SyncEngine(objects: [
-            SyncObject<Items>(),
+            SyncObject<Item>(),
             SyncObject<Options>()
         ])
         UIApplication.shared.registerForRemoteNotifications()
@@ -256,7 +256,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //                if oldSchemaVersion < 13 {
 //                    // The enumerateObjects(ofType:_:) method iterates
 //                    // over every Person object stored in the Realm file
-//                    migration.enumerateObjects(ofType: Items.className()) { _, newObject in
+//                    migration.enumerateObjects(ofType: Item.className()) { _, newObject in
 //                        // combine name fields into a single field
 //                        newObject!["isDeleted"] = false }
 //                }
@@ -366,7 +366,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             autoreleasepool {
                 let realm = try! Realm()
                 print("Completing item with key: \(id)")
-                if let item = realm.object(ofType: Items.self, forPrimaryKey: id) {
+                if let item = realm.object(ofType: Item.self, forPrimaryKey: id) {
                     print("Completing item")
                     print(item)
                     do {
@@ -411,7 +411,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let item = realm.object(ofType: Items.self, forPrimaryKey: id) {
+                if let item = realm.object(ofType: Item.self, forPrimaryKey: id) {
                     // TODO: Could cause out of bounds error? Or actually, it's not an array. The item may just become invisible.
                     let segment = item.segment
                     var newSegment = Int()
@@ -683,7 +683,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        DispatchQueue(label: realmDispatchQueueLabel).async {
 //            autoreleasepool {
 //                let realm = try! Realm()
-//                if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
+//                if let item = realm.object(ofType: Item.self, forPrimaryKey: uuidString) {
 //
 //                }
 //            }
@@ -860,7 +860,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             autoreleasepool {
                 let realm = try! Realm()
                 // Get all the items in or under the current segment.
-                let items = realm.objects(Items.self) // .filter("segment <= %@", segment)
+                let items = realm.objects(Item.self) // .filter("segment <= %@", segment)
                 // Get what should the the furthest future trigger date
                 if let lastFutureDate = items.last?.dateModified {
                     badgeCount = items.filter("dateModified <= %@ AND isDeleted = \(false)", lastFutureDate).count
@@ -891,7 +891,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
-                    let badgeCount = realm.objects(Items.self).filter("dateModified < %@ AND isDeleted = \(false)", Date()).count
+                    let badgeCount = realm.objects(Item.self).filter("dateModified < %@ AND isDeleted = \(false)", Date()).count
                     DispatchQueue.main.async {
                         autoreleasepool {
                             UIApplication.shared.applicationIconBadgeNumber = badgeCount
@@ -982,7 +982,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let item = realm.object(ofType: Items.self, forPrimaryKey: identifier) {
+                if let item = realm.object(ofType: Item.self, forPrimaryKey: identifier) {
                     segment = item.segment
                 }
             }
