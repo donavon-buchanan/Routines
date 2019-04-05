@@ -26,6 +26,12 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var eveningSubLabel: UILabel!
     @IBOutlet var nightSubLabel: UILabel!
 
+    override var keyCommands: [UIKeyCommand]? {
+        return [
+            UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit")
+        ]
+    }
+
     @IBAction func notificationSwitchToggled(_ sender: UISwitch) {
         switch sender.tag {
         case 1:
