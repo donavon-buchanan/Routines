@@ -757,6 +757,10 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     public var segment = Int()
 
+    public func refreshItems() {
+        items = realm.objects(Item.self).filter("isDeleted = \(false)")
+    }
+
     func loadItems(segment: Int) {
         items = realm.objects(Item.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
 
