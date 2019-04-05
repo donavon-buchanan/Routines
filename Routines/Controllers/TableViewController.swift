@@ -503,27 +503,16 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     @objc private func clearAll() {
-        items?.forEach({ _ in
-//            do {
-//                try! realm.write {
-//                    item.isDeleted = true
-//                    // realm.delete(item)
-//                }
-            ////                if let indexPath = self.tableView.indexPathForRow(at: CGPoint(x: 0, y: 0)) {
-            ////                    self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
-            ////                }
-//            }
+        items?.forEach({ item in
+            // TODO: Might be better to just grab a whole filtered list and then delete from there
+            item.deleteItem()
         })
         endEdit()
-        OptionsTableViewController().refreshNotifications()
-        updateBadge()
-        // This is a little messy. Something's not quite right between the realm notification token and clearing all
-//        tableView.reloadData()
     }
 
     @objc func deleteSelectedRows() {
         if let indexPaths = self.tableView.indexPathsForSelectedRows {
-            var itemArray: [Items] = []
+            var itemArray: [Item] = []
             indexPaths.forEach({ indexPath in
                 // The index paths are static during enumeration, but the item indexes are not
                 // Add them to an array first, delete only what's in the array, and then update the table UI
@@ -532,12 +521,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 }
             })
             itemArray.forEach { item in
-                self.deleteItem(item: item)
+                item.deleteItem()
             }
-            tableView.deleteRows(at: indexPaths, with: .left)
+            // This will be handled by the realmSync func
+            //tableView.deleteRows(at: indexPaths, with: .left)
         }
-        OptionsTableViewController().refreshNotifications()
-        updateBadge()
+//        OptionsTableViewController().refreshNotifications()
+//        updateBadge()
     }
 
 //    //Delay func
@@ -584,12 +574,12 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // MARK: - Model Manipulation Methods
 
-//    func loadData() -> Results<Items> {
-//        return realm.objects(Items.self)
+//    func loadData() -> Results<Item> {
+//        return realm.objects(Item.self)
 //    }
 
     // Filter items to relevant segment and return those items
-//    func loadItems(segment: Int) -> Results<Items> {
+//    func loadItems(segment: Int) -> Results<Item> {
 //        guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
 //        print("loadItems run")
 //        //self.tableView.reloadData()
@@ -598,22 +588,25 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // Override empty delete func from super
     func updateModel(at indexPath: IndexPath) {
-        // super.updateModel(at: indexPath)
-        print("Removing item with indexPath: \(indexPath)")
-        do {
-            try! realm.write {
-                if let item = self.items?[indexPath.row] {
-                    self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3", item.uuidString])
-                    print("removing item with key: \(item.uuidString)")
-                    item.isDeleted = true
-                    // realm.delete(item)
-                }
-            }
+        if let item = items?[indexPath.row] {
+            item.deleteItem()
         }
-        // Index path still needs to be updated to prevent trying to delete out of bounds
-        //tableView.deleteRows(at: [indexPath], with: .left)
-        OptionsTableViewController().refreshNotifications()
-        updateBadge()
+//        // super.updateModel(at: indexPath)
+//        print("Removing item with indexPath: \(indexPath)")
+//        do {
+//            try! realm.write {
+//                if let item = self.items?[indexPath.row] {
+//                    self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3", item.uuidString])
+//                    print("removing item with key: \(item.uuidString)")
+//                    item.isDeleted = true
+//                    // realm.delete(item)
+//                }
+//            }
+//        }
+//        // Index path still needs to be updated to prevent trying to delete out of bounds
+//        //tableView.deleteRows(at: [indexPath], with: .left)
+//        OptionsTableViewController().refreshNotifications()
+//        updateBadge()
     }
 
     func snoozeItem(indexPath: IndexPath) {
@@ -708,7 +701,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func getCountForTab(_ tab: Int) -> Int {
         let realm = try! Realm()
         // TODO: The "isDeleted" filter is going to cause problems. Way too much code repetition. Do better.
-        return realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = %@", tab, Date(), false).count
+        return realm.objects(Item.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = %@", tab, Date(), false).count
     }
 
     // MARK: - Manage Notifications
@@ -756,13 +749,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
      The table should load and count from the realm list, not the array.
      Make sure to re-enable reloads and counts.
      */
-    // var items: [Items]?
-    var items: Results<Items>?
+    // var items: [Item]?
+    var items: Results<Item>?
 
     public var segment = Int()
 
     func loadItems(segment: Int) {
-        items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
+        items = realm.objects(Item.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
 
 //        Observable.array(from: items).subscribe(onNext: { items in
 //            /// When data changes in Realm, the following code will be executed
@@ -773,18 +766,11 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
     func loadAllItems() {
         // Sort by segment to put in order of the day
-        items = realm.objects(Items.self).filter("isDeleted = \(false)").sorted(byKeyPath: "segment", ascending: true)
+        items = realm.objects(Item.self).filter("isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
     }
 
-    private func deleteItem(item: Items) {
-        do {
-            try realm.write {
-                item.isDeleted = true
-                // realm.delete(item)
-            }
-        } catch {
-            print("failed to delete item")
-        }
+    private func deleteItem(item: Item) {
+        item.deleteItem()
     }
 
     var notificationToken: NotificationToken?
@@ -897,7 +883,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // This does the work
     func autoSnoozeMove(fromSegment: Int, toSegment: Int) {
         print("running autoSnoozeMove from segment \(fromSegment) to \(toSegment)")
-        let items = realm.objects(Items.self).filter("segment = \(fromSegment) AND isDeleted = \(false) AND disableAutoSnooze = %@", false)
+        let items = realm.objects(Item.self).filter("segment = \(fromSegment) AND isDeleted = \(false) AND disableAutoSnooze = %@", false)
         items.forEach({ item in
             if let itemDate = item.dateModified {
                 if itemDate < Date() {

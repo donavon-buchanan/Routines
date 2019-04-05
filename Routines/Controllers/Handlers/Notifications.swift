@@ -14,7 +14,7 @@
 //    public func removeNotifications(forSegment segment: Int) {
 //        let center = UNUserNotificationCenter.current()
 //        let realm = try! Realm()
-//        let items = realm.objects(Items.self).filter("segment = \(segment)")
+//        let items = realm.objects(Item.self).filter("segment = \(segment)")
 //        var idStrings: [String] = []
 //        items.forEach { item in
 //            idStrings.append(item.uuidString + "\(segment)")

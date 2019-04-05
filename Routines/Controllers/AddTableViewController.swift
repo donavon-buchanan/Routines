@@ -35,7 +35,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     @objc func saveKeyCommand() {
-        //TODO: If the user tries to save before they're able, show a helpful banner message
+        // TODO: If the user tries to save before they're able, show a helpful banner message
         if navigationItem.rightBarButtonItem!.isEnabled {
             saveButtonPressed()
         }
@@ -76,7 +76,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     let realmDispatchQueueLabel: String = "background"
 
-    var item: Items?
+    var item: Item?
     // var timeArray: [DateComponents?] = []
     // segment from add segue
     var editingSegment: Int?
@@ -310,7 +310,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         // if it's a new item, add it as new to the realm
         // otherwise, update the existing item
         if item == nil {
-            let newItem = Items()
+            let newItem = Item()
             newItem.title = title
             newItem.segment = segment
             newItem.dateModified = firstTriggerDate(segment: segment)
@@ -329,7 +329,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
     }
 
-    func saveItem(item: Items) {
+    func saveItem(item: Item) {
         print("Running saveItem")
         let realm = try! Realm()
         do {
@@ -644,7 +644,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                count = realm.objects(Items.self).filter("segment = \(segment)").count
+                count = realm.objects(Item.self).filter("segment = \(segment)").count
             }
         }
         return count
