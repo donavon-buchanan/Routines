@@ -92,8 +92,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
         }
         completionHandler(.newData)
-        // itemCleanup()
+        itemCleanup()
 
+        TableViewController().refreshItems()
         //try to refresh notifications in the background
         refreshNotifications()
         /* TODO: Add option in Settings.app to clear all existing iCloud data in case a total reset is needed. */
@@ -110,10 +111,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationDidEnterBackground(_: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        updateAppBadgeCount()
+        itemCleanup()
     }
 
     func applicationWillEnterForeground(_: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        TableViewController().refreshItems()
+        itemCleanup()
     }
 
     func applicationDidBecomeActive(_: UIApplication) {
