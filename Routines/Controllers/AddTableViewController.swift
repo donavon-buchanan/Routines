@@ -35,6 +35,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     @objc func saveKeyCommand() {
+        //TODO: If the user tries to save before they're able, show a helpful banner message
         if navigationItem.rightBarButtonItem!.isEnabled {
             saveButtonPressed()
         }
