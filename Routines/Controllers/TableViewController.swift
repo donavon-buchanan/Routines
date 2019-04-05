@@ -22,6 +22,32 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @IBOutlet var linesBarButtonItem: UIBarButtonItem!
     @IBOutlet var editBarButtonItem: UIBarButtonItem!
 
+    override var keyCommands: [UIKeyCommand]? {
+        return [
+            // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
+            UIKeyCommand(input: "n", modifierFlags: .command, action: #selector(addNewTask), discoverabilityTitle: "Add New Task"),
+            UIKeyCommand(input: "o", modifierFlags: .alternate, action: #selector(openSettingsKeyCommand), discoverabilityTitle: "Open Settings"),
+            UIKeyCommand(input: "e", modifierFlags: .init(arrayLiteral: .command, .alphaShift), action: #selector(editKeyCommand), discoverabilityTitle: "Edit Current Tasks"),
+            UIKeyCommand(input: "a", modifierFlags: .init(arrayLiteral: .command, .alphaShift), action: #selector(getter: linesBarButtonItem.action), discoverabilityTitle: "Reveal All Tasks")
+        ]
+    }
+
+    @objc func addNewTask() {
+        performSegue(withIdentifier: "addSegue", sender: self)
+    }
+
+    @objc func openSettingsKeyCommand() {
+        performSegue(withIdentifier: "optionsSegue", sender: self)
+    }
+
+    @objc func editKeyCommand() {
+        setEditing()
+    }
+
+//    @objc func showAllKeyCommand() {
+//
+//    }
+
     let timeLabel = UILabel()
 
     @IBAction func editButtonPressed(_: UIBarButtonItem) {
@@ -469,15 +495,15 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     @objc private func clearAll() {
-        items?.forEach({ item in
+        items?.forEach({ _ in
 //            do {
 //                try! realm.write {
 //                    item.isDeleted = true
 //                    // realm.delete(item)
 //                }
-////                if let indexPath = self.tableView.indexPathForRow(at: CGPoint(x: 0, y: 0)) {
-////                    self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
-////                }
+            ////                if let indexPath = self.tableView.indexPathForRow(at: CGPoint(x: 0, y: 0)) {
+            ////                    self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.left)
+            ////                }
 //            }
         })
         endEdit()

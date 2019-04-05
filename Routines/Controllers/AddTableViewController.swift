@@ -27,6 +27,23 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
     }
 
+    override var keyCommands: [UIKeyCommand]? {
+        return [
+            UIKeyCommand(input: "s", modifierFlags: .command, action: #selector(saveKeyCommand), discoverabilityTitle: "Save Task"),
+            UIKeyCommand(input: "x", modifierFlags: .command, action: #selector(exitKeyCommand), discoverabilityTitle: "Exit")
+        ]
+    }
+
+    @objc func saveKeyCommand() {
+        if navigationItem.rightBarButtonItem!.isEnabled {
+            saveButtonPressed()
+        }
+    }
+
+    @objc func exitKeyCommand() {
+        dismissView()
+    }
+
     @IBAction func ignoreAutoSnoozeToggled(_: UISwitch) {
         if item != nil {
             navigationItem.rightBarButtonItem?.isEnabled = true
