@@ -81,6 +81,23 @@ extension Item: CKRecordRecoverable {
 }
 
 extension Item {
+    // Sync removal first
+    func syncDelete() {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                do {
+                    try realm.write {
+                        isDeleted = true
+                    }
+                } catch {
+                    print("syncDelete failed")
+                }
+            }
+            print("syncDelete completed")
+        }
+    }
+
     // Handle removal and notifications
     func removeNotification(uuidStrings: [String]) {
         print("Removing Notifications")
