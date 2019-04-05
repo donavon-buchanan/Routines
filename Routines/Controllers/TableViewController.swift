@@ -27,8 +27,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
             UIKeyCommand(input: "n", modifierFlags: .command, action: #selector(addNewTask), discoverabilityTitle: "Add New Task"),
             UIKeyCommand(input: "o", modifierFlags: .alternate, action: #selector(openSettingsKeyCommand), discoverabilityTitle: "Open Settings"),
-            UIKeyCommand(input: "e", modifierFlags: .init(arrayLiteral: .command, .alphaShift), action: #selector(editKeyCommand), discoverabilityTitle: "Edit Current Tasks"),
-            UIKeyCommand(input: "a", modifierFlags: .init(arrayLiteral: .command, .alphaShift), action: #selector(getter: linesBarButtonItem.action), discoverabilityTitle: "Reveal All Tasks")
+            UIKeyCommand(input: "e", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(editKeyCommand), discoverabilityTitle: "Edit Current Tasks"),
+            UIKeyCommand(input: "a", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(showAllKeyCommand), discoverabilityTitle: "Reveal All Tasks")
         ]
     }
 
@@ -41,12 +41,16 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     @objc func editKeyCommand() {
-        setEditing()
+        if !tableView.isEditing {
+            setEditing()
+        } else {
+            endEdit()
+        }
     }
 
-//    @objc func showAllKeyCommand() {
-//
-//    }
+    @objc func showAllKeyCommand() {
+        revealAllTasks()
+    }
 
     let timeLabel = UILabel()
 
@@ -56,7 +60,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     var linesBarButtonSelected = false
 
-    @IBAction func linesBarButtonPressed(_: UIBarButtonItem) {
+    fileprivate func revealAllTasks() {
         if linesBarButtonSelected {
             let cellCount = tableView.visibleCells.count
             // animateTitleChange(title: nil)
@@ -78,6 +82,10 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             tableView.reloadData()
             animateCells(fromCount: cellCount)
         }
+    }
+
+    @IBAction func linesBarButtonPressed(_: UIBarButtonItem) {
+        revealAllTasks()
     }
 
 //    func animateTitleChange(title: String?) {
