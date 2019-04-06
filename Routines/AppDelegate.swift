@@ -374,27 +374,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 return uuidString
             }
         }
-        print("running completeItem")
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                print("Completing item with key: \(id)")
-                if let item = realm.object(ofType: Item.self, forPrimaryKey: id) {
-                    print("Completing item")
-                    print(item)
-                    do {
-                        try realm.write {
-                            realm.delete(item)
-                        }
-                    } catch {
-                        print("failed to remove item with Complete action")
-                    }
-                }
-            }
-            print("completeItem completed")
-        }
-        // Add suffix back to uuidString
-        removeNotification(uuidString: ["\(id)0", "\(id)1", "\(id)2", "\(id)3", id])
+
+        let realm = try! Realm()
+        guard let item = realm.object(ofType: Item.self, forPrimaryKey: id) else { return }
+
+        item.syncDelete()
 
         // Decrement badge if there is one
         let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber
@@ -402,7 +386,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             UIApplication.shared.applicationIconBadgeNumber -= 1
         }
 
-        OptionsTableViewController().refreshNotifications()
+        AppDelegate().refreshNotifications()
         updateAppBadgeCount()
     }
 
@@ -415,60 +399,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 return uuidString
             }
         }
-        print("running snoozeItem")
-        var title: String?
-        var notes: String?
-        var itemSegment = Int()
-        var itemuuidString = String()
-        var dateModified: Date?
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let item = realm.object(ofType: Item.self, forPrimaryKey: id) {
-                    // TODO: Could cause out of bounds error? Or actually, it's not an array. The item may just become invisible.
-                    let segment = item.segment
-                    var newSegment = Int()
 
-                    switch segment {
-                    case 3:
-                        newSegment = 0
-                        itemSegment = 0
-                        // Auto snooze will rip it back into Night if we don't set it to next day
-                        dateModified = item.dateModified?.startOfNextDay
-                    default:
-                        newSegment = segment + 1
-                        itemSegment = segment + 1
-                        dateModified = item.dateModified
-                    }
+        let realm = try! Realm()
+        guard let item = realm.object(ofType: Item.self, forPrimaryKey: id) else { return }
 
-                    do {
-                        try! realm.write {
-                            item.segment = newSegment
-                            // Make sure to save the new date in case it was changed
-                            item.dateModified = dateModified
-                        }
-                    }
-                    title = item.title
-                    notes = item.notes
-                    itemuuidString = item.uuidString
-                    print("snoozeItem Completed")
-                }
-            }
-        }
-        if let newTitle = title {
-            // TODO: Might need to come back to this for Smart Snooze. For now, leave it alone
-            if getAutoSnoozeStatus() {
-                scheduleAutoSnoozeNotifications(title: newTitle, notes: notes, segment: itemSegment, uuidString: itemuuidString, firstDate: dateModified!)
-            } else {
-                scheduleNewNotification(title: newTitle, notes: notes, segment: itemSegment, uuidString: itemuuidString, firstDate: dateModified!)
-            }
-        }
+        item.snooze()
+
         // Decrement badge if there is one
         let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber
         if currentBadgeCount > 0 {
             UIApplication.shared.applicationIconBadgeNumber -= 1
         }
-        OptionsTableViewController().refreshNotifications()
+        AppDelegate().refreshNotifications()
         updateAppBadgeCount()
     }
 

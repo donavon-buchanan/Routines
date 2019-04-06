@@ -88,7 +88,7 @@ extension Item {
                 let realm = try! Realm()
                 do {
                     try realm.write {
-                        isDeleted = true
+                        self.isDeleted = true
                     }
                 } catch {
                     print("syncDelete failed")
@@ -128,5 +128,37 @@ extension Item {
 
         // OptionsTableViewController().refreshNotifications()
         AppDelegate().updateAppBadgeCount()
+    }
+
+    func snooze() {
+        removeNotification(uuidStrings: ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3", uuidString])
+
+        print("running deleteItem")
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                do {
+                    try realm.write {
+                        self.segment = snoozeTo()
+                    }
+                } catch {
+                    print("failed to snooze item")
+                }
+            }
+            print("snooze completed successfully")
+        }
+
+        // OptionsTableViewController().refreshNotifications()
+        AppDelegate().refreshNotifications()
+        AppDelegate().updateAppBadgeCount()
+    }
+
+    fileprivate func snoozeTo() -> Int {
+        switch segment {
+        case 3:
+            return 0
+        default:
+            return segment + 1
+        }
     }
 }
