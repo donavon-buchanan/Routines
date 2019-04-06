@@ -62,25 +62,27 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     fileprivate func revealAllTasks() {
         if linesBarButtonSelected {
-            let cellCount = tableView.visibleCells.count
+            // let cellCount = tableView.visibleCells.count
             // animateTitleChange(title: nil)
             title = setNavTitle()
             linesBarButtonSelected = false
             linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
             loadItems(segment: segment)
-            //tableView.reloadData()
-            animateCells(fromCount: cellCount)
+            tableView.reloadData()
+
+            // animation broken by realmSync
+            // animateCells(fromCount: cellCount)
             changeTabBar(hidden: false, animated: true)
         } else {
-            let cellCount = tableView.visibleCells.count
+            // let cellCount = tableView.visibleCells.count
             // animateTitleChange(title: "All Tasks")
             title = "All Tasks"
             linesBarButtonSelected = true
             linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button-filled")
             loadAllItems()
             changeTabBar(hidden: true, animated: true)
-            //tableView.reloadData()
-            animateCells(fromCount: cellCount)
+            tableView.reloadData()
+            // animateCells(fromCount: cellCount)
         }
     }
 
@@ -223,7 +225,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         // Double check to save selected tab and avoid infrequent bug
         saveSelectedTab(index: tabBarController!.selectedIndex)
 
-        realmSync()
+        // realmSync()
     }
 
     @objc func appBecameActive() {
@@ -754,12 +756,14 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //            self.items = items.filter({ !$0.isDeleted || $0.segment == self.segment })
 //            self.tableView.reloadData()
 //        }).disposed(by: bag)
+        realmSync(itemsToObserve: items!)
     }
     func loadAllItems() {
         // Sort by segment to put in order of the day
         items = realm.objects(Item.self).filter("isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
-        // TODO: Somehow this isn't triggering a notification for realmSync
-        // Maybe the sync needs to be looking at the entire realm and not filtered
+
+        // breaks my animation, but works :(
+        realmSync(itemsToObserve: items!)
     }
 
     private func deleteItem(item: Item) {
@@ -769,33 +773,33 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     var notificationToken: NotificationToken?
 
-    func realmSync() {
+    func realmSync(itemsToObserve _: Results<Item>) {
         // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
         // Observe Results Notifications
-        notificationToken = items?.observe { [weak self] (changes: RealmCollectionChange) in
-            guard let tableView = self?.tableView else { return }
+        notificationToken = items?.observe { [self] (changes: RealmCollectionChange) in
+            guard let tableView = self.tableView else { return }
             switch changes {
             case .initial:
                 // Results are now populated and can be accessed without blocking the UI
                 tableView.reloadData()
             case let .update(_, deletions, insertions, modifications):
                 // Query results have changed, so apply them to the UITableView
-                tableView.beginUpdates()
-                tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
-                                     with: .automatic)
-                tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
-                                     with: .automatic)
-                tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
-                                     with: .automatic)
-                tableView.endUpdates()
-            //                tableView.performBatchUpdates({
-            //                    tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
-            //                                         with: .automatic)
-            //                    tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
-            //                                         with: .automatic)
-            //                    tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
-            //                                         with: .automatic)
-            //                }, completion: nil)
+//                tableView.beginUpdates()
+//                tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+//                                     with: .automatic)
+//                tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
+//                                     with: .automatic)
+//                tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+//                                     with: .automatic)
+//                tableView.endUpdates()
+                tableView.performBatchUpdates({
+                    tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+                                         with: .automatic)
+                    tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
+                                         with: .automatic)
+                    tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+                                         with: .automatic)
+                }, completion: nil)
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
                 fatalError("\(error)")
