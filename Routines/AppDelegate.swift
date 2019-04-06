@@ -24,21 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     private func itemCleanup() {
         let realm = try! Realm()
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
-                do {
-                    try realm.write {
-                        oldItems.forEach({ item in
-                            removeDeletedNotifications(id: item.uuidString)
-                            realm.delete(item)
-                        })
-                    }
-                } catch {
-                    print("failed to clean up items")
-                }
-            }
-        }
+        let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
+        oldItems.forEach({ item in
+            removeDeletedNotifications(id: item.uuidString)
+            item.deleteItem()
+        })
     }
 
     func removeDeletedNotifications(id: String) {
@@ -111,6 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         //try to refresh notifications in the background
         refreshNotifications()
         /* TODO: Add option in Settings.app to clear all existing iCloud data in case a total reset is needed. */
+        updateAppBadgeCount()
     }
 
     func applicationWillResignActive(_: UIApplication) {
@@ -132,6 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         TableViewController().refreshItems()
         itemCleanup()
+        updateAppBadgeCount()
     }
 
     func applicationDidBecomeActive(_: UIApplication) {
@@ -152,6 +144,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        if self.window?.rootViewController?.presentedViewController == nil {
 //            restoreSelectedTab(tab: getCurrentSegmentFromTime())
 //        }
+        TableViewController().refreshItems()
+        itemCleanup()
+        updateAppBadgeCount()
     }
 
     func applicationWillTerminate(_: UIApplication) {

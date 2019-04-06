@@ -68,7 +68,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             linesBarButtonSelected = false
             linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
             loadItems(segment: segment)
-            tableView.reloadData()
+            //tableView.reloadData()
             animateCells(fromCount: cellCount)
             changeTabBar(hidden: false, animated: true)
         } else {
@@ -79,7 +79,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button-filled")
             loadAllItems()
             changeTabBar(hidden: true, animated: true)
-            tableView.reloadData()
+            //tableView.reloadData()
             animateCells(fromCount: cellCount)
         }
     }
@@ -506,7 +506,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         items?.forEach({ item in
             // TODO: Might be better to just grab a whole filtered list and then delete from there
             item.syncDelete()
-            item.deleteItem()
+            // item.deleteItem()
         })
         endEdit()
     }
@@ -523,7 +523,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             })
             itemArray.forEach { item in
                 item.syncDelete()
-                item.deleteItem()
+                // item.deleteItem()
             }
             // This will be handled by the realmSync func
             //tableView.deleteRows(at: indexPaths, with: .left)
@@ -592,24 +592,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func updateModel(at indexPath: IndexPath) {
         if let item = items?[indexPath.row] {
             item.syncDelete()
-            item.deleteItem()
+            // item.deleteItem()
         }
-//        // super.updateModel(at: indexPath)
-//        print("Removing item with indexPath: \(indexPath)")
-//        do {
-//            try! realm.write {
-//                if let item = self.items?[indexPath.row] {
-//                    self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3", item.uuidString])
-//                    print("removing item with key: \(item.uuidString)")
-//                    item.isDeleted = true
-//                    // realm.delete(item)
-//                }
-//            }
-//        }
-//        // Index path still needs to be updated to prevent trying to delete out of bounds
-//        //tableView.deleteRows(at: [indexPath], with: .left)
-//        OptionsTableViewController().refreshNotifications()
-//        updateBadge()
     }
 
     func snoozeItem(indexPath: IndexPath) {
@@ -774,11 +758,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func loadAllItems() {
         // Sort by segment to put in order of the day
         items = realm.objects(Item.self).filter("isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
+        // TODO: Somehow this isn't triggering a notification for realmSync
+        // Maybe the sync needs to be looking at the entire realm and not filtered
     }
 
     private func deleteItem(item: Item) {
         item.syncDelete()
-        item.deleteItem()
+        // item.deleteItem()
     }
 
     var notificationToken: NotificationToken?
@@ -794,22 +780,22 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 tableView.reloadData()
             case let .update(_, deletions, insertions, modifications):
                 // Query results have changed, so apply them to the UITableView
-//                tableView.beginUpdates()
-//                tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
-//                                     with: .automatic)
-//                tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
-//                                     with: .automatic)
-//                tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
-//                                     with: .automatic)
-//                tableView.endUpdates()
-                tableView.performBatchUpdates({
-                    tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
-                                         with: .automatic)
-                    tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
-                                         with: .automatic)
-                    tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
-                                         with: .automatic)
-                }, completion: nil)
+                tableView.beginUpdates()
+                tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+                                     with: .automatic)
+                tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
+                                     with: .automatic)
+                tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+                                     with: .automatic)
+                tableView.endUpdates()
+            //                tableView.performBatchUpdates({
+            //                    tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+            //                                         with: .automatic)
+            //                    tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
+            //                                         with: .automatic)
+            //                    tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+            //                                         with: .automatic)
+            //                }, completion: nil)
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
                 fatalError("\(error)")
