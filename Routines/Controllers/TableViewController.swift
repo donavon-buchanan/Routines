@@ -239,7 +239,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         super.viewWillAppear(animated)
         print("View Will Appear")
         runAutoSnooze()
-        updateBadge()
         removeDeliveredNotifications()
         title = setNavTitle()
         // reloadTableView()
@@ -509,8 +508,11 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             // TODO: Might be better to just grab a whole filtered list and then delete from there
             item.syncDelete()
             // item.deleteItem()
+            updateBadge()
         })
         endEdit()
+        resetTableView()
+        changeTabBar(hidden: false, animated: true)
     }
 
     @objc func deleteSelectedRows() {
@@ -526,6 +528,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             itemArray.forEach { item in
                 item.syncDelete()
                 // item.deleteItem()
+                updateBadge()
             }
             // This will be handled by the realmSync func
             //tableView.deleteRows(at: indexPaths, with: .left)
@@ -543,6 +546,20 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    fileprivate func resetTableView() {
+        // Reset the view just before segue
+        if linesBarButtonSelected {
+            title = setNavTitle()
+            DispatchQueue.main.async {
+                autoreleasepool {
+                    self.linesBarButtonSelected = false
+                    self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
+                    self.loadItems(segment: self.segment)
+                }
+            }
+        }
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         if segue.identifier == "addSegue" {
             let navVC = segue.destination as! UINavigationController
@@ -563,17 +580,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             }
         }
 
-        // Reset the view just before segue
-        if linesBarButtonSelected {
-            title = setNavTitle()
-            DispatchQueue.main.async {
-                autoreleasepool {
-                    self.linesBarButtonSelected = false
-                    self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
-                    self.loadItems(segment: self.segment)
-                }
-            }
-        }
+        resetTableView()
     }
 
     // MARK: - Model Manipulation Methods
@@ -595,41 +602,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         if let item = items?[indexPath.row] {
             item.syncDelete()
             // item.deleteItem()
+            updateBadge()
         }
     }
 
     func snoozeItem(indexPath: IndexPath) {
-        do {
-            try! realm.write {
-                if let item = self.items?[indexPath.row] {
-                    switch item.segment {
-                    case 0:
-                        item.segment = 1
-
-                        showBanner(title: "Task Snoozed to Afternoon")
-                    case 1:
-                        item.segment = 2
-
-                        showBanner(title: "Task Snoozed to Evening")
-                    case 2:
-                        item.segment = 3
-
-                        showBanner(title: "Task Snoozed to Night")
-                    default:
-                        item.segment = 0
-
-                        showBanner(title: "Task Snoozed to Morning")
-                    }
-                }
-            }
-        }
-        // Don't remove the row if viewing all items because it still exists
-        if !linesBarButtonSelected {
-            tableView.deleteRows(at: [indexPath], with: .left)
-        }
-        tableView.reloadData()
-        OptionsTableViewController().refreshNotifications()
-        updateBadge()
+        guard let item = items?[indexPath.row] else { return }
+        item.snooze()
     }
 
     func setItemToIgnore(indexPath: IndexPath, ignore: Bool) {
@@ -769,6 +748,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     private func deleteItem(item: Item) {
         item.syncDelete()
         // item.deleteItem()
+        updateBadge()
     }
 
     var notificationToken: NotificationToken?
@@ -782,6 +762,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             case .initial:
                 // Results are now populated and can be accessed without blocking the UI
                 tableView.reloadData()
+                self.updateBadge()
             case let .update(_, deletions, insertions, modifications):
                 // Query results have changed, so apply them to the UITableView
 //                tableView.beginUpdates()
@@ -800,9 +781,10 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                     tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
                                          with: .automatic)
                 }, completion: nil)
+                self.updateBadge()
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
-                fatalError("\(error)")
+                print("\(error)")
             }
         }
     }
@@ -885,13 +867,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         items.forEach({ item in
             if let itemDate = item.dateModified {
                 if itemDate < Date() {
-                    do {
-                        try realm.write {
-                            item.segment = toSegment
-                        }
-                    } catch {
-                        print("failed to autoSnooze items")
-                    }
+                    item.snooze()
                 }
             }
         })
