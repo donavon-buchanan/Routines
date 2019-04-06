@@ -30,6 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 do {
                     try realm.write {
                         oldItems.forEach({ item in
+                            removeDeletedNotifications(id: item.uuidString)
                             realm.delete(item)
                         })
                     }
@@ -40,7 +41,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
+    func removeDeletedNotifications(id: String) {
+        print("Clearing delivered notifications for deleted items")
+        let center = UNUserNotificationCenter.current()
+        center.removeDeliveredNotifications(withIdentifiers: ["\(id)0", "\(id)1", "\(id)2", "\(id)3", id])
+    }
+
     func refreshNotifications() {
+        let realm = try! Realm()
+        let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
+        oldItems.forEach({ item in
+            removeDeletedNotifications(id: item.uuidString)
+        })
+
         OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 0), segment: 0)
         OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 1), segment: 1)
         OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 2), segment: 2)
