@@ -6,8 +6,8 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-import CloudKit
-import IceCream
+// import CloudKit
+// import IceCream
 import RealmSwift
 import SwiftTheme
 import UIKit
@@ -20,16 +20,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     let center = UNUserNotificationCenter.current()
     var shortcutItemToProcess: UIApplicationShortcutItem?
 
-    var syncEngine: SyncEngine?
+    // var syncEngine: SyncEngine?
 
-    private func itemCleanup() {
-        let realm = try! Realm()
-        let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
-        oldItems.forEach { item in
-            removeDeletedNotifications(id: item.uuidString)
-            item.deleteItem()
-        }
-    }
+//    private func itemCleanup() {
+//        let realm = try! Realm()
+//        let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
+//        oldItems.forEach { item in
+//            removeDeletedNotifications(id: item.uuidString)
+//            item.deleteItem()
+//        }
+//    }
 
     func removeDeletedNotifications(id: String) {
         print("Clearing delivered notifications for deleted items")
@@ -66,11 +66,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Override point for customization after application launch.
         migrateRealm()
 
-        // Sync with iCloud
-        syncEngine = SyncEngine(objects: [
-            SyncObject<Item>(),
-            SyncObject<Options>(),
-        ])
+//        // Sync with iCloud
+//        syncEngine = SyncEngine(objects: [
+//            SyncObject<Item>(),
+//            SyncObject<Options>(),
+//        ])
         UIApplication.shared.registerForRemoteNotifications()
 
         // checkToCreateOptions()
@@ -87,15 +87,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
 
-    func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let dict = userInfo as! [String: NSObject]
-        let notification = CKNotification(fromRemoteNotificationDictionary: dict)
-
-        if notification?.subscriptionID == IceCreamConstant.cloudKitSubscriptionID {
-            NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
-        }
-        completionHandler(.newData)
-        itemCleanup()
+    func application(_: UIApplication, didReceiveRemoteNotification _: [AnyHashable: Any], fetchCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
+//        let dict = userInfo as! [String: NSObject]
+//        let notification = CKNotification(fromRemoteNotificationDictionary: dict)
+//
+//        if notification?.subscriptionID == IceCreamConstant.cloudKitSubscriptionID {
+//            NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
+//        }
+//        completionHandler(.newData)
+//        itemCleanup()
 
         TableViewController().refreshItems()
         //try to refresh notifications in the background
@@ -112,20 +112,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         updateAppBadgeCount()
         // saveSelectedTab()
-        itemCleanup()
+        // itemCleanup()
     }
 
     func applicationDidEnterBackground(_: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         updateAppBadgeCount()
-        itemCleanup()
+        // itemCleanup()
     }
 
     func applicationWillEnterForeground(_: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         TableViewController().refreshItems()
-        itemCleanup()
+        // itemCleanup()
         updateAppBadgeCount()
     }
 
@@ -148,7 +148,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //            restoreSelectedTab(tab: getCurrentSegmentFromTime())
 //        }
         TableViewController().refreshItems()
-        itemCleanup()
+        // itemCleanup()
         updateAppBadgeCount()
     }
 
@@ -156,7 +156,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Themes.saveLastTheme()
         updateAppBadgeCount()
-        itemCleanup()
+        // itemCleanup()
     }
 
 //    func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
@@ -381,7 +381,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let realm = try! Realm()
         guard let item = realm.object(ofType: Item.self, forPrimaryKey: id) else { return }
 
-        item.syncDelete()
+        item.deleteItem()
 
         // Decrement badge if there is one
         let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber

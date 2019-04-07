@@ -10,7 +10,7 @@ import RealmSwift
 import SwiftTheme
 import UIKit
 import UserNotifications
-import UserNotificationsUI
+// import UserNotificationsUI
 
 class OptionsTableViewController: UITableViewController {
     @IBOutlet var cellLabels: [UILabel]!

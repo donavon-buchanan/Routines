@@ -6,9 +6,9 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-import CloudKit
+// import CloudKit
 import Foundation
-import IceCream
+// import IceCream
 import RealmSwift
 
 @objcMembers class Options: Object {
@@ -51,14 +51,14 @@ import RealmSwift
     }
 }
 
-extension Options: CKRecordConvertible {
-    var isDeleted: Bool {
-        return false
-    }
-
-    // Yep, leave it blank!
-}
-
-extension Options: CKRecordRecoverable {
-    // Leave it blank, too.
-}
+// extension Options: CKRecordConvertible {
+//    var isDeleted: Bool {
+//        return false
+//    }
+//
+//    // Yep, leave it blank!
+// }
+//
+// extension Options: CKRecordRecoverable {
+//    // Leave it blank, too.
+// }
