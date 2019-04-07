@@ -104,8 +104,15 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setUpUI()
-        taskTextField.becomeFirstResponder()
+        DispatchQueue.main.async {
+            autoreleasepool {
+                do {
+                    self.taskTextField.becomeFirstResponder()
+
+                    self.setUpUI()
+                }
+            }
+        }
 
         // Set right bar item as "Save"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButtonPressed))
