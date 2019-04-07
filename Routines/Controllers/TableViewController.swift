@@ -6,14 +6,14 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-import IceCream
+// import IceCream
 import RealmSwift
 // import RxRealm
 // import RxSwift
 import SwiftMessages
 import UIKit
 import UserNotifications
-import ViewAnimator
+// import ViewAnimator
 
 class TableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
     @IBAction func unwindToTableViewController(segue _: UIStoryboardSegue) {}
@@ -170,32 +170,32 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     let footerView = UIView()
     // var selectedTab = 0
 
-    fileprivate func animateCells(fromCount: Int) {
-//        self.view.setNeedsLayout()
-//        self.view.layoutIfNeeded()
-        let fromAnimation = AnimationType.from(direction: .top, offset: 64)
-        let zoomAnimation = AnimationType.zoom(scale: 0.85)
-        // let rotateAnimation = AnimationType.rotate(angle: CGFloat.pi/6)
+//    fileprivate func animateCells(fromCount: Int) {
+    ////        self.view.setNeedsLayout()
+    ////        self.view.layoutIfNeeded()
+//        let fromAnimation = AnimationType.from(direction: .top, offset: 64)
+//        let zoomAnimation = AnimationType.zoom(scale: 0.85)
+//        // let rotateAnimation = AnimationType.rotate(angle: CGFloat.pi/6)
+//
+//        // Drop the cells that are already visible. Reloading them looks bad
+//        let cells = tableView.visibleCells.dropFirst(fromCount)
+//        // let nav = self.navigationController?.view
+//        UIView.animate(views: Array(cells), animations: [fromAnimation, zoomAnimation])
+//    }
 
-        // Drop the cells that are already visible. Reloading them looks bad
-        let cells = tableView.visibleCells.dropFirst(fromCount)
-        // let nav = self.navigationController?.view
-        UIView.animate(views: Array(cells), animations: [fromAnimation, zoomAnimation])
-    }
-
-    fileprivate func transitionCells(fromSegment: Int, toSegment: Int) {
-        var fromAnimation: Animation {
-            if fromSegment < toSegment {
-                print("Animating from left")
-                return AnimationType.from(direction: .left, offset: 40)
-            } else {
-                print("Animating from right")
-                return AnimationType.from(direction: .right, offset: 40)
-            }
-        }
-        let views = tableView.visibleCells
-        UIView.animate(views: views, animations: [fromAnimation])
-    }
+//    fileprivate func transitionCells(fromSegment: Int, toSegment: Int) {
+//        var fromAnimation: Animation {
+//            if fromSegment < toSegment {
+//                print("Animating from left")
+//                return AnimationType.from(direction: .left, offset: 40)
+//            } else {
+//                print("Animating from right")
+//                return AnimationType.from(direction: .right, offset: 40)
+//            }
+//        }
+//        let views = tableView.visibleCells
+//        UIView.animate(views: views, animations: [fromAnimation])
+//    }
 
     override func viewDidLoad() {
         print("Running viewDidLoad")
@@ -506,8 +506,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @objc private func clearAll() {
         items?.forEach { item in
             // TODO: Might be better to just grab a whole filtered list and then delete from there
-            item.syncDelete()
-            // item.deleteItem()
+            item.deleteItem()
             updateBadge()
         }
         endEdit()
@@ -526,8 +525,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 }
             }
             itemArray.forEach { item in
-                item.syncDelete()
-                // item.deleteItem()
+                item.deleteItem()
                 updateBadge()
             }
             // This will be handled by the realmSync func
@@ -600,8 +598,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // Override empty delete func from super
     func updateModel(at indexPath: IndexPath) {
         if let item = items?[indexPath.row] {
-            item.syncDelete()
-            // item.deleteItem()
+            item.deleteItem()
             updateBadge()
         }
     }
@@ -747,8 +744,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     private func deleteItem(item: Item) {
-        item.syncDelete()
-        // item.deleteItem()
+        item.deleteItem()
         updateBadge()
     }
 
