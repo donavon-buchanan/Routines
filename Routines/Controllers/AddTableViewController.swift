@@ -184,9 +184,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         notesTextView.theme_backgroundColor = GlobalPicker.textInputBackground
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//    }
 
     @objc func setNotesEditable(_: UITapGestureRecognizer) {
         notesTextView.dataDetectorTypes = []

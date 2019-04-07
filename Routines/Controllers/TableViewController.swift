@@ -634,8 +634,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             backgroundImageView.contentMode = .scaleAspectFit
 
             tableView.backgroundView = backgroundImageView
-            view.setNeedsDisplay()
-            view.layoutIfNeeded()
+//            view.setNeedsDisplay()
+//            view.layoutIfNeeded()
             UIView.transition(with: view, duration: 0.35, options: .transitionCrossDissolve, animations: nil)
         } else {
             tableView.backgroundView = UIView()
