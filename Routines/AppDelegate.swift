@@ -102,6 +102,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         refreshNotifications()
         /* TODO: Add option in Settings.app to clear all existing iCloud data in case a total reset is needed. */
         updateAppBadgeCount()
+
+        // TODO: Remove this
+        // createBasicNotification(title: "Push received", notes: "Something must have synced")
     }
 
     func applicationWillResignActive(_: UIApplication) {
@@ -698,6 +701,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         }
                     }
                 }
+            }
+        }
+    }
+
+    func createBasicNotification(title: String, notes: String?) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.sound = UNNotificationSound.default
+
+        if let notesText = notes {
+            content.body = notesText
+        }
+
+        // let trigger = UNNotificationTrigger()
+
+        // Create the request
+        let request = UNNotificationRequest(identifier: "test", content: content, trigger: nil)
+
+        // Schedule the request with the system
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.add(request) { error in
+            if error != nil {
+                // TODO: handle notification errors
+                print(String(describing: error))
+            } else {
+                print("Notification created successfully")
             }
         }
     }
