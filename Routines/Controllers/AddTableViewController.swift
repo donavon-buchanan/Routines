@@ -30,7 +30,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     override var keyCommands: [UIKeyCommand]? {
         return [
             UIKeyCommand(input: "s", modifierFlags: .command, action: #selector(saveKeyCommand), discoverabilityTitle: "Save Task"),
-            UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit")
+            UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit"),
         ]
     }
 

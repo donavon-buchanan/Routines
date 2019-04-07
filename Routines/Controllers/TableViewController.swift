@@ -28,7 +28,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             UIKeyCommand(input: "n", modifierFlags: .command, action: #selector(addNewTask), discoverabilityTitle: "Add New Task"),
             UIKeyCommand(input: "o", modifierFlags: .alternate, action: #selector(openSettingsKeyCommand), discoverabilityTitle: "Open Settings"),
             UIKeyCommand(input: "e", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(editKeyCommand), discoverabilityTitle: "Edit Current Tasks"),
-            UIKeyCommand(input: "a", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(showAllKeyCommand), discoverabilityTitle: "Reveal All Tasks")
+            UIKeyCommand(input: "a", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(showAllKeyCommand), discoverabilityTitle: "Reveal All Tasks"),
         ]
     }
 
@@ -504,12 +504,12 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     @objc private func clearAll() {
-        items?.forEach({ item in
+        items?.forEach { item in
             // TODO: Might be better to just grab a whole filtered list and then delete from there
             item.syncDelete()
             // item.deleteItem()
             updateBadge()
-        })
+        }
         endEdit()
         resetTableView()
         changeTabBar(hidden: false, animated: true)
@@ -518,13 +518,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @objc func deleteSelectedRows() {
         if let indexPaths = self.tableView.indexPathsForSelectedRows {
             var itemArray: [Item] = []
-            indexPaths.forEach({ indexPath in
+            indexPaths.forEach { indexPath in
                 // The index paths are static during enumeration, but the item indexes are not
                 // Add them to an array first, delete only what's in the array, and then update the table UI
                 if let itemAtIndex = self.items?[indexPath.row] {
                     itemArray.append(itemAtIndex)
                 }
-            })
+            }
             itemArray.forEach { item in
                 item.syncDelete()
                 // item.deleteItem()
@@ -737,6 +737,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        }).disposed(by: bag)
         realmSync(itemsToObserve: items!)
     }
+
     func loadAllItems() {
         // Sort by segment to put in order of the day
         items = realm.objects(Item.self).filter("isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
@@ -774,11 +775,11 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //                                     with: .automatic)
 //                tableView.endUpdates()
                 tableView.performBatchUpdates({
-                    tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+                    tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) },
                                          with: .automatic)
-                    tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
+                    tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) },
                                          with: .automatic)
-                    tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+                    tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) },
                                          with: .automatic)
                 }, completion: nil)
                 self.updateBadge()
@@ -860,17 +861,18 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             }
         }
     }
+
     // This does the work
     func autoSnoozeMove(fromSegment: Int, toSegment: Int) {
         print("running autoSnoozeMove from segment \(fromSegment) to \(toSegment)")
         let items = realm.objects(Item.self).filter("segment = \(fromSegment) AND isDeleted = \(false) AND disableAutoSnooze = %@", false)
-        items.forEach({ item in
+        items.forEach { item in
             if let itemDate = item.dateModified {
                 if itemDate < Date() {
                     item.snooze()
                 }
             }
-        })
+        }
     }
 
     func getAutoSnoozeStatus() -> Bool {
