@@ -472,7 +472,7 @@ class CustomTimesTableViewController: UITableViewController {
             autoreleasepool {
                 let realm = try! Realm()
                 let items = realm.objects(Item.self) // .filter("segment = \(segment)")
-                items.forEach({ item in
+                items.forEach { item in
                     if self.getAutoSnoozeStatus() {
                         self.scheduleAutoSnoozeNotifications(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString, firstDate: item.dateModified!)
                     } else {
@@ -480,7 +480,7 @@ class CustomTimesTableViewController: UITableViewController {
                             self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString, firstDate: item.dateModified!)
                         }
                     }
-                })
+                }
             }
         }
     }

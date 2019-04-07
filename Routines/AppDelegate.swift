@@ -25,10 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     private func itemCleanup() {
         let realm = try! Realm()
         let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
-        oldItems.forEach({ item in
+        oldItems.forEach { item in
             removeDeletedNotifications(id: item.uuidString)
             item.deleteItem()
-        })
+        }
     }
 
     func removeDeletedNotifications(id: String) {
@@ -40,9 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func refreshNotifications() {
         let realm = try! Realm()
         let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
-        oldItems.forEach({ item in
+        oldItems.forEach { item in
             removeDeletedNotifications(id: item.uuidString)
-        })
+        }
 
         OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 0), segment: 0)
         OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 1), segment: 1)
@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Sync with iCloud
         syncEngine = SyncEngine(objects: [
             SyncObject<Item>(),
-            SyncObject<Options>()
+            SyncObject<Options>(),
         ])
         UIApplication.shared.registerForRemoteNotifications()
 
@@ -985,7 +985,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 NSAttributedString.Key.foregroundColor: UIColor(rgba: hexString),
                 // NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
 
-                NSAttributedString.Key.shadow: shadow
+                NSAttributedString.Key.shadow: shadow,
             ]
         }
 

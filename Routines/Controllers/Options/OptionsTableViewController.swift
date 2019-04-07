@@ -28,7 +28,7 @@ class OptionsTableViewController: UITableViewController {
 
     override var keyCommands: [UIKeyCommand]? {
         return [
-            UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit")
+            UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit"),
         ]
     }
 
@@ -558,9 +558,9 @@ class OptionsTableViewController: UITableViewController {
             autoreleasepool {
                 let realm = try! Realm()
                 let items = realm.objects(Item.self).filter("segment = \(segment) AND isDeleted = \(false)")
-                items.forEach({ item in
+                items.forEach { item in
                     self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3"])
-                })
+                }
             }
         }
     }
@@ -570,13 +570,13 @@ class OptionsTableViewController: UITableViewController {
             autoreleasepool {
                 let realm = try! Realm()
                 let items = realm.objects(Item.self).filter("segment = \(segment) AND isDeleted = \(false)")
-                items.forEach({ item in
+                items.forEach { item in
                     if self.getAutoSnoozeStatus() {
                         self.scheduleAutoSnoozeNotifications(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString, firstDate: item.dateModified!)
                     } else {
                         self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString, firstDate: item.dateModified!)
                     }
-                })
+                }
             }
         }
     }
