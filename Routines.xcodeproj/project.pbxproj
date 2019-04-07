@@ -112,19 +112,6 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		F8A761EE22580A7200FB9654 /* Embed Watch Content */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
-			dstSubfolderSpec = 16;
-			files = (
-			);
-			name = "Embed Watch Content";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		227D9B332BE6052545E23F9C /* Pods_Routines.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Routines.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C74944E18894E7B54E060F1 /* Pods-Routines.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routines.debug.xcconfig"; path = "Target Support Files/Pods-Routines/Pods-Routines.debug.xcconfig"; sourceTree = "<group>"; };
@@ -372,7 +359,6 @@
 				F890109821F9A5FB00ED2002 /* SwiftFormat */,
 				F890109921F9A85A00ED2002 /* SwiftLint */,
 				BE1460264011DDE70D631B15 /* [CP] Embed Pods Frameworks */,
-				F8A761EE22580A7200FB9654 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
@@ -604,7 +590,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftformat >/dev/null; then\nswiftformat . --exclude Pods,Generated --swiftversion 4.2\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftformat >/dev/null; then\nswiftformat . --exclude Pods,Generated --swiftversion 5\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
 		};
 		F890109921F9A85A00ED2002 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
