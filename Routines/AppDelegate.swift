@@ -22,14 +22,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var syncEngine: SyncEngine?
 
-    private func itemCleanup() {
-        let realm = try! Realm()
-        let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
-        oldItems.forEach { item in
-            removeDeletedNotifications(id: item.uuidString)
-            item.deleteItem()
-        }
-    }
+//    private func itemCleanup() {
+//        let realm = try! Realm()
+//        let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
+//        oldItems.forEach { item in
+//            removeDeletedNotifications(id: item.uuidString)
+//            item.deleteItem()
+//        }
+//    }
 
     func removeDeletedNotifications(id: String) {
         print("Clearing delivered notifications for deleted items")
@@ -110,7 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         print("Received push notification")
 
-        itemCleanup()
+        // itemCleanup()
 
         // TableViewController().refreshItems()
         //try to refresh notifications in the background
@@ -134,13 +134,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         updateAppBadgeCount()
-        itemCleanup()
+        // itemCleanup()
     }
 
     func applicationWillEnterForeground(_: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         // TableViewController().refreshItems()
-        itemCleanup()
+        // itemCleanup()
         updateAppBadgeCount()
     }
 
@@ -164,7 +164,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        }
         // TableViewController().refreshItems()
 
-        itemCleanup()
+        // itemCleanup()
         updateAppBadgeCount()
     }
 

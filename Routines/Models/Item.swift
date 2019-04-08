@@ -106,30 +106,30 @@ extension Item {
     }
 
     // TODO: Clean this up more with local references
-    func deleteItem() {
-        let itemID = uuidString
-        // Add suffix back to uuidString
-        removeNotification(uuidStrings: ["\(itemID)0", "\(itemID)1", "\(itemID)2", "\(itemID)3", itemID])
-
-        print("running deleteItem")
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                do {
-                    try realm.write {
-                        self.isDeleted = true
-                        realm.delete(self)
-                    }
-                } catch {
-                    print("failed to remove delete")
-                }
-            }
-            print("deleteItem completed")
-        }
-
-        // OptionsTableViewController().refreshNotifications()
-        AppDelegate().updateAppBadgeCount()
-    }
+//    func deleteItem() {
+//        let itemID = uuidString
+//        // Add suffix back to uuidString
+//        removeNotification(uuidStrings: ["\(itemID)0", "\(itemID)1", "\(itemID)2", "\(itemID)3", itemID])
+//
+//        print("running deleteItem")
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                do {
+//                    try realm.write {
+//                        self.isDeleted = true
+//                        realm.delete(self)
+//                    }
+//                } catch {
+//                    print("failed to remove delete")
+//                }
+//            }
+//            print("deleteItem completed")
+//        }
+//
+//        // OptionsTableViewController().refreshNotifications()
+//        AppDelegate().updateAppBadgeCount()
+//    }
 
     func snooze() {
         removeNotification(uuidStrings: ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3", uuidString])
