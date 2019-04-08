@@ -64,7 +64,8 @@ class OptionsTableViewController: UITableViewController {
     }
 
     @objc func dismissView() {
-        dismiss(animated: true, completion: nil)
+        // dismiss(animated: true, completion: nil)
+        performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
 
     override func viewDidLoad() {
