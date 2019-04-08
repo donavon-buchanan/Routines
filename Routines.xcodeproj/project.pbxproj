@@ -197,13 +197,6 @@
 			path = Options;
 			sourceTree = "<group>";
 		};
-		F8216BA92201A98E00EC10A2 /* Handlers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Handlers;
-			sourceTree = "<group>";
-		};
 		F84681FC21868C2A00BE3E19 /* Other Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -271,7 +264,6 @@
 				F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */,
 				F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */,
 				F843324A21F4680200086BFF /* CheckableTableViewCell.swift */,
-				F8216BA92201A98E00EC10A2 /* Handlers */,
 				F807D3D22160A06600FF36D9 /* Options */,
 			);
 			path = Controllers;
