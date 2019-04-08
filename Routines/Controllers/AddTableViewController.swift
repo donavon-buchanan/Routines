@@ -278,17 +278,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
-        if segue.identifier == "unwindToTableViewController" {
-            let destinationVC = segue.destination as! TableViewController
-            destinationVC.passedSegment = segmentSelection.selectedSegmentIndex
-            // destinationVC.reloadTableView()
-            // Cell contents can change, so layout the views again to resize the cells
-//            destinationVC.view.setNeedsLayout()
-//            destinationVC.view.layoutIfNeeded()
-        }
-        if segue.identifier == "repeatSegue" {}
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
+//        if segue.identifier == "unwindToTableViewController" {
+//            let destinationVC = segue.destination as! TableViewController
+//            destinationVC.passedSegment = segmentSelection.selectedSegmentIndex
+//            destinationVC.changeSegment(segment: segmentSelection.selectedSegmentIndex)
+//        }
+//        if segue.identifier == "repeatSegue" {}
+//    }
 
     func firstTriggerDate(segment: Int) -> Date {
         let tomorrow = Date().startOfNextDay
