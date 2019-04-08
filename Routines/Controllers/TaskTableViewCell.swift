@@ -12,5 +12,6 @@ class TaskTableViewCell: UITableViewCell {
     // Can't set weak vars here. Cells won't automatically size reliably
     @IBOutlet var cellTitleLabel: UILabel!
     @IBOutlet var cellSubtitleLabel: UILabel!
+    @IBOutlet var repeatLabel: UILabel!
     @IBOutlet var cellIndicatorImage: UIImageView!
 }

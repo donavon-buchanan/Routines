@@ -49,8 +49,14 @@
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Repeats Daily" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x8D-8R-rGn">
+                                                            <rect key="frame" x="0.0" y="24.5" width="690" height="1.5"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
                                                         <label verifyAmbiguity="ignoreSizes" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEr-4p-QCB" userLabel="Subtitle">
-                                                            <rect key="frame" x="0.0" y="24.5" width="690" height="5.5"/>
+                                                            <rect key="frame" x="0.0" y="30" width="690" height="0.0"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -73,6 +79,7 @@
                                     <outlet property="cellIndicatorImage" destination="jtF-uI-8Sz" id="ZUG-q1-ucB"/>
                                     <outlet property="cellSubtitleLabel" destination="cEr-4p-QCB" id="2Ce-ut-TrO"/>
                                     <outlet property="cellTitleLabel" destination="3Ri-sk-eGh" id="9dR-Qd-kzG"/>
+                                    <outlet property="repeatLabel" destination="x8D-8R-rGn" id="nHY-bQ-Xja"/>
                                     <segue destination="pWN-gw-REk" kind="presentation" identifier="editSegue" modalPresentationStyle="pageSheet" id="axw-H5-5nW"/>
                                 </connections>
                             </tableViewCell>

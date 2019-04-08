@@ -156,15 +156,15 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     let realmDispatchQueueLabel: String = "background"
 
     // Set segment after adding an item
-    var passedSegment: Int?
-    func changeSegment(segment: Int?) {
-        if let newSegment = segment {
-            passedSegment = nil
-            tabBarController?.selectedIndex = newSegment
-            UIView.transition(with: tabBarController!.view, duration: 0.3, options: .transitionCrossDissolve, animations: nil)
-            saveSelectedTab(index: newSegment)
-        }
-    }
+//    var passedSegment: Int?
+//    func changeSegment(segment: Int?) {
+//        if let newSegment = segment {
+//            passedSegment = nil
+//            tabBarController?.selectedIndex = newSegment
+//            UIView.transition(with: tabBarController!.view, duration: 0.3, options: .transitionCrossDissolve, animations: nil)
+//            saveSelectedTab(index: newSegment)
+//        }
+//    }
 
     // Footer view
     let footerView = UIView()
@@ -242,17 +242,18 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         removeDeliveredNotifications()
         title = setNavTitle()
         // reloadTableView()
-//        setAppearance(segment: segment)
+        // setAppearance(segment: segment)
         // changeSegment(segment: passedSegment)
-        setTimeInTitle(timeString: getSegmentTimeString(segment: segment))
+        // setTimeInTitle(timeString: getSegmentTimeString(segment: segment))
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print("viewDidAppear \n")
-        changeSegment(segment: passedSegment)
+        // changeSegment(segment: passedSegment)
         // animateCells()
         setAppearance(segment: segment)
+        // changeSegment(segment: passedSegment)
     }
 
     func setTimeInTitle(timeString _: String) {
@@ -397,6 +398,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         cell.cellIndicatorImage.theme_tintColor = GlobalPicker.cellIndicatorTint
 
         cell.cellTitleLabel?.theme_textColor = GlobalPicker.cellTextColors
+        cell.repeatLabel?.theme_textColor = GlobalPicker.barTextColor
         cell.theme_backgroundColor = GlobalPicker.backgroundColor
         let cellSelectedBackgroundView = UIView()
         cellSelectedBackgroundView.theme_backgroundColor = GlobalPicker.cellBackground
