@@ -36,8 +36,10 @@ import RealmSwift
 
     dynamic var badge: Bool = true
 
+    //TODO: This should be removed
     dynamic var firstItemAdded: Bool = false
 
+    // TODO: This should be renamed at some point in the future
     dynamic var smartSnooze: Bool = false
 
     dynamic var darkMode: Bool = true
