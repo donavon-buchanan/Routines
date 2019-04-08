@@ -43,6 +43,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		F8227D09225B1CF9005AE175 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8FF259122085A180063295F /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0E11D5875359CFA4E1ED1E1C803B79CF;
+			remoteInfo = IceCream;
+		};
 		F85DA35122084C9800A6716C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8B831AC2155CBB000DAF60E /* Project object */;
@@ -290,6 +297,7 @@
 		F8FF259222085A180063295F /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				F8227D0A225B1CF9005AE175 /* IceCream.framework */,
 				F8FF259C22085A180063295F /* Pods_Routines.framework */,
 				F8FF259E22085A180063295F /* Realm.framework */,
 				F8FF25A022085A180063295F /* RealmSwift.framework */,
@@ -330,8 +338,8 @@
 				F8B831B12155CBB000DAF60E /* Frameworks */,
 				F8B831B22155CBB000DAF60E /* Resources */,
 				F888607E2182757300FDF808 /* Increment Build */,
-				F890109821F9A5FB00ED2002 /* SwiftFormat */,
 				F890109921F9A85A00ED2002 /* SwiftLint */,
+				F890109821F9A5FB00ED2002 /* SwiftFormat */,
 				B8723135580D1727B98421E8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -403,6 +411,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		F8227D0A225B1CF9005AE175 /* IceCream.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = IceCream.framework;
+			remoteRef = F8227D09225B1CF9005AE175 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		F8FF259C22085A180063295F /* Pods_Routines.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -566,7 +581,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#if which swiftlint >/dev/null; then\n#swiftlint autocorrect\n#else\n#echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n#fi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint autocorrect\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
