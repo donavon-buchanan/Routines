@@ -18,7 +18,7 @@ target 'Routines' do
   #pod 'NotificationBannerSwift'
   pod 'SwiftMessages'
   #pod 'ViewAnimator'
-  #pod 'IceCream'
+  pod 'IceCream'
   #pod 'RxSwift'
   #pod 'RxRealm'
 

@@ -506,7 +506,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @objc private func clearAll() {
         items?.forEach { item in
             // TODO: Might be better to just grab a whole filtered list and then delete from there
-            item.deleteItem()
+            item.syncDelete() // item.deleteItem()
             updateBadge()
         }
         endEdit()
@@ -525,7 +525,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 }
             }
             itemArray.forEach { item in
-                item.deleteItem()
+                item.syncDelete() // item.deleteItem()
                 updateBadge()
             }
             // This will be handled by the realmSync func
@@ -598,7 +598,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // Override empty delete func from super
     func updateModel(at indexPath: IndexPath) {
         if let item = items?[indexPath.row] {
-            item.deleteItem()
+            item.syncDelete() // item.deleteItem()
             updateBadge()
         }
     }
@@ -744,7 +744,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     private func deleteItem(item: Item) {
-        item.deleteItem()
+        item.syncDelete() // item.deleteItem()
         updateBadge()
     }
 
