@@ -1746,9 +1746,11 @@
                         <outletCollection property="switches" destination="6Be-Gy-fuV" collectionClass="NSMutableArray" id="NRV-5o-VAr"/>
                         <outletCollection property="switches" destination="U5Q-0c-y3h" collectionClass="NSMutableArray" id="mbi-fX-mOs"/>
                         <outletCollection property="switches" destination="aa0-0h-djV" collectionClass="NSMutableArray" id="41a-A8-zco"/>
+                        <segue destination="1aL-IG-qEf" kind="unwind" identifier="unwindToTableViewController" unwindAction="unwindToTableViewControllerWithSegue:" id="hf9-Xq-OiU"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zqO-d3-61K" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="1aL-IG-qEf" userLabel="Exit" sceneMemberID="exit"/>
                 <stackView opaque="NO" contentMode="scaleToFill" id="FN8-nf-MkM">
                     <rect key="frame" x="0.0" y="0.0" width="343" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
