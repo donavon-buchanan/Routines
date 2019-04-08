@@ -265,32 +265,39 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     func getSegmentTimeString(segment: Int) -> String {
-        let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-        var timeOption = DateComponents()
-        timeOption.calendar = Calendar.autoupdatingCurrent
-        timeOption.timeZone = TimeZone.autoupdatingCurrent
+        var timeString: String = ""
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+                var timeOption = DateComponents()
+                timeOption.calendar = Calendar.autoupdatingCurrent
+                timeOption.timeZone = TimeZone.autoupdatingCurrent
 
-        switch segment {
-        case 1:
-            timeOption.hour = options?.afternoonHour
-            timeOption.minute = options?.afternoonMinute
-        case 2:
-            timeOption.hour = options?.eveningHour
-            timeOption.minute = options?.eveningMinute
-        case 3:
-            timeOption.hour = options?.nightHour
-            timeOption.minute = options?.nightMinute
-        default:
-            timeOption.hour = options?.morningHour
-            timeOption.minute = options?.morningMinute
+                switch segment {
+                case 1:
+                    timeOption.hour = options?.afternoonHour
+                    timeOption.minute = options?.afternoonMinute
+                case 2:
+                    timeOption.hour = options?.eveningHour
+                    timeOption.minute = options?.eveningMinute
+                case 3:
+                    timeOption.hour = options?.nightHour
+                    timeOption.minute = options?.nightMinute
+                default:
+                    timeOption.hour = options?.morningHour
+                    timeOption.minute = options?.morningMinute
+                }
+
+                timeString = DateFormatter.localizedString(from: timeOption.date!, dateStyle: .none, timeStyle: .short)
+            }
         }
-
-        return DateFormatter.localizedString(from: timeOption.date!, dateStyle: .none, timeStyle: .short)
+        return timeString
     }
 
     func setNavTitle() -> String {
         print("Setting table title")
-        switch self.segment {
+        switch segment {
         case 1:
             return "Afternoon"
         case 2:
@@ -327,8 +334,14 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     func getSelectedTab() -> Int {
         var index = Int()
-        if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
-            index = options.selectedIndex
+
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    index = options.selectedIndex
+                }
+            }
         }
         return index
     }
@@ -610,10 +623,15 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     func setItemToIgnore(indexPath: IndexPath, ignore: Bool) {
-        do {
-            try! realm.write {
-                if let item = self.items?[indexPath.row] {
-                    item.disableAutoSnooze = ignore
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                do {
+                    try! realm.write {
+                        if let item = self.items?[indexPath.row] {
+                            item.disableAutoSnooze = ignore
+                        }
+                    }
                 }
             }
         }
@@ -702,47 +720,40 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // MARK: - Realm
 
-    // Get the default Realm
-    // var realm = try! Realm()
-    // Apparently even lazy, this is a problem
-    lazy var realm = try! Realm()
-
     let optionsKey = "optionsKey"
 
-    // Each view (tab) loads its own set of items.
-    // Load from viewDidLoad. Reload table from viewWillAppear
-
-    /* TODO: Change this back to a list of realm objects and create a new array var for the rest of below to work with.
-     The table should load and count from the realm list, not the array.
-     Make sure to re-enable reloads and counts.
-     */
-    // var items: [Item]?
     var items: Results<Item>?
 
     public var segment = Int()
 
-    public func refreshItems() {
-        items = realm.objects(Item.self).filter("isDeleted = \(false)")
-    }
+//    public func refreshItems() {
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool{
+//                let realm = try! Realm()
+//                self.items = realm.objects(Item.self).filter("isDeleted = \(false)")
+//            }
+//        }
+//    }
 
     func loadItems(segment: Int) {
-        items = realm.objects(Item.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
-
-//        Observable.array(from: items).subscribe(onNext: { items in
-//            /// When data changes in Realm, the following code will be executed
-//            // self.items = items.filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
-//            self.items = items.filter({ !$0.isDeleted || $0.segment == self.segment })
-//            self.tableView.reloadData()
-//        }).disposed(by: bag)
-        // realmSync(itemsToObserve: items!)
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                self.items = realm.objects(Item.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
+            }
+        }
+        realmSync(itemsToObserve: items!)
     }
 
     func loadAllItems() {
         // Sort by segment to put in order of the day
-        items = realm.objects(Item.self).filter("isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
-
-        // breaks my animation, but works :(
-        // realmSync(itemsToObserve: items!)
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                self.items = realm.objects(Item.self).filter("isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
+            }
+        }
+        realmSync(itemsToObserve: items!)
     }
 
 //    private func deleteItem(item: Item) {
@@ -750,39 +761,39 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        updateBadge()
 //    }
 //
-//    var notificationToken: NotificationToken?
-//
-//    func realmSync(itemsToObserve _: Results<Item>) {
-//        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
-//        // Observe Results Notifications
-//        notificationToken = items?.observe { [self] (changes: RealmCollectionChange) in
-//            guard let tableView = self.tableView else { return }
-//            switch changes {
-//            case .initial:
-//                // Results are now populated and can be accessed without blocking the UI
-//                tableView.reloadData()
-//                self.updateBadge()
-//            case let .update(_, deletions, insertions, modifications):
-//                // Query results have changed, so apply them to the UITableView
-//                tableView.performBatchUpdates({
-//                    tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) },
-//                                         with: .automatic)
-//                    tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) },
-//                                         with: .automatic)
-//                    tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) },
-//                                         with: .automatic)
-//                }, completion: nil)
-//                self.updateBadge()
-//            case let .error(error):
-//                // An error occurred while opening the Realm file on the background worker thread
-//                print("\(error)")
-//            }
-//        }
-//    }
-//
-//    deinit {
-//        notificationToken?.invalidate()
-//    }
+    var notificationToken: NotificationToken?
+
+    func realmSync(itemsToObserve _: Results<Item>) {
+        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
+        // Observe Results Notifications
+        notificationToken = items?.observe { [self] (changes: RealmCollectionChange) in
+            guard let tableView = self.tableView else { return }
+            switch changes {
+            case .initial:
+                // Results are now populated and can be accessed without blocking the UI
+                tableView.reloadData()
+                self.updateBadge()
+            case let .update(_, deletions, insertions, modifications):
+                // Query results have changed, so apply them to the UITableView
+                tableView.performBatchUpdates({
+                    tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) },
+                                         with: .automatic)
+                    tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) },
+                                         with: .automatic)
+                    tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) },
+                                         with: .automatic)
+                }, completion: nil)
+                self.updateBadge()
+            case let .error(error):
+                // An error occurred while opening the Realm file on the background worker thread
+                print("\(error)")
+            }
+        }
+    }
+
+    deinit {
+        notificationToken?.invalidate()
+    }
 
     // MARK: - Themeing
 
@@ -819,8 +830,15 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     public func getDarkModeStatus() -> Bool {
         var darkMode = false
-        if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
-            darkMode = options.darkMode
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                do {
+                    let realm = try! Realm()
+                    if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                        darkMode = options.darkMode
+                    }
+                }
+            }
         }
         return darkMode
     }
@@ -855,11 +873,16 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // This does the work
     func autoSnoozeMove(fromSegment: Int, toSegment: Int) {
         print("running autoSnoozeMove from segment \(fromSegment) to \(toSegment)")
-        let items = realm.objects(Item.self).filter("segment = \(fromSegment) AND isDeleted = \(false) AND disableAutoSnooze = %@", false)
-        items.forEach { item in
-            if let itemDate = item.dateModified {
-                if itemDate < Date() {
-                    item.snooze()
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let items = realm.objects(Item.self).filter("segment = \(fromSegment) AND isDeleted = \(false) AND disableAutoSnooze = %@", false)
+                items.forEach { item in
+                    if let itemDate = item.dateModified {
+                        if itemDate < Date() {
+                            item.snooze()
+                        }
+                    }
                 }
             }
         }
@@ -867,9 +890,15 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     func getAutoSnoozeStatus() -> Bool {
         var snooze = false
-        if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
-            snooze = options.smartSnooze
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+                    snooze = options.smartSnooze
+                }
+            }
         }
+
         return snooze
     }
 
@@ -906,16 +935,21 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     func getOptionHour(segment: Int) -> Int {
         var hour = Int()
-        if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
-            switch segment {
-            case 1:
-                hour = options.afternoonHour
-            case 2:
-                hour = options.eveningHour
-            case 3:
-                hour = options.nightHour
-            default:
-                hour = options.morningHour
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                    switch segment {
+                    case 1:
+                        hour = options.afternoonHour
+                    case 2:
+                        hour = options.eveningHour
+                    case 3:
+                        hour = options.nightHour
+                    default:
+                        hour = options.morningHour
+                    }
+                }
             }
         }
         return hour
@@ -923,17 +957,23 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     func getOptionMinute(segment: Int) -> Int {
         var minute = Int()
-        let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-        switch segment {
-        case 1:
-            minute = (options?.afternoonMinute)!
-        case 2:
-            minute = (options?.eveningMinute)!
-        case 3:
-            minute = (options?.nightMinute)!
-        default:
-            minute = (options?.morningMinute)!
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+                switch segment {
+                case 1:
+                    minute = (options?.afternoonMinute)!
+                case 2:
+                    minute = (options?.eveningMinute)!
+                case 3:
+                    minute = (options?.nightMinute)!
+                default:
+                    minute = (options?.morningMinute)!
+                }
+            }
         }
+
         return minute
     }
 
