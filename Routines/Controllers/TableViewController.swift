@@ -734,7 +734,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //            self.items = items.filter({ !$0.isDeleted || $0.segment == self.segment })
 //            self.tableView.reloadData()
 //        }).disposed(by: bag)
-        realmSync(itemsToObserve: items!)
+        // realmSync(itemsToObserve: items!)
     }
 
     func loadAllItems() {
@@ -742,55 +742,47 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         items = realm.objects(Item.self).filter("isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
 
         // breaks my animation, but works :(
-        realmSync(itemsToObserve: items!)
+        // realmSync(itemsToObserve: items!)
     }
 
-    private func deleteItem(item: Item) {
-        item.syncDelete() // item.deleteItem()
-        updateBadge()
-    }
-
-    var notificationToken: NotificationToken?
-
-    func realmSync(itemsToObserve _: Results<Item>) {
-        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
-        // Observe Results Notifications
-        notificationToken = items?.observe { [self] (changes: RealmCollectionChange) in
-            guard let tableView = self.tableView else { return }
-            switch changes {
-            case .initial:
-                // Results are now populated and can be accessed without blocking the UI
-                tableView.reloadData()
-                self.updateBadge()
-            case let .update(_, deletions, insertions, modifications):
-                // Query results have changed, so apply them to the UITableView
-//                tableView.beginUpdates()
-//                tableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
-//                                     with: .automatic)
-//                tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
-//                                     with: .automatic)
-//                tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
-//                                     with: .automatic)
-//                tableView.endUpdates()
-                tableView.performBatchUpdates({
-                    tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) },
-                                         with: .automatic)
-                    tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) },
-                                         with: .automatic)
-                    tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) },
-                                         with: .automatic)
-                }, completion: nil)
-                self.updateBadge()
-            case let .error(error):
-                // An error occurred while opening the Realm file on the background worker thread
-                print("\(error)")
-            }
-        }
-    }
-
-    deinit {
-        notificationToken?.invalidate()
-    }
+//    private func deleteItem(item: Item) {
+//        item.syncDelete() // item.deleteItem()
+//        updateBadge()
+//    }
+//
+//    var notificationToken: NotificationToken?
+//
+//    func realmSync(itemsToObserve _: Results<Item>) {
+//        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
+//        // Observe Results Notifications
+//        notificationToken = items?.observe { [self] (changes: RealmCollectionChange) in
+//            guard let tableView = self.tableView else { return }
+//            switch changes {
+//            case .initial:
+//                // Results are now populated and can be accessed without blocking the UI
+//                tableView.reloadData()
+//                self.updateBadge()
+//            case let .update(_, deletions, insertions, modifications):
+//                // Query results have changed, so apply them to the UITableView
+//                tableView.performBatchUpdates({
+//                    tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) },
+//                                         with: .automatic)
+//                    tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) },
+//                                         with: .automatic)
+//                    tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) },
+//                                         with: .automatic)
+//                }, completion: nil)
+//                self.updateBadge()
+//            case let .error(error):
+//                // An error occurred while opening the Realm file on the background worker thread
+//                print("\(error)")
+//            }
+//        }
+//    }
+//
+//    deinit {
+//        notificationToken?.invalidate()
+//    }
 
     // MARK: - Themeing
 
