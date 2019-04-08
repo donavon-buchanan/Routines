@@ -1649,16 +1649,16 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ftn-AW-Mvk">
-                                                    <rect key="frame" x="8" y="8" width="359" height="47.5"/>
+                                                    <rect key="frame" x="8" y="8" width="524" height="47.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dark Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h5f-u2-JbK">
-                                                            <rect key="frame" x="0.0" y="13.5" width="310" height="20.5"/>
+                                                            <rect key="frame" x="0.0" y="13.5" width="475" height="20.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aa0-0h-djV">
-                                                            <rect key="frame" x="310" y="8.5" width="51" height="31"/>
+                                                            <rect key="frame" x="475" y="8.5" width="51" height="31"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="49" id="0g0-dS-nEn"/>
                                                                 <constraint firstAttribute="height" constant="31" id="aTB-yb-fxh"/>
@@ -1690,10 +1690,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="2c7-3J-lux">
-                                                    <rect key="frame" x="8" y="8" width="333" height="47.5"/>
+                                                    <rect key="frame" x="8" y="8" width="498" height="47.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="App Info" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xVv-xA-Cm0">
-                                                            <rect key="frame" x="0.0" y="0.0" width="333" height="47.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="498" height="47.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1787,10 +1787,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QJu-W7-05b">
-                                                    <rect key="frame" x="20" y="11" width="728" height="32"/>
+                                                    <rect key="frame" x="20" y="11" width="500" height="32"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Version #" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JbR-eS-XJL">
-                                                            <rect key="frame" x="0.0" y="0.0" width="728" height="32"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="500" height="32"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1818,7 +1818,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="uYy-me-38Z">
-                                                    <rect key="frame" x="20" y="11" width="728" height="58"/>
+                                                    <rect key="frame" x="20" y="11" width="500" height="58"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="gear" translatesAutoresizingMaskIntoConstraints="NO" id="WGZ-DG-apW">
                                                             <rect key="frame" x="0.0" y="15" width="28" height="28"/>
@@ -1828,7 +1828,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="designed by Freepik from Flaticon" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ETd-pZ-cWq">
-                                                            <rect key="frame" x="48" y="19" width="680" height="20.5"/>
+                                                            <rect key="frame" x="48" y="19" width="452" height="20.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1852,7 +1852,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Tsb-40-SZl">
-                                                    <rect key="frame" x="20" y="11" width="728" height="58"/>
+                                                    <rect key="frame" x="20" y="11" width="500" height="58"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="morning" translatesAutoresizingMaskIntoConstraints="NO" id="Ma0-1h-iCL">
                                                             <rect key="frame" x="0.0" y="15" width="28" height="28"/>
@@ -1862,7 +1862,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="designed by Vectors Market from Flaticon" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HWd-N3-RYU">
-                                                            <rect key="frame" x="48" y="19" width="680" height="20.5"/>
+                                                            <rect key="frame" x="48" y="19" width="452" height="20.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1886,7 +1886,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="jLO-hg-Dt4">
-                                                    <rect key="frame" x="20" y="11" width="728" height="58"/>
+                                                    <rect key="frame" x="20" y="11" width="500" height="58"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="afternoon" translatesAutoresizingMaskIntoConstraints="NO" id="Aqi-dm-NII">
                                                             <rect key="frame" x="0.0" y="15" width="28" height="28"/>
@@ -1896,7 +1896,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="designed by Vectors Market from Flaticon" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vkr-zL-Ayu">
-                                                            <rect key="frame" x="48" y="19" width="680" height="20.5"/>
+                                                            <rect key="frame" x="48" y="19" width="452" height="20.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1920,7 +1920,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="UvH-Gd-mgQ">
-                                                    <rect key="frame" x="20" y="11" width="728" height="58"/>
+                                                    <rect key="frame" x="20" y="11" width="500" height="58"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="evening" translatesAutoresizingMaskIntoConstraints="NO" id="148-Ee-Ij3">
                                                             <rect key="frame" x="0.0" y="15" width="28" height="28"/>
@@ -1930,7 +1930,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="designed by Vectors Market from Flaticon" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9do-G4-v2p">
-                                                            <rect key="frame" x="48" y="19" width="680" height="20.5"/>
+                                                            <rect key="frame" x="48" y="19" width="452" height="20.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1954,7 +1954,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="kw2-Ui-MOp">
-                                                    <rect key="frame" x="20" y="11" width="728" height="58"/>
+                                                    <rect key="frame" x="20" y="11" width="500" height="58"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" image="night" translatesAutoresizingMaskIntoConstraints="NO" id="dHd-4L-hyk">
                                                             <rect key="frame" x="0.0" y="15" width="28" height="28"/>
@@ -1964,7 +1964,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="designed by Vectors Market from Flaticon" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6VZ-nM-esN">
-                                                            <rect key="frame" x="48" y="19" width="680" height="20.5"/>
+                                                            <rect key="frame" x="48" y="19" width="452" height="20.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -2094,7 +2094,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="15" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JZC-X6-h1b">
-                                                    <rect key="frame" x="60" y="0.0" width="648" height="100"/>
+                                                    <rect key="frame" x="170" y="0.0" width="200" height="100"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="200" id="2bg-KB-7kZ"/>
+                                                    </constraints>
                                                     <date key="date" timeIntervalSinceReferenceDate="559998000.64045894">
                                                         <!--2018-09-30 11:00:00 +0000-->
                                                     </date>
@@ -2108,11 +2111,9 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="JZC-X6-h1b" firstAttribute="centerY" secondItem="Wry-RD-DKB" secondAttribute="centerY" id="3gW-d4-Osa"/>
-                                                <constraint firstAttribute="trailing" secondItem="JZC-X6-h1b" secondAttribute="trailing" constant="60" id="4NC-k5-X9g"/>
                                                 <constraint firstItem="JZC-X6-h1b" firstAttribute="centerX" secondItem="Wry-RD-DKB" secondAttribute="centerX" id="bPh-fg-4Yd"/>
                                                 <constraint firstAttribute="bottom" secondItem="JZC-X6-h1b" secondAttribute="bottom" id="d7K-8L-h08"/>
                                                 <constraint firstItem="JZC-X6-h1b" firstAttribute="top" secondItem="Wry-RD-DKB" secondAttribute="top" id="tG0-8x-5Cq"/>
-                                                <constraint firstItem="JZC-X6-h1b" firstAttribute="leading" secondItem="Wry-RD-DKB" secondAttribute="leading" constant="60" id="xHj-aV-Tfa"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2128,7 +2129,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="15" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBb-mY-CLe">
-                                                    <rect key="frame" x="60" y="0.0" width="648" height="100"/>
+                                                    <rect key="frame" x="170" y="0.0" width="200" height="100"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="200" id="o2G-S7-7HZ"/>
+                                                    </constraints>
                                                     <date key="date" timeIntervalSinceReferenceDate="560016000.52806199">
                                                         <!--2018-09-30 16:00:00 +0000-->
                                                     </date>
@@ -2141,10 +2145,8 @@
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="IBb-mY-CLe" secondAttribute="trailing" constant="60" id="61w-2i-Sdd"/>
                                                 <constraint firstAttribute="bottom" secondItem="IBb-mY-CLe" secondAttribute="bottom" id="637-07-1UQ"/>
                                                 <constraint firstItem="IBb-mY-CLe" firstAttribute="centerX" secondItem="srJ-Hp-KVy" secondAttribute="centerX" id="9DQ-Lm-dOP"/>
-                                                <constraint firstItem="IBb-mY-CLe" firstAttribute="leading" secondItem="srJ-Hp-KVy" secondAttribute="leading" constant="60" id="kE7-8a-LCs"/>
                                                 <constraint firstItem="IBb-mY-CLe" firstAttribute="centerY" secondItem="srJ-Hp-KVy" secondAttribute="centerY" id="nqZ-b5-L1h"/>
                                                 <constraint firstItem="IBb-mY-CLe" firstAttribute="top" secondItem="srJ-Hp-KVy" secondAttribute="top" id="oLJ-Gq-eV7"/>
                                             </constraints>
@@ -2162,7 +2164,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="15" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="clr-jV-EhA">
-                                                    <rect key="frame" x="60" y="0.0" width="648" height="100"/>
+                                                    <rect key="frame" x="170" y="0.0" width="200" height="100"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="200" id="iVv-fu-UVM"/>
+                                                    </constraints>
                                                     <date key="date" timeIntervalSinceReferenceDate="560034000.29647398">
                                                         <!--2018-09-30 21:00:00 +0000-->
                                                     </date>
@@ -2176,9 +2181,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="clr-jV-EhA" firstAttribute="centerY" secondItem="Epi-26-uol" secondAttribute="centerY" id="7LY-zH-WNx"/>
-                                                <constraint firstItem="clr-jV-EhA" firstAttribute="leading" secondItem="Epi-26-uol" secondAttribute="leading" constant="60" id="Rvw-zr-1Hx"/>
                                                 <constraint firstAttribute="bottom" secondItem="clr-jV-EhA" secondAttribute="bottom" id="j7q-ZR-A22"/>
-                                                <constraint firstAttribute="trailing" secondItem="clr-jV-EhA" secondAttribute="trailing" constant="60" id="jqd-tk-PXV"/>
                                                 <constraint firstItem="clr-jV-EhA" firstAttribute="top" secondItem="Epi-26-uol" secondAttribute="top" id="vBh-2a-o6T"/>
                                                 <constraint firstItem="clr-jV-EhA" firstAttribute="centerX" secondItem="Epi-26-uol" secondAttribute="centerX" id="zRw-Ps-9m6"/>
                                             </constraints>
@@ -2196,7 +2199,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="15" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6wg-G3-W4t">
-                                                    <rect key="frame" x="60" y="0.0" width="648" height="100"/>
+                                                    <rect key="frame" x="170" y="0.0" width="200" height="100"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="200" id="Qgf-Ju-wx1"/>
+                                                    </constraints>
                                                     <date key="date" timeIntervalSinceReferenceDate="560048400.94189596">
                                                         <!--2018-10-01 01:00:00 +0000-->
                                                     </date>
@@ -2211,8 +2217,6 @@
                                             <constraints>
                                                 <constraint firstItem="6wg-G3-W4t" firstAttribute="centerX" secondItem="OZ2-sG-jgN" secondAttribute="centerX" id="5wd-qh-Oed"/>
                                                 <constraint firstItem="6wg-G3-W4t" firstAttribute="top" secondItem="OZ2-sG-jgN" secondAttribute="top" id="DKS-zh-Ore"/>
-                                                <constraint firstAttribute="trailing" secondItem="6wg-G3-W4t" secondAttribute="trailing" constant="60" id="Man-jQ-3xv"/>
-                                                <constraint firstItem="6wg-G3-W4t" firstAttribute="leading" secondItem="OZ2-sG-jgN" secondAttribute="leading" constant="60" id="Raw-JP-8b3"/>
                                                 <constraint firstAttribute="bottom" secondItem="6wg-G3-W4t" secondAttribute="bottom" id="Shr-8s-DOd"/>
                                                 <constraint firstItem="6wg-G3-W4t" firstAttribute="centerY" secondItem="OZ2-sG-jgN" secondAttribute="centerY" id="YLI-GQ-Eqj"/>
                                             </constraints>
