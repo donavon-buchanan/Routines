@@ -163,7 +163,7 @@ extension Item {
         }
     }
 
-    func createNotification() {
+    fileprivate func createNotification() {
         // TODO: Create notification when task is added
         // Reminder notifications will need to be handled elsewhere
     }
