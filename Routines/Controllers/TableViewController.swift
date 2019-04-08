@@ -242,7 +242,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         removeDeliveredNotifications()
         title = setNavTitle()
         // reloadTableView()
-        setAppearance(segment: segment)
+//        setAppearance(segment: segment)
         // changeSegment(segment: passedSegment)
         setTimeInTitle(timeString: getSegmentTimeString(segment: segment))
     }
@@ -252,6 +252,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         print("viewDidAppear \n")
         changeSegment(segment: passedSegment)
         // animateCells()
+        setAppearance(segment: segment)
     }
 
     func setTimeInTitle(timeString _: String) {
@@ -703,6 +704,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // Get the default Realm
     // var realm = try! Realm()
+    // Apparently even lazy, this is a problem
     lazy var realm = try! Realm()
 
     let optionsKey = "optionsKey"

@@ -102,11 +102,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         completionHandler(.newData)
 
-        // Sync with iCloud
-        syncEngine = SyncEngine(objects: [
-            SyncObject<Item>(),
-            SyncObject<Options>(),
-        ])
+//        // Sync with iCloud
+//        syncEngine = SyncEngine(objects: [
+//            SyncObject<Item>(),
+//            SyncObject<Options>(),
+//        ])
 
         print("Received push notification")
 
@@ -134,13 +134,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         updateAppBadgeCount()
-        // itemCleanup()
+        itemCleanup()
     }
 
     func applicationWillEnterForeground(_: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        TableViewController().refreshItems()
-        // itemCleanup()
+        // TableViewController().refreshItems()
+        itemCleanup()
         updateAppBadgeCount()
     }
 
@@ -163,7 +163,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //            restoreSelectedTab(tab: getCurrentSegmentFromTime())
 //        }
         // TableViewController().refreshItems()
-        // itemCleanup()
+
+        itemCleanup()
         updateAppBadgeCount()
     }
 
@@ -174,11 +175,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // itemCleanup()
     }
 
-//    func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
+//    func application(_: UIApplication, shouldSaveApplicationState _: NSCoder) -> Bool {
 //        return true
 //    }
 //
-//    func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
+//    func application(_: UIApplication, shouldRestoreApplicationState _: NSCoder) -> Bool {
 //        return true
 //    }
 
@@ -1063,5 +1064,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
         return darkMode
+    }
+
+//    func getSelectedTab() -> Int {
+//        var selectedIndex = 0
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+//                    selectedIndex = options.selectedIndex
+//                }
+//            }
+//        }
+//        return selectedIndex
+//    }
+
+    func setAppearance(tab: Int) {
+        if getDarkModeStatus() {
+            switch tab {
+            case 1:
+                Themes.switchTo(theme: .afternoonDark)
+            case 2:
+                Themes.switchTo(theme: .eveningDark)
+            case 3:
+                Themes.switchTo(theme: .nightDark)
+            default:
+                Themes.switchTo(theme: .morningDark)
+            }
+        } else {
+            switch tab {
+            case 1:
+                Themes.switchTo(theme: .afternoonLight)
+            case 2:
+                Themes.switchTo(theme: .eveningLight)
+            case 3:
+                Themes.switchTo(theme: .nightLight)
+            default:
+                Themes.switchTo(theme: .morningLight)
+            }
+        }
     }
 }
