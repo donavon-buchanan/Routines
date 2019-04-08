@@ -7,7 +7,7 @@
 //
 
 import Foundation
-// import IceCream
+import IceCream
 import RealmSwift
 import UserNotifications
 
@@ -72,31 +72,31 @@ import UserNotifications
     }
 }
 
-// extension Item: CKRecordConvertible {
-//    // Yep, leave it blank!
-// }
-//
-// extension Item: CKRecordRecoverable {
-//    // Leave it blank, too.
-// }
+extension Item: CKRecordConvertible {
+    // Yep, leave it blank!
+}
+
+extension Item: CKRecordRecoverable {
+    // Leave it blank, too.
+}
 
 extension Item {
     // Sync removal first
-//    func syncDelete() {
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                do {
-//                    try realm.write {
-//                        self.isDeleted = true
-//                    }
-//                } catch {
-//                    print("syncDelete failed")
-//                }
-//            }
-//            print("syncDelete completed")
-//        }
-//    }
+    func syncDelete() {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                do {
+                    try realm.write {
+                        self.isDeleted = true
+                    }
+                } catch {
+                    print("syncDelete failed")
+                }
+            }
+            print("syncDelete completed")
+        }
+    }
 
     // Handle removal and notifications
     func removeNotification(uuidStrings: [String]) {
@@ -117,6 +117,7 @@ extension Item {
                 let realm = try! Realm()
                 do {
                     try realm.write {
+                        self.isDeleted = true
                         realm.delete(self)
                     }
                 } catch {

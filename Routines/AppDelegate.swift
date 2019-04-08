@@ -6,8 +6,8 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-// import CloudKit
-// import IceCream
+import CloudKit
+import IceCream
 import RealmSwift
 import SwiftTheme
 import UIKit
@@ -20,16 +20,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     let center = UNUserNotificationCenter.current()
     var shortcutItemToProcess: UIApplicationShortcutItem?
 
-    // var syncEngine: SyncEngine?
+    var syncEngine: SyncEngine?
 
-//    private func itemCleanup() {
-//        let realm = try! Realm()
-//        let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
-//        oldItems.forEach { item in
-//            removeDeletedNotifications(id: item.uuidString)
-//            item.deleteItem()
-//        }
-//    }
+    private func itemCleanup() {
+        let realm = try! Realm()
+        let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
+        oldItems.forEach { item in
+            removeDeletedNotifications(id: item.uuidString)
+            item.deleteItem()
+        }
+    }
 
     func removeDeletedNotifications(id: String) {
         print("Clearing delivered notifications for deleted items")
@@ -37,11 +37,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         center.removeDeliveredNotifications(withIdentifiers: ["\(id)0", "\(id)1", "\(id)2", "\(id)3", id])
     }
 
+    func removeObsoleteNotifications(id: String) {
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: ["\(id)0", "\(id)1", "\(id)2", "\(id)3", id])
+    }
+
     func refreshNotifications() {
         let realm = try! Realm()
         let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
         oldItems.forEach { item in
             removeDeletedNotifications(id: item.uuidString)
+            removeObsoleteNotifications(id: item.uuidString)
         }
 
         OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 0), segment: 0)
@@ -66,11 +72,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Override point for customization after application launch.
         migrateRealm()
 
-//        // Sync with iCloud
-//        syncEngine = SyncEngine(objects: [
-//            SyncObject<Item>(),
-//            SyncObject<Options>(),
-//        ])
+        // Sync with iCloud
+        syncEngine = SyncEngine(objects: [
+            SyncObject<Item>(),
+            SyncObject<Options>(),
+        ])
         UIApplication.shared.registerForRemoteNotifications()
 
         // checkToCreateOptions()
@@ -87,17 +93,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
 
-    func application(_: UIApplication, didReceiveRemoteNotification _: [AnyHashable: Any], fetchCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
-//        let dict = userInfo as! [String: NSObject]
-//        let notification = CKNotification(fromRemoteNotificationDictionary: dict)
-//
-//        if notification?.subscriptionID == IceCreamConstant.cloudKitSubscriptionID {
-//            NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
-//        }
-//        completionHandler(.newData)
-//        itemCleanup()
+    func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        let dict = userInfo as! [String: NSObject]
+        let notification = CKNotification(fromRemoteNotificationDictionary: dict)
 
-        TableViewController().refreshItems()
+        if notification?.subscriptionID == IceCreamConstant.cloudKitSubscriptionID {
+            NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
+        }
+        completionHandler(.newData)
+
+        // Sync with iCloud
+        syncEngine = SyncEngine(objects: [
+            SyncObject<Item>(),
+            SyncObject<Options>(),
+        ])
+
+        print("Received push notification")
+
+        itemCleanup()
+
+        // TableViewController().refreshItems()
         //try to refresh notifications in the background
         refreshNotifications()
         /* TODO: Add option in Settings.app to clear all existing iCloud data in case a total reset is needed. */
@@ -147,7 +162,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        if self.window?.rootViewController?.presentedViewController == nil {
 //            restoreSelectedTab(tab: getCurrentSegmentFromTime())
 //        }
-        TableViewController().refreshItems()
+        // TableViewController().refreshItems()
         // itemCleanup()
         updateAppBadgeCount()
     }
@@ -381,7 +396,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let realm = try! Realm()
         guard let item = realm.object(ofType: Item.self, forPrimaryKey: id) else { return }
 
-        item.deleteItem()
+        item.syncDelete()
 
         // Decrement badge if there is one
         let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber
