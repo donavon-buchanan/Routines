@@ -219,7 +219,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         loadItems(segment: segment)
 
-        tableView.estimatedRowHeight = 64
+        //tableView.estimatedRowHeight = 120
         //tableView.rowHeight = UITableView.automaticDimension
 
         // Double check to save selected tab and avoid infrequent bug
@@ -480,10 +480,10 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             if notes.count > 0 {
                 return UITableView.automaticDimension
             } else {
-                return 64
+                return 80
             }
         } else {
-            return 64
+            return 80
         }
     }
 
