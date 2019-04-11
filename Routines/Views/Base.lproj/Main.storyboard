@@ -14,25 +14,25 @@
         <scene sceneID="GDV-PT-QEl">
             <objects>
                 <tableViewController storyboardIdentifier="taskTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e3v-kc-NWN" userLabel="Tasks" customClass="TableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="64" estimatedRowHeight="64" sectionHeaderHeight="28" sectionFooterHeight="28" id="88k-hj-4fi">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="64" sectionHeaderHeight="28" sectionFooterHeight="28" id="88k-hj-4fi">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="974"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="kKH-bE-y9t"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" id="7pz-fE-Rks" customClass="TaskTableViewCell" customModule="Routines" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="768" height="64"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" rowHeight="115" id="7pz-fE-Rks" customClass="TaskTableViewCell" customModule="Routines" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="768" height="115"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7pz-fE-Rks" id="fSe-63-Vch">
-                                    <rect key="frame" x="0.0" y="0.0" width="730" height="63.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="730" height="114.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="wCB-a3-8un">
-                                            <rect key="frame" x="4" y="17" width="718" height="30"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="wCB-a3-8un">
+                                            <rect key="frame" x="4" y="11" width="718" height="93"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snooze-strike" translatesAutoresizingMaskIntoConstraints="NO" id="jtF-uI-8Sz">
-                                                    <rect key="frame" x="0.0" y="3.5" width="23" height="23"/>
+                                                    <rect key="frame" x="0.0" y="35" width="23" height="23"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
                                                     </accessibility>
@@ -40,23 +40,23 @@
                                                         <constraint firstAttribute="width" constant="23" id="nFN-tS-dUQ"/>
                                                     </constraints>
                                                 </imageView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="v1o-h3-VYP">
-                                                    <rect key="frame" x="28" y="0.0" width="690" height="30"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="v1o-h3-VYP">
+                                                    <rect key="frame" x="31" y="16" width="687" height="61"/>
                                                     <subviews>
-                                                        <label verifyAmbiguity="ignoreSizes" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" minimumScaleFactor="0.84999999999999998" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Ri-sk-eGh" userLabel="Title">
-                                                            <rect key="frame" x="0.0" y="0.0" width="690" height="20.5"/>
+                                                        <label verifyAmbiguity="ignoreSizes" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" minimumScaleFactor="0.84999999999999998" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Ri-sk-eGh" userLabel="Title">
+                                                            <rect key="frame" x="0.0" y="0.0" width="687" height="20.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Repeats Daily" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x8D-8R-rGn">
-                                                            <rect key="frame" x="0.0" y="24.5" width="690" height="1.5"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Repeats Daily" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x8D-8R-rGn">
+                                                            <rect key="frame" x="0.0" y="25.5" width="687" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label verifyAmbiguity="ignoreSizes" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEr-4p-QCB" userLabel="Subtitle">
-                                                            <rect key="frame" x="0.0" y="30" width="690" height="0.0"/>
+                                                        <label verifyAmbiguity="ignoreSizes" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEr-4p-QCB" userLabel="Subtitle">
+                                                            <rect key="frame" x="0.0" y="45" width="687" height="16"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -67,10 +67,10 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="wCB-a3-8un" firstAttribute="leading" secondItem="fSe-63-Vch" secondAttribute="leading" constant="4" id="bVS-rf-rgx"/>
-                                        <constraint firstItem="wCB-a3-8un" firstAttribute="top" secondItem="fSe-63-Vch" secondAttribute="topMargin" constant="6" id="epg-yt-vk3"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="wCB-a3-8un" secondAttribute="trailing" id="n7o-c0-TJe"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="wCB-a3-8un" secondAttribute="bottom" constant="6" id="wbX-EI-6Pi"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="wCB-a3-8un" secondAttribute="trailing" id="P76-Ys-TeZ"/>
+                                        <constraint firstItem="wCB-a3-8un" firstAttribute="top" secondItem="fSe-63-Vch" secondAttribute="topMargin" id="fut-PH-wsA"/>
+                                        <constraint firstItem="wCB-a3-8un" firstAttribute="leading" secondItem="fSe-63-Vch" secondAttribute="leading" constant="4" id="nVX-Xi-vQq"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="wCB-a3-8un" secondAttribute="bottom" id="p85-JW-YL4"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <viewLayoutGuide key="safeArea" id="mgs-e5-Htd"/>
@@ -130,7 +130,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="102" y="159"/>
+            <point key="canvasLocation" x="101.5625" y="158.7890625"/>
         </scene>
         <!--Daily-->
         <scene sceneID="2o0-tY-EcX">
