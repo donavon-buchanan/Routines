@@ -53,11 +53,6 @@ class OptionsTableViewController: UITableViewController {
         }
     }
 
-    @IBOutlet var smartSnoozeSwitch: UISwitch!
-    @IBAction func smartSnoozeSwitchToggled(_: UISwitch) {
-        setAutoSnooze()
-    }
-
     @IBOutlet var darkModeSwtich: UISwitch!
     @IBAction func darkModeSwitchToggled(_ sender: UISwitch) {
         saveDarkModeOption(isOn: sender.isOn)
@@ -105,7 +100,7 @@ class OptionsTableViewController: UITableViewController {
                 afternoonSwitch.setOn(isOn, animated: true)
                 addOrRemoveNotifications(isOn: isOn, segment: 1)
                 print("Afternoon switch is now set to: \(afternoonSwitch.isOn)")
-                updateNotificationOptions(segment: 0, isOn: afternoonSwitch.isOn)
+                updateNotificationOptions(segment: 1, isOn: afternoonSwitch.isOn)
                 haptic.impactOccurred()
             case 2:
                 print("Tapped Evening Cell")
@@ -113,7 +108,7 @@ class OptionsTableViewController: UITableViewController {
                 eveningSwitch.setOn(isOn, animated: true)
                 addOrRemoveNotifications(isOn: isOn, segment: 2)
                 print("Evening switch is now set to: \(eveningSwitch.isOn)")
-                updateNotificationOptions(segment: 0, isOn: eveningSwitch.isOn)
+                updateNotificationOptions(segment: 2, isOn: eveningSwitch.isOn)
                 haptic.impactOccurred()
             case 3:
                 print("Tapped Night Cell")
@@ -121,26 +116,20 @@ class OptionsTableViewController: UITableViewController {
                 nightSwitch.setOn(isOn, animated: true)
                 addOrRemoveNotifications(isOn: isOn, segment: 3)
                 print("Night switch is now set to: \(nightSwitch.isOn)")
-                updateNotificationOptions(segment: 0, isOn: nightSwitch.isOn)
+                updateNotificationOptions(segment: 3, isOn: nightSwitch.isOn)
                 haptic.impactOccurred()
             default:
                 print("Tapped Morning Cell")
                 let isOn = !morningSwitch.isOn
                 morningSwitch.setOn(isOn, animated: true)
-                addOrRemoveNotifications(isOn: isOn, segment: 4)
+                addOrRemoveNotifications(isOn: isOn, segment: 0)
                 print("Morning switch is now set to: \(morningSwitch.isOn)")
                 updateNotificationOptions(segment: 0, isOn: morningSwitch.isOn)
                 haptic.impactOccurred()
             }
         }
-        // Auto Snooze
-        if indexPath.section == 2 {
-            smartSnoozeSwitch.setOn(!smartSnoozeSwitch.isOn, animated: true)
-            setAutoSnooze()
-            haptic.impactOccurred()
-        }
 
-        if indexPath.section == 3 {
+        if indexPath.section == 2 {
             darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
             saveDarkModeOption(isOn: darkModeSwtich.isOn)
             haptic.impactOccurred()
@@ -213,8 +202,6 @@ class OptionsTableViewController: UITableViewController {
                 self.eveningSwitch.setOn(self.getSegmentNotificationOption(segment: 2), animated: false)
                 self.nightSwitch.setOn(self.getSegmentNotificationOption(segment: 3), animated: false)
 
-                self.smartSnoozeSwitch.setOn(self.autoSnoozeStatus(), animated: false)
-
                 self.darkModeSwtich.setOn(self.getDarkModeStatus(), animated: false)
 
                 self.morningSubLabel.text = self.getOptionTimes(timePeriod: 0)
@@ -224,56 +211,6 @@ class OptionsTableViewController: UITableViewController {
             }
         }
     }
-
-    // MARK: smartSnooze
-
-    func autoSnoozeStatus() -> Bool {
-        var status = false
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                if let smartSnooze = options?.smartSnooze {
-                    status = smartSnooze
-                }
-            }
-        }
-        return status
-    }
-
-    func getAutoSnoozeSwitch() -> Bool {
-        return smartSnoozeSwitch.isOn
-    }
-
-    open func refreshNotifications() {
-        let center = UNUserNotificationCenter.current()
-        center.removeAllPendingNotificationRequests()
-        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 0), segment: 0)
-        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 1), segment: 1)
-        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 2), segment: 2)
-        addOrRemoveNotifications(isOn: getSegmentNotificationOption(segment: 3), segment: 3)
-    }
-
-    func setAutoSnooze() {
-        let autoSnoozeSwitch = getAutoSnoozeSwitch()
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                do {
-                    try realm.write {
-                        options?.smartSnooze = autoSnoozeSwitch
-                    }
-                } catch {
-                    print("failed to update smartSnooze")
-                }
-            }
-        }
-
-        refreshNotifications()
-    }
-
-    // END: smartSnooze
 
     open func getSegmentNotificationOption(segment: Int) -> Bool {
         var isOn = true
@@ -572,11 +509,7 @@ class OptionsTableViewController: UITableViewController {
                 let realm = try! Realm()
                 let items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)")
                 items.forEach { item in
-                    if self.getAutoSnoozeStatus() {
-                        self.scheduleAutoSnoozeNotifications(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString, firstDate: item.dateModified!)
-                    } else {
-                        self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString, firstDate: item.dateModified!)
-                    }
+                    item.createNotification()
                 }
             }
         }
@@ -740,21 +673,6 @@ class OptionsTableViewController: UITableViewController {
             }
         }
         return enabled
-    }
-
-    // MARK: - Smart Snooze
-
-    func getAutoSnoozeStatus() -> Bool {
-        var snooze = false
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
-                    snooze = options.smartSnooze
-                }
-            }
-        }
-        return snooze
     }
 
     // MARK: - Themeing

@@ -246,7 +246,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 13,
+            schemaVersion: 14,
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -297,6 +297,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         print("newObject: " + String(describing: newObject))
                     }
                 }
+
+                if oldSchemaVersion < 14 {}
             }
         )
 
@@ -400,7 +402,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let realm = try! Realm()
         guard let item = realm.object(ofType: Items.self, forPrimaryKey: id) else { return }
 
-        item.syncDelete()
+        item.softDelete()
 
         // Decrement badge if there is one
         let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber
