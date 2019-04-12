@@ -107,6 +107,21 @@ import UserNotifications
     func createNotification() {
         // TODO: Create notification when task is added
     }
+
+    func setDailyRepeat(_ bool: Bool) {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                do {
+                    try realm.write {
+                        self.repeats = bool
+                    }
+                } catch {
+                    print("failed to update daily repeat bool")
+                }
+            }
+        }
+    }
 }
 
 extension Items: CKRecordConvertible {
