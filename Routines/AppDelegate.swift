@@ -1048,7 +1048,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Cells
         let cell = UITableViewCell.appearance()
-        cell.theme_backgroundColor = GlobalPicker.cellBackground
+        cell.theme_backgroundColor = GlobalPicker.barTintColor
         cell.theme_tintColor = GlobalPicker.barTextColor
 
         // switches

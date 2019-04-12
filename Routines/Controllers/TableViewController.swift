@@ -64,15 +64,16 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         if linesBarButtonSelected {
             // let cellCount = tableView.visibleCells.count
             // animateTitleChange(title: nil)
-            title = setNavTitle()
-            linesBarButtonSelected = false
+            //title = setNavTitle()
+            // linesBarButtonSelected = false
             linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
             loadItems(segment: segment)
-            tableView.reloadData()
+            //tableView.reloadData()
 
             // animation broken by realmSync
             // animateCells(fromCount: cellCount)
-            changeTabBar(hidden: false, animated: true)
+            // changeTabBar(hidden: false, animated: true)
+            resetTableView()
         } else {
             // let cellCount = tableView.visibleCells.count
             // animateTitleChange(title: "All Tasks")
@@ -81,7 +82,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button-filled")
             loadAllItems()
             changeTabBar(hidden: true, animated: true)
-            tableView.reloadData()
+            //tableView.reloadData()
             // animateCells(fromCount: cellCount)
         }
     }
@@ -224,7 +225,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         // Double check to save selected tab and avoid infrequent bug
         saveSelectedTab(index: tabBarController!.selectedIndex)
-
+        title = setNavTitle()
         // realmSync()
     }
 
@@ -232,7 +233,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         runAutoSnooze()
         removeDeliveredNotifications()
         updateBadge()
-        tableView.reloadData()
+        //tableView.reloadData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -240,7 +241,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         print("View Will Appear")
         runAutoSnooze()
         removeDeliveredNotifications()
-        title = setNavTitle()
         // reloadTableView()
         // setAppearance(segment: segment)
         // changeSegment(segment: passedSegment)
@@ -377,19 +377,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             }
         }
 
-//        var indicatorImage: UIImageView {
-//            let imageView = UIImageView()
-//            if (self.items?[indexPath.row].repeats)! {
-//                imageView.image = UIImage(imageLiteralResourceName: "repeat")
-//                return imageView
-//            } else if (self.items?[indexPath.row].disableAutoSnooze)! {
-//                imageView.image = UIImage(imageLiteralResourceName: "snooze-strike")
-//                return imageView
-//            } else {
-//                return UIImageView()
-//            }
-//        }
-
         // cell.delegate = self
 
         cell.cellTitleLabel?.text = cellTitle
@@ -404,6 +391,21 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         cellSelectedBackgroundView.theme_backgroundColor = GlobalPicker.cellBackground
         cell.selectedBackgroundView = cellSelectedBackgroundView
         cell.multipleSelectionBackgroundView = cellSelectedBackgroundView
+
+//        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.prominent)
+//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+//        blurEffectView.frame = cell.contentView.bounds
+//        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        cell.contentView.addSubview(blurEffectView)
+
+//        cell.layer.masksToBounds = true
+//        if indexPath.row == 0, items?.filter("segment = \(displaySection)").count ?? 0 > 1 {
+//            cell.roundCorners(corners: [.topLeft, .topRight], radius: 20)
+//        } else if indexPath.row == (items?.count ?? 1) - 1, items?.filter("segment = \(displaySection)").count ?? 0 > 1 {
+//            cell.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 20)
+//        } else if indexPath.row == 0 {
+//            cell.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 20)
+//        }
 
         return cell
     }
@@ -560,7 +562,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    fileprivate func resetTableView() {
+    func resetTableView() {
         // Reset the view just before segue
         if linesBarButtonSelected {
             title = setNavTitle()
@@ -569,6 +571,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                     self.linesBarButtonSelected = false
                     self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
                     self.loadItems(segment: self.segment)
+                    self.changeTabBar(hidden: false, animated: true)
                 }
             }
         }
@@ -582,19 +585,19 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
             destination.editingSegment = selectedTab
             // destination.segue = segue
+            resetTableView()
         }
 
         if segue.identifier == "editSegue" {
             let navVC = segue.destination as! UINavigationController
             let destination = navVC.topViewController as! AddTableViewController
+
             // pass in current item
             if let indexPath = tableView.indexPathForSelectedRow {
                 destination.item = items?[indexPath.row]
                 // destination.segue = segue
             }
         }
-
-        resetTableView()
     }
 
     // MARK: - Model Manipulation Methods

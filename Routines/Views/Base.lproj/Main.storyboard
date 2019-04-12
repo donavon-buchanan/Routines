@@ -14,7 +14,7 @@
         <scene sceneID="GDV-PT-QEl">
             <objects>
                 <tableViewController storyboardIdentifier="taskTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e3v-kc-NWN" userLabel="Tasks" customClass="TableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="64" sectionHeaderHeight="28" sectionFooterHeight="28" id="88k-hj-4fi">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="64" sectionHeaderHeight="28" sectionFooterHeight="28" id="88k-hj-4fi">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="974"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -29,34 +29,25 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="wCB-a3-8un">
-                                            <rect key="frame" x="4" y="11" width="718" height="93"/>
+                                            <rect key="frame" x="20" y="11" width="702" height="93"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snooze-strike" translatesAutoresizingMaskIntoConstraints="NO" id="jtF-uI-8Sz">
-                                                    <rect key="frame" x="0.0" y="35" width="23" height="23"/>
-                                                    <accessibility key="accessibilityConfiguration">
-                                                        <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
-                                                    </accessibility>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="23" id="nFN-tS-dUQ"/>
-                                                    </constraints>
-                                                </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="v1o-h3-VYP">
-                                                    <rect key="frame" x="31" y="16" width="687" height="61"/>
+                                                    <rect key="frame" x="0.0" y="16" width="702" height="61"/>
                                                     <subviews>
                                                         <label verifyAmbiguity="ignoreSizes" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" minimumScaleFactor="0.84999999999999998" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Ri-sk-eGh" userLabel="Title">
-                                                            <rect key="frame" x="0.0" y="0.0" width="687" height="20.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="702" height="20.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Repeats Daily" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x8D-8R-rGn">
-                                                            <rect key="frame" x="0.0" y="25.5" width="687" height="14.5"/>
+                                                            <rect key="frame" x="0.0" y="25.5" width="702" height="14.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label verifyAmbiguity="ignoreSizes" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEr-4p-QCB" userLabel="Subtitle">
-                                                            <rect key="frame" x="0.0" y="45" width="687" height="16"/>
+                                                            <rect key="frame" x="0.0" y="45" width="702" height="16"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -69,14 +60,12 @@
                                     <constraints>
                                         <constraint firstAttribute="trailingMargin" secondItem="wCB-a3-8un" secondAttribute="trailing" id="P76-Ys-TeZ"/>
                                         <constraint firstItem="wCB-a3-8un" firstAttribute="top" secondItem="fSe-63-Vch" secondAttribute="topMargin" id="fut-PH-wsA"/>
-                                        <constraint firstItem="wCB-a3-8un" firstAttribute="leading" secondItem="fSe-63-Vch" secondAttribute="leading" constant="4" id="nVX-Xi-vQq"/>
+                                        <constraint firstItem="wCB-a3-8un" firstAttribute="leading" secondItem="fSe-63-Vch" secondAttribute="leading" constant="20" id="nVX-Xi-vQq"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="wCB-a3-8un" secondAttribute="bottom" id="p85-JW-YL4"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <viewLayoutGuide key="safeArea" id="mgs-e5-Htd"/>
-                                <inset key="separatorInset" minX="34" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
-                                    <outlet property="cellIndicatorImage" destination="jtF-uI-8Sz" id="ZUG-q1-ucB"/>
                                     <outlet property="cellSubtitleLabel" destination="cEr-4p-QCB" id="2Ce-ut-TrO"/>
                                     <outlet property="cellTitleLabel" destination="3Ri-sk-eGh" id="9dR-Qd-kzG"/>
                                     <outlet property="repeatLabel" destination="x8D-8R-rGn" id="nHY-bQ-Xja"/>
@@ -992,7 +981,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="Cdy-rr-nKo" userLabel="Disable Auto Snooze">
+                            <tableViewSection id="Cdy-rr-nKo" userLabel="Repeat Daily">
                                 <string key="footerTitle">Enabling this switch will prevent Auto Snooze from automatically moving this task. Auto Snooze will continue to send reminders for this task.</string>
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="vcq-aH-HrX">
@@ -1014,10 +1003,10 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="KzK-qL-NG1">
                                                             <rect key="frame" x="679" y="0.0" width="49" height="32"/>
                                                             <subviews>
-                                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vDF-7W-QTO">
+                                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vDF-7W-QTO">
                                                                     <rect key="frame" x="0.0" y="0.5" width="51" height="31"/>
                                                                     <connections>
-                                                                        <action selector="ignoreAutoSnoozeToggled:" destination="A8c-r3-V1W" eventType="valueChanged" id="5AA-zi-1Ry"/>
+                                                                        <action selector="repeatDailySwitchToggled:" destination="A8c-r3-V1W" eventType="valueChanged" id="Lod-Mg-5qm"/>
                                                                     </connections>
                                                                 </switch>
                                                             </subviews>
@@ -1081,8 +1070,6 @@
                     <navigationItem key="navigationItem" id="bNH-3Y-BOP"/>
                     <connections>
                         <outlet property="notesTextView" destination="5iE-Oy-Fuc" id="9Q2-Os-Y9c"/>
-                        <outlet property="repeatCellDetailLabel" destination="gKB-mN-ePQ" id="J2a-Pb-ex3"/>
-                        <outlet property="repeatCellTitleLabel" destination="Hdb-1m-7cT" id="GCS-yG-asL"/>
                         <outlet property="repeatDailyLabel" destination="HU5-Hc-8tR" id="Re9-dG-MXi"/>
                         <outlet property="repeatDailySwitch" destination="vDF-7W-QTO" id="2qJ-PD-btc"/>
                         <outlet property="segmentSelection" destination="ee6-Ut-pWz" id="Oke-MH-Y6V"/>
@@ -1606,16 +1593,16 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ftn-AW-Mvk">
-                                                    <rect key="frame" x="8" y="8" width="524" height="47.5"/>
+                                                    <rect key="frame" x="20" y="11" width="500" height="42"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dark Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h5f-u2-JbK">
-                                                            <rect key="frame" x="0.0" y="13.5" width="475" height="20.5"/>
+                                                            <rect key="frame" x="0.0" y="11" width="451" height="20.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aa0-0h-djV">
-                                                            <rect key="frame" x="475" y="8.5" width="51" height="31"/>
+                                                            <rect key="frame" x="451" y="5.5" width="51" height="31"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="49" id="0g0-dS-nEn"/>
                                                                 <constraint firstAttribute="height" constant="31" id="aTB-yb-fxh"/>
@@ -2272,7 +2259,6 @@
         <image name="morning-selected" width="23" height="23"/>
         <image name="night" width="23" height="23"/>
         <image name="night-selected" width="23" height="23"/>
-        <image name="snooze-strike" width="23" height="23"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="CCO-Gm-Wv4"/>
