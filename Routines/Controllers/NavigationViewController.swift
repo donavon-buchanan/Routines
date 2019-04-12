@@ -30,7 +30,7 @@ class NavigationViewController: UINavigationController, UNUserNotificationCenter
 
 //    //Notification Settings Screen
 //    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
-//        print("Opening settings")
+//        // print("Opening settings")
 //        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 //        let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsView") as! OptionsTableViewController
 //        self.pushViewController(optionsViewController, animated: true)

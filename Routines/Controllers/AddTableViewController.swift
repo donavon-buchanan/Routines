@@ -19,10 +19,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     @IBOutlet var notesTextView: UITextView!
 
     @IBOutlet var repeatDailySwitch: UISwitch!
-    @IBAction func repeatDailySwitchToggled(_ sender: UISwitch) {
+    @IBAction func repeatDailySwitchToggled(_: UISwitch) {
         if item != nil {
             showBanner(title: "Repeat Option Saved")
-            print("repeat toggled to \(sender.isOn)")
+            // print("repeat toggled to \(sender.isOn)")
         }
     }
 
@@ -108,11 +108,11 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         // self.tabBarController?.tabBar.isHidden = true
         // If item is loaded, fill in values for editing
         if item != nil {
-            print("item was non-nil")
+            // print("item was non-nil")
             taskTextField.text = item?.title
             segmentSelection.selectedSegmentIndex = item?.segment ?? 0
             notesTextView.text = item?.notes
-            // print("Items's uuidString is \((item?.uuidString)!)")
+            // // print("Items's uuidString is \((item?.uuidString)!)")
             // repeatDailySwitch.setOn(item?.disableAutoSnooze ?? false, animated: false)
 
             title = "Edit Task"
@@ -213,7 +213,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
                 navigationItem.rightBarButtonItem?.isEnabled = true
                 updateItem()
                 showBanner(title: "Repeat Option Saved")
-                print("repeat toggled to \(repeatDailySwitch.isOn)")
+                // print("repeat toggled to \(repeatDailySwitch.isOn)")
             }
         }
     }
@@ -253,7 +253,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     @objc func saveButtonPressed() {
         addNewItem(title: taskTextField.text!, date: Date(), segment: segmentSelection.selectedSegmentIndex, notes: notesTextView.text)
-        // print("Adding item with uuidString: \(self.uuidString)")
+        // // print("Adding item with uuidString: \(self.uuidString)")
         // self.tabBarController?.tabBar.isHidden = false
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
@@ -276,21 +276,21 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         segmentTime.second = 0
         // TODO: This might cause problems
         if Date() > segmentTime.date! {
-            print("Setting item date for tomorrow")
+            // print("Setting item date for tomorrow")
             dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: tomorrow)
         } else {
-            print("Setting item date for today")
+            // print("Setting item date for today")
             dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: Date())
         }
         dateComponents.hour = getOptionHour(segment: segment)
         dateComponents.minute = getOptionMinute(segment: segment)
         dateComponents.second = 0
-        print("Setting first trigger date for: \(dateComponents)")
+        // print("Setting first trigger date for: \(dateComponents)")
         return dateComponents.date!
     }
 
     func addNewItem(title: String, date _: Date, segment: Int, notes: String) {
-        print("Running addNewItem")
+        // print("Running addNewItem")
         // if it's a new item, add it as new to the realm
         // otherwise, update the existing item
         if item == nil {
@@ -300,7 +300,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             newItem.dateModified = firstTriggerDate(segment: segment)
             newItem.notes = notes
             // newItem.disableAutoSnooze = repeatDailySwitch.isOn
-            print("new item's uuidString: \(newItem.uuidString)")
+            // print("new item's uuidString: \(newItem.uuidString)")
             // save to realm
             saveItem(item: newItem)
             if getAutoSnoozeStatus() {
@@ -314,14 +314,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     func saveItem(item: Items) {
-        print("Running saveItem")
+        // print("Running saveItem")
         let realm = try! Realm()
         do {
             try realm.write {
                 realm.add(item)
             }
         } catch {
-            print("Error saving item: \(error)")
+            // print("Error saving item: \(error)")
         }
     }
 
@@ -335,7 +335,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
                 // self.item!.disableAutoSnooze = repeatDailySwitch.isOn
             }
         } catch {
-            print("Error updating item: \(error)")
+            // print("Error updating item: \(error)")
         }
         removeNotification(uuidString: ["\(self.item!.uuidString)0", "\(self.item!.uuidString)1", "\(self.item!.uuidString)2", "\(self.item!.uuidString)3"])
 
@@ -394,57 +394,57 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     func scheduleAutoSnoozeNotifications(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
         // This is where you need to test if a segment is > current segment
         let dayOfFirstDate = Calendar.autoupdatingCurrent.dateComponents([.day], from: firstDate)
-        print("dayOfFirstDate: \(dayOfFirstDate)")
+        // print("dayOfFirstDate: \(dayOfFirstDate)")
         let today = Calendar.autoupdatingCurrent.dateComponents([.day], from: Date())
-        print("today: \(today)")
+        // print("today: \(today)")
         if segment > 0, dayOfFirstDate == today {
             if getSegmentNotificationOption(segment: 0) {
                 scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate.startOfNextDay)
-                print("morning uuid: " + "\(uuidString)0")
+                // print("morning uuid: " + "\(uuidString)0")
             }
         } else {
             if getSegmentNotificationOption(segment: 0) {
                 scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate)
-                print("morning uuid: " + "\(uuidString)0")
+                // print("morning uuid: " + "\(uuidString)0")
             }
         }
         if segment > 1, dayOfFirstDate == today {
             if getSegmentNotificationOption(segment: 1) {
                 scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate.startOfNextDay)
-                print("afternoon uuid: " + "\(uuidString)1")
+                // print("afternoon uuid: " + "\(uuidString)1")
             }
         } else {
             if getSegmentNotificationOption(segment: 1) {
                 scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate)
-                print("afternoon uuid: " + "\(uuidString)1")
+                // print("afternoon uuid: " + "\(uuidString)1")
             }
         }
         if segment > 2, dayOfFirstDate == today {
             if getSegmentNotificationOption(segment: 2) {
                 scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate.startOfNextDay)
-                print("evening uuid: " + "\(uuidString)2")
+                // print("evening uuid: " + "\(uuidString)2")
             }
         } else {
             if getSegmentNotificationOption(segment: 2) {
                 scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate)
-                print("evening uuid: " + "\(uuidString)2")
+                // print("evening uuid: " + "\(uuidString)2")
             }
         }
         if getSegmentNotificationOption(segment: 3) {
             scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: "\(uuidString)3", firstDate: firstDate)
-            print("night uuid: " + "\(uuidString)3")
+            // print("night uuid: " + "\(uuidString)3")
         }
     }
 
     func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-        print("running scheduleNewNotification")
+        // print("running scheduleNewNotification")
         let notificationCenter = UNUserNotificationCenter.current()
 
         notificationCenter.getNotificationSettings { settings in
             // DO not schedule notifications if not authorized
             guard settings.authorizationStatus == .authorized else {
                 // self.requestNotificationPermission()
-                print("Authorization status has changed to unauthorized for notifications")
+                // print("Authorization status has changed to unauthorized for notifications")
                 return
             }
 
@@ -457,28 +457,28 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
                         if (options?.afternoonNotificationsOn)! {
                             self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
-                            print("Afternoon Notifications toggled off. Aborting")
+                            // print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     case 2:
                         if (options?.eveningNotificationsOn)! {
                             self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
-                            print("Afternoon Notifications toggled off. Aborting")
+                            // print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     case 3:
                         if (options?.nightNotificationsOn)! {
                             self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
-                            print("Afternoon Notifications toggled off. Aborting")
+                            // print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     default:
                         if (options?.morningNotificationsOn)! {
                             self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
-                            print("Afternoon Notifications toggled off. Aborting")
+                            // print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     }
@@ -488,7 +488,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-        print("createNotification running")
+        // print("createNotification running")
         let content = UNMutableNotificationContent()
         content.title = title
         content.sound = UNNotificationSound.default
@@ -530,15 +530,15 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         notificationCenter.add(request) { error in
             if error != nil {
                 // TODO: handle notification errors
-                print(String(describing: error))
+                // print(String(describing: error))
             } else {
-                print("Notification created successfully")
+                // print("Notification created successfully")
             }
         }
     }
 
     func removeNotification(uuidString: [String]) {
-        print("Removing Notifications")
+        // print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidString)
     }
@@ -689,7 +689,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         default:
             currentSegment = 3
         }
-        print("getCurrentSegmentFromTime: \(currentSegment)")
+        // print("getCurrentSegmentFromTime: \(currentSegment)")
         return currentSegment
     }
 
@@ -705,7 +705,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     // MARK: Theme
 
     public func setAppearance(segment: Int) {
-        print("Setting theme")
+        // print("Setting theme")
         if getDarkModeStatus() {
             switch segment {
             case 1:

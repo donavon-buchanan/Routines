@@ -21,30 +21,30 @@ class CustomTimesTableViewController: UITableViewController {
 
     @IBOutlet var datePickers: [UIDatePicker]!
 
-    @IBAction func morningTimeSet(_ sender: UIDatePicker) {
+    @IBAction func morningTimeSet(_: UIDatePicker) {
         updateSavedTimes(segment: 0, hour: getHour(date: morningDatePicker.date), minute: getMinute(date: morningDatePicker.date))
-        print("Picker sent: \(String(describing: sender.date))")
+        // print("Picker sent: \(String(describing: sender.date))")
         removeNotificationsForSegment(segment: 0)
         enableNotificationsForSegment(segment: 0)
     }
 
-    @IBAction func afternoonTimeSet(_ sender: UIDatePicker) {
+    @IBAction func afternoonTimeSet(_: UIDatePicker) {
         updateSavedTimes(segment: 1, hour: getHour(date: afternoonDatePicker.date), minute: getMinute(date: afternoonDatePicker.date))
-        print("Picker sent: \(String(describing: sender.date))")
+        // print("Picker sent: \(String(describing: sender.date))")
         removeNotificationsForSegment(segment: 1)
         enableNotificationsForSegment(segment: 1)
     }
 
-    @IBAction func eveningTimeSet(_ sender: UIDatePicker) {
+    @IBAction func eveningTimeSet(_: UIDatePicker) {
         updateSavedTimes(segment: 2, hour: getHour(date: eveningDatePicker.date), minute: getMinute(date: eveningDatePicker.date))
-        print("Picker sent: \(String(describing: sender.date))")
+        // print("Picker sent: \(String(describing: sender.date))")
         removeNotificationsForSegment(segment: 2)
         enableNotificationsForSegment(segment: 2)
     }
 
-    @IBAction func nightTimeSet(_ sender: UIDatePicker) {
+    @IBAction func nightTimeSet(_: UIDatePicker) {
         updateSavedTimes(segment: 3, hour: getHour(date: nightDatePicker.date), minute: getMinute(date: nightDatePicker.date))
-        print("Picker sent: \(String(describing: sender.date))")
+        // print("Picker sent: \(String(describing: sender.date))")
         removeNotificationsForSegment(segment: 3)
         enableNotificationsForSegment(segment: 3)
     }
@@ -193,7 +193,7 @@ class CustomTimesTableViewController: UITableViewController {
     // MARK: - Options Realm
 
     func updateSavedTimes(segment: Int, hour: Int, minute: Int) {
-        print("updateSavedTimes received: Hour - \(hour), minute - \(minute)")
+        // print("updateSavedTimes received: Hour - \(hour), minute - \(minute)")
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -216,7 +216,7 @@ class CustomTimesTableViewController: UITableViewController {
                         }
                     }
                 } catch {
-                    print("updateSavedTimes failed")
+                    // print("updateSavedTimes failed")
                 }
             }
         }
@@ -270,45 +270,45 @@ class CustomTimesTableViewController: UITableViewController {
     func scheduleAutoSnoozeNotifications(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
         // This is where you need to test if a segment is > current segment
         let dayOfFirstDate = Calendar.autoupdatingCurrent.dateComponents([.day], from: firstDate)
-        print("dayOfFirstDate: \(dayOfFirstDate)")
+        // print("dayOfFirstDate: \(dayOfFirstDate)")
         let today = Calendar.autoupdatingCurrent.dateComponents([.day], from: Date())
-        print("today: \(today)")
+        // print("today: \(today)")
         if segment > 0, dayOfFirstDate == today {
             if getSegmentNotificationOption(segment: 0) {
                 scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate.startOfNextDay)
-                print("morning uuid: " + "\(uuidString)0")
+                // print("morning uuid: " + "\(uuidString)0")
             }
         } else {
             if getSegmentNotificationOption(segment: 0) {
                 scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate)
-                print("morning uuid: " + "\(uuidString)0")
+                // print("morning uuid: " + "\(uuidString)0")
             }
         }
         if segment > 1, dayOfFirstDate == today {
             if getSegmentNotificationOption(segment: 1) {
                 scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate.startOfNextDay)
-                print("afternoon uuid: " + "\(uuidString)1")
+                // print("afternoon uuid: " + "\(uuidString)1")
             }
         } else {
             if getSegmentNotificationOption(segment: 1) {
                 scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate)
-                print("afternoon uuid: " + "\(uuidString)1")
+                // print("afternoon uuid: " + "\(uuidString)1")
             }
         }
         if segment > 2, dayOfFirstDate == today {
             if getSegmentNotificationOption(segment: 2) {
                 scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate.startOfNextDay)
-                print("evening uuid: " + "\(uuidString)2")
+                // print("evening uuid: " + "\(uuidString)2")
             }
         } else {
             if getSegmentNotificationOption(segment: 2) {
                 scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate)
-                print("evening uuid: " + "\(uuidString)2")
+                // print("evening uuid: " + "\(uuidString)2")
             }
         }
         if getSegmentNotificationOption(segment: 3) {
             scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: "\(uuidString)3", firstDate: firstDate)
-            print("night uuid: " + "\(uuidString)3")
+            // print("night uuid: " + "\(uuidString)3")
         }
     }
 
@@ -343,14 +343,14 @@ class CustomTimesTableViewController: UITableViewController {
 
     // This is the one to run when setting up a brand new notification
     func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-        print("running scheduleNewNotification")
+        // print("running scheduleNewNotification")
         let notificationCenter = UNUserNotificationCenter.current()
 
         notificationCenter.getNotificationSettings { settings in
             // DO not schedule notifications if not authorized
             guard settings.authorizationStatus == .authorized else {
                 // self.requestNotificationPermission()
-                print("Authorization status has changed to unauthorized for notifications")
+                // print("Authorization status has changed to unauthorized for notifications")
                 return
             }
 
@@ -363,28 +363,28 @@ class CustomTimesTableViewController: UITableViewController {
                         if (options?.afternoonNotificationsOn)! {
                             self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
-                            print("Afternoon Notifications toggled off. Aborting")
+                            // print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     case 2:
                         if (options?.eveningNotificationsOn)! {
                             self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
-                            print("Afternoon Notifications toggled off. Aborting")
+                            // print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     case 3:
                         if (options?.nightNotificationsOn)! {
                             self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
-                            print("Afternoon Notifications toggled off. Aborting")
+                            // print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     default:
                         if (options?.morningNotificationsOn)! {
                             self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
-                            print("Afternoon Notifications toggled off. Aborting")
+                            // print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     }
@@ -394,7 +394,7 @@ class CustomTimesTableViewController: UITableViewController {
     }
 
     func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-        print("createNotification running")
+        // print("createNotification running")
         let content = UNMutableNotificationContent()
         content.title = title
         content.sound = UNNotificationSound.default
@@ -422,7 +422,7 @@ class CustomTimesTableViewController: UITableViewController {
         dateComponents.calendar = Calendar.autoupdatingCurrent
         // Keep notifications from occurring too early for tasks created for tomorrow
         if firstDate > Date() {
-            print("Notification set to tomorrow")
+            // print("Notification set to tomorrow")
             dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
         }
         dateComponents.timeZone = TimeZone.autoupdatingCurrent
@@ -440,15 +440,15 @@ class CustomTimesTableViewController: UITableViewController {
         notificationCenter.add(request) { error in
             if error != nil {
                 // TODO: handle notification errors
-                print(String(describing: error))
+                // print(String(describing: error))
             } else {
-                print("Notification created successfully")
+                // print("Notification created successfully")
             }
         }
     }
 
     public func removeNotification(uuidString: [String]) {
-        print("Removing Notifications")
+        // print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidString)
     }

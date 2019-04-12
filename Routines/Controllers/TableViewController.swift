@@ -6,14 +6,10 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-// import IceCream
 import RealmSwift
-// import RxRealm
-// import RxSwift
 import SwiftMessages
 import UIKit
 import UserNotifications
-// import ViewAnimator
 
 class TableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
     @IBAction func unwindToTableViewController(segue _: UIStoryboardSegue) {}
@@ -62,44 +58,21 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     fileprivate func revealAllTasks() {
         if linesBarButtonSelected {
-            // let cellCount = tableView.visibleCells.count
-            // animateTitleChange(title: nil)
-            //title = setNavTitle()
-            // linesBarButtonSelected = false
             linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
             loadItems(segment: segment)
-            //tableView.reloadData()
-
-            // animation broken by realmSync
-            // animateCells(fromCount: cellCount)
-            // changeTabBar(hidden: false, animated: true)
             resetTableView()
         } else {
-            // let cellCount = tableView.visibleCells.count
-            // animateTitleChange(title: "All Tasks")
             title = "All Tasks"
             linesBarButtonSelected = true
             linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button-filled")
             loadAllItems()
             changeTabBar(hidden: true, animated: true)
-            //tableView.reloadData()
-            // animateCells(fromCount: cellCount)
         }
     }
 
     @IBAction func linesBarButtonPressed(_: UIBarButtonItem) {
         revealAllTasks()
     }
-
-//    func animateTitleChange(title: String?) {
-//        UIView.transition(with: (self.navigationController?.navigationBar)!, duration: 0.3, options: .transitionCrossDissolve, animations: {
-//            if let newTitle = title {
-//                self.title = newTitle
-//            } else {
-//                self.title = self.setNavTitle()
-//            }
-//        }, completion: nil)
-//    }
 
     func changeTabBar(hidden: Bool, animated: Bool) {
         guard let tabBar = self.tabBarController?.tabBar else { return }
@@ -156,57 +129,16 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     let realmDispatchQueueLabel: String = "background"
 
-    // Set segment after adding an item
-//    var passedSegment: Int?
-//    func changeSegment(segment: Int?) {
-//        if let newSegment = segment {
-//            passedSegment = nil
-//            tabBarController?.selectedIndex = newSegment
-//            UIView.transition(with: tabBarController!.view, duration: 0.3, options: .transitionCrossDissolve, animations: nil)
-//            saveSelectedTab(index: newSegment)
-//        }
-//    }
-
     // Footer view
     let footerView = UIView()
-    // var selectedTab = 0
-
-//    fileprivate func animateCells(fromCount: Int) {
-    ////        self.view.setNeedsLayout()
-    ////        self.view.layoutIfNeeded()
-//        let fromAnimation = AnimationType.from(direction: .top, offset: 64)
-//        let zoomAnimation = AnimationType.zoom(scale: 0.85)
-//        // let rotateAnimation = AnimationType.rotate(angle: CGFloat.pi/6)
-//
-//        // Drop the cells that are already visible. Reloading them looks bad
-//        let cells = tableView.visibleCells.dropFirst(fromCount)
-//        // let nav = self.navigationController?.view
-//        UIView.animate(views: Array(cells), animations: [fromAnimation, zoomAnimation])
-//    }
-
-//    fileprivate func transitionCells(fromSegment: Int, toSegment: Int) {
-//        var fromAnimation: Animation {
-//            if fromSegment < toSegment {
-//                print("Animating from left")
-//                return AnimationType.from(direction: .left, offset: 40)
-//            } else {
-//                print("Animating from right")
-//                return AnimationType.from(direction: .right, offset: 40)
-//            }
-//        }
-//        let views = tableView.visibleCells
-//        UIView.animate(views: views, animations: [fromAnimation])
-//    }
 
     override func viewDidLoad() {
-        print("Running viewDidLoad")
+        // print("Running viewDidLoad")
         super.viewDidLoad()
 
         tableView.allowsMultipleSelectionDuringEditing = true
 
         NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil)
-
-        // center.delegate = self
 
         tabBarController?.delegate = self
         navigationController?.delegate = self
@@ -220,39 +152,27 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         loadItems(segment: segment)
 
-        //tableView.estimatedRowHeight = 120
-        //tableView.rowHeight = UITableView.automaticDimension
-
         // Double check to save selected tab and avoid infrequent bug
         saveSelectedTab(index: tabBarController!.selectedIndex)
         title = setNavTitle()
-        // realmSync()
     }
 
     @objc func appBecameActive() {
         removeDeliveredNotifications()
         updateBadge()
-        //tableView.reloadData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("View Will Appear")
+        // print("View Will Appear")
 
         removeDeliveredNotifications()
-        // reloadTableView()
-        // setAppearance(segment: segment)
-        // changeSegment(segment: passedSegment)
-        // setTimeInTitle(timeString: getSegmentTimeString(segment: segment))
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("viewDidAppear \n")
-        // changeSegment(segment: passedSegment)
-        // animateCells()
+        // print("viewDidAppear \n")
         setAppearance(segment: segment)
-        // changeSegment(segment: passedSegment)
     }
 
     func setTimeInTitle(timeString _: String) {
@@ -296,7 +216,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     func setNavTitle() -> String {
-        print("Setting table title")
+        // print("Setting table title")
         switch segment {
         case 1:
             return "Afternoon"
@@ -314,7 +234,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     func saveSelectedTab(index: Int) {
-        print("saving tab as index: \(index)")
+        // print("saving tab as index: \(index)")
         // let selectedIndex = self.tabBarController?.selectedIndex
         DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
@@ -325,7 +245,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                             options.selectedIndex = index
                         }
                     } catch {
-                        print("Error saving selected tab")
+                        // print("Error saving selected tab")
                     }
                 }
             }
@@ -520,7 +440,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt _: IndexPath) {
-        print("Selected index paths: \(String(describing: tableView.indexPathsForSelectedRows))")
+        // print("Selected index paths: \(String(describing: tableView.indexPathsForSelectedRows))")
     }
 
     @objc func showClearAlert() {
@@ -615,7 +535,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // Filter items to relevant segment and return those items
 //    func loadItems(segment: Int) -> Results<Items> {
 //        guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
-//        print("loadItems run")
+//        // print("loadItems run")
 //        //self.tableView.reloadData()
 //        return filteredItems
 //    }
@@ -680,7 +600,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 if let tabs = self.tabBarController?.tabBar.items {
                     for tab in 0 ..< tabs.count {
                         let count = self.getCountForTab(tab)
-                        print("Count for tab \(tab) is \(count)")
+                        // print("Count for tab \(tab) is \(count)")
                         if count > 0 {
                             tabs[tab].badgeValue = "\(count)"
                         } else {
@@ -703,7 +623,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     let center = UNUserNotificationCenter.current()
 
     func removeNotification(uuidString: [String]) {
-        print("Removing Notifications")
+        // print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidString)
     }
@@ -722,7 +642,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // Notification Settings Screen
 //    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
-//        print("Opening settings")
+//        // print("Opening settings")
 //        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 //        let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsView") as! OptionsTableViewController
 //        self.navigationController?.pushViewController(optionsViewController, animated: true)
@@ -808,7 +728,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // MARK: - Themeing
 
     open func setAppearance(segment: Int) {
-        print("Setting theme")
+        // print("Setting theme")
         if getDarkModeStatus() {
             switch segment {
             case 0:

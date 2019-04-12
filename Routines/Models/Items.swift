@@ -42,7 +42,7 @@ import UserNotifications
                         self.completeUntil = completeUntil
                     }
                 } catch {
-                    print("failed to save completeUntil")
+                    // print("failed to save completeUntil")
                 }
             }
         }
@@ -61,10 +61,10 @@ import UserNotifications
                         self.isDeleted = true
                     }
                 } catch {
-                    print("softDelete failed")
+                    // print("softDelete failed")
                 }
             }
-            print("softDelete completed")
+            // print("softDelete completed")
         }
     }
 
@@ -72,7 +72,7 @@ import UserNotifications
 
     // Remove notifications for Item
     func removeNotification(uuidStrings: [String]) {
-        print("Removing Notifications")
+        // print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
         center.removeDeliveredNotifications(withIdentifiers: uuidStrings)
@@ -80,7 +80,7 @@ import UserNotifications
 
     func removeNotification() {
         let uuidStrings: [String] = ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3", uuidString]
-        print("Removing Notifications")
+        // print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
         center.removeDeliveredNotifications(withIdentifiers: uuidStrings)
@@ -89,7 +89,7 @@ import UserNotifications
     func snooze() {
         removeNotification()
 
-        print("running deleteItem")
+        // print("running deleteItem")
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -98,11 +98,11 @@ import UserNotifications
                         self.segment = snoozeTo()
                     }
                 } catch {
-                    print("failed to snooze item")
+                    // print("failed to snooze item")
                 }
             }
             createNotification()
-            print("snooze completed successfully")
+            // print("snooze completed successfully")
         }
 
         AppDelegate().updateAppBadgeCount()
@@ -123,7 +123,7 @@ import UserNotifications
 
     func updateAppBadgeCount() {
         if Options.getBadgeOption() {
-            print("updating app badge number")
+            // print("updating app badge number")
             DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
@@ -149,7 +149,7 @@ import UserNotifications
                         self.repeats = bool
                     }
                 } catch {
-                    print("failed to update daily repeat bool")
+                    // print("failed to update daily repeat bool")
                 }
             }
         }

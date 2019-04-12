@@ -67,7 +67,7 @@ enum Themes: Int {
                         options?.themeIndex = ThemeManager.currentThemeIndex
                     }
                 } catch {
-                    print("failed to save theme index")
+                    // print("failed to save theme index")
                 }
             }
         }

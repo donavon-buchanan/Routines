@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    }
 
     func removeDeletedNotifications(id: String) {
-        print("Clearing delivered notifications for deleted items")
+        // print("Clearing delivered notifications for deleted items")
         let center = UNUserNotificationCenter.current()
         center.removeDeliveredNotifications(withIdentifiers: ["\(id)0", "\(id)1", "\(id)2", "\(id)3", id])
     }
@@ -108,7 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //            SyncObject<Options>(),
 //        ])
 
-        print("Received push notification")
+        // print("Received push notification")
 
         // itemCleanup()
 
@@ -217,7 +217,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                             options.selectedIndex = selectedIndex
                         }
                     } catch {
-                        print("Error saving selected tab")
+                        // print("Error saving selected tab")
                     }
                 }
             }
@@ -234,15 +234,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     let realmDispatchQueueLabel: String = "background"
 
     func migrateRealm() {
-        let configCheck = Realm.Configuration()
-        do {
-            let fileUrlIs = try schemaVersionAtURL(configCheck.fileURL!)
-            print("schema version \(fileUrlIs)")
-        } catch {
-            print(error)
-        }
+//        let configCheck = Realm.Configuration()
+//        do {
+//            // let fileUrlIs = try schemaVersionAtURL(configCheck.fileURL!)
+//            // print("schema version \(fileUrlIs)")
+//        } catch {
+//            // print(error)
+//        }
 
-        print("performing realm migration")
+        // print("performing realm migration")
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
@@ -251,9 +251,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
             migrationBlock: { migration, oldSchemaVersion in
-                print("oldSchemaVersion: \(oldSchemaVersion)")
+                // print("oldSchemaVersion: \(oldSchemaVersion)")
                 if oldSchemaVersion < 2 {
-                    print("Migration block running")
+                    // print("Migration block running")
                     DispatchQueue(label: self.realmDispatchQueueLabel).sync {
                         autoreleasepool {
                             let realm = try! Realm()
@@ -279,22 +279,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                                     }
                                 }
                             } catch {
-                                print("Error with migration")
+                                // print("Error with migration")
                             }
                         }
                     }
                 }
 
                 if oldSchemaVersion < 13 {
-                    print("Is this even running at all?")
+                    // print("Is this even running at all?")
                     // The enumerateObjects(ofType:_:) method iterates
                     // over every Person object stored in the Realm file
                     // TODO: !!! Items class name can't migrate because class name changed !!!
                     // TODO: Also, future migrations may conflict with iCloud
-                    migration.enumerateObjects(ofType: Items.className()) { oldObject, newObject in
-                        print("oldObject: " + String(describing: oldObject))
+                    migration.enumerateObjects(ofType: Items.className()) { _, newObject in
+                        // print("oldObject: " + String(describing: oldObject))
                         newObject!["isDeleted"] = false
-                        print("newObject: " + String(describing: newObject))
+                        // print("newObject: " + String(describing: newObject))
                     }
                 }
 
@@ -373,9 +373,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         if let currentOptions = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
             optionsObject = currentOptions
-            print("AppDelegate: Options loaded successfully - \(String(describing: optionsObject))")
+            // print("AppDelegate: Options loaded successfully - \(String(describing: optionsObject))")
         } else {
-            print("AppDelegate: No Options exist yet. Creating it.")
+            // print("AppDelegate: No Options exist yet. Creating it.")
             let newOptionsObject = Options()
             newOptionsObject.optionsKey = optionsKey
             do {
@@ -383,7 +383,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     realm.add(newOptionsObject, update: false)
                 }
             } catch {
-                print("Failed to create new options object")
+                // print("Failed to create new options object")
             }
             loadOptions()
         }
@@ -447,9 +447,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { granted, _ in
                 // Enable or disable features based on authorization.
                 if granted {
-                    print("App Delegate: App has notification permission")
+                    // print("App Delegate: App has notification permission")
                 } else {
-                    print("App Delegate: App does not have notification permission")
+                    // print("App Delegate: App does not have notification permission")
                     return
                 }
             }
@@ -458,9 +458,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
                 // Enable or disable features based on authorization.
                 if granted {
-                    print("App Delegate: App has notification permission")
+                    // print("App Delegate: App has notification permission")
                 } else {
-                    print("App Delegate: App does not have notification permission")
+                    // print("App Delegate: App does not have notification permission")
                     return
                 }
             }
@@ -532,9 +532,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func userNotificationCenter(_: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("running userNotificationCenter:didReceive:withCompletionHandler")
+        // print("running userNotificationCenter:didReceive:withCompletionHandler")
         if response.notification.request.content.categoryIdentifier == "morning" {
-            print("running response: morning")
+            // print("running response: morning")
             switch response.actionIdentifier {
             case "complete":
                 completeItem(uuidString: response.notification.request.identifier)
@@ -546,7 +546,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         if response.notification.request.content.categoryIdentifier == "afternoon" {
-            print("running response: afternoon")
+            // print("running response: afternoon")
             switch response.actionIdentifier {
             case "complete":
                 completeItem(uuidString: response.notification.request.identifier)
@@ -558,7 +558,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         if response.notification.request.content.categoryIdentifier == "evening" {
-            print("running response: evening")
+            // print("running response: evening")
             switch response.actionIdentifier {
             case "complete":
                 completeItem(uuidString: response.notification.request.identifier)
@@ -570,7 +570,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         if response.notification.request.content.categoryIdentifier == "night" {
-            print("running response: night")
+            // print("running response: night")
             switch response.actionIdentifier {
             case "complete":
                 completeItem(uuidString: response.notification.request.identifier)
@@ -587,45 +587,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func scheduleAutoSnoozeNotifications(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
         // This is where you need to test if a segment is > current segment
         let dayOfFirstDate = Calendar.autoupdatingCurrent.dateComponents([.day], from: firstDate)
-        print("dayOfFirstDate: \(dayOfFirstDate)")
+        // print("dayOfFirstDate: \(dayOfFirstDate)")
         let today = Calendar.autoupdatingCurrent.dateComponents([.day], from: Date())
-        print("today: \(today)")
+        // print("today: \(today)")
         if segment > 0, dayOfFirstDate == today {
             if getSegmentNotificationOption(segment: 0) {
                 scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate.startOfNextDay)
-                print("morning uuid: " + "\(uuidString)0")
+                // print("morning uuid: " + "\(uuidString)0")
             }
         } else {
             if getSegmentNotificationOption(segment: 0) {
                 scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate)
-                print("morning uuid: " + "\(uuidString)0")
+                // print("morning uuid: " + "\(uuidString)0")
             }
         }
         if segment > 1, dayOfFirstDate == today {
             if getSegmentNotificationOption(segment: 1) {
                 scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate.startOfNextDay)
-                print("afternoon uuid: " + "\(uuidString)1")
+                // print("afternoon uuid: " + "\(uuidString)1")
             }
         } else {
             if getSegmentNotificationOption(segment: 1) {
                 scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate)
-                print("afternoon uuid: " + "\(uuidString)1")
+                // print("afternoon uuid: " + "\(uuidString)1")
             }
         }
         if segment > 2, dayOfFirstDate == today {
             if getSegmentNotificationOption(segment: 2) {
                 scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate.startOfNextDay)
-                print("evening uuid: " + "\(uuidString)2")
+                // print("evening uuid: " + "\(uuidString)2")
             }
         } else {
             if getSegmentNotificationOption(segment: 2) {
                 scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate)
-                print("evening uuid: " + "\(uuidString)2")
+                // print("evening uuid: " + "\(uuidString)2")
             }
         }
         if getSegmentNotificationOption(segment: 3) {
             scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: "\(uuidString)3", firstDate: firstDate)
-            print("night uuid: " + "\(uuidString)3")
+            // print("night uuid: " + "\(uuidString)3")
         }
     }
 
@@ -670,20 +670,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    }
 
     func removeNotification(uuidString: [String]) {
-        print("Removing Notifications")
+        // print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidString)
     }
 
     func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-        print("running scheduleNewNotification")
+        // print("running scheduleNewNotification")
         let notificationCenter = UNUserNotificationCenter.current()
 
         notificationCenter.getNotificationSettings { settings in
             // DO not schedule notifications if not authorized
             guard settings.authorizationStatus == .authorized else {
                 // self.requestNotificationPermission()
-                print("Authorization status has changed to unauthorized for notifications")
+                // print("Authorization status has changed to unauthorized for notifications")
                 return
             }
 
@@ -696,28 +696,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         if (options?.afternoonNotificationsOn)! {
                             self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
-                            print("Afternoon Notifications toggled off. Aborting")
+                            // print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     case 2:
                         if (options?.eveningNotificationsOn)! {
                             self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
-                            print("Afternoon Notifications toggled off. Aborting")
+                            // print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     case 3:
                         if (options?.nightNotificationsOn)! {
                             self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
-                            print("Afternoon Notifications toggled off. Aborting")
+                            // print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     default:
                         if (options?.morningNotificationsOn)! {
                             self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
                         } else {
-                            print("Afternoon Notifications toggled off. Aborting")
+                            // print("Afternoon Notifications toggled off. Aborting")
                             return
                         }
                     }
@@ -745,15 +745,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         notificationCenter.add(request) { error in
             if error != nil {
                 // TODO: handle notification errors
-                print(String(describing: error))
+                // print(String(describing: error))
             } else {
-                print("Notification created successfully")
+                // print("Notification created successfully")
             }
         }
     }
 
     func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-        print("createNotification running")
+        // print("createNotification running")
         let content = UNMutableNotificationContent()
         content.title = title
         content.sound = UNNotificationSound.default
@@ -781,7 +781,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         dateComponents.calendar = Calendar.autoupdatingCurrent
         // Keep notifications from occurring too early for tasks created for tomorrow
         if firstDate > Date() {
-            print("Notification set to tomorrow")
+            // print("Notification set to tomorrow")
             dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
         }
         dateComponents.timeZone = TimeZone.autoupdatingCurrent
@@ -799,16 +799,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         notificationCenter.add(request) { error in
             if error != nil {
                 // TODO: handle notification errors
-                print(String(describing: error))
+                // print(String(describing: error))
             } else {
-                print("Notification created successfully")
+                // print("Notification created successfully")
             }
         }
     }
 
     // Notification Settings Screen
     fileprivate func goToSettings() {
-        print("Opening settings")
+        // print("Opening settings")
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsView") as! OptionsTableViewController
         let rootVC = window?.rootViewController as! TabBarViewController
@@ -822,7 +822,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     fileprivate func goToAdd() {
-        print("Opening Add view")
+        // print("Opening Add view")
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let addViewController = storyBoard.instantiateViewController(withIdentifier: "addView") as! AddTableViewController
         let rootVC = window?.rootViewController as! TabBarViewController
@@ -872,7 +872,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
             }
         }
-        print("setBadgeNumber found \(badgeCount) items")
+        // print("setBadgeNumber found \(badgeCount) items")
         return badgeCount
     }
 
@@ -886,13 +886,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //            semaphore.signal()
 //        }
 //        semaphore.wait()
-//        print("Setting notification badge to: \(badge)")
+//        // print("Setting notification badge to: \(badge)")
 //        return badge
 //    }
 
     open func updateAppBadgeCount() {
         if getBadgeOption() {
-            print("updating app badge number")
+            // print("updating app badge number")
             DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
