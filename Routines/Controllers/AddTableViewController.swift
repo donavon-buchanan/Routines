@@ -76,7 +76,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     let realmDispatchQueueLabel: String = "background"
 
-    var item: Item?
+    var item: Items?
     // var timeArray: [DateComponents?] = []
     // segment from add segue
     var editingSegment: Int?
@@ -138,7 +138,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             taskTextField.text = item?.title
             segmentSelection.selectedSegmentIndex = item?.segment ?? 0
             notesTextView.text = item?.notes
-            // print("Item's uuidString is \((item?.uuidString)!)")
+            // print("Items's uuidString is \((item?.uuidString)!)")
             disableAutoSnoozeSwitch.setOn(item?.disableAutoSnooze ?? false, animated: false)
             setAnchorColor()
 
@@ -314,7 +314,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         // if it's a new item, add it as new to the realm
         // otherwise, update the existing item
         if item == nil {
-            let newItem = Item()
+            let newItem = Items()
             newItem.title = title
             newItem.segment = segment
             newItem.dateModified = firstTriggerDate(segment: segment)
@@ -333,7 +333,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
     }
 
-    func saveItem(item: Item) {
+    func saveItem(item: Items) {
         print("Running saveItem")
         let realm = try! Realm()
         do {
@@ -648,7 +648,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                count = realm.objects(Item.self).filter("segment = \(segment)").count
+                count = realm.objects(Items.self).filter("segment = \(segment)").count
             }
         }
         return count

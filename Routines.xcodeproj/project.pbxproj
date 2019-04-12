@@ -25,7 +25,7 @@
 		F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831B72155CBB000DAF60E /* AppDelegate.swift */; };
 		F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831BB2155CBB000DAF60E /* Main.storyboard */; };
 		F8B831C22155CBB100DAF60E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831C02155CBB100DAF60E /* LaunchScreen.storyboard */; };
-		F8B831CD2155CBE300DAF60E /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831CC2155CBE300DAF60E /* Item.swift */; };
+		F8B831CD2155CBE300DAF60E /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831CC2155CBE300DAF60E /* Items.swift */; };
 		F8CBBA5721A9058D00A4FFFD /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */; };
 		F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */; };
 		F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */; };
@@ -128,7 +128,7 @@
 		F8B831BC2155CBB000DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F8B831C12155CBB100DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F8B831C32155CBB100DAF60E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F8B831CC2155CBE300DAF60E /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		F8B831CC2155CBE300DAF60E /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatTableViewController.swift; sourceTree = "<group>"; };
 		F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTableViewController.swift; sourceTree = "<group>"; };
@@ -280,7 +280,7 @@
 		F8B831CB2155CBD000DAF60E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F8B831CC2155CBE300DAF60E /* Item.swift */,
+				F8B831CC2155CBE300DAF60E /* Items.swift */,
 				F807D3CC216073E300FF36D9 /* Options.swift */,
 			);
 			path = Models;
@@ -590,7 +590,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8B831CD2155CBE300DAF60E /* Item.swift in Sources */,
+				F8B831CD2155CBE300DAF60E /* Items.swift in Sources */,
 				F85213B5218F5EE600291CFE /* NavigationViewController.swift in Sources */,
 				F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */,
 				F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */,
