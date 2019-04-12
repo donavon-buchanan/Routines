@@ -65,6 +65,14 @@ import UserNotifications
         center.removeDeliveredNotifications(withIdentifiers: uuidStrings)
     }
 
+    func removeNotification() {
+        let uuidStrings: [String] = ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3", uuidString]
+        print("Removing Notifications")
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
+        center.removeDeliveredNotifications(withIdentifiers: uuidStrings)
+    }
+
     func snooze() {
         removeNotification(uuidStrings: ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3", uuidString])
 

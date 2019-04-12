@@ -19,11 +19,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     @IBOutlet var notesTextView: UITextView!
 
     @IBOutlet var repeatDailySwitch: UISwitch!
-    fileprivate func setAnchorColor() {
-        if repeatDailySwitch.isOn {
-            anchorImageView.theme_tintColor = GlobalPicker.barTextColor
-        } else {
-            anchorImageView.tintColor = .lightGray
+    @IBAction func repeatDailySwitchToggled(_ sender: UISwitch) {
+        if item != nil {
+            showBanner(title: "Repeat Option Saved")
+            print("repeat toggled to \(sender.isOn)")
         }
     }
 
@@ -47,10 +46,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     @IBAction func segmentSelected(_ sender: UISegmentedControl) {
         setAppearance(segment: sender.selectedSegmentIndex)
-        setAnchorColor()
     }
-
-    @IBOutlet var anchorImageView: UIImageView!
 
 //    @IBOutlet weak var repeatLabel: UILabel!
 //    @IBOutlet weak var repeatHowOftenLabel: UILabel!
@@ -69,15 +65,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         if item != nil {
             setAppearance(segment: item!.segment)
         }
-        // Tint on snoozeStrike
-        anchorImageView.image = anchorImageView.image?.withRenderingMode(.alwaysTemplate)
-        setAnchorColor()
-
-//        repeatDailyLabel.theme_textColor = GlobalPicker.cellTextColors
-//        repeatCellTitleLabel.theme_textColor = GlobalPicker.cellTextColors
-//        repeatCellDetailLabel.textColor = .lightGray
         repeatDailySwitch.layer.cornerRadius = 15
         repeatDailySwitch.layer.masksToBounds = true
+
+        repeatDailyLabel.theme_textColor = GlobalPicker.cellTextColors
     }
 
     @objc func dismissView() {
@@ -123,7 +114,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             notesTextView.text = item?.notes
             // print("Items's uuidString is \((item?.uuidString)!)")
             // repeatDailySwitch.setOn(item?.disableAutoSnooze ?? false, animated: false)
-            setAnchorColor()
 
             title = "Edit Task"
         } else {
@@ -219,10 +209,11 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             let haptic = UIImpactFeedbackGenerator(style: .light)
             haptic.impactOccurred()
             repeatDailySwitch.setOn(!repeatDailySwitch.isOn, animated: true)
-            setAnchorColor()
             if item != nil {
                 navigationItem.rightBarButtonItem?.isEnabled = true
                 updateItem()
+                showBanner(title: "Repeat Option Saved")
+                print("repeat toggled to \(repeatDailySwitch.isOn)")
             }
         }
     }
@@ -235,6 +226,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 //        // Pass the selected object to the new view controller.
 //        if let destinationVC = segue.destination as? TableViewController {
 //            destinationVC.setSegment = segmentSelection.selectedSegmentIndex
+//        }
+//    }
+
+//    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
+//        if let destination = segue.destination as? TableViewController {
+//            destination.resetTableView()
 //        }
 //    }
 
