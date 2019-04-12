@@ -558,7 +558,7 @@ class OptionsTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
-                let items = realm.objects(Item.self).filter("segment = \(segment) AND isDeleted = \(false)")
+                let items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)")
                 items.forEach { item in
                     self.removeNotification(uuidString: ["\(item.uuidString)0", "\(item.uuidString)1", "\(item.uuidString)2", "\(item.uuidString)3"])
                 }
@@ -570,7 +570,7 @@ class OptionsTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
-                let items = realm.objects(Item.self).filter("segment = \(segment) AND isDeleted = \(false)")
+                let items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)")
                 items.forEach { item in
                     if self.getAutoSnoozeStatus() {
                         self.scheduleAutoSnoozeNotifications(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString, firstDate: item.dateModified!)
@@ -675,7 +675,7 @@ class OptionsTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                count = realm.objects(Item.self).filter("segment = \(segment)").count
+                count = realm.objects(Items.self).filter("segment = \(segment)").count
             }
         }
         return count

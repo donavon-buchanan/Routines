@@ -1,5 +1,5 @@
 //
-//  Item.swift
+//  Items.swift
 //  Routines
 //
 //  Created by Donavon Buchanan on 9/21/18.
@@ -12,8 +12,9 @@ import RealmSwift
 import UserNotifications
 
 // TODO: Figure out inits with Realm
+// TODO: Rename this. Shouldn't be plural. But causes realm migration complication.
 
-@objcMembers class Item: Object {
+@objcMembers class Items: Object {
     let realmDispatchQueueLabel: String = "background"
 
     dynamic var title: String?
@@ -72,15 +73,15 @@ import UserNotifications
     }
 }
 
-extension Item: CKRecordConvertible {
+extension Items: CKRecordConvertible {
     // Yep, leave it blank!
 }
 
-extension Item: CKRecordRecoverable {
+extension Items: CKRecordRecoverable {
     // Leave it blank, too.
 }
 
-extension Item {
+extension Items {
     // Sync removal first
     func syncDelete() {
         DispatchQueue(label: realmDispatchQueueLabel).sync {

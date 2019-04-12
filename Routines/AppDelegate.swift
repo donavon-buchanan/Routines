@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 //    private func itemCleanup() {
 //        let realm = try! Realm()
-//        let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
+//        let oldItems = realm.objects(Items.self).filter("isDeleted = \(true)")
 //        oldItems.forEach { item in
 //            removeDeletedNotifications(id: item.uuidString)
 //            item.deleteItem()
@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func refreshNotifications() {
         let realm = try! Realm()
-        let oldItems = realm.objects(Item.self).filter("isDeleted = \(true)")
+        let oldItems = realm.objects(Items.self).filter("isDeleted = \(true)")
         oldItems.forEach { item in
             removeDeletedNotifications(id: item.uuidString)
             removeObsoleteNotifications(id: item.uuidString)
@@ -74,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Sync with iCloud
         syncEngine = SyncEngine(objects: [
-            SyncObject<Item>(),
+            SyncObject<Items>(),
             SyncObject<Options>(),
         ])
         UIApplication.shared.registerForRemoteNotifications()
@@ -104,7 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 //        // Sync with iCloud
 //        syncEngine = SyncEngine(objects: [
-//            SyncObject<Item>(),
+//            SyncObject<Items>(),
 //            SyncObject<Options>(),
 //        ])
 
@@ -289,17 +289,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     print("Is this even running at all?")
                     // The enumerateObjects(ofType:_:) method iterates
                     // over every Person object stored in the Realm file
-                    // TODO: !!! Item class name can't migrate because class name changed !!!
+                    // TODO: !!! Items class name can't migrate because class name changed !!!
                     // TODO: Also, future migrations may conflict with iCloud
-                    migration.enumerateObjects(ofType: Item.className()) { oldObject, newObject in
-                        print("oldObject: \(String(describing: oldObject))")
-                        // combine name fields into a single field
-                        let title = oldObject!["title"] as! String
-                        print("Old object title was \(title)")
+                    migration.enumerateObjects(ofType: Items.className()) { oldObject, newObject in
+                        print("oldObject: " + String(describing: oldObject))
                         newObject!["isDeleted"] = false
-                        let newTitle = newObject!["title"] as! String
-                        print("New Object title is \(newTitle)")
-                        print("newObject: \(String(describing: newObject))")
+                        print("newObject: " + String(describing: newObject))
                     }
                 }
             }
@@ -310,10 +305,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Now that we've told Realm how to handle the schema change, opening the file
         // will automatically perform the migration
-        let realm = try! Realm()
+        _ = try! Realm()
     }
-
-    weak var realmItems: Results<Item>?
 
 //    func getHour(date: Date) -> Int {
 //        let dateFormatter = DateFormatter()
@@ -405,7 +398,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         let realm = try! Realm()
-        guard let item = realm.object(ofType: Item.self, forPrimaryKey: id) else { return }
+        guard let item = realm.object(ofType: Items.self, forPrimaryKey: id) else { return }
 
         item.syncDelete()
 
@@ -430,7 +423,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         let realm = try! Realm()
-        guard let item = realm.object(ofType: Item.self, forPrimaryKey: id) else { return }
+        guard let item = realm.object(ofType: Items.self, forPrimaryKey: id) else { return }
 
         item.snooze()
 
@@ -667,7 +660,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        DispatchQueue(label: realmDispatchQueueLabel).async {
 //            autoreleasepool {
 //                let realm = try! Realm()
-//                if let item = realm.object(ofType: Item.self, forPrimaryKey: uuidString) {
+//                if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
 //
 //                }
 //            }
@@ -870,7 +863,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             autoreleasepool {
                 let realm = try! Realm()
                 // Get all the items in or under the current segment.
-                let items = realm.objects(Item.self) // .filter("segment <= %@", segment)
+                let items = realm.objects(Items.self) // .filter("segment <= %@", segment)
                 // Get what should the the furthest future trigger date
                 if let lastFutureDate = items.last?.dateModified {
                     badgeCount = items.filter("dateModified <= %@ AND isDeleted = \(false)", lastFutureDate).count
@@ -901,7 +894,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
-                    let badgeCount = realm.objects(Item.self).filter("dateModified < %@ AND isDeleted = \(false)", Date()).count
+                    let badgeCount = realm.objects(Items.self).filter("dateModified < %@ AND isDeleted = \(false)", Date()).count
                     DispatchQueue.main.async {
                         autoreleasepool {
                             UIApplication.shared.applicationIconBadgeNumber = badgeCount
@@ -992,7 +985,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let item = realm.object(ofType: Item.self, forPrimaryKey: identifier) {
+                if let item = realm.object(ofType: Items.self, forPrimaryKey: identifier) {
                     segment = item.segment
                 }
             }

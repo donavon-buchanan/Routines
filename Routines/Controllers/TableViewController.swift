@@ -532,7 +532,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     @objc func deleteSelectedRows() {
         if let indexPaths = self.tableView.indexPathsForSelectedRows {
-            var itemArray: [Item] = []
+            var itemArray: [Items] = []
             indexPaths.forEach { indexPath in
                 // The index paths are static during enumeration, but the item indexes are not
                 // Add them to an array first, delete only what's in the array, and then update the table UI
@@ -599,12 +599,12 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // MARK: - Model Manipulation Methods
 
-//    func loadData() -> Results<Item> {
-//        return realm.objects(Item.self)
+//    func loadData() -> Results<Items> {
+//        return realm.objects(Items.self)
 //    }
 
     // Filter items to relevant segment and return those items
-//    func loadItems(segment: Int) -> Results<Item> {
+//    func loadItems(segment: Int) -> Results<Items> {
 //        guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
 //        print("loadItems run")
 //        //self.tableView.reloadData()
@@ -687,7 +687,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func getCountForTab(_ tab: Int) -> Int {
         let realm = try! Realm()
         // TODO: The "isDeleted" filter is going to cause problems. Way too much code repetition. Do better.
-        return realm.objects(Item.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = %@", tab, Date(), false).count
+        return realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = %@", tab, Date(), false).count
     }
 
     // MARK: - Manage Notifications
@@ -724,7 +724,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     let optionsKey = "optionsKey"
 
-    var items: Results<Item>?
+    var items: Results<Items>?
 
     public var segment = Int()
 
@@ -732,7 +732,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        DispatchQueue(label: realmDispatchQueueLabel).sync {
 //            autoreleasepool{
 //                let realm = try! Realm()
-//                self.items = realm.objects(Item.self).filter("isDeleted = \(false)")
+//                self.items = realm.objects(Items.self).filter("isDeleted = \(false)")
 //            }
 //        }
 //    }
@@ -741,7 +741,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                self.items = realm.objects(Item.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
+                self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
             }
         }
         realmSync(itemsToObserve: items!)
@@ -752,20 +752,20 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                self.items = realm.objects(Item.self).filter("isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
+                self.items = realm.objects(Items.self).filter("isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
             }
         }
         realmSync(itemsToObserve: items!)
     }
 
-//    private func deleteItem(item: Item) {
+//    private func deleteItem(item: Items) {
 //        item.syncDelete() // item.deleteItem()
 //        updateBadge()
 //    }
 //
     var notificationToken: NotificationToken?
 
-    func realmSync(itemsToObserve _: Results<Item>) {
+    func realmSync(itemsToObserve _: Results<Items>) {
         // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
         // Observe Results Notifications
         notificationToken = items?.observe { [self] (changes: RealmCollectionChange) in
@@ -878,7 +878,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let items = realm.objects(Item.self).filter("segment = \(fromSegment) AND isDeleted = \(false) AND disableAutoSnooze = %@", false)
+                let items = realm.objects(Items.self).filter("segment = \(fromSegment) AND isDeleted = \(false) AND disableAutoSnooze = %@", false)
                 items.forEach { item in
                     if let itemDate = item.dateModified {
                         if itemDate < Date() {

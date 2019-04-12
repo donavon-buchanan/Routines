@@ -457,7 +457,7 @@ class CustomTimesTableViewController: UITableViewController {
 //        DispatchQueue(label: realmDispatchQueueLabel).async {
 //            autoreleasepool {
 //                let realm = try! Realm()
-//                let items = realm.objects(Item.self).filter("segment = \(segment)")
+//                let items = realm.objects(Items.self).filter("segment = \(segment)")
 //                items.forEach({ (item) in
 //                    self.removeNotification(uuidString: [item.uuidString, item.afternoonUUID, item.eveningUUID, item.nightUUID])
 //                })
@@ -471,7 +471,7 @@ class CustomTimesTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
-                let items = realm.objects(Item.self) // .filter("segment = \(segment)")
+                let items = realm.objects(Items.self) // .filter("segment = \(segment)")
                 items.forEach { item in
                     if self.getAutoSnoozeStatus() {
                         self.scheduleAutoSnoozeNotifications(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString, firstDate: item.dateModified!)
@@ -572,7 +572,7 @@ class CustomTimesTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                count = realm.objects(Item.self).filter("segment = \(segment)").count
+                count = realm.objects(Items.self).filter("segment = \(segment)").count
             }
         }
         return count
