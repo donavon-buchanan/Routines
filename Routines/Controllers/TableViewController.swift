@@ -376,7 +376,14 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 return nil
             }
         }
-
+        var repeatLabel: String {
+            if (items?[indexPath.row].repeats)! {
+                return "Repeats Daily"
+            } else {
+                return ""
+            }
+        }
+        cell.repeatLabel?.text = repeatLabel
         // cell.delegate = self
 
         cell.cellTitleLabel?.text = cellTitle
