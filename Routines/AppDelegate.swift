@@ -80,7 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UIApplication.shared.registerForRemoteNotifications()
 
         // checkToCreateOptions()
-        loadOptions()
+        // loadOptions()
         // setUpTheme()
 
         // If launchOptions contains the appropriate launch options key, a Home screen quick action
@@ -250,11 +250,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
-            migrationBlock: { _, oldSchemaVersion in
+            migrationBlock: { migration, oldSchemaVersion in
                 print("oldSchemaVersion: \(oldSchemaVersion)")
                 if oldSchemaVersion < 2 {
                     print("Migration block running")
-                    DispatchQueue(label: self.realmDispatchQueueLabel).async {
+                    DispatchQueue(label: self.realmDispatchQueueLabel).sync {
                         autoreleasepool {
                             let realm = try! Realm()
                             let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
@@ -285,15 +285,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
 
-//                if oldSchemaVersion < 13 {
-//                    // The enumerateObjects(ofType:_:) method iterates
-//                    // over every Person object stored in the Realm file
-//                    migration.enumerateObjects(ofType: Item.className()) { _, newObject in
-//                        // combine name fields into a single field
-//                        newObject!["isDeleted"] = false }
-//                }
-
-                if oldSchemaVersion < 13 {}
+                if oldSchemaVersion < 13 {
+                    print("Is this even running at all?")
+                    // The enumerateObjects(ofType:_:) method iterates
+                    // over every Person object stored in the Realm file
+                    // TODO: !!! Item class name can't migrate because class name changed !!!
+                    // TODO: Also, future migrations may conflict with iCloud
+                    migration.enumerateObjects(ofType: Item.className()) { oldObject, newObject in
+                        print("oldObject: \(String(describing: oldObject))")
+                        // combine name fields into a single field
+                        let title = oldObject!["title"] as! String
+                        print("Old object title was \(title)")
+                        newObject!["isDeleted"] = false
+                        let newTitle = newObject!["title"] as! String
+                        print("New Object title is \(newTitle)")
+                        print("newObject: \(String(describing: newObject))")
+                    }
+                }
             }
         )
 
@@ -302,8 +310,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Now that we've told Realm how to handle the schema change, opening the file
         // will automatically perform the migration
-        _ = try! Realm()
+        let realm = try! Realm()
     }
+
+    weak var realmItems: Results<Item>?
 
 //    func getHour(date: Date) -> Int {
 //        let dateFormatter = DateFormatter()
