@@ -17,7 +17,7 @@ class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
     override func tabBar(_: UITabBar, didSelect _: UITabBarItem) {}
 
     open func setAppearance(segment: Int) {
-        print("Setting theme")
+        // print("Setting theme")
         if AppDelegate().getDarkModeStatus() {
             switch segment {
             case 0:

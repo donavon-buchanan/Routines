@@ -44,9 +44,9 @@ class AboutTableViewController: UITableViewController {
 
     func setVersionNumberLabel() -> String {
         guard let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String else { fatalError("Failed to get version number") }
-        // print("App Version: \(String(describing: appVersion))")
+        // // print("App Version: \(String(describing: appVersion))")
         guard let buildNumber = Bundle.main.infoDictionary!["CFBundleVersion"] as? String else { fatalError("Failed to get build number") }
-        // print("Build NUmber: \(buildNumber)")
+        // // print("Build NUmber: \(buildNumber)")
         let versionString = "Version: \(appVersion), Build: \(buildNumber)"
 
         // return "fuck you"

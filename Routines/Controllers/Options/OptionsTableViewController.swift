@@ -35,19 +35,19 @@ class OptionsTableViewController: UITableViewController {
     @IBAction func notificationSwitchToggled(_ sender: UISwitch) {
         switch sender.tag {
         case 1:
-            print("Afternoon Switch Toggled \(sender.isOn)")
+            // print("Afternoon Switch Toggled \(sender.isOn)")
             addOrRemoveNotifications(isOn: sender.isOn, segment: 1)
             updateNotificationOptions(segment: 1, isOn: sender.isOn)
         case 2:
-            print("Evening Switch Toggled \(sender.isOn)")
+            // print("Evening Switch Toggled \(sender.isOn)")
             addOrRemoveNotifications(isOn: sender.isOn, segment: 2)
             updateNotificationOptions(segment: 2, isOn: sender.isOn)
         case 3:
-            print("Night Switch Toggled \(sender.isOn)")
+            // print("Night Switch Toggled \(sender.isOn)")
             addOrRemoveNotifications(isOn: sender.isOn, segment: 3)
             updateNotificationOptions(segment: 3, isOn: sender.isOn)
         default:
-            print("Morning Switch Toggled \(sender.isOn)")
+            // print("Morning Switch Toggled \(sender.isOn)")
             addOrRemoveNotifications(isOn: sender.isOn, segment: 0)
             updateNotificationOptions(segment: 0, isOn: sender.isOn)
         }
@@ -95,35 +95,35 @@ class OptionsTableViewController: UITableViewController {
         if indexPath.section == 1 {
             switch indexPath.row {
             case 1:
-                print("Tapped Afternoon Cell")
+                // print("Tapped Afternoon Cell")
                 let isOn = !afternoonSwitch.isOn
                 afternoonSwitch.setOn(isOn, animated: true)
                 addOrRemoveNotifications(isOn: isOn, segment: 1)
-                print("Afternoon switch is now set to: \(afternoonSwitch.isOn)")
+                // print("Afternoon switch is now set to: \(afternoonSwitch.isOn)")
                 updateNotificationOptions(segment: 1, isOn: afternoonSwitch.isOn)
                 haptic.impactOccurred()
             case 2:
-                print("Tapped Evening Cell")
+                // print("Tapped Evening Cell")
                 let isOn = !eveningSwitch.isOn
                 eveningSwitch.setOn(isOn, animated: true)
                 addOrRemoveNotifications(isOn: isOn, segment: 2)
-                print("Evening switch is now set to: \(eveningSwitch.isOn)")
+                // print("Evening switch is now set to: \(eveningSwitch.isOn)")
                 updateNotificationOptions(segment: 2, isOn: eveningSwitch.isOn)
                 haptic.impactOccurred()
             case 3:
-                print("Tapped Night Cell")
+                // print("Tapped Night Cell")
                 let isOn = !nightSwitch.isOn
                 nightSwitch.setOn(isOn, animated: true)
                 addOrRemoveNotifications(isOn: isOn, segment: 3)
-                print("Night switch is now set to: \(nightSwitch.isOn)")
+                // print("Night switch is now set to: \(nightSwitch.isOn)")
                 updateNotificationOptions(segment: 3, isOn: nightSwitch.isOn)
                 haptic.impactOccurred()
             default:
-                print("Tapped Morning Cell")
+                // print("Tapped Morning Cell")
                 let isOn = !morningSwitch.isOn
                 morningSwitch.setOn(isOn, animated: true)
                 addOrRemoveNotifications(isOn: isOn, segment: 0)
-                print("Morning switch is now set to: \(morningSwitch.isOn)")
+                // print("Morning switch is now set to: \(morningSwitch.isOn)")
                 updateNotificationOptions(segment: 0, isOn: morningSwitch.isOn)
                 haptic.impactOccurred()
             }
@@ -156,38 +156,38 @@ class OptionsTableViewController: UITableViewController {
                 case 1:
                     do {
                         try realm.write {
-                            print("updateNotificationOptions saving")
+                            // print("updateNotificationOptions saving")
                             options?.afternoonNotificationsOn = isOn
                         }
                     } catch {
-                        print("updateNotificationOptions failed")
+                        // print("updateNotificationOptions failed")
                     }
                 case 2:
                     do {
                         try realm.write {
-                            print("updateNotificationOptions saving")
+                            // print("updateNotificationOptions saving")
                             options?.eveningNotificationsOn = isOn
                         }
                     } catch {
-                        print("updateNotificationOptions failed")
+                        // print("updateNotificationOptions failed")
                     }
                 case 3:
                     do {
                         try realm.write {
-                            print("updateNotificationOptions saving")
+                            // print("updateNotificationOptions saving")
                             options?.nightNotificationsOn = isOn
                         }
                     } catch {
-                        print("updateNotificationOptions failed")
+                        // print("updateNotificationOptions failed")
                     }
                 default:
                     do {
                         try realm.write {
-                            print("updateNotificationOptions saving")
+                            // print("updateNotificationOptions saving")
                             options?.morningNotificationsOn = isOn
                         }
                     } catch {
-                        print("updateNotificationOptions failed")
+                        // print("updateNotificationOptions failed")
                     }
                 }
             }
@@ -279,7 +279,7 @@ class OptionsTableViewController: UITableViewController {
                 dateFormatter.timeStyle = .short
                 dateFormatter.locale = Locale.autoupdatingCurrent
                 dateFormatter.setLocalizedDateFormatFromTemplate("HH:mm")
-                print("timeOption DateComponents: \(String(describing: timeOption))")
+                // print("timeOption DateComponents: \(String(describing: timeOption))")
 
                 time = "Your \(periods[timePeriod]) begins at \(DateFormatter.localizedString(from: timeOption.date!, dateStyle: .none, timeStyle: .short))"
             }
@@ -326,7 +326,7 @@ class OptionsTableViewController: UITableViewController {
 //                        item.uuidString = uuidString
 //                    }
 //                } catch {
-//                    print("updateItemUUID failed")
+//                    // print("updateItemUUID failed")
 //                }
 //            }
 //        }
@@ -530,7 +530,7 @@ class OptionsTableViewController: UITableViewController {
                             options.darkMode = isOn
                         }
                     } catch {
-                        print("failed to update dark mode")
+                        // print("failed to update dark mode")
                     }
                 }
             }
