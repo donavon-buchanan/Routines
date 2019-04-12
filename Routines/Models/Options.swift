@@ -51,6 +51,21 @@ import RealmSwift
     override static func primaryKey() -> String? {
         return "optionsKey"
     }
+
+    static let realmDispatchQueueLabel: String = "background"
+
+    static func getBadgeOption() -> Bool {
+        var badge = true
+        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.primaryKey()) {
+                    badge = options.badge
+                }
+            }
+        }
+        return badge
+    }
 }
 
 extension Options: CKRecordConvertible {

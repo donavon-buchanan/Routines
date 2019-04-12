@@ -909,19 +909,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
-    func getAutoSnoozeStatus() -> Bool {
-        var snooze = false
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
-                    snooze = options.smartSnooze
-                }
-            }
-        }
-        return snooze
-    }
-
     // MARK: - Conversion functions
 
     func getTime(timePeriod: Int, timeOption: Date?) -> Date {

@@ -230,7 +230,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     @objc func appBecameActive() {
-        runAutoSnooze()
         removeDeliveredNotifications()
         updateBadge()
         //tableView.reloadData()
@@ -239,7 +238,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("View Will Appear")
-        runAutoSnooze()
+
         removeDeliveredNotifications()
         // reloadTableView()
         // setAppearance(segment: segment)
@@ -696,8 +695,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     func getCountForTab(_ tab: Int) -> Int {
         let realm = try! Realm()
-        // TODO: The "isDeleted" filter is going to cause problems. Way too much code repetition. Do better.
-        return realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = %@", tab, Date(), false).count
+        return realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = %@ AND completeUntil < %@", tab, Date(), false, Date()).count
     }
 
     // MARK: - Manage Notifications
@@ -751,7 +749,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true)
+                self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date()).sorted(byKeyPath: "dateModified", ascending: true)
             }
         }
         realmSync(itemsToObserve: items!)
@@ -762,7 +760,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                self.items = realm.objects(Items.self).filter("isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
+                self.items = realm.objects(Items.self).filter("isDeleted = \(false) AND completeUntil < %@", Date()).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
             }
         }
         realmSync(itemsToObserve: items!)
@@ -853,63 +851,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             }
         }
         return darkMode
-    }
-
-    // MARK: - Smart Snooze
-
-    // Run this first
-    func runAutoSnooze() {
-        print("runAutoSnooze")
-        if getAutoSnoozeStatus() {
-            print("autoSnooze true")
-            var segmentsToSnooze: [Int] = []
-            let currentSegment = getCurrentSegmentFromTime()
-            print("currentSegment: \(currentSegment)")
-            switch currentSegment {
-            case 1:
-                segmentsToSnooze = [0]
-            case 2:
-                segmentsToSnooze = [0, 1]
-            case 3:
-                segmentsToSnooze = [0, 1, 2]
-            default:
-                segmentsToSnooze = [1, 2, 3]
-            }
-
-            segmentsToSnooze.forEach { segment in
-                autoSnoozeMove(fromSegment: segment, toSegment: currentSegment)
-            }
-        }
-    }
-
-    // This does the work
-    func autoSnoozeMove(fromSegment: Int, toSegment: Int) {
-        print("running autoSnoozeMove from segment \(fromSegment) to \(toSegment)")
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let items = realm.objects(Items.self).filter("segment = \(fromSegment) AND isDeleted = \(false) AND disableAutoSnooze = %@", false)
-                items.forEach { item in
-                    if item.dateModified < Date() {
-                        item.snooze()
-                    }
-                }
-            }
-        }
-    }
-
-    func getAutoSnoozeStatus() -> Bool {
-        var snooze = false
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
-                    snooze = options.smartSnooze
-                }
-            }
-        }
-
-        return snooze
     }
 
     func getDateFromComponents(hour: Int, minute: Int) -> Date {

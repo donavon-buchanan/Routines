@@ -33,7 +33,20 @@ import UserNotifications
         return "uuidString"
     }
 
-    func completeItem() {}
+    func completeItem(completeUntil: Date) {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                do {
+                    try realm.write {
+                        self.completeUntil = completeUntil
+                    }
+                } catch {
+                    print("failed to save completeUntil")
+                }
+            }
+        }
+    }
 
     // MARK: - iCloud Sync
 
@@ -74,7 +87,7 @@ import UserNotifications
     }
 
     func snooze() {
-        removeNotification(uuidStrings: ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3", uuidString])
+        removeNotification()
 
         print("running deleteItem")
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -106,6 +119,25 @@ import UserNotifications
 
     func createNotification() {
         // TODO: Create notification when task is added
+    }
+
+    func updateAppBadgeCount() {
+        if Options.getBadgeOption() {
+            print("updating app badge number")
+            DispatchQueue(label: realmDispatchQueueLabel).sync {
+                autoreleasepool {
+                    let realm = try! Realm()
+                    let badgeCount = realm.objects(Items.self).filter("dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", Date(), Date()).count
+                    DispatchQueue.main.async {
+                        autoreleasepool {
+                            UIApplication.shared.applicationIconBadgeNumber = badgeCount
+                        }
+                    }
+                }
+            }
+        } else {
+            UIApplication.shared.applicationIconBadgeNumber = 0
+        }
     }
 
     func setDailyRepeat(_ bool: Bool) {
