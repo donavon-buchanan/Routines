@@ -12,5 +12,5 @@ class TaskTableViewCell: UITableViewCell {
     @IBOutlet var cellTitleLabel: UILabel!
     @IBOutlet var cellSubtitleLabel: UILabel!
     @IBOutlet var repeatLabel: UILabel!
-    @IBOutlet var cellIndicatorImage: UIImageView!
+    // @IBOutlet var cellIndicatorImage: UIImageView!
 }

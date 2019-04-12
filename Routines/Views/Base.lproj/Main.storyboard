@@ -1005,24 +1005,17 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3PM-6m-oIX">
                                                     <rect key="frame" x="20" y="11" width="728" height="32"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ignore Auto Snooze" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HU5-Hc-8tR">
-                                                            <rect key="frame" x="0.0" y="6" width="641" height="20.5"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Repeat Daily" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HU5-Hc-8tR">
+                                                            <rect key="frame" x="0.0" y="6" width="679" height="20.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="KzK-qL-NG1">
-                                                            <rect key="frame" x="641" y="0.0" width="87" height="32"/>
+                                                            <rect key="frame" x="679" y="0.0" width="49" height="32"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snooze-strike" translatesAutoresizingMaskIntoConstraints="NO" id="UgR-S5-Xvq">
-                                                                    <rect key="frame" x="0.0" y="2" width="28" height="28"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="28" id="Asu-Bw-9Cp"/>
-                                                                        <constraint firstAttribute="width" constant="28" id="axN-zS-MEz"/>
-                                                                    </constraints>
-                                                                </imageView>
                                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vDF-7W-QTO">
-                                                                    <rect key="frame" x="38" y="0.5" width="51" height="31"/>
+                                                                    <rect key="frame" x="0.0" y="0.5" width="51" height="31"/>
                                                                     <connections>
                                                                         <action selector="ignoreAutoSnoozeToggled:" destination="A8c-r3-V1W" eventType="valueChanged" id="5AA-zi-1Ry"/>
                                                                     </connections>
@@ -1050,7 +1043,7 @@
                             </tableViewSection>
                             <tableViewSection id="dyV-UY-6E5" userLabel="Repeat">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="repeatCell" textLabel="Hdb-1m-7cT" detailTextLabel="gKB-mN-ePQ" style="IBUITableViewCellStyleValue1" id="Ld2-5h-hcf">
+                                    <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="repeatCell" textLabel="Hdb-1m-7cT" detailTextLabel="gKB-mN-ePQ" style="IBUITableViewCellStyleValue1" id="Ld2-5h-hcf">
                                         <rect key="frame" x="0.0" y="561.5" width="768" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ld2-5h-hcf" id="Ijn-dM-N4C">
@@ -1087,12 +1080,11 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="bNH-3Y-BOP"/>
                     <connections>
-                        <outlet property="anchorImageView" destination="UgR-S5-Xvq" id="P6H-gV-gIH"/>
-                        <outlet property="disableAutoSnoozeSwitch" destination="vDF-7W-QTO" id="2qJ-PD-btc"/>
-                        <outlet property="ignoreAutoSnoozeLabel" destination="HU5-Hc-8tR" id="Re9-dG-MXi"/>
                         <outlet property="notesTextView" destination="5iE-Oy-Fuc" id="9Q2-Os-Y9c"/>
                         <outlet property="repeatCellDetailLabel" destination="gKB-mN-ePQ" id="J2a-Pb-ex3"/>
                         <outlet property="repeatCellTitleLabel" destination="Hdb-1m-7cT" id="GCS-yG-asL"/>
+                        <outlet property="repeatDailyLabel" destination="HU5-Hc-8tR" id="Re9-dG-MXi"/>
+                        <outlet property="repeatDailySwitch" destination="vDF-7W-QTO" id="2qJ-PD-btc"/>
                         <outlet property="segmentSelection" destination="ee6-Ut-pWz" id="Oke-MH-Y6V"/>
                         <outlet property="taskTextField" destination="CU9-wA-X3j" id="baT-I0-9je"/>
                         <segue destination="o9Q-Hw-Tfw" kind="unwind" identifier="unwindToTableViewController" unwindAction="unwindToTableViewControllerWithSegue:" id="avt-9M-sEJ"/>
@@ -1604,55 +1596,13 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection id="9gB-gB-5f2" userLabel="Smart Snooze">
-                                <string key="footerTitle">Enabling Auto Snooze will automatically move incomplete tasks to the next time period. Tasks created for periods which have already begun will not be moved until the following day.</string>
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" id="fzW-Eo-Deo">
-                                        <rect key="frame" x="0.0" y="499" width="540" height="64"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fzW-Eo-Deo" id="0e8-Fu-3ej">
-                                            <rect key="frame" x="0.0" y="0.0" width="540" height="64"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ayx-df-fvP">
-                                                    <rect key="frame" x="20" y="11" width="500" height="42"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Auto Snooze" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7H-qR-S1Q">
-                                                            <rect key="frame" x="0.0" y="11" width="451" height="20.5"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="U5Q-0c-y3h">
-                                                            <rect key="frame" x="451" y="5.5" width="51" height="31"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="49" id="BvR-3O-Rtn"/>
-                                                                <constraint firstAttribute="height" constant="31" id="jBr-Lq-qTm"/>
-                                                            </constraints>
-                                                            <connections>
-                                                                <action selector="smartSnoozeSwitchToggled:" destination="a3q-M5-d7t" eventType="valueChanged" id="1r1-a0-wo5"/>
-                                                            </connections>
-                                                        </switch>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="ayx-df-fvP" secondAttribute="trailing" id="JiH-q3-ih8"/>
-                                                <constraint firstItem="ayx-df-fvP" firstAttribute="leading" secondItem="0e8-Fu-3ej" secondAttribute="leadingMargin" id="KxT-XX-25H"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="ayx-df-fvP" secondAttribute="bottom" id="Rp6-cE-9kX"/>
-                                                <constraint firstItem="ayx-df-fvP" firstAttribute="top" secondItem="0e8-Fu-3ej" secondAttribute="topMargin" id="bTI-Oe-yD4"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                             <tableViewSection headerTitle="Style" id="cQu-xu-L8m">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" id="EtT-PD-IKk">
-                                        <rect key="frame" x="0.0" y="663" width="540" height="64"/>
+                                        <rect key="frame" x="0.0" y="519" width="540" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="EtT-PD-IKk" id="GcJ-9q-cHn">
-                                            <rect key="frame" x="0.0" y="0.0" width="540" height="63.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="540" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ftn-AW-Mvk">
@@ -1690,7 +1640,7 @@
                             <tableViewSection headerTitle="About" id="Mh0-Xn-pCD">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" id="JZL-NA-pX6">
-                                        <rect key="frame" x="0.0" y="783" width="540" height="64"/>
+                                        <rect key="frame" x="0.0" y="639" width="540" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JZL-NA-pX6" id="XeW-Nf-qRm">
                                             <rect key="frame" x="0.0" y="0.0" width="514" height="63.5"/>
@@ -1738,20 +1688,17 @@
                         <outlet property="morningSwitch" destination="sr5-g1-2Wx" id="fxs-kv-RAv"/>
                         <outlet property="nightSubLabel" destination="RBy-Vs-22B" id="vo0-6e-R9I"/>
                         <outlet property="nightSwitch" destination="6Be-Gy-fuV" id="zOC-H7-Hsz"/>
-                        <outlet property="smartSnoozeSwitch" destination="U5Q-0c-y3h" id="Vcl-mC-m7C"/>
                         <outletCollection property="cellLabels" destination="X1n-I8-wot" collectionClass="NSMutableArray" id="UWm-Ts-c4c"/>
                         <outletCollection property="cellLabels" destination="t8n-qX-FiY" collectionClass="NSMutableArray" id="try-qJ-RZM"/>
                         <outletCollection property="cellLabels" destination="CQu-dM-fZe" collectionClass="NSMutableArray" id="uox-s2-yc2"/>
                         <outletCollection property="cellLabels" destination="0Hy-PZ-kSM" collectionClass="NSMutableArray" id="t6g-qy-FzY"/>
                         <outletCollection property="cellLabels" destination="a9A-mZ-X7X" collectionClass="NSMutableArray" id="H0C-xJ-5D0"/>
-                        <outletCollection property="cellLabels" destination="L7H-qR-S1Q" collectionClass="NSMutableArray" id="Ftc-ro-x5x"/>
                         <outletCollection property="cellLabels" destination="h5f-u2-JbK" collectionClass="NSMutableArray" id="9B7-zW-rC1"/>
                         <outletCollection property="cellLabels" destination="xVv-xA-Cm0" collectionClass="NSMutableArray" id="g2C-78-03E"/>
                         <outletCollection property="switches" destination="sr5-g1-2Wx" collectionClass="NSMutableArray" id="IjU-ge-dcI"/>
                         <outletCollection property="switches" destination="ZmJ-rT-USa" collectionClass="NSMutableArray" id="UZ9-EH-5M4"/>
                         <outletCollection property="switches" destination="3B4-sy-Lml" collectionClass="NSMutableArray" id="5kb-Ft-QDf"/>
                         <outletCollection property="switches" destination="6Be-Gy-fuV" collectionClass="NSMutableArray" id="NRV-5o-VAr"/>
-                        <outletCollection property="switches" destination="U5Q-0c-y3h" collectionClass="NSMutableArray" id="mbi-fX-mOs"/>
                         <outletCollection property="switches" destination="aa0-0h-djV" collectionClass="NSMutableArray" id="41a-A8-zco"/>
                         <segue destination="1aL-IG-qEf" kind="unwind" identifier="unwindToTableViewController" unwindAction="unwindToTableViewControllerWithSegue:" id="hf9-Xq-OiU"/>
                     </connections>

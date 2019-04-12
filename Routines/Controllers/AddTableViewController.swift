@@ -18,9 +18,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     @IBOutlet var segmentSelection: UISegmentedControl!
     @IBOutlet var notesTextView: UITextView!
 
-    @IBOutlet var disableAutoSnoozeSwitch: UISwitch!
+    @IBOutlet var repeatDailySwitch: UISwitch!
     fileprivate func setAnchorColor() {
-        if disableAutoSnoozeSwitch.isOn {
+        if repeatDailySwitch.isOn {
             anchorImageView.theme_tintColor = GlobalPicker.barTextColor
         } else {
             anchorImageView.tintColor = .lightGray
@@ -41,24 +41,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
     }
 
-    @IBAction func ignoreAutoSnoozeToggled(_: UISwitch) {
-        if item != nil {
-            navigationItem.rightBarButtonItem?.isEnabled = true
-            updateItem()
-//            var subtitle : String {
-//                switch sender.isOn {
-//                case true:
-//                    return "Ignoring Auto Snooze for this task."
-//                default:
-//                    return "Disabled Ignore Auto Snooze for this task."
-//                }
-//            }
-            showBanner(title: "Saved!")
-        }
-        setAnchorColor()
-    }
-
-    @IBOutlet var ignoreAutoSnoozeLabel: UILabel!
+    @IBOutlet var repeatDailyLabel: UILabel!
 
     // @IBOutlet var cells: [UITableViewCell]!
 
@@ -71,8 +54,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
 //    @IBOutlet weak var repeatLabel: UILabel!
 //    @IBOutlet weak var repeatHowOftenLabel: UILabel!
-    @IBOutlet var repeatCellTitleLabel: UILabel!
-    @IBOutlet var repeatCellDetailLabel: UILabel!
+//    @IBOutlet var repeatCellTitleLabel: UILabel!
+//    @IBOutlet var repeatCellDetailLabel: UILabel!
 
     let realmDispatchQueueLabel: String = "background"
 
@@ -90,11 +73,11 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         anchorImageView.image = anchorImageView.image?.withRenderingMode(.alwaysTemplate)
         setAnchorColor()
 
-        ignoreAutoSnoozeLabel.theme_textColor = GlobalPicker.cellTextColors
-        repeatCellTitleLabel.theme_textColor = GlobalPicker.cellTextColors
-        repeatCellDetailLabel.textColor = .lightGray
-        disableAutoSnoozeSwitch.layer.cornerRadius = 15
-        disableAutoSnoozeSwitch.layer.masksToBounds = true
+//        repeatDailyLabel.theme_textColor = GlobalPicker.cellTextColors
+//        repeatCellTitleLabel.theme_textColor = GlobalPicker.cellTextColors
+//        repeatCellDetailLabel.textColor = .lightGray
+        repeatDailySwitch.layer.cornerRadius = 15
+        repeatDailySwitch.layer.masksToBounds = true
     }
 
     @objc func dismissView() {
@@ -139,7 +122,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             segmentSelection.selectedSegmentIndex = item?.segment ?? 0
             notesTextView.text = item?.notes
             // print("Items's uuidString is \((item?.uuidString)!)")
-            disableAutoSnoozeSwitch.setOn(item?.disableAutoSnooze ?? false, animated: false)
+            // repeatDailySwitch.setOn(item?.disableAutoSnooze ?? false, animated: false)
             setAnchorColor()
 
             title = "Edit Task"
@@ -235,7 +218,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         if indexPath.section == 3 {
             let haptic = UIImpactFeedbackGenerator(style: .light)
             haptic.impactOccurred()
-            disableAutoSnoozeSwitch.setOn(!disableAutoSnoozeSwitch.isOn, animated: true)
+            repeatDailySwitch.setOn(!repeatDailySwitch.isOn, animated: true)
             setAnchorColor()
             if item != nil {
                 navigationItem.rightBarButtonItem?.isEnabled = true
@@ -319,14 +302,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             newItem.segment = segment
             newItem.dateModified = firstTriggerDate(segment: segment)
             newItem.notes = notes
-            newItem.disableAutoSnooze = disableAutoSnoozeSwitch.isOn
+            // newItem.disableAutoSnooze = repeatDailySwitch.isOn
             print("new item's uuidString: \(newItem.uuidString)")
             // save to realm
             saveItem(item: newItem)
             if getAutoSnoozeStatus() {
-                scheduleAutoSnoozeNotifications(title: title, notes: notes, segment: segment, uuidString: newItem.uuidString, firstDate: newItem.dateModified!)
+                scheduleAutoSnoozeNotifications(title: title, notes: notes, segment: segment, uuidString: newItem.uuidString, firstDate: newItem.dateModified)
             } else {
-                scheduleNewNotification(title: title, notes: notes, segment: segment, uuidString: newItem.uuidString, firstDate: newItem.dateModified!)
+                scheduleNewNotification(title: title, notes: notes, segment: segment, uuidString: newItem.uuidString, firstDate: newItem.dateModified)
             }
         } else {
             updateItem()
@@ -352,7 +335,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
                 self.item!.title = self.taskTextField.text
                 self.item!.segment = self.segmentSelection.selectedSegmentIndex
                 self.item!.notes = self.notesTextView.text
-                self.item!.disableAutoSnooze = disableAutoSnoozeSwitch.isOn
+                // self.item!.disableAutoSnooze = repeatDailySwitch.isOn
             }
         } catch {
             print("Error updating item: \(error)")
@@ -360,9 +343,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         removeNotification(uuidString: ["\(self.item!.uuidString)0", "\(self.item!.uuidString)1", "\(self.item!.uuidString)2", "\(self.item!.uuidString)3"])
 
         if getAutoSnoozeStatus() {
-            scheduleAutoSnoozeNotifications(title: item!.title!, notes: item!.notes, segment: item!.segment, uuidString: item!.uuidString, firstDate: item!.dateModified!)
+            scheduleAutoSnoozeNotifications(title: item!.title!, notes: item!.notes, segment: item!.segment, uuidString: item!.uuidString, firstDate: item!.dateModified)
         } else {
-            scheduleNewNotification(title: item!.title!, notes: item!.notes, segment: item!.segment, uuidString: item!.uuidString, firstDate: item!.dateModified!)
+            scheduleNewNotification(title: item!.title!, notes: item!.notes, segment: item!.segment, uuidString: item!.uuidString, firstDate: item!.dateModified)
         }
     }
 

@@ -377,25 +377,25 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             }
         }
 
-        var indicatorImage: UIImageView {
-            let imageView = UIImageView()
-            if (self.items?[indexPath.row].repeats)! {
-                imageView.image = UIImage(imageLiteralResourceName: "repeat")
-                return imageView
-            } else if (self.items?[indexPath.row].disableAutoSnooze)! {
-                imageView.image = UIImage(imageLiteralResourceName: "snooze-strike")
-                return imageView
-            } else {
-                return UIImageView()
-            }
-        }
+//        var indicatorImage: UIImageView {
+//            let imageView = UIImageView()
+//            if (self.items?[indexPath.row].repeats)! {
+//                imageView.image = UIImage(imageLiteralResourceName: "repeat")
+//                return imageView
+//            } else if (self.items?[indexPath.row].disableAutoSnooze)! {
+//                imageView.image = UIImage(imageLiteralResourceName: "snooze-strike")
+//                return imageView
+//            } else {
+//                return UIImageView()
+//            }
+//        }
 
         // cell.delegate = self
 
         cell.cellTitleLabel?.text = cellTitle
         cell.cellSubtitleLabel?.text = cellSubtitle
-        cell.cellIndicatorImage.image? = indicatorImage.image?.withRenderingMode(.alwaysTemplate) ?? UIImage()
-        cell.cellIndicatorImage.theme_tintColor = GlobalPicker.cellIndicatorTint
+        // cell.cellIndicatorImage.image? = indicatorImage.image?.withRenderingMode(.alwaysTemplate) ?? UIImage()
+        // cell.cellIndicatorImage.theme_tintColor = GlobalPicker.cellIndicatorTint
 
         cell.cellTitleLabel?.theme_textColor = GlobalPicker.cellTextColors
         cell.repeatLabel?.theme_textColor = GlobalPicker.barTextColor
@@ -522,7 +522,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @objc private func clearAll() {
         items?.forEach { item in
             // TODO: Might be better to just grab a whole filtered list and then delete from there
-            item.syncDelete() // item.deleteItem()
+            item.softDelete() // item.deleteItem()
             updateBadge()
         }
         endEdit()
@@ -541,7 +541,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 }
             }
             itemArray.forEach { item in
-                item.syncDelete() // item.deleteItem()
+                item.softDelete() // item.deleteItem()
                 updateBadge()
             }
             // This will be handled by the realmSync func
@@ -614,7 +614,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // Override empty delete func from super
     func updateModel(at indexPath: IndexPath) {
         if let item = items?[indexPath.row] {
-            item.syncDelete() // item.deleteItem()
+            item.softDelete() // item.deleteItem()
             updateBadge()
         }
     }
@@ -624,21 +624,21 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         item.snooze()
     }
 
-    func setItemToIgnore(indexPath: IndexPath, ignore: Bool) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                do {
-                    try! realm.write {
-                        if let item = self.items?[indexPath.row] {
-                            item.disableAutoSnooze = ignore
-                        }
-                    }
-                }
-            }
-        }
-        OptionsTableViewController().refreshNotifications()
-    }
+//    func setItemToIgnore(indexPath: IndexPath, ignore: Bool) {
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                do {
+//                    try! realm.write {
+//                        if let item = self.items?[indexPath.row] {
+//                            item.disableAutoSnooze = ignore
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        OptionsTableViewController().refreshNotifications()
+//    }
 
     // TODO: Animated reload would be nice
 //    func reloadTableView() {
@@ -759,7 +759,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
 //    private func deleteItem(item: Items) {
-//        item.syncDelete() // item.deleteItem()
+//        item.softDelete() // item.deleteItem()
 //        updateBadge()
 //    }
 //
@@ -880,10 +880,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 let realm = try! Realm()
                 let items = realm.objects(Items.self).filter("segment = \(fromSegment) AND isDeleted = \(false) AND disableAutoSnooze = %@", false)
                 items.forEach { item in
-                    if let itemDate = item.dateModified {
-                        if itemDate < Date() {
-                            item.snooze()
-                        }
+                    if item.dateModified < Date() {
+                        item.snooze()
                     }
                 }
             }
