@@ -32,6 +32,35 @@ import UserNotifications
     override static func primaryKey() -> String? {
         return "uuidString"
     }
+    
+    convenience init(title: String, segment: Int, repeats: Bool, notes: String?) {
+        self.init()
+        self.title = title
+        self.segment = segment
+        self.repeats = repeats
+        self.notes = notes
+    }
+    
+    func addNewItem(item: Items) {
+        DispatchQueue(label: Items.realmDispatchQueueLabel).async {
+            autoreleasepool{
+                let realm = try! Realm()
+                realm.add(self, update: true)
+            }
+        }
+        createNotification()
+    }
+    
+    func updateItem(item: Items) {
+        DispatchQueue(label: Items.realmDispatchQueueLabel).async {
+            autoreleasepool{
+                let realm = try! Realm()
+                realm.add(self, update: true)
+            }
+        }
+        removeNotification()
+        createNotification()
+    }
 
     func completeItem(completeUntil: Date) {
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
@@ -153,6 +182,39 @@ import UserNotifications
                 }
             }
         }
+    }
+    
+    static func firstTriggerDate(segment: Int) -> Date {
+        let tomorrow = Date().startOfNextDay
+        var dateComponents = DateComponents()
+        var segmentTime = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: Date())
+        segmentTime.hour = Options.getOptionHour(segment: segment)
+        segmentTime.minute = Options.getOptionMinute(segment: segment)
+        segmentTime.second = 0
+        // TODO: This might cause problems
+        if Date() > segmentTime.date! {
+            // print("Setting item date for tomorrow")
+            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: tomorrow)
+        } else {
+            // print("Setting item date for today")
+            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: Date())
+        }
+        dateComponents.hour = Options.getOptionHour(segment: segment)
+        dateComponents.minute = Options.getOptionMinute(segment: segment)
+        dateComponents.second = 0
+        // print("Setting first trigger date for: \(dateComponents)")
+        return dateComponents.date!
+    }
+    
+    static func getCountForSegment(segment: Int) -> Int {
+        var count = Int()
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                count = realm.objects(Items.self).filter("segment = \(segment)").count
+            }
+        }
+        return count
     }
 }
 

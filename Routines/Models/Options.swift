@@ -59,12 +59,138 @@ import RealmSwift
         DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.primaryKey()) {
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     badge = options.badge
                 }
             }
         }
         return badge
+    }
+    
+    static func getTime(timePeriod: Int, timeOption: Date?) -> Date {
+        var time: Date
+        let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        
+        if let setTime = timeOption {
+            time = setTime
+        } else {
+            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
+        }
+        
+        return time
+    }
+    
+    static func getHour(date: Date) -> Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH"
+        let hour = dateFormatter.string(from: date)
+        return Int(hour)!
+    }
+    
+    static func getMinute(date: Date) -> Int {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "mm"
+        let minutes = dateFormatter.string(from: date)
+        return Int(minutes)!
+    }
+    
+    static func getOptionHour(segment: Int) -> Int {
+        var hour = Int()
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                    switch segment {
+                    case 1:
+                        hour = options.afternoonHour
+                    case 2:
+                        hour = options.eveningHour
+                    case 3:
+                        hour = options.nightHour
+                    default:
+                        hour = options.morningHour
+                    }
+                }
+            }
+        }
+        return hour
+    }
+    
+    static func getOptionMinute(segment: Int) -> Int {
+        var minute = Int()
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+                switch segment {
+                case 1:
+                    minute = (options?.afternoonMinute)!
+                case 2:
+                    minute = (options?.eveningMinute)!
+                case 3:
+                    minute = (options?.nightMinute)!
+                default:
+                    minute = (options?.morningMinute)!
+                }
+            }
+        }
+        return minute
+    }
+    
+    static func getSegmentNotification(segment: Int) -> Bool {
+        var enabled = false
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                    switch segment {
+                    case 1:
+                        enabled = options.afternoonNotificationsOn
+                    case 2:
+                        enabled = options.eveningNotificationsOn
+                    case 3:
+                        enabled = options.nightNotificationsOn
+                    default:
+                        enabled = options.morningNotificationsOn
+                    }
+                }
+            }
+        }
+        return enabled
+    }
+    
+    static func getCurrentSegmentFromTime() -> Int {
+        let afternoon = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 1), minute: Options.getOptionMinute(segment: 1), second: 0, of: Date())
+        let evening = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 2), minute: Options.getOptionMinute(segment: 2), second: 0, of: Date())
+        let night = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 3), minute: Options.getOptionMinute(segment: 3), second: 0, of: Date())
+        
+        var currentSegment = 0
+        
+        switch Date() {
+        case _ where Date() < afternoon!:
+            currentSegment = 0
+        case _ where Date() < evening!:
+            currentSegment = 1
+        case _ where Date() < night!:
+            currentSegment = 2
+        case _ where Date() > night!:
+            currentSegment = 3
+        default:
+            currentSegment = 3
+        }
+        // print("getCurrentSegmentFromTime: \(currentSegment)")
+        return currentSegment
+    }
+    
+    static func getDateFromComponents(hour: Int, minute: Int) -> Date {
+        var dateComponent = DateComponents()
+        dateComponent.calendar = Calendar.autoupdatingCurrent
+        dateComponent.timeZone = TimeZone.autoupdatingCurrent
+        dateComponent.hour = hour
+        dateComponent.minute = minute
+        return dateComponent.date!
     }
 }
 
