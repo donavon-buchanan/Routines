@@ -15,7 +15,7 @@ import UserNotifications
 // TODO: Rename this. Shouldn't be plural. But causes realm migration complication.
 
 @objcMembers class Items: Object {
-    let realmDispatchQueueLabel: String = "background"
+    static let realmDispatchQueueLabel: String = "background"
 
     dynamic var title: String?
     dynamic var dateModified = Date()
@@ -34,7 +34,7 @@ import UserNotifications
     }
 
     func completeItem(completeUntil: Date) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
@@ -53,7 +53,7 @@ import UserNotifications
     // Sync soft delete
     func softDelete() {
         removeNotification(uuidStrings: ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3", uuidString])
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
@@ -90,7 +90,7 @@ import UserNotifications
         removeNotification()
 
         // print("running deleteItem")
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
@@ -121,7 +121,7 @@ import UserNotifications
         // TODO: Create notification when task is added
     }
 
-    func updateAppBadgeCount() {
+    static func updateAppBadgeCount() {
         if Options.getBadgeOption() {
             // print("updating app badge number")
             DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -141,7 +141,7 @@ import UserNotifications
     }
 
     func setDailyRepeat(_ bool: Bool) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
