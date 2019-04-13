@@ -53,7 +53,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 //    @IBOutlet var repeatCellTitleLabel: UILabel!
 //    @IBOutlet var repeatCellDetailLabel: UILabel!
 
-    let realmDispatchQueueLabel: String = "background"
+    //let realmDispatchQueueLabel: String = "background"
 
     var item: Items?
     // var timeArray: [DateComponents?] = []
@@ -252,6 +252,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     @objc func saveButtonPressed() {
+        //TODO: Use the Items convenience init
         addNewItem(title: taskTextField.text!, date: Date(), segment: segmentSelection.selectedSegmentIndex, notes: notesTextView.text)
         // // print("Adding item with uuidString: \(self.uuidString)")
         // self.tabBarController?.tabBar.isHidden = false
