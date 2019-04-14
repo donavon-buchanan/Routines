@@ -59,7 +59,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     fileprivate func revealAllTasks() {
         if linesBarButtonSelected {
             linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
-            loadItems(segment: segment)
+            loadItemsForSegment(segment: segment)
             resetTableView()
         } else {
             title = "All Tasks"
@@ -150,10 +150,11 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         setViewBackgroundGraphic(enabled: true)
 
-        loadItems(segment: segment)
-
         // Double check to save selected tab and avoid infrequent bug
-        saveSelectedTab(index: tabBarController!.selectedIndex)
+        // saveSelectedTab(index: tabBarController!.selectedIndex)
+
+        loadItems()
+
         title = setNavTitle()
     }
 
@@ -184,37 +185,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        navigationItem.titleView?.setNeedsUpdateConstraints()
     }
 
-    func getSegmentTimeString(segment: Int) -> String {
-        var timeString: String = ""
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-                var timeOption = DateComponents()
-                timeOption.calendar = Calendar.autoupdatingCurrent
-                timeOption.timeZone = TimeZone.autoupdatingCurrent
-
-                switch segment {
-                case 1:
-                    timeOption.hour = options?.afternoonHour
-                    timeOption.minute = options?.afternoonMinute
-                case 2:
-                    timeOption.hour = options?.eveningHour
-                    timeOption.minute = options?.eveningMinute
-                case 3:
-                    timeOption.hour = options?.nightHour
-                    timeOption.minute = options?.nightMinute
-                default:
-                    timeOption.hour = options?.morningHour
-                    timeOption.minute = options?.morningMinute
-                }
-
-                timeString = DateFormatter.localizedString(from: timeOption.date!, dateStyle: .none, timeStyle: .short)
-            }
-        }
-        return timeString
-    }
-
     func setNavTitle() -> String {
         // print("Setting table title")
         switch segment {
@@ -229,42 +199,40 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         }
     }
 
-    func tabBarController(_ tabBarController: UITabBarController, didSelect _: UIViewController) {
-        saveSelectedTab(index: tabBarController.selectedIndex)
-    }
+//    func tabBarController(_ tabBarController: UITabBarController, didSelect _: UIViewController) {
+//        saveSelectedTab(index: tabBarController.selectedIndex)
+//    }
 
-    func saveSelectedTab(index: Int) {
-        // print("saving tab as index: \(index)")
-        // let selectedIndex = self.tabBarController?.selectedIndex
-        DispatchQueue(label: realmDispatchQueueLabel).async {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
-                    do {
-                        try realm.write {
-                            options.selectedIndex = index
-                        }
-                    } catch {
-                        // print("Error saving selected tab")
-                    }
-                }
-            }
-        }
-    }
-
-    func getSelectedTab() -> Int {
-        var index = Int()
-
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
-                    index = options.selectedIndex
-                }
-            }
-        }
-        return index
-    }
+//    func saveSelectedTab(index: Int) {
+//        DispatchQueue(label: realmDispatchQueueLabel).async {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+//                    do {
+//                        try realm.write {
+//                            options.selectedIndex = index
+//                        }
+//                    } catch {
+//                        // print("Error saving selected tab")
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    func getSelectedTab() -> Int {
+//        var index = Int()
+//
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+//                    index = options.selectedIndex
+//                }
+//            }
+//        }
+//        return index
+//    }
 
 //    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
 //        self.selectedTab = tabBarController.selectedIndex
@@ -496,7 +464,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 autoreleasepool {
                     self.linesBarButtonSelected = false
                     self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
-                    self.loadItems(segment: self.segment)
+                    self.loadItemsForSegment(segment: self.segment)
                     self.changeTabBar(hidden: false, animated: true)
                 }
             }
@@ -650,8 +618,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // MARK: - Realm
 
-    let optionsKey = "optionsKey"
-
     var items: Results<Items>?
 
     public var segment = Int()
@@ -665,25 +631,35 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        }
 //    }
 
-    func loadItems(segment: Int) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+    func loadItems() {
+        DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
-                self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date()).sorted(byKeyPath: "dateModified", ascending: true)
+                self.items = realm.objects(Items.self)
             }
         }
-        realmSync(itemsToObserve: items!)
     }
 
-    func loadAllItems() {
-        // Sort by segment to put in order of the day
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+    func loadItemsForSegment(segment: Int) -> Results<Items>? {
+        weak var items: Results<Items>?
+        DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
-                let realm = try! Realm()
-                self.items = realm.objects(Items.self).filter("isDeleted = \(false) AND completeUntil < %@", Date()).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
+                // let realm = try! Realm()
+                items = self.items?.filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date()).sorted(byKeyPath: "dateModified", ascending: true)
             }
         }
-        realmSync(itemsToObserve: items!)
+        return items
+    }
+
+    func loadAllItems() -> Results<Items>? {
+        weak var items: Results<Items>?
+        // Sort by segment to put in order of the day
+        DispatchQueue(label: realmDispatchQueueLabel).async {
+            autoreleasepool {
+                items = self.items?.filter("isDeleted = \(false) AND completeUntil < %@", Date()).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
+            }
+        }
+        return items
     }
 
 //    private func deleteItem(item: Items) {
@@ -701,17 +677,23 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             switch changes {
             case .initial:
                 // Results are now populated and can be accessed without blocking the UI
+                #if DEBUG
+                    print("calling initial load on realm for table")
+                #endif
                 tableView.reloadData()
                 self.updateBadge()
             case let .update(_, deletions, insertions, modifications):
+                #if DEBUG
+                    print("calling update load on realm for table")
+                #endif
                 // Query results have changed, so apply them to the UITableView
                 tableView.performBatchUpdates({
                     tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) },
-                                         with: .automatic)
+                                         with: .right)
                     tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) },
-                                         with: .automatic)
+                                         with: .left)
                     tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) },
-                                         with: .automatic)
+                                         with: .fade)
                 }, completion: nil)
                 self.updateBadge()
             case let .error(error):
@@ -729,7 +711,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     open func setAppearance(segment: Int) {
         // print("Setting theme")
-        if getDarkModeStatus() {
+        if Options.getDarkModeStatus() {
             switch segment {
             case 0:
                 Themes.switchTo(theme: .morningDark)
@@ -758,95 +740,64 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         }
     }
 
-    public func getDarkModeStatus() -> Bool {
-        var darkMode = false
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                do {
-                    let realm = try! Realm()
-                    if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
-                        darkMode = options.darkMode
-                    }
-                }
-            }
-        }
-        return darkMode
-    }
+//    public func getDarkModeStatus() -> Bool {
+//        var darkMode = false
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                do {
+//                    let realm = try! Realm()
+//                    if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+//                        darkMode = options.darkMode
+//                    }
+//                }
+//            }
+//        }
+//        return darkMode
+//    }
 
-    func getDateFromComponents(hour: Int, minute: Int) -> Date {
-        var dateComponent = DateComponents()
-        dateComponent.calendar = Calendar.autoupdatingCurrent
-        dateComponent.timeZone = TimeZone.autoupdatingCurrent
-        dateComponent.hour = hour
-        dateComponent.minute = minute
-        return dateComponent.date!
-    }
+//    func getOptionHour(segment: Int) -> Int {
+//        var hour = Int()
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+//                    switch segment {
+//                    case 1:
+//                        hour = options.afternoonHour
+//                    case 2:
+//                        hour = options.eveningHour
+//                    case 3:
+//                        hour = options.nightHour
+//                    default:
+//                        hour = options.morningHour
+//                    }
+//                }
+//            }
+//        }
+//        return hour
+//    }
 
-    func getCurrentSegmentFromTime() -> Int {
-        let afternoon = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 1), minute: getOptionMinute(segment: 1), second: 0, of: Date())
-        let evening = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 2), minute: getOptionMinute(segment: 2), second: 0, of: Date())
-        let night = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 3), minute: getOptionMinute(segment: 3), second: 0, of: Date())
-
-        var currentSegment = 0
-
-        switch Date() {
-        case _ where Date() < afternoon!:
-            currentSegment = 0
-        case _ where Date() < evening!:
-            currentSegment = 1
-        case _ where Date() < night!:
-            currentSegment = 2
-        case _ where Date() > night!:
-            currentSegment = 3
-        default:
-            currentSegment = 3
-        }
-        return currentSegment
-    }
-
-    func getOptionHour(segment: Int) -> Int {
-        var hour = Int()
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
-                    switch segment {
-                    case 1:
-                        hour = options.afternoonHour
-                    case 2:
-                        hour = options.eveningHour
-                    case 3:
-                        hour = options.nightHour
-                    default:
-                        hour = options.morningHour
-                    }
-                }
-            }
-        }
-        return hour
-    }
-
-    func getOptionMinute(segment: Int) -> Int {
-        var minute = Int()
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-                switch segment {
-                case 1:
-                    minute = (options?.afternoonMinute)!
-                case 2:
-                    minute = (options?.eveningMinute)!
-                case 3:
-                    minute = (options?.nightMinute)!
-                default:
-                    minute = (options?.morningMinute)!
-                }
-            }
-        }
-
-        return minute
-    }
+//    func getOptionMinute(segment: Int) -> Int {
+//        var minute = Int()
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+//                switch segment {
+//                case 1:
+//                    minute = (options?.afternoonMinute)!
+//                case 2:
+//                    minute = (options?.eveningMinute)!
+//                case 3:
+//                    minute = (options?.nightMinute)!
+//                default:
+//                    minute = (options?.morningMinute)!
+//                }
+//            }
+//        }
+//
+//        return minute
+//    }
 
     // MARK: - Banners
 
@@ -888,7 +839,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         // Reduce the corner radius (applicable to layouts featuring rounded corners).
         (alert.backgroundView as? CornerRoundingView)?.cornerRadius = 10
 
-        if getDarkModeStatus() {
+        if Options.getDarkModeStatus() {
             config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
             config.dimModeAccessibilityLabel = "Dismiss Warning"
         } else {
