@@ -897,7 +897,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
-                    let badgeCount = realm.objects(Items.self).filter("dateModified < %@ AND isDeleted = \(false)", Date()).count
+                    let items = realm.objects(Items.self).filter("dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", Date(), Date())
+                    var badgeCount = 0
+                    items.forEach { item in
+                        if item.firstTriggerDate(segment: item.segment) < Date() {
+                            badgeCount += 1
+                        }
+                    }
                     DispatchQueue.main.async {
                         autoreleasepool {
                             UIApplication.shared.applicationIconBadgeNumber = badgeCount

@@ -201,24 +201,24 @@ import UserNotifications
         // TODO: Create notification when task is added
     }
 
-    static func updateAppBadgeCount() {
-        if Options.getBadgeOption() {
-            // print("updating app badge number")
-            DispatchQueue(label: realmDispatchQueueLabel).sync {
-                autoreleasepool {
-                    let realm = try! Realm()
-                    let badgeCount = realm.objects(Items.self).filter("dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", Date(), Date()).count
-                    DispatchQueue.main.async {
-                        autoreleasepool {
-                            UIApplication.shared.applicationIconBadgeNumber = badgeCount
-                        }
-                    }
-                }
-            }
-        } else {
-            UIApplication.shared.applicationIconBadgeNumber = 0
-        }
-    }
+//    static func updateAppBadgeCount() {
+//        if Options.getBadgeOption() {
+//            // print("updating app badge number")
+//            DispatchQueue(label: realmDispatchQueueLabel).sync {
+//                autoreleasepool {
+//                    let realm = try! Realm()
+//                    let badgeCount = realm.objects(Items.self).filter("dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", Date(), Date()).count
+//                    DispatchQueue.main.async {
+//                        autoreleasepool {
+//                            UIApplication.shared.applicationIconBadgeNumber = badgeCount
+//                        }
+//                    }
+//                }
+//            }
+//        } else {
+//            UIApplication.shared.applicationIconBadgeNumber = 0
+//        }
+//    }
 
     func setDailyRepeat(_ bool: Bool) {
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
@@ -235,7 +235,7 @@ import UserNotifications
         }
     }
 
-    static func firstTriggerDate(segment: Int) -> Date {
+    func firstTriggerDate(segment: Int) -> Date {
         let tomorrow = Date().startOfNextDay
         var dateComponents = DateComponents()
         var segmentTime = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: Date())
