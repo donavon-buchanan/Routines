@@ -63,6 +63,7 @@ import UserNotifications
                 let realm = try! Realm()
                 do {
                     try realm.write {
+                        self.dateModified = Date()
                         self.title = title
                         self.segment = segment
                         self.repeats = repeats
@@ -79,15 +80,46 @@ import UserNotifications
     }
 
     func completeItem(completeUntil: Date) {
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                do {
-                    try realm.write {
-                        self.completeUntil = completeUntil
+        if !repeats {
+            softDelete()
+        } else {
+            #if DEBUG
+                print("marking completed until: \(completeUntil)")
+            #endif
+            DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+                autoreleasepool {
+                    let realm = try! Realm()
+                    do {
+                        try realm.write {
+                            self.completeUntil = completeUntil
+                        }
+                    } catch {
+                        // print("failed to save completeUntil")
+                        fatalError("Error completing item: \(error)")
                     }
-                } catch {
-                    // print("failed to save completeUntil")
+                }
+            }
+        }
+    }
+
+    func completeItem() {
+        if !repeats {
+            softDelete()
+        } else {
+            #if DEBUG
+                print("marking completed until: \(completeUntil)")
+            #endif
+            DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+                autoreleasepool {
+                    let realm = try! Realm()
+                    do {
+                        try realm.write {
+                            self.completeUntil = self.dateModified.startOfNextDay
+                        }
+                    } catch {
+                        // print("failed to save completeUntil")
+                        fatalError("Error completing item: \(error)")
+                    }
                 }
             }
         }
@@ -97,6 +129,9 @@ import UserNotifications
 
     // Sync soft delete
     func softDelete() {
+        #if DEBUG
+            print("soft deleting item")
+        #endif
         removeNotification(uuidStrings: ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3", uuidString])
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -106,7 +141,7 @@ import UserNotifications
                         self.isDeleted = true
                     }
                 } catch {
-                    // print("softDelete failed")
+                    fatalError("Error with softDelete: \(error)")
                 }
             }
             // print("softDelete completed")
