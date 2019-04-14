@@ -42,7 +42,7 @@ import UserNotifications
     }
 
     func addNewItem(item _: Items) {
-        DispatchQueue(label: Items.realmDispatchQueueLabel).async {
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
@@ -57,12 +57,16 @@ import UserNotifications
         addNewNotification()
     }
 
-    func updateItem(item _: Items) {
-        DispatchQueue(label: Items.realmDispatchQueueLabel).async {
+    func updateItem(title: String, segment: Int, repeats: Bool, notes: String?) {
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
                     try realm.write {
+                        self.title = title
+                        self.segment = segment
+                        self.repeats = repeats
+                        self.notes = notes
                         realm.add(self, update: true)
                     }
                 } catch {
@@ -224,6 +228,17 @@ import UserNotifications
             autoreleasepool {
                 let realm = try! Realm()
                 count = realm.objects(Items.self).filter("segment = \(segment)").count
+            }
+        }
+        return count
+    }
+
+    static func getItemCount() -> Int {
+        var count = Int()
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                count = realm.objects(Items.self).count
             }
         }
         return count

@@ -20,9 +20,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     @IBOutlet var repeatDailySwitch: UISwitch!
     @IBAction func repeatDailySwitchToggled(_: UISwitch) {
-        if item != nil {
-            showBanner(title: "Repeat Option Saved")
-            // print("repeat toggled to \(sender.isOn)")
+        if item != nil, taskTextField.hasText {
+            navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
 
@@ -112,6 +111,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             taskTextField.text = item?.title
             segmentSelection.selectedSegmentIndex = item?.segment ?? 0
             notesTextView.text = item?.notes
+            repeatDailySwitch.setOn(item!.repeats, animated: false)
             // // print("Items's uuidString is \((item?.uuidString)!)")
             // repeatDailySwitch.setOn(item?.disableAutoSnooze ?? false, animated: false)
 
@@ -209,12 +209,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             let haptic = UIImpactFeedbackGenerator(style: .light)
             haptic.impactOccurred()
             repeatDailySwitch.setOn(!repeatDailySwitch.isOn, animated: true)
-            if let updatedItem = item {
+            if item != nil, taskTextField.hasText {
                 navigationItem.rightBarButtonItem?.isEnabled = true
-                updatedItem.repeats = repeatDailySwitch.isOn
-                updatedItem.updateItem(item: updatedItem)
-                showBanner(title: "Repeat Option Saved")
-                // print("repeat toggled to \(repeatDailySwitch.isOn)")
             }
         }
     }
@@ -232,7 +228,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
 //    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
 //        if let destination = segue.destination as? TableViewController {
-//            destination.resetTableView()
+//            if let currentItem = item {
+//                destination.updateItem(item: currentItem)
+//            } else {
+//                let newItem = Items(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
+//                destination.addItem(item: newItem)
+//            }
 //        }
 //    }
 
@@ -253,8 +254,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     @objc func saveButtonPressed() {
-        let item = Items(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
-        item.addNewItem(item: item)
+        if let updatedItem = item {
+            updatedItem.updateItem(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
+        } else {
+            let item = Items(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
+            item.addNewItem(item: item)
+        }
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
 
