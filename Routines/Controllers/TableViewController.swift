@@ -153,21 +153,19 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         // Double check to save selected tab and avoid infrequent bug
         // saveSelectedTab(index: tabBarController!.selectedIndex)
 
-        loadItems()
-
         title = setNavTitle()
     }
 
     @objc func appBecameActive() {
-        removeDeliveredNotifications()
+        // removeDeliveredNotifications()
         updateBadge()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // print("View Will Appear")
-
-        removeDeliveredNotifications()
+        // removeDeliveredNotifications()
+        loadItemsForSegment(segment: segment)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -588,25 +586,25 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // MARK: - Manage Notifications
 
-    let center = UNUserNotificationCenter.current()
-
-    func removeNotification(uuidString: [String]) {
-        // print("Removing Notifications")
-        let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: uuidString)
-    }
-
-    func removeDeliveredNotifications() {
-        let center = UNUserNotificationCenter.current()
-        center.getDeliveredNotifications { notifications in
-            for notification in notifications {
-                // TODO: If repeats, remove and then add again
-                // Get the ID and then get the properties of the specific object
-                // Need to get all the same notification functions used in other views to be able to create
-                center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
-            }
-        }
-    }
+//    let center = UNUserNotificationCenter.current()
+//
+//    func removeNotification(uuidString: [String]) {
+//        // print("Removing Notifications")
+//        let center = UNUserNotificationCenter.current()
+//        center.removePendingNotificationRequests(withIdentifiers: uuidString)
+//    }
+//
+//    func removeDeliveredNotifications() {
+//        let center = UNUserNotificationCenter.current()
+//        center.getDeliveredNotifications { notifications in
+//            for notification in notifications {
+//                // TODO: If repeats, remove and then add again
+//                // Get the ID and then get the properties of the specific object
+//                // Need to get all the same notification functions used in other views to be able to create
+//                center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
+//            }
+//        }
+//    }
 
     // Notification Settings Screen
 //    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
@@ -620,7 +618,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     var items: Results<Items>?
 
-    public var segment = Int()
+    var segment = Int()
 
 //    public func refreshItems() {
 //        DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -631,35 +629,34 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        }
 //    }
 
-    func loadItems() {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+//    func loadItems() {
+//        DispatchQueue(label: realmDispatchQueueLabel).async {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                self.items = realm.objects(Items.self)
+//            }
+//        }
+//    }
+
+    func loadItemsForSegment(segment: Int) {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                self.items = realm.objects(Items.self)
+                self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date()).sorted(byKeyPath: "dateModified", ascending: true)
             }
         }
+        realmSync(itemsToObserve: items)
     }
 
-    func loadItemsForSegment(segment: Int) -> Results<Items>? {
-        weak var items: Results<Items>?
-        DispatchQueue(label: realmDispatchQueueLabel).async {
-            autoreleasepool {
-                // let realm = try! Realm()
-                items = self.items?.filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date()).sorted(byKeyPath: "dateModified", ascending: true)
-            }
-        }
-        return items
-    }
-
-    func loadAllItems() -> Results<Items>? {
-        weak var items: Results<Items>?
+    func loadAllItems() {
         // Sort by segment to put in order of the day
-        DispatchQueue(label: realmDispatchQueueLabel).async {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
-                items = self.items?.filter("isDeleted = \(false) AND completeUntil < %@", Date()).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
+                let realm = try! Realm()
+                self.items = realm.objects(Items.self).filter("isDeleted = \(false) AND completeUntil < %@", Date()).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
             }
         }
-        return items
+        realmSync(itemsToObserve: items)
     }
 
 //    private func deleteItem(item: Items) {
@@ -669,10 +666,10 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //
     var notificationToken: NotificationToken?
 
-    func realmSync(itemsToObserve _: Results<Items>) {
+    func realmSync(itemsToObserve: Results<Items>?) {
         // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
         // Observe Results Notifications
-        notificationToken = items?.observe { [self] (changes: RealmCollectionChange) in
+        notificationToken = itemsToObserve?.observe { [self] (changes: RealmCollectionChange) in
             guard let tableView = self.tableView else { return }
             switch changes {
             case .initial:
