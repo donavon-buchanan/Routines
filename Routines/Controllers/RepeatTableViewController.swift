@@ -41,7 +41,7 @@ class RepeatTableViewController: UITableViewController {
 
     func setUpUI() {
         let dummyLabel = UILabel()
-        if TableViewController().getDarkModeStatus() {
+        if Options.getDarkModeStatus() {
             dummyLabel.theme_textColor = GlobalPicker.barTextColor
         } else {
             dummyLabel.theme_textColor = GlobalPicker.cellIndicatorTint

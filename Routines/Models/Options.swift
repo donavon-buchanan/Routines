@@ -205,6 +205,37 @@ import RealmSwift
         }
         return darkMode
     }
+
+    static func getSegmentTimeString(segment: Int) -> String {
+        var timeString: String = ""
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+                var timeOption = DateComponents()
+                timeOption.calendar = Calendar.autoupdatingCurrent
+                timeOption.timeZone = TimeZone.autoupdatingCurrent
+
+                switch segment {
+                case 1:
+                    timeOption.hour = options?.afternoonHour
+                    timeOption.minute = options?.afternoonMinute
+                case 2:
+                    timeOption.hour = options?.eveningHour
+                    timeOption.minute = options?.eveningMinute
+                case 3:
+                    timeOption.hour = options?.nightHour
+                    timeOption.minute = options?.nightMinute
+                default:
+                    timeOption.hour = options?.morningHour
+                    timeOption.minute = options?.morningMinute
+                }
+
+                timeString = DateFormatter.localizedString(from: timeOption.date!, dateStyle: .none, timeStyle: .short)
+            }
+        }
+        return timeString
+    }
 }
 
 extension Options: CKRecordConvertible {

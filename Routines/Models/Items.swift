@@ -45,7 +45,13 @@ import UserNotifications
         DispatchQueue(label: Items.realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
-                realm.add(self, update: true)
+                do {
+                    try realm.write {
+                        realm.add(self, update: true)
+                    }
+                } catch {
+                    fatalError("Error adding new item: \(error)")
+                }
             }
         }
         addNewNotification()
@@ -55,7 +61,13 @@ import UserNotifications
         DispatchQueue(label: Items.realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
-                realm.add(self, update: true)
+                do {
+                    try realm.write {
+                        realm.add(self, update: true)
+                    }
+                } catch {
+                    fatalError("Error updating item: \(error)")
+                }
             }
         }
         removeNotification()
