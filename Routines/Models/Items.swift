@@ -48,7 +48,7 @@ import UserNotifications
                 realm.add(self, update: true)
             }
         }
-        createNotification()
+        addNewNotification()
     }
     
     func updateItem(item: Items) {
@@ -59,10 +59,11 @@ import UserNotifications
             }
         }
         removeNotification()
-        createNotification()
+        addNewNotification()
     }
 
     func completeItem(completeUntil: Date) {
+        //TODO: Do something here
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -130,7 +131,7 @@ import UserNotifications
                     // print("failed to snooze item")
                 }
             }
-            createNotification()
+            addNewNotification()
             // print("snooze completed successfully")
         }
 
@@ -146,7 +147,7 @@ import UserNotifications
         }
     }
 
-    func createNotification() {
+    func addNewNotification() {
         // TODO: Create notification when task is added
     }
 
