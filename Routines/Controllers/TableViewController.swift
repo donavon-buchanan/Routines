@@ -158,6 +158,11 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     @objc func appBecameActive() {
         // removeDeliveredNotifications()
+        if linesBarButtonSelected {
+            loadAllItems()
+        } else {
+            loadItemsForSegment(segment: segment)
+        }
         updateBadge()
     }
 
@@ -308,7 +313,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     override func tableView(_: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let completeAction = UITableViewRowAction(style: .destructive, title: "Complete") { _, indexPath in
-            self.updateModel(at: indexPath)
+            self.completeItemAtIndex(at: indexPath)
         }
 
         let snoozeAction = UITableViewRowAction(style: .default, title: "Snooze") { _, indexPath in
@@ -323,7 +328,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @available(iOS 11.0, *)
     override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let completeAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
-            self.updateModel(at: indexPath)
+            self.completeItemAtIndex(at: indexPath)
             completion(true)
         }
         let snoozeAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
@@ -340,6 +345,21 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         snoozeAction.backgroundColor = .orange
         snoozeAction.image = UIImage(imageLiteralResourceName: "snooze")
         let actions = UISwipeActionsConfiguration(actions: [completeAction, snoozeAction])
+        return actions
+    }
+
+    @available(iOS 11.0, *)
+    override func tableView(_: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
+            self.deleteAlert(indexPath)
+            completion(true)
+        }
+        let trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: nil, action: nil)
+        let trashIcon = trashButton.image
+        if let icon = trashIcon {
+            deleteAction.image = icon
+        }
+        let actions = UISwipeActionsConfiguration(actions: [deleteAction])
         return actions
     }
 
@@ -364,7 +384,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
 //    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 //        if (editingStyle == .delete) {
-//            updateModel(at: indexPath)
+//            softDeleteAtIndex(at: indexPath)
 //            self.tableView.deleteRows(at: [indexPath], with: .left)
 //        }
 //    }
@@ -416,7 +436,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @objc private func clearAll() {
         items?.forEach { item in
             // TODO: Might be better to just grab a whole filtered list and then delete from there
-            item.softDelete() // item.deleteItem()
+            item.completeItem()
             updateBadge()
         }
         endEdit()
@@ -507,9 +527,16 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //    }
 
     // Override empty delete func from super
-    func updateModel(at indexPath: IndexPath) {
+    func softDeleteAtIndex(at indexPath: IndexPath) {
         if let item = items?[indexPath.row] {
-            item.softDelete() // item.deleteItem()
+            item.softDelete()
+            updateBadge()
+        }
+    }
+
+    func completeItemAtIndex(at indexPath: IndexPath) {
+        if let item = items?[indexPath.row] {
+            item.completeItem()
             updateBadge()
         }
     }
@@ -576,7 +603,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 }
             }
         }
-        AppDelegate().updateAppBadgeCount()
     }
 
     func getCountForTab(_ tab: Int) -> Int {
@@ -798,16 +824,26 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // MARK: - Banners
 
-    func showBanner(title: String?) {
-        SwiftMessages.defaultConfig.presentationContext = .window(windowLevel: .statusBar)
-        SwiftMessages.pauseBetweenMessages = 0
-        SwiftMessages.hideAll()
-        SwiftMessages.show { () -> UIView in
-            let banner = MessageView.viewFromNib(layout: .statusLine)
-            banner.configureTheme(.success)
-            banner.configureContent(title: "", body: title ?? "Task Snoozed")
-            return banner
-        }
+//    func showBanner(title: String?) {
+//        SwiftMessages.defaultConfig.presentationContext = .window(windowLevel: .normal)
+//        SwiftMessages.pauseBetweenMessages = 0
+//        SwiftMessages.hideAll()
+//        SwiftMessages.show { () -> UIView in
+//            let banner = MessageView.viewFromNib(layout: .statusLine)
+//            banner.configureTheme(.success)
+//            banner.configureContent(title: "", body: title ?? "Task Snoozed")
+//            return banner
+//        }
+//    }
+
+    func deleteAlert(_ indexPath: IndexPath) {
+        let alertController = UIAlertController(title: "Are you sure?", message: "This will permanently delete this task.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+            alertController.dismiss(animated: true, completion: nil)
+        }))
+        alertController.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
+            self.softDeleteAtIndex(at: indexPath)
+        }))
     }
 
     func showAlert(title: String, body: String) {
