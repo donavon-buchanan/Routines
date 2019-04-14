@@ -209,9 +209,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             let haptic = UIImpactFeedbackGenerator(style: .light)
             haptic.impactOccurred()
             repeatDailySwitch.setOn(!repeatDailySwitch.isOn, animated: true)
-            if item != nil {
+            if let updatedItem = item {
                 navigationItem.rightBarButtonItem?.isEnabled = true
-                updateItem()
+                updatedItem.repeats = repeatDailySwitch.isOn
+                updatedItem.updateItem(item: updatedItem)
                 showBanner(title: "Repeat Option Saved")
                 // print("repeat toggled to \(repeatDailySwitch.isOn)")
             }
@@ -257,36 +258,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
 
-    // TODO: This is near identical to another function here
-    func getSegmentNotificationOption(segment: Int) -> Bool {
-        var isOn = true
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                switch segment {
-                case 1:
-                    if let on = options?.afternoonNotificationsOn {
-                        isOn = on
-                    }
-                case 2:
-                    if let on = options?.eveningNotificationsOn {
-                        isOn = on
-                    }
-                case 3:
-                    if let on = options?.nightNotificationsOn {
-                        isOn = on
-                    }
-                default:
-                    if let on = options?.morningNotificationsOn {
-                        isOn = on
-                    }
-                }
-            }
-        }
-        return isOn
-    }
-
     func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
         // print("running scheduleNewNotification")
         let notificationCenter = UNUserNotificationCenter.current()
@@ -299,40 +270,30 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
                 return
             }
 
-            DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
-                autoreleasepool {
-                    let realm = try! Realm()
-                    let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                    switch segment {
-                    case 1:
-                        if (options?.afternoonNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-                        } else {
-                            // print("Afternoon Notifications toggled off. Aborting")
-                            return
-                        }
-                    case 2:
-                        if (options?.eveningNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-                        } else {
-                            // print("Afternoon Notifications toggled off. Aborting")
-                            return
-                        }
-                    case 3:
-                        if (options?.nightNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-                        } else {
-                            // print("Afternoon Notifications toggled off. Aborting")
-                            return
-                        }
-                    default:
-                        if (options?.morningNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-                        } else {
-                            // print("Afternoon Notifications toggled off. Aborting")
-                            return
-                        }
-                    }
+            switch segment {
+            case 1:
+                if (Options.getSegmentNotification(segment: 1)) {
+                    self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+                } else {
+                    return
+                }
+            case 2:
+                if (Options.getSegmentNotification(segment: 2)) {
+                    self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+                } else {
+                    return
+                }
+            case 3:
+                if (Options.getSegmentNotification(segment: 3)) {
+                    self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+                } else {
+                    return
+                }
+            default:
+                if (Options.getSegmentNotification(segment: 0)) {
+                    self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+                } else {
+                    return
                 }
             }
         }
