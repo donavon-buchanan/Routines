@@ -607,7 +607,14 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     func getCountForTab(_ tab: Int) -> Int {
         let realm = try! Realm()
-        return realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = %@ AND completeUntil < %@", tab, Date(), false, Date()).count
+        let items = realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", tab, Date(), Date())
+        var badgeCount = 0
+        items.forEach { item in
+            if item.firstTriggerDate(segment: item.segment) < Date() {
+                badgeCount += 1
+            }
+        }
+        return badgeCount
     }
 
     // MARK: - Manage Notifications
