@@ -31,30 +31,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        }
 //    }
 
-    func removeDeletedNotifications(id: String) {
-        // print("Clearing delivered notifications for deleted items")
-        let center = UNUserNotificationCenter.current()
-        center.removeDeliveredNotifications(withIdentifiers: ["\(id)0", "\(id)1", "\(id)2", "\(id)3", id])
-    }
-
-    func removeObsoleteNotifications(id: String) {
-        let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: ["\(id)0", "\(id)1", "\(id)2", "\(id)3", id])
-    }
-
-    func refreshNotifications() {
-        let realm = try! Realm()
-        let oldItems = realm.objects(Items.self).filter("isDeleted = \(true)")
-        oldItems.forEach { item in
-            removeDeletedNotifications(id: item.uuidString)
-            removeObsoleteNotifications(id: item.uuidString)
-        }
-
-        OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 0), segment: 0)
-        OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 1), segment: 1)
-        OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 2), segment: 2)
-        OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 3), segment: 3)
-    }
+//    func removeDeletedNotifications(id: String) {
+//        // print("Clearing delivered notifications for deleted items")
+//        let center = UNUserNotificationCenter.current()
+//        center.removeDeliveredNotifications(withIdentifiers: ["\(id)0", "\(id)1", "\(id)2", "\(id)3", id])
+//    }
+//
+//    func removeObsoleteNotifications(id: String) {
+//        let center = UNUserNotificationCenter.current()
+//        center.removePendingNotificationRequests(withIdentifiers: ["\(id)0", "\(id)1", "\(id)2", "\(id)3", id])
+//    }
+//
+//    func refreshNotifications() {
+//        let realm = try! Realm()
+//        let oldItems = realm.objects(Items.self).filter("isDeleted = \(true)")
+//        oldItems.forEach { item in
+//            removeDeletedNotifications(id: item.uuidString)
+//            removeObsoleteNotifications(id: item.uuidString)
+//        }
+//
+//        OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 0), segment: 0)
+//        OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 1), segment: 1)
+//        OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 2), segment: 2)
+//        OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 3), segment: 3)
+//    }
 
     func application(_: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         center.delegate = self
@@ -114,7 +114,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // TableViewController().refreshItems()
         //try to refresh notifications in the background
-        refreshNotifications()
+        // TODO: This is still needed
+        // refreshNotifications()
         /* TODO: Add option in Settings.app to clear all existing iCloud data in case a total reset is needed. */
         updateAppBadgeCount()
 
@@ -410,7 +411,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             UIApplication.shared.applicationIconBadgeNumber -= 1
         }
 
-        AppDelegate().refreshNotifications()
+        // AppDelegate().refreshNotifications()
         updateAppBadgeCount()
     }
 
@@ -434,7 +435,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if currentBadgeCount > 0 {
             UIApplication.shared.applicationIconBadgeNumber -= 1
         }
-        AppDelegate().refreshNotifications()
+        // AppDelegate().refreshNotifications()
         updateAppBadgeCount()
     }
 

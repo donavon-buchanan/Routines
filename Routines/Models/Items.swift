@@ -32,7 +32,7 @@ import UserNotifications
     override static func primaryKey() -> String? {
         return "uuidString"
     }
-    
+
     convenience init(title: String, segment: Int, repeats: Bool, notes: String?) {
         self.init()
         self.title = title
@@ -40,20 +40,20 @@ import UserNotifications
         self.repeats = repeats
         self.notes = notes
     }
-    
-    func addNewItem(item: Items) {
+
+    func addNewItem(item _: Items) {
         DispatchQueue(label: Items.realmDispatchQueueLabel).async {
-            autoreleasepool{
+            autoreleasepool {
                 let realm = try! Realm()
                 realm.add(self, update: true)
             }
         }
         addNewNotification()
     }
-    
-    func updateItem(item: Items) {
+
+    func updateItem(item _: Items) {
         DispatchQueue(label: Items.realmDispatchQueueLabel).async {
-            autoreleasepool{
+            autoreleasepool {
                 let realm = try! Realm()
                 realm.add(self, update: true)
             }
@@ -63,7 +63,6 @@ import UserNotifications
     }
 
     func completeItem(completeUntil: Date) {
-        //TODO: Do something here
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -184,7 +183,7 @@ import UserNotifications
             }
         }
     }
-    
+
     static func firstTriggerDate(segment: Int) -> Date {
         let tomorrow = Date().startOfNextDay
         var dateComponents = DateComponents()
@@ -206,7 +205,7 @@ import UserNotifications
         // print("Setting first trigger date for: \(dateComponents)")
         return dateComponents.date!
     }
-    
+
     static func getCountForSegment(segment: Int) -> Int {
         var count = Int()
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
