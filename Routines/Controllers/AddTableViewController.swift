@@ -53,7 +53,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 //    @IBOutlet var repeatCellTitleLabel: UILabel!
 //    @IBOutlet var repeatCellDetailLabel: UILabel!
 
-    //let realmDispatchQueueLabel: String = "background"
+    // let realmDispatchQueueLabel: String = "background"
 
     var item: Items?
     // var timeArray: [DateComponents?] = []
@@ -258,108 +258,108 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
 
-    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-        // print("running scheduleNewNotification")
-        let notificationCenter = UNUserNotificationCenter.current()
-
-        notificationCenter.getNotificationSettings { settings in
-            // DO not schedule notifications if not authorized
-            guard settings.authorizationStatus == .authorized else {
-                // self.requestNotificationPermission()
-                // print("Authorization status has changed to unauthorized for notifications")
-                return
-            }
-
-            switch segment {
-            case 1:
-                if (Options.getSegmentNotification(segment: 1)) {
-                    self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-                } else {
-                    return
-                }
-            case 2:
-                if (Options.getSegmentNotification(segment: 2)) {
-                    self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-                } else {
-                    return
-                }
-            case 3:
-                if (Options.getSegmentNotification(segment: 3)) {
-                    self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-                } else {
-                    return
-                }
-            default:
-                if (Options.getSegmentNotification(segment: 0)) {
-                    self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-                } else {
-                    return
-                }
-            }
-        }
-    }
-
-    func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-        // print("createNotification running")
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.sound = UNNotificationSound.default
-        content.threadIdentifier = String(AppDelegate().getItemSegment(id: uuidString))
-
-        content.badge = NSNumber(integerLiteral: AppDelegate().setBadgeNumber())
-
-        if let notesText = notes {
-            content.body = notesText
-        }
-
-        // Assign the category (and the associated actions).
-        switch segment {
-        case 1:
-            content.categoryIdentifier = "afternoon"
-        case 2:
-            content.categoryIdentifier = "evening"
-        case 3:
-            content.categoryIdentifier = "night"
-        default:
-            content.categoryIdentifier = "morning"
-        }
-
-        var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.autoupdatingCurrent
-        // Keep notifications from occurring too early for tasks created for tomorrow
-        dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
-        dateComponents.timeZone = TimeZone.autoupdatingCurrent
-        dateComponents.hour = getOptionHour(segment: segment)
-        dateComponents.minute = getOptionMinute(segment: segment)
-
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-
-        // Create the request
-        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-
-        // Schedule the request with the system
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.add(request) { error in
-            if error != nil {
-                // TODO: handle notification errors
-                // print(String(describing: error))
-            } else {
-                // print("Notification created successfully")
-            }
-        }
-    }
-
-    func removeNotification(uuidString: [String]) {
-        // print("Removing Notifications")
-        let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: uuidString)
-    }
+//    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
+//        // print("running scheduleNewNotification")
+//        let notificationCenter = UNUserNotificationCenter.current()
+//
+//        notificationCenter.getNotificationSettings { settings in
+//            // DO not schedule notifications if not authorized
+//            guard settings.authorizationStatus == .authorized else {
+//                // self.requestNotificationPermission()
+//                // print("Authorization status has changed to unauthorized for notifications")
+//                return
+//            }
+//
+//            switch segment {
+//            case 1:
+//                if (Options.getSegmentNotification(segment: 1)) {
+//                    self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+//                } else {
+//                    return
+//                }
+//            case 2:
+//                if (Options.getSegmentNotification(segment: 2)) {
+//                    self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+//                } else {
+//                    return
+//                }
+//            case 3:
+//                if (Options.getSegmentNotification(segment: 3)) {
+//                    self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+//                } else {
+//                    return
+//                }
+//            default:
+//                if (Options.getSegmentNotification(segment: 0)) {
+//                    self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+//                } else {
+//                    return
+//                }
+//            }
+//        }
+//    }
+//
+//    func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
+//        // print("createNotification running")
+//        let content = UNMutableNotificationContent()
+//        content.title = title
+//        content.sound = UNNotificationSound.default
+//        content.threadIdentifier = String(AppDelegate().getItemSegment(id: uuidString))
+//
+//        content.badge = NSNumber(integerLiteral: AppDelegate().setBadgeNumber())
+//
+//        if let notesText = notes {
+//            content.body = notesText
+//        }
+//
+//        // Assign the category (and the associated actions).
+//        switch segment {
+//        case 1:
+//            content.categoryIdentifier = "afternoon"
+//        case 2:
+//            content.categoryIdentifier = "evening"
+//        case 3:
+//            content.categoryIdentifier = "night"
+//        default:
+//            content.categoryIdentifier = "morning"
+//        }
+//
+//        var dateComponents = DateComponents()
+//        dateComponents.calendar = Calendar.autoupdatingCurrent
+//        // Keep notifications from occurring too early for tasks created for tomorrow
+//        dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
+//        dateComponents.timeZone = TimeZone.autoupdatingCurrent
+//        dateComponents.hour = getOptionHour(segment: segment)
+//        dateComponents.minute = getOptionMinute(segment: segment)
+//
+//        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+//
+//        // Create the request
+//        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+//
+//        // Schedule the request with the system
+//        let notificationCenter = UNUserNotificationCenter.current()
+//        notificationCenter.add(request) { error in
+//            if error != nil {
+//                // TODO: handle notification errors
+//                // print(String(describing: error))
+//            } else {
+//                // print("Notification created successfully")
+//            }
+//        }
+//    }
+//
+//    func removeNotification(uuidString: [String]) {
+//        // print("Removing Notifications")
+//        let center = UNUserNotificationCenter.current()
+//        center.removePendingNotificationRequests(withIdentifiers: uuidString)
+//    }
 
     // MARK: Theme
 
     public func setAppearance(segment: Int) {
         // print("Setting theme")
-        if getDarkModeStatus() {
+        if Options.getDarkModeStatus() {
             switch segment {
             case 1:
                 Themes.switchTo(theme: .afternoonDark)
@@ -384,18 +384,18 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
     }
 
-    func getDarkModeStatus() -> Bool {
-        var darkMode = false
-        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
-                    darkMode = options.darkMode
-                }
-            }
-        }
-        return darkMode
-    }
+//    func getDarkModeStatus() -> Bool {
+//        var darkMode = false
+//        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+//                    darkMode = options.darkMode
+//                }
+//            }
+//        }
+//        return darkMode
+//    }
 
 //    func getRepeatString() -> String {
 //        if let currentItem = item {

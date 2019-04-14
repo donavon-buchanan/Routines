@@ -66,36 +66,36 @@ import RealmSwift
         }
         return badge
     }
-    
+
     static func getTime(timePeriod: Int, timeOption: Date?) -> Date {
         var time: Date
         let defaultTimeStrings = ["07:00 AM", "12:00 PM", "5:00 PM", "9:00 PM"]
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .short
-        
+
         if let setTime = timeOption {
             time = setTime
         } else {
             time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
         }
-        
+
         return time
     }
-    
+
     static func getHour(date: Date) -> Int {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH"
         let hour = dateFormatter.string(from: date)
         return Int(hour)!
     }
-    
+
     static func getMinute(date: Date) -> Int {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "mm"
         let minutes = dateFormatter.string(from: date)
         return Int(minutes)!
     }
-    
+
     static func getOptionHour(segment: Int) -> Int {
         var hour = Int()
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
@@ -117,7 +117,7 @@ import RealmSwift
         }
         return hour
     }
-    
+
     static func getOptionMinute(segment: Int) -> Int {
         var minute = Int()
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
@@ -138,7 +138,7 @@ import RealmSwift
         }
         return minute
     }
-    
+
     static func getSegmentNotification(segment: Int) -> Bool {
         var enabled = false
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
@@ -160,14 +160,14 @@ import RealmSwift
         }
         return enabled
     }
-    
+
     static func getCurrentSegmentFromTime() -> Int {
         let afternoon = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 1), minute: Options.getOptionMinute(segment: 1), second: 0, of: Date())
         let evening = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 2), minute: Options.getOptionMinute(segment: 2), second: 0, of: Date())
         let night = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 3), minute: Options.getOptionMinute(segment: 3), second: 0, of: Date())
-        
+
         var currentSegment = 0
-        
+
         switch Date() {
         case _ where Date() < afternoon!:
             currentSegment = 0
@@ -183,7 +183,7 @@ import RealmSwift
         // print("getCurrentSegmentFromTime: \(currentSegment)")
         return currentSegment
     }
-    
+
     static func getDateFromComponents(hour: Int, minute: Int) -> Date {
         var dateComponent = DateComponents()
         dateComponent.calendar = Calendar.autoupdatingCurrent
@@ -191,6 +191,19 @@ import RealmSwift
         dateComponent.hour = hour
         dateComponent.minute = minute
         return dateComponent.date!
+    }
+
+    static func getDarkModeStatus() -> Bool {
+        var darkMode = false
+        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                    darkMode = options.darkMode
+                }
+            }
+        }
+        return darkMode
     }
 }
 

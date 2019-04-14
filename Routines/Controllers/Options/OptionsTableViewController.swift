@@ -32,25 +32,25 @@ class OptionsTableViewController: UITableViewController {
         ]
     }
 
-    @IBAction func notificationSwitchToggled(_ sender: UISwitch) {
-        switch sender.tag {
-        case 1:
-            // print("Afternoon Switch Toggled \(sender.isOn)")
-            addOrRemoveNotifications(isOn: sender.isOn, segment: 1)
-            updateNotificationOptions(segment: 1, isOn: sender.isOn)
-        case 2:
-            // print("Evening Switch Toggled \(sender.isOn)")
-            addOrRemoveNotifications(isOn: sender.isOn, segment: 2)
-            updateNotificationOptions(segment: 2, isOn: sender.isOn)
-        case 3:
-            // print("Night Switch Toggled \(sender.isOn)")
-            addOrRemoveNotifications(isOn: sender.isOn, segment: 3)
-            updateNotificationOptions(segment: 3, isOn: sender.isOn)
-        default:
-            // print("Morning Switch Toggled \(sender.isOn)")
-            addOrRemoveNotifications(isOn: sender.isOn, segment: 0)
-            updateNotificationOptions(segment: 0, isOn: sender.isOn)
-        }
+    @IBAction func notificationSwitchToggled(_: UISwitch) {
+//        switch sender.tag {
+//        case 1:
+//            // print("Afternoon Switch Toggled \(sender.isOn)")
+//            addOrRemoveNotifications(isOn: sender.isOn, segment: 1)
+//            updateNotificationOptions(segment: 1, isOn: sender.isOn)
+//        case 2:
+//            // print("Evening Switch Toggled \(sender.isOn)")
+//            addOrRemoveNotifications(isOn: sender.isOn, segment: 2)
+//            updateNotificationOptions(segment: 2, isOn: sender.isOn)
+//        case 3:
+//            // print("Night Switch Toggled \(sender.isOn)")
+//            addOrRemoveNotifications(isOn: sender.isOn, segment: 3)
+//            updateNotificationOptions(segment: 3, isOn: sender.isOn)
+//        default:
+//            // print("Morning Switch Toggled \(sender.isOn)")
+//            addOrRemoveNotifications(isOn: sender.isOn, segment: 0)
+//            updateNotificationOptions(segment: 0, isOn: sender.isOn)
+//        }
     }
 
     @IBOutlet var darkModeSwtich: UISwitch!
@@ -98,33 +98,33 @@ class OptionsTableViewController: UITableViewController {
                 // print("Tapped Afternoon Cell")
                 let isOn = !afternoonSwitch.isOn
                 afternoonSwitch.setOn(isOn, animated: true)
-                addOrRemoveNotifications(isOn: isOn, segment: 1)
-                // print("Afternoon switch is now set to: \(afternoonSwitch.isOn)")
-                updateNotificationOptions(segment: 1, isOn: afternoonSwitch.isOn)
+//                addOrRemoveNotifications(isOn: isOn, segment: 1)
+//                // print("Afternoon switch is now set to: \(afternoonSwitch.isOn)")
+//                updateNotificationOptions(segment: 1, isOn: afternoonSwitch.isOn)
                 haptic.impactOccurred()
             case 2:
                 // print("Tapped Evening Cell")
                 let isOn = !eveningSwitch.isOn
                 eveningSwitch.setOn(isOn, animated: true)
-                addOrRemoveNotifications(isOn: isOn, segment: 2)
-                // print("Evening switch is now set to: \(eveningSwitch.isOn)")
-                updateNotificationOptions(segment: 2, isOn: eveningSwitch.isOn)
+//                addOrRemoveNotifications(isOn: isOn, segment: 2)
+//                // print("Evening switch is now set to: \(eveningSwitch.isOn)")
+//                updateNotificationOptions(segment: 2, isOn: eveningSwitch.isOn)
                 haptic.impactOccurred()
             case 3:
                 // print("Tapped Night Cell")
                 let isOn = !nightSwitch.isOn
                 nightSwitch.setOn(isOn, animated: true)
-                addOrRemoveNotifications(isOn: isOn, segment: 3)
-                // print("Night switch is now set to: \(nightSwitch.isOn)")
-                updateNotificationOptions(segment: 3, isOn: nightSwitch.isOn)
+//                addOrRemoveNotifications(isOn: isOn, segment: 3)
+//                // print("Night switch is now set to: \(nightSwitch.isOn)")
+//                updateNotificationOptions(segment: 3, isOn: nightSwitch.isOn)
                 haptic.impactOccurred()
             default:
                 // print("Tapped Morning Cell")
                 let isOn = !morningSwitch.isOn
                 morningSwitch.setOn(isOn, animated: true)
-                addOrRemoveNotifications(isOn: isOn, segment: 0)
-                // print("Morning switch is now set to: \(morningSwitch.isOn)")
-                updateNotificationOptions(segment: 0, isOn: morningSwitch.isOn)
+//                addOrRemoveNotifications(isOn: isOn, segment: 0)
+//                // print("Morning switch is now set to: \(morningSwitch.isOn)")
+//                updateNotificationOptions(segment: 0, isOn: morningSwitch.isOn)
                 haptic.impactOccurred()
             }
         }
@@ -147,52 +147,52 @@ class OptionsTableViewController: UITableViewController {
 
     // MARK: - Options Realm
 
-    func updateNotificationOptions(segment: Int, isOn: Bool) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
-                switch segment {
-                case 1:
-                    do {
-                        try realm.write {
-                            // print("updateNotificationOptions saving")
-                            options?.afternoonNotificationsOn = isOn
-                        }
-                    } catch {
-                        // print("updateNotificationOptions failed")
-                    }
-                case 2:
-                    do {
-                        try realm.write {
-                            // print("updateNotificationOptions saving")
-                            options?.eveningNotificationsOn = isOn
-                        }
-                    } catch {
-                        // print("updateNotificationOptions failed")
-                    }
-                case 3:
-                    do {
-                        try realm.write {
-                            // print("updateNotificationOptions saving")
-                            options?.nightNotificationsOn = isOn
-                        }
-                    } catch {
-                        // print("updateNotificationOptions failed")
-                    }
-                default:
-                    do {
-                        try realm.write {
-                            // print("updateNotificationOptions saving")
-                            options?.morningNotificationsOn = isOn
-                        }
-                    } catch {
-                        // print("updateNotificationOptions failed")
-                    }
-                }
-            }
-        }
-    }
+//    func updateNotificationOptions(segment: Int, isOn: Bool) {
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+//                switch segment {
+//                case 1:
+//                    do {
+//                        try realm.write {
+//                            // print("updateNotificationOptions saving")
+//                            options?.afternoonNotificationsOn = isOn
+//                        }
+//                    } catch {
+//                        // print("updateNotificationOptions failed")
+//                    }
+//                case 2:
+//                    do {
+//                        try realm.write {
+//                            // print("updateNotificationOptions saving")
+//                            options?.eveningNotificationsOn = isOn
+//                        }
+//                    } catch {
+//                        // print("updateNotificationOptions failed")
+//                    }
+//                case 3:
+//                    do {
+//                        try realm.write {
+//                            // print("updateNotificationOptions saving")
+//                            options?.nightNotificationsOn = isOn
+//                        }
+//                    } catch {
+//                        // print("updateNotificationOptions failed")
+//                    }
+//                default:
+//                    do {
+//                        try realm.write {
+//                            // print("updateNotificationOptions saving")
+//                            options?.morningNotificationsOn = isOn
+//                        }
+//                    } catch {
+//                        // print("updateNotificationOptions failed")
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     func setUpUI() {
         DispatchQueue.main.async {
@@ -334,37 +334,37 @@ class OptionsTableViewController: UITableViewController {
 
     // MARK: - Manage Notifications
 
-    func enableNotificationsForSegment(segment: Int) {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
-            autoreleasepool {
-                let realm = try! Realm()
-                let items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)")
-                items.forEach { item in
-                    item.createNotification()
-                }
-            }
-        }
-    }
-
-    func removeNotificationsForSegment(segment: Int) {
-        DispatchQueue(label: realmDispatchQueueLabel).async {
-            autoreleasepool {
-                let realm = try! Realm()
-                let items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)")
-                items.forEach { item in
-                    item.removeNotification()
-                }
-            }
-        }
-    }
-
-    open func addOrRemoveNotifications(isOn: Bool, segment: Int) {
-        if isOn {
-            enableNotificationsForSegment(segment: segment)
-        } else {
-            removeNotificationsForSegment(segment: segment)
-        }
-    }
+//    func enableNotificationsForSegment(segment: Int) {
+//        DispatchQueue(label: realmDispatchQueueLabel).async {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)")
+//                items.forEach { item in
+//                    item.createNotification()
+//                }
+//            }
+//        }
+//    }
+//
+//    func removeNotificationsForSegment(segment: Int) {
+//        DispatchQueue(label: realmDispatchQueueLabel).async {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)")
+//                items.forEach { item in
+//                    item.removeNotification()
+//                }
+//            }
+//        }
+//    }
+//
+//    open func addOrRemoveNotifications(isOn: Bool, segment: Int) {
+//        if isOn {
+//            enableNotificationsForSegment(segment: segment)
+//        } else {
+//            removeNotificationsForSegment(segment: segment)
+//        }
+//    }
 
     // MARK: - Conversion functions
 
