@@ -16,7 +16,7 @@ import UserNotifications
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
-
+    static let optionsKey = "optionsKey"
     let center = UNUserNotificationCenter.current()
     var shortcutItemToProcess: UIApplicationShortcutItem?
 
@@ -198,7 +198,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     selectedIndex = options.selectedIndex
                 }
             }
@@ -212,7 +212,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         DispatchQueue(label: realmDispatchQueueLabel).async {
             autoreleasepool {
                 let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     do {
                         try realm.write {
                             options.selectedIndex = selectedIndex
@@ -258,7 +258,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     DispatchQueue(label: self.realmDispatchQueueLabel).sync {
                         autoreleasepool {
                             let realm = try! Realm()
-                            let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                            let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
 
                             do {
                                 try realm.write {
@@ -330,7 +330,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
                 switch segment {
                 case 1:
                     hour = (options?.afternoonHour)!
@@ -351,7 +351,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
                 switch segment {
                 case 1:
                     minute = (options?.afternoonMinute)!
@@ -635,7 +635,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
                 switch segment {
                 case 1:
                     if let on = options?.afternoonNotificationsOn {
@@ -691,7 +691,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             DispatchQueue(label: self.realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
-                    let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                    let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
                     switch segment {
                     case 1:
                         if (options?.afternoonNotificationsOn)! {
@@ -852,7 +852,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     badge = options.badge
                 }
             }
@@ -1057,7 +1057,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     darkMode = options.darkMode
                 }
             }
@@ -1070,7 +1070,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        DispatchQueue(label: realmDispatchQueueLabel).sync {
 //            autoreleasepool {
 //                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
 //                    selectedIndex = options.selectedIndex
 //                }
 //            }

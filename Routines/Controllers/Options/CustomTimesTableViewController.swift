@@ -197,7 +197,7 @@ class CustomTimesTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
                 do {
                     try realm.write {
                         switch segment {
@@ -242,7 +242,7 @@ class CustomTimesTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     // let dateFormatter = DateFormatter()
 
                     switch segment {
@@ -317,7 +317,7 @@ class CustomTimesTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
                 switch segment {
                 case 1:
                     if let on = options?.afternoonNotificationsOn {
@@ -357,7 +357,7 @@ class CustomTimesTableViewController: UITableViewController {
             DispatchQueue(label: self.realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
-                    let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                    let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
                     switch segment {
                     case 1:
                         if (options?.afternoonNotificationsOn)! {
@@ -529,7 +529,7 @@ class CustomTimesTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
                 switch segment {
                 case 1:
                     hour = (options?.afternoonHour)!
@@ -550,7 +550,7 @@ class CustomTimesTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey)
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
                 switch segment {
                 case 1:
                     minute = (options?.afternoonMinute)!
@@ -600,7 +600,7 @@ class CustomTimesTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     self.morningHour = options.morningHour
                     self.morningMinute = options.morningMinute
 
@@ -658,7 +658,7 @@ class CustomTimesTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     selectedIndex = options.selectedIndex
                 }
             }
@@ -671,7 +671,7 @@ class CustomTimesTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     darkMode = options.darkMode
                 }
             }

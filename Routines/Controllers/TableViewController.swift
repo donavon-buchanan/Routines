@@ -98,7 +98,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         tableView.setEditing(true, animated: true)
         let clearButton = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(showClearAlert))
         navigationItem.leftBarButtonItems = [clearButton]
-        let trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteSelectedRows))
+        let trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteSelectedAlert))
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(endEdit))
         navigationItem.rightBarButtonItems = [doneButton, trashButton]
     }
@@ -210,7 +210,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        DispatchQueue(label: realmDispatchQueueLabel).async {
 //            autoreleasepool {
 //                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
 //                    do {
 //                        try realm.write {
 //                            options.selectedIndex = index
@@ -229,7 +229,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        DispatchQueue(label: realmDispatchQueueLabel).sync {
 //            autoreleasepool {
 //                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
 //                    index = options.selectedIndex
 //                }
 //            }
@@ -351,14 +351,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     @available(iOS 11.0, *)
     override func tableView(_: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
-            self.deleteAlert(indexPath)
-            completion(true)
+            completion(self.deleteAlert(indexPath))
         }
-        let trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: nil, action: nil)
-        let trashIcon = trashButton.image
-        if let icon = trashIcon {
-            deleteAction.image = icon
-        }
+        deleteAction.image = UIImage(imageLiteralResourceName: "trash-icon")
         let actions = UISwipeActionsConfiguration(actions: [deleteAction])
         return actions
     }
@@ -454,15 +449,15 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                     itemArray.append(itemAtIndex)
                 }
             }
+
             itemArray.forEach { item in
-                item.softDelete() // item.deleteItem()
-                updateBadge()
+                item.softDelete()
             }
             // This will be handled by the realmSync func
             //tableView.deleteRows(at: indexPaths, with: .left)
         }
 //        OptionsTableViewController().refreshNotifications()
-//        updateBadge()
+        updateBadge()
     }
 
 //    //Delay func
@@ -721,7 +716,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                     tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) },
                                          with: .right)
                     tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) },
-                                         with: .left)
+                                         with: .automatic)
                     tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) },
                                          with: .fade)
                 }, completion: nil)
@@ -776,7 +771,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //            autoreleasepool {
 //                do {
 //                    let realm = try! Realm()
-//                    if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+//                    if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
 //                        darkMode = options.darkMode
 //                    }
 //                }
@@ -790,7 +785,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        DispatchQueue(label: realmDispatchQueueLabel).sync {
 //            autoreleasepool {
 //                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
 //                    switch segment {
 //                    case 1:
 //                        hour = options.afternoonHour
@@ -843,14 +838,29 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        }
 //    }
 
-    func deleteAlert(_ indexPath: IndexPath) {
+    func deleteAlert(_ indexPath: IndexPath) -> Bool {
+        var completion = false
         let alertController = UIAlertController(title: "Are you sure?", message: "This will permanently delete this task.", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
             alertController.dismiss(animated: true, completion: nil)
         }))
         alertController.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
             self.softDeleteAtIndex(at: indexPath)
+            completion = true
         }))
+        present(alertController, animated: true, completion: nil)
+        return completion
+    }
+
+    @objc func deleteSelectedAlert() {
+        let alertController = UIAlertController(title: "Are you sure?", message: "This will permanently delete these tasks.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+            alertController.dismiss(animated: true, completion: nil)
+        }))
+        alertController.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { _ in
+            self.deleteSelectedRows()
+        }))
+        present(alertController, animated: true, completion: nil)
     }
 
     func showAlert(title: String, body: String) {

@@ -394,7 +394,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 //        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
 //            autoreleasepool {
 //                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: self.optionsKey) {
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
 //                    darkMode = options.darkMode
 //                }
 //            }
