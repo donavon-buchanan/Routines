@@ -79,28 +79,29 @@ import UserNotifications
         addNewNotification()
     }
 
-    func completeItem(completeUntil: Date) {
-        if !repeats {
-            softDelete()
-        } else {
-            #if DEBUG
-                print("marking completed until: \(completeUntil)")
-            #endif
-            DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
-                autoreleasepool {
-                    let realm = try! Realm()
-                    do {
-                        try realm.write {
-                            self.completeUntil = completeUntil
-                        }
-                    } catch {
-                        // print("failed to save completeUntil")
-                        fatalError("Error completing item: \(error)")
-                    }
-                }
-            }
-        }
-    }
+//    func completeItem(completeUntil: Date) {
+//        if !repeats {
+//            softDelete()
+//        } else {
+//            #if DEBUG
+//                print("marking completed until: \(completeUntil)")
+//            #endif
+//            DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+//                autoreleasepool {
+//                    let realm = try! Realm()
+//                    do {
+//                        try realm.write {
+//                            self.completeUntil = completeUntil
+//                            self.dateModified = Date()
+//                        }
+//                    } catch {
+//                        // print("failed to save completeUntil")
+//                        fatalError("Error completing item: \(error)")
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     func completeItem() {
         if !repeats {
@@ -115,6 +116,7 @@ import UserNotifications
                     do {
                         try realm.write {
                             self.completeUntil = self.dateModified.startOfNextDay
+                            self.dateModified = Date()
                         }
                     } catch {
                         // print("failed to save completeUntil")
