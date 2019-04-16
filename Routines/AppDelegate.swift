@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let center = UNUserNotificationCenter.current()
         center.delegate = self
 
-        //AppDelegate.registerNotificationCategoriesAndActions()
+        // AppDelegate.registerNotificationCategoriesAndActions()
 
         // Theme
         setUpTheme()
@@ -311,8 +311,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
                 if oldSchemaVersion < 10 {
                     migration.enumerateObjects(ofType: Options.className()) { newObject, oldObject in
-                         print("oldObject: " + String(describing: oldObject))
-                         print("newObject: " + String(describing: newObject))
+                        print("oldObject: " + String(describing: oldObject))
+                        print("newObject: " + String(describing: newObject))
                     }
                 }
 
@@ -337,7 +337,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Now that we've told Realm how to handle the schema change, opening the file
         // will automatically perform the migration
-        let realm = try! Realm()
+        _ = try! Realm()
     }
 
 //    func getHour(date: Date) -> Int {

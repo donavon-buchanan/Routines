@@ -206,7 +206,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func tabBarController(_ tabBarController: UITabBarController, didSelect _: UIViewController) {
         Options.setSelectedIndex(index: tabBarController.selectedIndex)
     }
-    
+
 //
 //    func getSelectedTab() -> Int {
 //        var index = Int()
@@ -629,24 +629,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     var segment = Int()
 
-//    public func refreshItems() {
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool{
-//                let realm = try! Realm()
-//                self.items = realm.objects(Items.self).filter("isDeleted = \(false)")
-//            }
-//        }
-//    }
-
-//    func loadItems() {
-//        DispatchQueue(label: realmDispatchQueueLabel).async {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                self.items = realm.objects(Items.self)
-//            }
-//        }
-//    }
-
     func loadItemsForSegment(segment: Int) {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -678,7 +660,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func realmSync() {
         // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
         // Observe Results Notifications
-        notificationToken = items?.observe { [self] (changes: RealmCollectionChange) in
+        notificationToken = items!.observe { [self] (changes: RealmCollectionChange) in
             guard let tableView = self.tableView else { return }
             switch changes {
             case .initial:
@@ -718,16 +700,31 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // var options: Options = Options()
     var debugOptionsToken: NotificationToken?
     var optionsToken: NotificationToken?
-    
+
     func observeOptions() {
-            let realm = try! Realm()
+        let realm = try! Realm()
         if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
             #if DEBUG
-            debugOptionsToken = options.observe { change in
+                debugOptionsToken = options.observe { change in
+                    switch change {
+                    case let .change(properties):
+                        properties.forEach { propertyChange in
+                            print("Options property \(propertyChange.name) changed from \(propertyChange.oldValue.debugDescription) to \(propertyChange.newValue.debugDescription).")
+                        }
+                    case let .error(error):
+                        print("Options observation error occurred: \(error)")
+                    case .deleted:
+                        print("The object was deleted.")
+                    }
+                }
+            #endif
+            optionsToken = options.observe { change in
                 switch change {
                 case let .change(properties):
                     properties.forEach { propertyChange in
-                        print("Options property \(propertyChange.name) changed from \(propertyChange.oldValue.debugDescription) to \(propertyChange.newValue.debugDescription).")
+                        if propertyChange.name == "darkMode" {
+                            self.setAppearance(segment: self.tabBarController?.selectedIndex ?? 0)
+                        }
                     }
                 case let .error(error):
                     print("Options observation error occurred: \(error)")
@@ -735,23 +732,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                     print("The object was deleted.")
                 }
             }
-            #endif
-            optionsToken = options.observe({ (change) in
-                switch change {
-                case let .change(properties):
-                    properties.forEach({ (propertyChange) in
-                        if propertyChange.name == "darkMode" {
-                            self.setAppearance(segment: self.segment)
-                        }
-                    })
-                case let .error(error):
-                    print("Options observation error occurred: \(error)")
-                case .deleted:
-                    print("The object was deleted.")
-                }
-            })
         }
-        
     }
 
     // MARK: - Themeing

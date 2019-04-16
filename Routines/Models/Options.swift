@@ -173,10 +173,10 @@ import RealmSwift
         }
         return enabled
     }
-    
+
     static func setSegmentNotification(segment: Int, bool: Bool) {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool{
+            autoreleasepool {
                 let realm = try! Realm()
                 if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     do {
@@ -296,7 +296,7 @@ import RealmSwift
         }
         return timeString
     }
-    
+
     static func setSelectedIndex(index: Int) {
         DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -313,11 +313,11 @@ import RealmSwift
             }
         }
     }
-    
+
     static func getSelectedIndex() -> Int {
         var index = 0
         DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool{
+            autoreleasepool {
                 let realm = try! Realm()
                 if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     index = options.selectedIndex
