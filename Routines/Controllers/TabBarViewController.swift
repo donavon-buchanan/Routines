@@ -14,38 +14,38 @@ class TabBarViewController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
     }
 
-    override func tabBar(_: UITabBar, didSelect _: UITabBarItem) {}
-
-    open func setAppearance(segment: Int) {
-        // print("Setting theme")
-        if AppDelegate().getDarkModeStatus() {
-            switch segment {
-            case 0:
-                Themes.switchTo(theme: .morningDark)
-            case 1:
-                Themes.switchTo(theme: .afternoonDark)
-            case 2:
-                Themes.switchTo(theme: .eveningDark)
-            case 3:
-                Themes.switchTo(theme: .nightDark)
-            default:
-                Themes.switchTo(theme: .monochromeDark)
-            }
-        } else {
-            switch segment {
-            case 0:
-                Themes.switchTo(theme: .morningLight)
-            case 1:
-                Themes.switchTo(theme: .afternoonLight)
-            case 2:
-                Themes.switchTo(theme: .eveningLight)
-            case 3:
-                Themes.switchTo(theme: .nightLight)
-            default:
-                Themes.switchTo(theme: .monochromeDark)
-            }
-        }
-    }
+//    override func tabBar(_: UITabBar, didSelect _: UITabBarItem) {}
+//
+//    open func setAppearance(segment: Int) {
+//        // print("Setting theme")
+//        if AppDelegate().getDarkModeStatus() {
+//            switch segment {
+//            case 0:
+//                Themes.switchTo(theme: .morningDark)
+//            case 1:
+//                Themes.switchTo(theme: .afternoonDark)
+//            case 2:
+//                Themes.switchTo(theme: .eveningDark)
+//            case 3:
+//                Themes.switchTo(theme: .nightDark)
+//            default:
+//                Themes.switchTo(theme: .monochromeDark)
+//            }
+//        } else {
+//            switch segment {
+//            case 0:
+//                Themes.switchTo(theme: .morningLight)
+//            case 1:
+//                Themes.switchTo(theme: .afternoonLight)
+//            case 2:
+//                Themes.switchTo(theme: .eveningLight)
+//            case 3:
+//                Themes.switchTo(theme: .nightLight)
+//            default:
+//                Themes.switchTo(theme: .monochromeDark)
+//            }
+//        }
+//    }
 
     /*
      // MARK: - Navigation

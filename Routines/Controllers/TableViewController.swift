@@ -135,6 +135,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     override func viewDidLoad() {
         // print("Running viewDidLoad")
         super.viewDidLoad()
+        observeOptions()
 
         tableView.allowsMultipleSelectionDuringEditing = true
 
@@ -151,7 +152,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         setViewBackgroundGraphic(enabled: true)
 
         // Double check to save selected tab and avoid infrequent bug
-        // saveSelectedTab(index: tabBarController!.selectedIndex)
+        Options.setSelectedIndex(index: tabBarController!.selectedIndex)
 
         title = setNavTitle()
     }
@@ -202,26 +203,10 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         }
     }
 
-//    func tabBarController(_ tabBarController: UITabBarController, didSelect _: UIViewController) {
-//        saveSelectedTab(index: tabBarController.selectedIndex)
-//    }
-
-//    func saveSelectedTab(index: Int) {
-//        DispatchQueue(label: realmDispatchQueueLabel).async {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//                    do {
-//                        try realm.write {
-//                            options.selectedIndex = index
-//                        }
-//                    } catch {
-//                        // print("Error saving selected tab")
-//                    }
-//                }
-//            }
-//        }
-//    }
+    func tabBarController(_ tabBarController: UITabBarController, didSelect _: UIViewController) {
+        Options.setSelectedIndex(index: tabBarController.selectedIndex)
+    }
+    
 //
 //    func getSelectedTab() -> Int {
 //        var index = Int()
@@ -235,10 +220,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //            }
 //        }
 //        return index
-//    }
-
-//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-//        self.selectedTab = tabBarController.selectedIndex
 //    }
 
     // MARK: - Table view data source
@@ -673,7 +654,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date()).sorted(byKeyPath: "dateModified", ascending: true)
             }
         }
-        realmSync(itemsToObserve: items)
+        realmSync()
     }
 
     func loadAllItems() {
@@ -684,7 +665,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 self.items = realm.objects(Items.self).filter("isDeleted = \(false) AND completeUntil < %@", Date()).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
             }
         }
-        realmSync(itemsToObserve: items)
+        realmSync()
     }
 
 //    private func deleteItem(item: Items) {
@@ -694,10 +675,10 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //
     var notificationToken: NotificationToken?
 
-    func realmSync(itemsToObserve: Results<Items>?) {
+    func realmSync() {
         // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
         // Observe Results Notifications
-        notificationToken = itemsToObserve?.observe { [self] (changes: RealmCollectionChange) in
+        notificationToken = items?.observe { [self] (changes: RealmCollectionChange) in
             guard let tableView = self.tableView else { return }
             switch changes {
             case .initial:
@@ -730,12 +711,55 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     deinit {
         notificationToken?.invalidate()
+        debugOptionsToken?.invalidate()
+        optionsToken?.invalidate()
+    }
+
+    // var options: Options = Options()
+    var debugOptionsToken: NotificationToken?
+    var optionsToken: NotificationToken?
+    
+    func observeOptions() {
+            let realm = try! Realm()
+        if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+            #if DEBUG
+            debugOptionsToken = options.observe { change in
+                switch change {
+                case let .change(properties):
+                    properties.forEach { propertyChange in
+                        print("Options property \(propertyChange.name) changed from \(propertyChange.oldValue.debugDescription) to \(propertyChange.newValue.debugDescription).")
+                    }
+                case let .error(error):
+                    print("Options observation error occurred: \(error)")
+                case .deleted:
+                    print("The object was deleted.")
+                }
+            }
+            #endif
+            optionsToken = options.observe({ (change) in
+                switch change {
+                case let .change(properties):
+                    properties.forEach({ (propertyChange) in
+                        if propertyChange.name == "darkMode" {
+                            self.setAppearance(segment: self.segment)
+                        }
+                    })
+                case let .error(error):
+                    print("Options observation error occurred: \(error)")
+                case .deleted:
+                    print("The object was deleted.")
+                }
+            })
+        }
+        
     }
 
     // MARK: - Themeing
 
     open func setAppearance(segment: Int) {
-        // print("Setting theme")
+        #if DEBUG
+            print("Dark mode is: \(Options.getDarkModeStatus())")
+        #endif
         if Options.getDarkModeStatus() {
             switch segment {
             case 0:
