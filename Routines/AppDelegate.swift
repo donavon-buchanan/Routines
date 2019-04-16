@@ -42,19 +42,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        center.removePendingNotificationRequests(withIdentifiers: ["\(id)0", "\(id)1", "\(id)2", "\(id)3", id])
 //    }
 //
-//    func refreshNotifications() {
-//        let realm = try! Realm()
-//        let oldItems = realm.objects(Items.self).filter("isDeleted = \(true)")
-//        oldItems.forEach { item in
-//            removeDeletedNotifications(id: item.uuidString)
-//            removeObsoleteNotifications(id: item.uuidString)
-//        }
-//
-//        OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 0), segment: 0)
-//        OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 1), segment: 1)
-//        OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 2), segment: 2)
-//        OptionsTableViewController().addOrRemoveNotifications(isOn: OptionsTableViewController().getSegmentNotification(segment: 3), segment: 3)
-//    }
+    static func refreshNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
+        let realm = try! Realm()
+        let items = realm.objects(Items.self).filter("isDeleted = %@", false)
+        items.forEach { item in
+            item.addNewNotification()
+        }
+        AppDelegate.updateAppBadgeCount()
+    }
 
     func application(_: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         let center = UNUserNotificationCenter.current()
@@ -91,6 +88,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let shortcutItem = launchOptions?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
             shortcutItemToProcess = shortcutItem
         }
+        // refreshNotifications()
 
         return true
     }
@@ -117,18 +115,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // TableViewController().refreshItems()
         //try to refresh notifications in the background
         // TODO: This is still needed
-        // refreshNotifications()
-        /* TODO: Add option in Settings.app to clear all existing iCloud data in case a total reset is needed. */
-        updateAppBadgeCount()
-
-        // TODO: Remove this
-        // createBasicNotification(title: "Push received", notes: "Something must have synced")
+        AppDelegate.refreshNotifications()
     }
 
     func applicationWillResignActive(_: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        updateAppBadgeCount()
+        // AppDelegate.updateAppBadgeCount()
         // setSelectedIndex()
         // itemCleanup()
     }
@@ -136,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationDidEnterBackground(_: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        updateAppBadgeCount()
+        AppDelegate.refreshNotifications()
         // itemCleanup()
     }
 
@@ -174,7 +167,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillTerminate(_: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Themes.saveLastTheme()
-        updateAppBadgeCount()
+        AppDelegate.updateAppBadgeCount()
         // itemCleanup()
     }
 
@@ -437,6 +430,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     // MARK: - Manage Notifications
+
+//    var notificationToken: NotificationToken?
+//
+//    func realmSync() {
+//        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
+//        // Observe Results Notifications
+//        let realm = try! Realm()
+//        let items = realm.objects(Items.self)
+//
+//        notificationToken = items.observe { changes in
+//            switch changes {
+//            case .initial:
+//                #if DEBUG
+//                    print("Initial remote load")
+//                #endif
+//            // Results are now populated and can be accessed without blocking the UI
+//            case let .update(itemsResults, deletions, insertions, modifications):
+//                #if DEBUG
+//                    print("remote update detected")
+//                #endif
+//
+//            // Query results have changed
+//            case let .error(error):
+//                // An error occurred while opening the Realm file on the background worker thread
+//                fatalError("\(error)")
+//            }
+//        }
+//    }
+//
+//    deinit {
+//        #if DEBUG
+//            print("\(#function) called. Tokens invalidated")
+//        #endif
+//        notificationToken?.invalidate()
+//    }
 
     // Notification Categories and Actions
 
@@ -768,13 +796,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        return badge
 //    }
 
-    open func updateAppBadgeCount() {
+    static func updateAppBadgeCount() {
         if Options.getBadgeOption() {
             // print("updating app badge number")
-            DispatchQueue(label: realmDispatchQueueLabel).sync {
+            DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
-                    let items = realm.objects(Items.self).filter("dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", Date(), Date())
+                    let items = realm.objects(Items.self).filter("dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", Date(), Date().endOfDay)
                     var badgeCount = 0
                     items.forEach { item in
                         if item.firstTriggerDate(segment: item.segment) < Date() {

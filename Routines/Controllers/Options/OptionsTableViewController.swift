@@ -610,9 +610,13 @@ class OptionsTableViewController: UITableViewController {
                         self.refreshUI()
                     }
                 case let .error(error):
-                    print("Options observation error occurred: \(error)")
+                    #if DEBUG
+                        print("Options observation error occurred: \(error)")
+                    #endif
                 case .deleted:
-                    print("The object was deleted.")
+                    #if DEBUG
+                        print("The object was deleted.")
+                    #endif
                 }
             }
         }

@@ -600,7 +600,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     func getCountForTab(_ tab: Int) -> Int {
         let realm = try! Realm()
-        let items = realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", tab, Date(), Date())
+        let items = realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", tab, Date(), Date().endOfDay)
         var badgeCount = 0
         items.forEach { item in
             if item.firstTriggerDate(segment: item.segment) < Date() {
@@ -761,9 +761,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                         }
                     }
                 case let .error(error):
-                    print("Options observation error occurred: \(error)")
+                    #if DEBUG
+                        print("Options observation error occurred: \(error)")
+                    #endif
                 case .deleted:
-                    print("The object was deleted.")
+                    #if DEBUG
+                        print("The object was deleted.")
+                    #endif
                 }
             }
         }
