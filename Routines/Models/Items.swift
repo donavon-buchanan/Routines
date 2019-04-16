@@ -33,28 +33,19 @@ import UserNotifications
         return "uuidString"
     }
 
-    convenience init(title: String, segment: Int, repeats: Bool, notes: String?) {
-        self.init()
-        self.title = title
-        self.segment = segment
-        self.repeats = repeats
-        self.notes = notes
-    }
-
-    func addNewItem(item _: Items) {
+    func addNewItem(_ item: Items) {
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
                     try realm.write {
-                        realm.add(self, update: true)
+                        realm.add(item, update: true)
                     }
                 } catch {
                     fatalError("Error adding new item: \(error)")
                 }
             }
         }
-        requestNotificationPermission()
         addNewNotification()
     }
 
@@ -111,7 +102,7 @@ import UserNotifications
             #if DEBUG
                 print("marking completed until: \(completeUntil)")
             #endif
-            DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+            DispatchQueue.main.async {
                 autoreleasepool {
                     let realm = try! Realm()
                     do {
@@ -136,7 +127,7 @@ import UserNotifications
             print("soft deleting item")
         #endif
         removeNotification(uuidStrings: ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3", uuidString])
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue.main.async {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
@@ -229,6 +220,7 @@ import UserNotifications
     }
 
     func addNewNotification() {
+        requestNotificationPermission()
         // TODO: Create notification when task is added
     }
 

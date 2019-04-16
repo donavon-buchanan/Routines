@@ -9,7 +9,7 @@ PODS:
   - SwiftMessages (6.0.2):
     - SwiftMessages/App (= 6.0.2)
   - SwiftMessages/App (6.0.2)
-  - SwiftTheme (0.4.3)
+  - SwiftTheme (0.4.4)
 
 DEPENDENCIES:
   - IceCream
@@ -30,7 +30,7 @@ SPEC CHECKSUMS:
   Realm: e12c9c2387d05c5bba3a9c394838f5870e85763b
   RealmSwift: a82eab9b04c3e1616082c7e17aa300740847769c
   SwiftMessages: 8b3cc68dba2f1c91aac1a74c90b10287aac35371
-  SwiftTheme: 628345b948068a48d330d76dffb1a990ea5f90aa
+  SwiftTheme: a381f983da92153908b7a9eeb961b18b6d94d614
 
 PODFILE CHECKSUM: 15a7ba0654194320467ebdc818dcc5bd124bedf0
 

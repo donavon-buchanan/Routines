@@ -109,9 +109,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //            SyncObject<Items>(),
 //            SyncObject<Options>(),
 //        ])
-
-        // print("Received push notification")
-
+        #if DEBUG
+            print("Received push notification")
+        #endif
         // itemCleanup()
 
         // TableViewController().refreshItems()
@@ -309,26 +309,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //                    }
 //                }
 
-                if oldSchemaVersion < 10 {
+//                if oldSchemaVersion < 10 {
+//                    migration.enumerateObjects(ofType: Options.className()) { newObject, oldObject in
+//                        print("oldObject: " + String(describing: oldObject))
+//                        print("newObject: " + String(describing: newObject))
+//                    }
+//                }
+
+                if oldSchemaVersion < 13 {
                     migration.enumerateObjects(ofType: Options.className()) { newObject, oldObject in
                         print("oldObject: " + String(describing: oldObject))
                         print("newObject: " + String(describing: newObject))
                     }
-                }
-
-                if oldSchemaVersion < 13 {
                     // TODO: !!! Items class name can't migrate because class name changed !!!
                     // TODO: Also, future migrations may conflict with iCloud
                     migration.enumerateObjects(ofType: Items.className()) { _, newObject in
                         // print("oldObject: " + String(describing: oldObject))
                         newObject!["isDeleted"] = false
                         newObject!["dateModified"] = Date()
+                        newObject!["completeUntil"] = Date()
                         newObject!["repeats"] = true
                         // print("newObject: " + String(describing: newObject))
                     }
                 }
-
-                if oldSchemaVersion < 14 {}
             }
         )
 
