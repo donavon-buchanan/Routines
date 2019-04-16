@@ -36,13 +36,13 @@ class OptionsTableViewController: UITableViewController {
         switch sender.tag {
         case 1:
             Options.setSegmentNotification(segment: 1, bool: sender.isOn)
-            // print("Afternoon Switch Toggled \(sender.isOn)")
+        // print("Afternoon Switch Toggled \(sender.isOn)")
         case 2:
             Options.setSegmentNotification(segment: 2, bool: sender.isOn)
-            // print("Evening Switch Toggled \(sender.isOn)")
+        // print("Evening Switch Toggled \(sender.isOn)")
         case 3:
             Options.setSegmentNotification(segment: 3, bool: sender.isOn)
-            // print("Night Switch Toggled \(sender.isOn)")
+        // print("Night Switch Toggled \(sender.isOn)")
         default:
             Options.setSegmentNotification(segment: 0, bool: sender.isOn)
             // print("Morning Switch Toggled \(sender.isOn)")
@@ -194,31 +194,31 @@ class OptionsTableViewController: UITableViewController {
 //    }
 
     func setUpUI() {
-                self.morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: true)
-                self.afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: true)
-                self.eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: true)
-                self.nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: true)
+        morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: true)
+        afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: true)
+        eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: true)
+        nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: true)
 
-                self.darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: true)
+        darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: true)
 
-                self.morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
-                self.afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
-                self.eveningSubLabel.text = Options.getSegmentTimeString(segment: 2)
-                self.nightSubLabel.text = Options.getSegmentTimeString(segment: 3)
+        morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
+        afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
+        eveningSubLabel.text = Options.getSegmentTimeString(segment: 2)
+        nightSubLabel.text = Options.getSegmentTimeString(segment: 3)
     }
-    
+
     func refreshUI() {
-        self.morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: true)
-        self.afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: true)
-        self.eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: true)
-        self.nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: true)
-        
+        morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: true)
+        afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: true)
+        eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: true)
+        nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: true)
+
 //        self.darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: true)
-        
-        self.morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
-        self.afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
-        self.eveningSubLabel.text = Options.getSegmentTimeString(segment: 2)
-        self.nightSubLabel.text = Options.getSegmentTimeString(segment: 3)
+
+        morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
+        afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
+        eveningSubLabel.text = Options.getSegmentTimeString(segment: 2)
+        nightSubLabel.text = Options.getSegmentTimeString(segment: 3)
     }
 
 //    open func getSegmentNotificationOption(segment: Int) -> Bool {
@@ -590,30 +590,30 @@ class OptionsTableViewController: UITableViewController {
             }
         }
     }
-    
-    //MARK: - Observation
+
+    // MARK: - Observation
+
     var optionsToken: NotificationToken?
-    
+
     deinit {
         optionsToken?.invalidate()
     }
-    
+
     func observeOptions() {
         let realm = try! Realm()
         if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-            optionsToken = options.observe({ (change) in
+            optionsToken = options.observe { change in
                 switch change {
                 case let .change(properties):
-                    properties.forEach({ (propertyChange) in
+                    properties.forEach { _ in
                         self.refreshUI()
-                    })
+                    }
                 case let .error(error):
                     print("Options observation error occurred: \(error)")
                 case .deleted:
                     print("The object was deleted.")
                 }
-            })
+            }
         }
-        
     }
 }
