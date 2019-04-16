@@ -154,7 +154,7 @@ import RealmSwift
 
     static func getSegmentNotification(segment: Int) -> Bool {
         var enabled = false
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
@@ -172,6 +172,32 @@ import RealmSwift
             }
         }
         return enabled
+    }
+    
+    static func setSegmentNotification(segment: Int, bool: Bool) {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool{
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                    do {
+                        try realm.write {
+                            switch segment {
+                            case 1:
+                                options.afternoonNotificationsOn = bool
+                            case 2:
+                                options.eveningNotificationsOn = bool
+                            case 3:
+                                options.nightNotificationsOn = bool
+                            default:
+                                options.morningNotificationsOn = bool
+                            }
+                        }
+                    } catch {
+                        fatalError("\(#function): failed to set segment notification")
+                    }
+                }
+            }
+        }
     }
 
     static func getCurrentSegmentFromTime() -> Int {
