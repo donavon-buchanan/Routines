@@ -11,9 +11,9 @@ import RealmSwift
 import SwiftTheme
 
 // Get the default Realm
-private let realm = try! Realm()
-private let optionsKey = "optionsKey"
-private let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+// private let realm = try! Realm()
+//
+// private let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
 
 enum Themes: Int {
     case morningLight = 0
@@ -45,13 +45,13 @@ enum Themes: Int {
 
     // TODO: Pass in segment here
     static func isDarkMode() -> Bool {
-        return (options?.darkMode)!
+        return (Options.getDarkModeStatus())
     }
 
     // MARK: Save & Restore
 
     static func restoreLastTheme() {
-        switchTo(theme: Themes(rawValue: (options?.themeIndex)!)!)
+        switchTo(theme: Themes(rawValue: Options.getThemeIndex())!)
     }
 
     // TODO: Get rid of this
@@ -60,8 +60,7 @@ enum Themes: Int {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let optionsKey = "optionsKey"
-                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
                 do {
                     try realm.write {
                         options?.themeIndex = ThemeManager.currentThemeIndex

@@ -12,10 +12,10 @@ import IceCream
 import RealmSwift
 
 @objcMembers class Options: Object {
-    dynamic var morningStartTime: Date?
-    dynamic var afternoonStartTime: Date?
-    dynamic var eveningStartTime: Date?
-    dynamic var nightStartTime: Date?
+//    dynamic var morningStartTime: Date?
+//    dynamic var afternoonStartTime: Date?
+//    dynamic var eveningStartTime: Date?
+//    dynamic var nightStartTime: Date?
 
     dynamic var morningHour: Int = 7
     dynamic var morningMinute: Int = 0
@@ -37,10 +37,10 @@ import RealmSwift
     dynamic var badge: Bool = true
 
     // TODO: This should be removed
-    dynamic var firstItemAdded: Bool = false
+    // dynamic var firstItemAdded: Bool = false
 
     // TODO: This should be renamed at some point in the future
-    dynamic var smartSnooze: Bool = false
+    // dynamic var smartSnooze: Bool = false
 
     dynamic var darkMode: Bool = true
     dynamic var themeIndex: Int = 0
@@ -48,11 +48,24 @@ import RealmSwift
     dynamic var selectedIndex: Int = 0
 
     dynamic var optionsKey = UUID().uuidString
-    override static func primaryKey() -> String? {
+    override static func primaryKey() -> String {
         return "optionsKey"
     }
 
     static let realmDispatchQueueLabel: String = "background"
+
+    static func getThemeIndex() -> Int {
+        var index = 0
+        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                    index = options.themeIndex
+                }
+            }
+        }
+        return index
+    }
 
     static func getBadgeOption() -> Bool {
         var badge = true
@@ -206,6 +219,27 @@ import RealmSwift
         return darkMode
     }
 
+    static func setDarkMode(_ bool: Bool) {
+        #if DEBUG
+            print("Setting dark mode to: \(bool)")
+        #endif
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                    print("Options UUID: \(options.optionsKey)")
+                    do {
+                        try realm.write {
+                            options.darkMode = bool
+                        }
+                    } catch {
+                        fatalError("Failed to save dark mode: \(error)")
+                    }
+                }
+            }
+        }
+    }
+
     static func getSegmentTimeString(segment: Int) -> String {
         var timeString: String = ""
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -235,6 +269,36 @@ import RealmSwift
             }
         }
         return timeString
+    }
+    
+    static func setSelectedIndex(index: Int) {
+        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                    do {
+                        try realm.write {
+                            options.selectedIndex = index
+                        }
+                    } catch {
+                        fatalError("\(#function): failed to save index")
+                    }
+                }
+            }
+        }
+    }
+    
+    static func getSelectedIndex() -> Int {
+        var index = 0
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool{
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                    index = options.selectedIndex
+                }
+            }
+        }
+        return index
     }
 }
 

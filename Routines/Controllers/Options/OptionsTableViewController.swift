@@ -55,7 +55,8 @@ class OptionsTableViewController: UITableViewController {
 
     @IBOutlet var darkModeSwtich: UISwitch!
     @IBAction func darkModeSwitchToggled(_ sender: UISwitch) {
-        saveDarkModeOption(isOn: sender.isOn)
+        Options.setDarkMode(sender.isOn)
+        setAppearance(tab: Options.getSelectedIndex())
     }
 
     @objc func dismissView() {
@@ -131,7 +132,8 @@ class OptionsTableViewController: UITableViewController {
 
         if indexPath.section == 2 {
             darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
-            saveDarkModeOption(isOn: darkModeSwtich.isOn)
+            Options.setDarkMode(darkModeSwtich.isOn)
+            setAppearance(tab: Options.getSelectedIndex())
             haptic.impactOccurred()
         }
     }
@@ -197,110 +199,102 @@ class OptionsTableViewController: UITableViewController {
     func setUpUI() {
         DispatchQueue.main.async {
             autoreleasepool {
-                self.morningSwitch.setOn(self.getSegmentNotificationOption(segment: 0), animated: false)
-                self.afternoonSwitch.setOn(self.getSegmentNotificationOption(segment: 1), animated: false)
-                self.eveningSwitch.setOn(self.getSegmentNotificationOption(segment: 2), animated: false)
-                self.nightSwitch.setOn(self.getSegmentNotificationOption(segment: 3), animated: false)
+                self.morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: true)
+                self.afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: true)
+                self.eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: true)
+                self.nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: true)
 
-                self.darkModeSwtich.setOn(self.getDarkModeStatus(), animated: false)
+                self.darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: true)
 
-                self.morningSubLabel.text = self.getOptionTimes(timePeriod: 0)
-                self.afternoonSubLabel.text = self.getOptionTimes(timePeriod: 1)
-                self.eveningSubLabel.text = self.getOptionTimes(timePeriod: 2)
-                self.nightSubLabel.text = self.getOptionTimes(timePeriod: 3)
+                self.morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
+                self.afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
+                self.eveningSubLabel.text = Options.getSegmentTimeString(segment: 2)
+                self.nightSubLabel.text = Options.getSegmentTimeString(segment: 3)
             }
         }
     }
 
-    open func getSegmentNotificationOption(segment: Int) -> Bool {
-        var isOn = true
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                switch segment {
-                case 1:
-                    if let on = options?.afternoonNotificationsOn {
-                        isOn = on
-                    }
-                case 2:
-                    if let on = options?.eveningNotificationsOn {
-                        isOn = on
-                    }
-                case 3:
-                    if let on = options?.nightNotificationsOn {
-                        isOn = on
-                    }
-                default:
-                    if let on = options?.morningNotificationsOn {
-                        isOn = on
-                    }
-                }
-            }
-        }
-        return isOn
-    }
+//    open func getSegmentNotificationOption(segment: Int) -> Bool {
+//        var isOn = true
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                switch segment {
+//                case 1:
+//                    if let on = options?.afternoonNotificationsOn {
+//                        isOn = on
+//                    }
+//                case 2:
+//                    if let on = options?.eveningNotificationsOn {
+//                        isOn = on
+//                    }
+//                case 3:
+//                    if let on = options?.nightNotificationsOn {
+//                        isOn = on
+//                    }
+//                default:
+//                    if let on = options?.morningNotificationsOn {
+//                        isOn = on
+//                    }
+//                }
+//            }
+//        }
+//        return isOn
+//    }
 
-    func getNotificationBool(notificationOption: Bool?) -> Bool {
-        var isOn = true
-        if let notificationIsOn = notificationOption {
-            isOn = notificationIsOn
-        }
-        return isOn
-    }
+//    func getOptionTimes(timePeriod: Int) -> String {
+//        var time: String = " "
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                var timeOption = DateComponents()
+//                timeOption.calendar = Calendar.autoupdatingCurrent
+//                timeOption.timeZone = TimeZone.autoupdatingCurrent
+//
+//                switch timePeriod {
+//                case 1:
+//                    timeOption.hour = options?.afternoonHour
+//                    timeOption.minute = options?.afternoonMinute
+//                case 2:
+//                    timeOption.hour = options?.eveningHour
+//                    timeOption.minute = options?.eveningMinute
+//                case 3:
+//                    timeOption.hour = options?.nightHour
+//                    timeOption.minute = options?.nightMinute
+//                default:
+//                    timeOption.hour = options?.morningHour
+//                    timeOption.minute = options?.morningMinute
+//                }
+//
+//                let periods = ["morning", "afternoon", "evening", "night"]
+//                let dateFormatter = DateFormatter()
+//                dateFormatter.timeStyle = .short
+//                dateFormatter.locale = Locale.autoupdatingCurrent
+//                dateFormatter.setLocalizedDateFormatFromTemplate("HH:mm")
+//                // print("timeOption DateComponents: \(String(describing: timeOption))")
+//
+//                time = "Your \(periods[timePeriod]) begins at \(DateFormatter.localizedString(from: timeOption.date!, dateStyle: .none, timeStyle: .short))"
+//            }
+//        }
+//
+//        return time
+//    }
 
-    func getOptionTimes(timePeriod: Int) -> String {
-        var time: String = " "
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                var timeOption = DateComponents()
-                timeOption.calendar = Calendar.autoupdatingCurrent
-                timeOption.timeZone = TimeZone.autoupdatingCurrent
-
-                switch timePeriod {
-                case 1:
-                    timeOption.hour = options?.afternoonHour
-                    timeOption.minute = options?.afternoonMinute
-                case 2:
-                    timeOption.hour = options?.eveningHour
-                    timeOption.minute = options?.eveningMinute
-                case 3:
-                    timeOption.hour = options?.nightHour
-                    timeOption.minute = options?.nightMinute
-                default:
-                    timeOption.hour = options?.morningHour
-                    timeOption.minute = options?.morningMinute
-                }
-
-                let periods = ["morning", "afternoon", "evening", "night"]
-                let dateFormatter = DateFormatter()
-                dateFormatter.timeStyle = .short
-                dateFormatter.locale = Locale.autoupdatingCurrent
-                dateFormatter.setLocalizedDateFormatFromTemplate("HH:mm")
-                // print("timeOption DateComponents: \(String(describing: timeOption))")
-
-                time = "Your \(periods[timePeriod]) begins at \(DateFormatter.localizedString(from: timeOption.date!, dateStyle: .none, timeStyle: .short))"
-            }
-        }
-
-        return time
-    }
-
-    func getOptionTimesAsDate(timePeriod: Int, timeOption: Date?) -> Date {
-        var time: Date
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-
-        if let setTime = timeOption {
-            time = setTime
-        } else {
-            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
-        }
-
-        return time
-    }
+//    func getOptionTimesAsDate(timePeriod: Int, timeOption: Date?) -> Date {
+//        var time: Date
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.timeStyle = .short
+//
+//        if let setTime = timeOption {
+//            time = setTime
+//        } else {
+//            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
+//        }
+//
+//        return time
+//    }
 
 //
 //    func getHour(date: Date) -> Int {
@@ -368,204 +362,204 @@ class OptionsTableViewController: UITableViewController {
 
     // MARK: - Conversion functions
 
-    let defaultTimeStrings = ["07:00", "12:00", "17:00", "21:00"]
-
-    func getLocalTimeString(date: Date) -> String {
-        return DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)
-    }
-
-    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
-        var time: Date
-        let dateFormatter = DateFormatter()
-        // dateFormatter.timeStyle = .short
-        dateFormatter.locale = Locale.autoupdatingCurrent
-        dateFormatter.setLocalizedDateFormatFromTemplate("HH:mm")
-        if let setTime = timeOption {
-            time = setTime
-        } else {
-            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
-        }
-
-        return time
-    }
-
-    func getHour(date: Date) -> Int {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH"
-        let hour = dateFormatter.string(from: date)
-        return Int(hour)!
-    }
-
-    func getMinute(date: Date) -> Int {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "mm"
-        let minutes = dateFormatter.string(from: date)
-        return Int(minutes)!
-    }
-
-    func getOptionHour(segment: Int) -> Int {
-        var hour = Int()
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                switch segment {
-                case 1:
-                    hour = (options?.afternoonHour)!
-                case 2:
-                    hour = (options?.eveningHour)!
-                case 3:
-                    hour = (options?.nightHour)!
-                default:
-                    hour = (options?.morningHour)!
-                }
-            }
-        }
-        return hour
-    }
-
-    func getOptionMinute(segment: Int) -> Int {
-        var minute = Int()
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                switch segment {
-                case 1:
-                    minute = (options?.afternoonMinute)!
-                case 2:
-                    minute = (options?.eveningMinute)!
-                case 3:
-                    minute = (options?.nightMinute)!
-                default:
-                    minute = (options?.morningMinute)!
-                }
-            }
-        }
-        return minute
-    }
+//    let defaultTimeStrings = ["07:00", "12:00", "17:00", "21:00"]
+//
+//    func getLocalTimeString(date: Date) -> String {
+//        return DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)
+//    }
+//
+//    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
+//        var time: Date
+//        let dateFormatter = DateFormatter()
+//        // dateFormatter.timeStyle = .short
+//        dateFormatter.locale = Locale.autoupdatingCurrent
+//        dateFormatter.setLocalizedDateFormatFromTemplate("HH:mm")
+//        if let setTime = timeOption {
+//            time = setTime
+//        } else {
+//            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
+//        }
+//
+//        return time
+//    }
+//
+//    func getHour(date: Date) -> Int {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "HH"
+//        let hour = dateFormatter.string(from: date)
+//        return Int(hour)!
+//    }
+//
+//    func getMinute(date: Date) -> Int {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "mm"
+//        let minutes = dateFormatter.string(from: date)
+//        return Int(minutes)!
+//    }
+//
+//    func getOptionHour(segment: Int) -> Int {
+//        var hour = Int()
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                switch segment {
+//                case 1:
+//                    hour = (options?.afternoonHour)!
+//                case 2:
+//                    hour = (options?.eveningHour)!
+//                case 3:
+//                    hour = (options?.nightHour)!
+//                default:
+//                    hour = (options?.morningHour)!
+//                }
+//            }
+//        }
+//        return hour
+//    }
+//
+//    func getOptionMinute(segment: Int) -> Int {
+//        var minute = Int()
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                switch segment {
+//                case 1:
+//                    minute = (options?.afternoonMinute)!
+//                case 2:
+//                    minute = (options?.eveningMinute)!
+//                case 3:
+//                    minute = (options?.nightMinute)!
+//                default:
+//                    minute = (options?.morningMinute)!
+//                }
+//            }
+//        }
+//        return minute
+//    }
 
     // Set the notification badge count
-    func getSegmentCount(segment: Int) -> Int {
-        var count = Int()
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                count = realm.objects(Items.self).filter("segment = \(segment)").count
-            }
-        }
-        return count
-    }
+//    func getSegmentCount(segment: Int) -> Int {
+//        var count = Int()
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                count = realm.objects(Items.self).filter("segment = \(segment)").count
+//            }
+//        }
+//        return count
+//    }
 
     // MARK: - Realm
 
-    let realmDispatchQueueLabel: String = "background"
-    let optionsKey = "optionsKey"
-
-    lazy var morningHour: Int = 7
-    lazy var morningMinute: Int = 0
-
-    lazy var afternoonHour: Int = 12
-    lazy var afternoonMinute: Int = 0
-
-    lazy var eveningHour: Int = 17
-    lazy var eveningMinute: Int = 0
-
-    lazy var nightHour: Int = 21
-    lazy var nightMinute: Int = 0
-
-    // Load Options
-    func loadOptions() {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    self.morningHour = options.morningHour
-                    self.morningMinute = options.morningMinute
-
-                    self.afternoonHour = options.afternoonHour
-                    self.afternoonMinute = options.afternoonMinute
-
-                    self.eveningHour = options.eveningHour
-                    self.eveningMinute = options.eveningMinute
-
-                    self.nightHour = options.nightHour
-                    self.nightMinute = options.nightMinute
-                }
-            }
-        }
-    }
-
-    public func getSegmentNotification(segment: Int) -> Bool {
-        var enabled = false
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
-                    switch segment {
-                    case 1:
-                        enabled = options.afternoonNotificationsOn
-                    case 2:
-                        enabled = options.eveningNotificationsOn
-                    case 3:
-                        enabled = options.nightNotificationsOn
-                    default:
-                        enabled = options.morningNotificationsOn
-                    }
-                }
-            }
-        }
-        return enabled
-    }
+//    let realmDispatchQueueLabel: String = "background"
+//    let optionsKey = "optionsKey"
+//
+//    lazy var morningHour: Int = 7
+//    lazy var morningMinute: Int = 0
+//
+//    lazy var afternoonHour: Int = 12
+//    lazy var afternoonMinute: Int = 0
+//
+//    lazy var eveningHour: Int = 17
+//    lazy var eveningMinute: Int = 0
+//
+//    lazy var nightHour: Int = 21
+//    lazy var nightMinute: Int = 0
+//
+//    // Load Options
+//    func loadOptions() {
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+//                    self.morningHour = options.morningHour
+//                    self.morningMinute = options.morningMinute
+//
+//                    self.afternoonHour = options.afternoonHour
+//                    self.afternoonMinute = options.afternoonMinute
+//
+//                    self.eveningHour = options.eveningHour
+//                    self.eveningMinute = options.eveningMinute
+//
+//                    self.nightHour = options.nightHour
+//                    self.nightMinute = options.nightMinute
+//                }
+//            }
+//        }
+//    }
+//
+//    public func getSegmentNotification(segment: Int) -> Bool {
+//        var enabled = false
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+//                    switch segment {
+//                    case 1:
+//                        enabled = options.afternoonNotificationsOn
+//                    case 2:
+//                        enabled = options.eveningNotificationsOn
+//                    case 3:
+//                        enabled = options.nightNotificationsOn
+//                    default:
+//                        enabled = options.morningNotificationsOn
+//                    }
+//                }
+//            }
+//        }
+//        return enabled
+//    }
 
     // MARK: - Themeing
 
-    func saveDarkModeOption(isOn: Bool) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    do {
-                        try realm.write {
-                            options.darkMode = isOn
-                        }
-                    } catch {
-                        // print("failed to update dark mode")
-                    }
-                }
-            }
-        }
-        setAppearance(tab: getSelectedTab())
-    }
+//    func saveDarkModeOption(isOn: Bool) {
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+//                    do {
+//                        try realm.write {
+//                            options.darkMode = isOn
+//                        }
+//                    } catch {
+//                        // print("failed to update dark mode")
+//                    }
+//                }
+//            }
+//        }
+//        setAppearance(tab: getSelectedTab())
+//    }
 
-    func getDarkModeStatus() -> Bool {
-        var darkMode = true
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    darkMode = options.darkMode
-                }
-            }
-        }
-        return darkMode
-    }
+//    func getDarkModeStatus() -> Bool {
+//        var darkMode = true
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+//                    darkMode = options.darkMode
+//                }
+//            }
+//        }
+//        return darkMode
+//    }
 
-    func getSelectedTab() -> Int {
-        var selectedIndex = 0
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    selectedIndex = options.selectedIndex
-                }
-            }
-        }
-        return selectedIndex
-    }
+//    func getSelectedTab() -> Int {
+//        var selectedIndex = 0
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+//                    selectedIndex = options.selectedIndex
+//                }
+//            }
+//        }
+//        return selectedIndex
+//    }
 
     func setAppearance(tab: Int) {
-        if getDarkModeStatus() {
+        if Options.getDarkModeStatus() {
             switch tab {
             case 1:
                 Themes.switchTo(theme: .afternoonDark)
@@ -588,5 +582,31 @@ class OptionsTableViewController: UITableViewController {
                 Themes.switchTo(theme: .morningLight)
             }
         }
+    }
+    
+    //MARK: - Observation
+    var optionsToken: NotificationToken?
+    
+    deinit {
+        optionsToken?.invalidate()
+    }
+    
+    func observeOptions() {
+        let realm = try! Realm()
+        if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+            optionsToken = options.observe({ (change) in
+                switch change {
+                case let .change(properties):
+                    properties.forEach({ (propertyChange) in
+                        self.setUpUI()
+                    })
+                case let .error(error):
+                    print("Options observation error occurred: \(error)")
+                case .deleted:
+                    print("The object was deleted.")
+                }
+            })
+        }
+        
     }
 }

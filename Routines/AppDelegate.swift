@@ -16,8 +16,8 @@ import UserNotifications
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
-    static let optionsKey = "optionsKey"
-    let center = UNUserNotificationCenter.current()
+
+//    let center = UNUserNotificationCenter.current()
     var shortcutItemToProcess: UIApplicationShortcutItem?
 
     var syncEngine: SyncEngine?
@@ -57,9 +57,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    }
 
     func application(_: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        let center = UNUserNotificationCenter.current()
         center.delegate = self
 
-        requestNotificationPermission()
         registerNotificationCategoriesAndActions()
 
         // Theme
@@ -69,6 +69,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // check if Options exist
+        // checkOptions()
         // Override point for customization after application launch.
         migrateRealm()
 
@@ -82,7 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // checkToCreateOptions()
         // loadOptions()
         // setUpTheme()
-
+        checkOptions()
         // If launchOptions contains the appropriate launch options key, a Home screen quick action
         // is responsible for launching the app. Store the action for processing once the app has
         // completed initialization.
@@ -127,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         updateAppBadgeCount()
-        // saveSelectedTab()
+        // setSelectedIndex()
         // itemCleanup()
     }
 
@@ -142,7 +144,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         // TableViewController().refreshItems()
         // itemCleanup()
-        updateAppBadgeCount()
+        // updateAppBadgeCount()
     }
 
     func applicationDidBecomeActive(_: UIApplication) {
@@ -166,7 +168,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // TableViewController().refreshItems()
 
         // itemCleanup()
-        updateAppBadgeCount()
+        // updateAppBadgeCount()
     }
 
     func applicationWillTerminate(_: UIApplication) {
@@ -206,33 +208,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return selectedIndex
     }
 
-    func saveSelectedTab() {
-        let rootVC = window?.rootViewController as! TabBarViewController
-        let selectedIndex = rootVC.selectedIndex
-        DispatchQueue(label: realmDispatchQueueLabel).async {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    do {
-                        try realm.write {
-                            options.selectedIndex = selectedIndex
-                        }
-                    } catch {
-                        // print("Error saving selected tab")
-                    }
-                }
-            }
-        }
-    }
+//    func setSelectedIndex() {
+//        let rootVC = window?.rootViewController as! TabBarViewController
+//        let selectedIndex = rootVC.selectedIndex
+//        DispatchQueue(label: realmDispatchQueueLabel).async {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+//                    do {
+//                        try realm.write {
+//                            options.selectedIndex = selectedIndex
+//                        }
+//                    } catch {
+//                        // print("Error saving selected tab")
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     // MARK: - Options Realm
 
-    var timeArray: [DateComponents?] = []
+    // var timeArray: [DateComponents?] = []
 //    //Options Properties
     // let realm = try! Realm()
-    var optionsObject: Options?
-    let optionsKey = "optionsKey"
+
     let realmDispatchQueueLabel: String = "background"
+
+    func checkOptions() {
+        let realm = try! Realm()
+        if realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil {
+            #if DEBUG
+                print("Options exist. App should continue")
+            #endif
+        } else {
+            #if DEBUG
+                print("Options DO NOT exist. Creating")
+            #endif
+            let newOptions = Options()
+            newOptions.optionsKey = Options.primaryKey()
+            do {
+                try realm.write {
+                    realm.add(newOptions)
+                }
+            } catch {
+                fatalError("Failed to create first Options object: \(error)")
+            }
+        }
+    }
 
     func migrateRealm() {
 //        let configCheck = Realm.Configuration()
@@ -253,48 +276,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // a schema version lower than the one set above
             migrationBlock: { migration, oldSchemaVersion in
                 // print("oldSchemaVersion: \(oldSchemaVersion)")
-                if oldSchemaVersion < 2 {
-                    // print("Migration block running")
-                    DispatchQueue(label: self.realmDispatchQueueLabel).sync {
-                        autoreleasepool {
-                            let realm = try! Realm()
-                            let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                if oldSchemaVersion < 2 {
+//                    // print("Migration block running")
+//                    DispatchQueue(label: self.realmDispatchQueueLabel).sync {
+//                        autoreleasepool {
+//                            let realm = try! Realm()
+//                            let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//
+//                            do {
+//                                try realm.write {
+//                                    if let morningTime = options?.morningStartTime {
+//                                        options?.morningHour = self.getHour(date: morningTime)
+//                                        options?.morningMinute = self.getMinute(date: morningTime)
+//                                    }
+//                                    if let afternoonTime = options?.afternoonStartTime {
+//                                        options?.afternoonHour = self.getHour(date: afternoonTime)
+//                                        options?.afternoonMinute = self.getMinute(date: afternoonTime)
+//                                    }
+//                                    if let eveningTime = options?.eveningStartTime {
+//                                        options?.eveningHour = self.getHour(date: eveningTime)
+//                                        options?.eveningMinute = self.getMinute(date: eveningTime)
+//                                    }
+//                                    if let nightTime = options?.nightStartTime {
+//                                        options?.nightHour = self.getHour(date: nightTime)
+//                                        options?.nightMinute = self.getMinute(date: nightTime)
+//                                    }
+//                                }
+//                            } catch {
+//                                // print("Error with migration")
+//                            }
+//                        }
+//                    }
+//                }
 
-                            do {
-                                try realm.write {
-                                    if let morningTime = options?.morningStartTime {
-                                        options?.morningHour = self.getHour(date: morningTime)
-                                        options?.morningMinute = self.getMinute(date: morningTime)
-                                    }
-                                    if let afternoonTime = options?.afternoonStartTime {
-                                        options?.afternoonHour = self.getHour(date: afternoonTime)
-                                        options?.afternoonMinute = self.getMinute(date: afternoonTime)
-                                    }
-                                    if let eveningTime = options?.eveningStartTime {
-                                        options?.eveningHour = self.getHour(date: eveningTime)
-                                        options?.eveningMinute = self.getMinute(date: eveningTime)
-                                    }
-                                    if let nightTime = options?.nightStartTime {
-                                        options?.nightHour = self.getHour(date: nightTime)
-                                        options?.nightMinute = self.getMinute(date: nightTime)
-                                    }
-                                }
-                            } catch {
-                                // print("Error with migration")
-                            }
-                        }
+                if oldSchemaVersion < 10 {
+                    migration.enumerateObjects(ofType: Options.className()) { newObject, oldObject in
+                         print("oldObject: " + String(describing: oldObject))
+                         print("newObject: " + String(describing: newObject))
                     }
                 }
 
                 if oldSchemaVersion < 13 {
-                    // print("Is this even running at all?")
-                    // The enumerateObjects(ofType:_:) method iterates
-                    // over every Person object stored in the Realm file
                     // TODO: !!! Items class name can't migrate because class name changed !!!
                     // TODO: Also, future migrations may conflict with iCloud
                     migration.enumerateObjects(ofType: Items.className()) { _, newObject in
                         // print("oldObject: " + String(describing: oldObject))
                         newObject!["isDeleted"] = false
+                        newObject!["dateModified"] = Date()
+                        newObject!["repeats"] = true
                         // print("newObject: " + String(describing: newObject))
                     }
                 }
@@ -308,7 +337,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Now that we've told Realm how to handle the schema change, opening the file
         // will automatically perform the migration
-        _ = try! Realm()
+        let realm = try! Realm()
     }
 
 //    func getHour(date: Date) -> Int {
@@ -325,153 +354,91 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        return Int(minutes)!
 //    }
 
-    func getOptionHour(segment: Int) -> Int {
-        var hour = Int()
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                switch segment {
-                case 1:
-                    hour = (options?.afternoonHour)!
-                case 2:
-                    hour = (options?.eveningHour)!
-                case 3:
-                    hour = (options?.nightHour)!
-                default:
-                    hour = (options?.morningHour)!
-                }
-            }
-        }
-        return hour
-    }
+//    func getOptionHour(segment: Int) -> Int {
+//        var hour = Int()
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                switch segment {
+//                case 1:
+//                    hour = (options?.afternoonHour)!
+//                case 2:
+//                    hour = (options?.eveningHour)!
+//                case 3:
+//                    hour = (options?.nightHour)!
+//                default:
+//                    hour = (options?.morningHour)!
+//                }
+//            }
+//        }
+//        return hour
+//    }
+//
+//    func getOptionMinute(segment: Int) -> Int {
+//        var minute = Int()
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                switch segment {
+//                case 1:
+//                    minute = (options?.afternoonMinute)!
+//                case 2:
+//                    minute = (options?.eveningMinute)!
+//                case 3:
+//                    minute = (options?.nightMinute)!
+//                default:
+//                    minute = (options?.morningMinute)!
+//                }
+//            }
+//        }
+//        return minute
+//    }
 
-    func getOptionMinute(segment: Int) -> Int {
-        var minute = Int()
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                switch segment {
-                case 1:
-                    minute = (options?.afternoonMinute)!
-                case 2:
-                    minute = (options?.eveningMinute)!
-                case 3:
-                    minute = (options?.nightMinute)!
-                default:
-                    minute = (options?.morningMinute)!
-                }
-            }
-        }
-        return minute
-    }
-
-    // Load Options
-    func loadOptions() {
-        let realm = try! Realm()
-        optionsObject = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-
-        if let currentOptions = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
-            optionsObject = currentOptions
-            // print("AppDelegate: Options loaded successfully - \(String(describing: optionsObject))")
-        } else {
-            // print("AppDelegate: No Options exist yet. Creating it.")
-            let newOptionsObject = Options()
-            newOptionsObject.optionsKey = optionsKey
-            do {
-                try realm.write {
-                    realm.add(newOptionsObject, update: false)
-                }
-            } catch {
-                // print("Failed to create new options object")
-            }
-            loadOptions()
-        }
-    }
+//    // Load Options
+//    func loadOptions() {
+//        let realm = try! Realm()
+//        optionsObject = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
+//
+//        if let currentOptions = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+//            optionsObject = currentOptions
+//            // print("AppDelegate: Options loaded successfully - \(String(describing: optionsObject))")
+//        } else {
+//            // print("AppDelegate: No Options exist yet. Creating it.")
+//            let newOptionsObject = Options()
+//            newOptionsObject.optionsKey = optionsKey
+//            do {
+//                try realm.write {
+//                    realm.add(newOptionsObject, update: false)
+//                }
+//            } catch {
+//                // print("Failed to create new options object")
+//            }
+//            //loadOptions()
+//        }
+//    }
 
     func completeItem(uuidString: String) {
-        // Remove added digit if necessary to get actual uuidString key
-        var id: String {
-            if uuidString.count > 36 {
-                return String(uuidString.dropLast())
-            } else {
-                return uuidString
-            }
-        }
-
         let realm = try! Realm()
-        guard let item = realm.object(ofType: Items.self, forPrimaryKey: id) else { return }
+        guard let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) else { return }
 
-        item.softDelete()
-
-        // Decrement badge if there is one
-        let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber
-        if currentBadgeCount > 0 {
-            UIApplication.shared.applicationIconBadgeNumber -= 1
-        }
-
-        // AppDelegate().refreshNotifications()
-        updateAppBadgeCount()
+        item.completeItem()
     }
 
     func snoozeItem(uuidString: String) {
-        // Remove added digit if necessary to get actual uuidString key
-        var id: String {
-            if uuidString.count > 36 {
-                return String(uuidString.dropLast())
-            } else {
-                return uuidString
-            }
-        }
-
         let realm = try! Realm()
-        guard let item = realm.object(ofType: Items.self, forPrimaryKey: id) else { return }
+        guard let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) else { return }
 
         item.snooze()
-
-        // Decrement badge if there is one
-        let currentBadgeCount = UIApplication.shared.applicationIconBadgeNumber
-        if currentBadgeCount > 0 {
-            UIApplication.shared.applicationIconBadgeNumber -= 1
-        }
-        // AppDelegate().refreshNotifications()
-        updateAppBadgeCount()
     }
 
     // MARK: - Manage Notifications
 
-    func requestNotificationPermission() {
-        // let center = UNUserNotificationCenter.current()
-        // Request permission to display alerts and play sounds
-        if #available(iOS 12.0, *) {
-            center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { granted, _ in
-                // Enable or disable features based on authorization.
-                if granted {
-                    // print("App Delegate: App has notification permission")
-                } else {
-                    // print("App Delegate: App does not have notification permission")
-                    return
-                }
-            }
-        } else {
-            // Fallback on earlier versions
-            center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
-                // Enable or disable features based on authorization.
-                if granted {
-                    // print("App Delegate: App has notification permission")
-                } else {
-                    // print("App Delegate: App does not have notification permission")
-                    return
-                }
-            }
-        }
-    }
-
     // Notification Categories and Actions
 
     func registerNotificationCategoriesAndActions() {
-        // let center = UNUserNotificationCenter.current()
+        let center = UNUserNotificationCenter.current()
 
         let completeAction = UNNotificationAction(identifier: "complete", title: "Completed", options: UNNotificationActionOptions(rawValue: 0))
 
@@ -585,80 +552,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         completionHandler()
     }
 
-    func scheduleAutoSnoozeNotifications(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-        // This is where you need to test if a segment is > current segment
-        let dayOfFirstDate = Calendar.autoupdatingCurrent.dateComponents([.day], from: firstDate)
-        // print("dayOfFirstDate: \(dayOfFirstDate)")
-        let today = Calendar.autoupdatingCurrent.dateComponents([.day], from: Date())
-        // print("today: \(today)")
-        if segment > 0, dayOfFirstDate == today {
-            if getSegmentNotificationOption(segment: 0) {
-                scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate.startOfNextDay)
-                // print("morning uuid: " + "\(uuidString)0")
-            }
-        } else {
-            if getSegmentNotificationOption(segment: 0) {
-                scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate)
-                // print("morning uuid: " + "\(uuidString)0")
-            }
-        }
-        if segment > 1, dayOfFirstDate == today {
-            if getSegmentNotificationOption(segment: 1) {
-                scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate.startOfNextDay)
-                // print("afternoon uuid: " + "\(uuidString)1")
-            }
-        } else {
-            if getSegmentNotificationOption(segment: 1) {
-                scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate)
-                // print("afternoon uuid: " + "\(uuidString)1")
-            }
-        }
-        if segment > 2, dayOfFirstDate == today {
-            if getSegmentNotificationOption(segment: 2) {
-                scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate.startOfNextDay)
-                // print("evening uuid: " + "\(uuidString)2")
-            }
-        } else {
-            if getSegmentNotificationOption(segment: 2) {
-                scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate)
-                // print("evening uuid: " + "\(uuidString)2")
-            }
-        }
-        if getSegmentNotificationOption(segment: 3) {
-            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: "\(uuidString)3", firstDate: firstDate)
-            // print("night uuid: " + "\(uuidString)3")
-        }
-    }
-
-    func getSegmentNotificationOption(segment: Int) -> Bool {
-        var isOn = true
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                switch segment {
-                case 1:
-                    if let on = options?.afternoonNotificationsOn {
-                        isOn = on
-                    }
-                case 2:
-                    if let on = options?.eveningNotificationsOn {
-                        isOn = on
-                    }
-                case 3:
-                    if let on = options?.nightNotificationsOn {
-                        isOn = on
-                    }
-                default:
-                    if let on = options?.morningNotificationsOn {
-                        isOn = on
-                    }
-                }
-            }
-        }
-        return isOn
-    }
-
 //    func removeAllNotificationsForItem(uuidString: String) {
 //        DispatchQueue(label: realmDispatchQueueLabel).async {
 //            autoreleasepool {
@@ -669,12 +562,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //            }
 //        }
 //    }
-
-    func removeNotification(uuidString: [String]) {
-        // print("Removing Notifications")
-        let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: uuidString)
-    }
 
     func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
         // print("running scheduleNewNotification")
@@ -787,8 +674,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         dateComponents.timeZone = TimeZone.autoupdatingCurrent
 
-        dateComponents.hour = getOptionHour(segment: segment)
-        dateComponents.minute = getOptionMinute(segment: segment)
+        dateComponents.hour = Options.getOptionHour(segment: segment)
+        dateComponents.minute = Options.getOptionMinute(segment: segment)
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
 
@@ -847,19 +734,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         shortcutItemToProcess = shortcutItem
     }
 
-    func getBadgeOption() -> Bool {
-        var badge = true
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    badge = options.badge
-                }
-            }
-        }
-        return badge
-    }
-
     open func setBadgeNumber() -> Int {
         var badgeCount = Int()
         DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -868,7 +742,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 // Get all the items in or under the current segment.
                 let items = realm.objects(Items.self) // .filter("segment <= %@", segment)
                 // Get what should the the furthest future trigger date
-                if let lastFutureDate = items.last?.dateModified {
+                if let lastFutureDate = items.last?.completeUntil {
                     badgeCount = items.filter("dateModified <= %@ AND isDeleted = \(false)", lastFutureDate).count
                 }
             }
@@ -892,7 +766,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    }
 
     open func updateAppBadgeCount() {
-        if getBadgeOption() {
+        if Options.getBadgeOption() {
             // print("updating app badge number")
             DispatchQueue(label: realmDispatchQueueLabel).sync {
                 autoreleasepool {
@@ -918,58 +792,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     // MARK: - Conversion functions
 
-    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
-        var time: Date
-        let defaultTimeStrings = ["07:00", "12:00", "17:00", "21:00 PM"]
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
+//    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
+//        var time: Date
+//        let defaultTimeStrings = ["07:00", "12:00", "17:00", "21:00 PM"]
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.timeStyle = .short
+//
+//        if let setTime = timeOption {
+//            time = setTime
+//        } else {
+//            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
+//        }
+//
+//        return time
+//    }
+//
+//    func getHour(date: Date?) -> Int {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "HH"
+//        let hour = dateFormatter.string(from: date!)
+//        return Int(hour)!
+//    }
+//
+//    func getMinute(date: Date?) -> Int {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "mm"
+//        let minutes = dateFormatter.string(from: date!)
+//        return Int(minutes)!
+//    }
+//
+//    func getCurrentSegmentFromTime() -> Int {
+//        let afternoon = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 1), minute: getOptionMinute(segment: 1), second: 0, of: Date())
+//        let evening = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 2), minute: getOptionMinute(segment: 2), second: 0, of: Date())
+//        let night = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 3), minute: getOptionMinute(segment: 3), second: 0, of: Date())
+//
+//        var currentSegment = 0
+//
+//        switch Date() {
+//        case _ where Date() < afternoon!:
+//            currentSegment = 0
+//        case _ where Date() < evening!:
+//            currentSegment = 1
+//        case _ where Date() < night!:
+//            currentSegment = 2
+//        case _ where Date() > night!:
+//            currentSegment = 3
+//        default:
+//            currentSegment = 0
+//        }
+//        return currentSegment
+//    }
 
-        if let setTime = timeOption {
-            time = setTime
-        } else {
-            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
-        }
-
-        return time
-    }
-
-    func getHour(date: Date?) -> Int {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH"
-        let hour = dateFormatter.string(from: date!)
-        return Int(hour)!
-    }
-
-    func getMinute(date: Date?) -> Int {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "mm"
-        let minutes = dateFormatter.string(from: date!)
-        return Int(minutes)!
-    }
-
-    func getCurrentSegmentFromTime() -> Int {
-        let afternoon = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 1), minute: getOptionMinute(segment: 1), second: 0, of: Date())
-        let evening = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 2), minute: getOptionMinute(segment: 2), second: 0, of: Date())
-        let night = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 3), minute: getOptionMinute(segment: 3), second: 0, of: Date())
-
-        var currentSegment = 0
-
-        switch Date() {
-        case _ where Date() < afternoon!:
-            currentSegment = 0
-        case _ where Date() < evening!:
-            currentSegment = 1
-        case _ where Date() < night!:
-            currentSegment = 2
-        case _ where Date() > night!:
-            currentSegment = 3
-        default:
-            currentSegment = 0
-        }
-        return currentSegment
-    }
-
-    open func getItemSegment(id: String) -> Int {
+    func getItemSegment(id: String) -> Int {
         var identifier: String {
             if id.count > 36 {
                 return String(id.dropLast())
@@ -989,7 +863,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return segment
     }
 
-    open func getNotificationSegment(id: String) -> Int {
+    func getNotificationSegment(id: String) -> Int {
         var segment: Int {
             // If it's an auto snooze notification, just get the last character as an Int and go to that segment
             if id.count > 36 {
@@ -1052,19 +926,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         switchUI.theme_backgroundColor = GlobalPicker.cellBackground
     }
 
-    func getDarkModeStatus() -> Bool {
-        var darkMode = false
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    darkMode = options.darkMode
-                }
-            }
-        }
-        return darkMode
-    }
-
 //    func getSelectedTab() -> Int {
 //        var selectedIndex = 0
 //        DispatchQueue(label: realmDispatchQueueLabel).sync {
@@ -1077,30 +938,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        }
 //        return selectedIndex
 //    }
-
-    func setAppearance(tab: Int) {
-        if getDarkModeStatus() {
-            switch tab {
-            case 1:
-                Themes.switchTo(theme: .afternoonDark)
-            case 2:
-                Themes.switchTo(theme: .eveningDark)
-            case 3:
-                Themes.switchTo(theme: .nightDark)
-            default:
-                Themes.switchTo(theme: .morningDark)
-            }
-        } else {
-            switch tab {
-            case 1:
-                Themes.switchTo(theme: .afternoonLight)
-            case 2:
-                Themes.switchTo(theme: .eveningLight)
-            case 3:
-                Themes.switchTo(theme: .nightLight)
-            default:
-                Themes.switchTo(theme: .morningLight)
-            }
-        }
-    }
 }
