@@ -32,25 +32,21 @@ class OptionsTableViewController: UITableViewController {
         ]
     }
 
-    @IBAction func notificationSwitchToggled(_: UISwitch) {
-//        switch sender.tag {
-//        case 1:
-//            // print("Afternoon Switch Toggled \(sender.isOn)")
-//            addOrRemoveNotifications(isOn: sender.isOn, segment: 1)
-//            updateNotificationOptions(segment: 1, isOn: sender.isOn)
-//        case 2:
-//            // print("Evening Switch Toggled \(sender.isOn)")
-//            addOrRemoveNotifications(isOn: sender.isOn, segment: 2)
-//            updateNotificationOptions(segment: 2, isOn: sender.isOn)
-//        case 3:
-//            // print("Night Switch Toggled \(sender.isOn)")
-//            addOrRemoveNotifications(isOn: sender.isOn, segment: 3)
-//            updateNotificationOptions(segment: 3, isOn: sender.isOn)
-//        default:
-//            // print("Morning Switch Toggled \(sender.isOn)")
-//            addOrRemoveNotifications(isOn: sender.isOn, segment: 0)
-//            updateNotificationOptions(segment: 0, isOn: sender.isOn)
-//        }
+    @IBAction func notificationSwitchToggled(_ sender: UISwitch) {
+        switch sender.tag {
+        case 1:
+            Options.setSegmentNotification(segment: 1, bool: sender.isOn)
+            // print("Afternoon Switch Toggled \(sender.isOn)")
+        case 2:
+            Options.setSegmentNotification(segment: 2, bool: sender.isOn)
+            // print("Evening Switch Toggled \(sender.isOn)")
+        case 3:
+            Options.setSegmentNotification(segment: 3, bool: sender.isOn)
+            // print("Night Switch Toggled \(sender.isOn)")
+        default:
+            Options.setSegmentNotification(segment: 0, bool: sender.isOn)
+            // print("Morning Switch Toggled \(sender.isOn)")
+        }
     }
 
     @IBOutlet var darkModeSwtich: UISwitch!
@@ -79,6 +75,7 @@ class OptionsTableViewController: UITableViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissView))
 
         tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+        observeOptions()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -197,8 +194,6 @@ class OptionsTableViewController: UITableViewController {
 //    }
 
     func setUpUI() {
-        DispatchQueue.main.async {
-            autoreleasepool {
                 self.morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: true)
                 self.afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: true)
                 self.eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: true)
@@ -210,8 +205,20 @@ class OptionsTableViewController: UITableViewController {
                 self.afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
                 self.eveningSubLabel.text = Options.getSegmentTimeString(segment: 2)
                 self.nightSubLabel.text = Options.getSegmentTimeString(segment: 3)
-            }
-        }
+    }
+    
+    func refreshUI() {
+        self.morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: true)
+        self.afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: true)
+        self.eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: true)
+        self.nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: true)
+        
+//        self.darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: true)
+        
+        self.morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
+        self.afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
+        self.eveningSubLabel.text = Options.getSegmentTimeString(segment: 2)
+        self.nightSubLabel.text = Options.getSegmentTimeString(segment: 3)
     }
 
 //    open func getSegmentNotificationOption(segment: Int) -> Bool {
@@ -598,7 +605,7 @@ class OptionsTableViewController: UITableViewController {
                 switch change {
                 case let .change(properties):
                     properties.forEach({ (propertyChange) in
-                        self.setUpUI()
+                        self.refreshUI()
                     })
                 case let .error(error):
                     print("Options observation error occurred: \(error)")
