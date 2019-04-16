@@ -228,12 +228,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
 //    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
 //        if let destination = segue.destination as? TableViewController {
-//            if let currentItem = item {
-//                destination.updateItem(item: currentItem)
-//            } else {
-//                let newItem = Items(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
-//                destination.addItem(item: newItem)
-//            }
+//            destination.loadItems()
 //        }
 //    }
 
@@ -257,8 +252,19 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         if let updatedItem = item {
             updatedItem.updateItem(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
         } else {
-            let item = Items(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
-            item.addNewItem(item: item)
+            let realm = try! Realm()
+            do {
+                try realm.write {
+                    let newItem = Items()
+                    newItem.title = taskTextField.text!
+                    newItem.segment = segmentSelection.selectedSegmentIndex
+                    newItem.repeats = repeatDailySwitch.isOn
+                    newItem.notes = notesTextView.text
+                    realm.add(newItem)
+                }
+            } catch {
+                fatalError("\(#function): failed to add new item")
+            }
         }
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }

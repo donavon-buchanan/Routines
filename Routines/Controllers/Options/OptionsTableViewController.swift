@@ -208,12 +208,13 @@ class OptionsTableViewController: UITableViewController {
     }
 
     func refreshUI() {
+        // TODO: This should be a bit more granular
         morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: true)
         afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: true)
         eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: true)
         nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: true)
 
-//        self.darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: true)
+        darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: true)
 
         morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
         afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)

@@ -155,15 +155,12 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         Options.setSelectedIndex(index: tabBarController!.selectedIndex)
 
         title = setNavTitle()
+        // loadItems()
     }
 
     @objc func appBecameActive() {
         // removeDeliveredNotifications()
-        if linesBarButtonSelected {
-            loadAllItems()
-        } else {
-            loadItemsForSegment(segment: segment)
-        }
+        loadItems()
         updateBadge()
     }
 
@@ -171,13 +168,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         super.viewWillAppear(animated)
         // print("View Will Appear")
         // removeDeliveredNotifications()
-        loadItemsForSegment(segment: segment)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // print("viewDidAppear \n")
         setAppearance(segment: segment)
+        loadItems()
     }
 
     func setTimeInTitle(timeString _: String) {
@@ -420,24 +417,44 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         changeTabBar(hidden: false, animated: true)
     }
 
+    // TODO: Do this for completing items too
     @objc func deleteSelectedRows() {
-        if let indexPaths = self.tableView.indexPathsForSelectedRows {
-            var itemArray: [Items] = []
-            indexPaths.forEach { indexPath in
-                // The index paths are static during enumeration, but the item indexes are not
-                // Add them to an array first, delete only what's in the array, and then update the table UI
-                if let itemAtIndex = self.items?[indexPath.row] {
-                    itemArray.append(itemAtIndex)
+        var itemCount: Int {
+            if let items = self.items {
+                return items.count
+            } else {
+                return 0
+            }
+        }
+        var selectedCount: Int {
+            if let selectedPaths = tableView.indexPathsForSelectedRows {
+                return selectedPaths.count
+            } else {
+                return 0
+            }
+        }
+
+        if selectedCount != 0 {
+            if let indexPaths = self.tableView.indexPathsForSelectedRows {
+                var itemArray: [Items] = []
+                indexPaths.forEach { indexPath in
+                    // The index paths are static during enumeration, but the item indexes are not
+                    // Add them to an array first, delete only what's in the array, and then update the table UI
+                    if let itemAtIndex = self.items?[indexPath.row] {
+                        itemArray.append(itemAtIndex)
+                    }
+                }
+
+                itemArray.forEach { item in
+                    item.softDelete()
                 }
             }
-
-            itemArray.forEach { item in
+        } else if selectedCount == 0, itemCount != 0 {
+            items?.forEach { item in
                 item.softDelete()
             }
-            // This will be handled by the realmSync func
-            //tableView.deleteRows(at: indexPaths, with: .left)
         }
-//        OptionsTableViewController().refreshNotifications()
+
         updateBadge()
     }
 
@@ -630,24 +647,40 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     var segment = Int()
 
     func loadItemsForSegment(segment: Int) {
+        #if DEBUG
+            print("loading items for segment \(segment)")
+            print("end of today is: \(Date().endOfDay)")
+        #endif
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date()).sorted(byKeyPath: "dateModified", ascending: true)
+                self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true)
             }
         }
         realmSync()
     }
 
     func loadAllItems() {
+        #if DEBUG
+            print("loading all items")
+            print("end of today is: \(Date().endOfDay)")
+        #endif
         // Sort by segment to put in order of the day
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                self.items = realm.objects(Items.self).filter("isDeleted = \(false) AND completeUntil < %@", Date()).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
+                self.items = realm.objects(Items.self).filter("isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "segment", ascending: true)
             }
         }
         realmSync()
+    }
+
+    func loadItems() {
+        if linesBarButtonSelected {
+            loadAllItems()
+        } else {
+            loadItemsForSegment(segment: segment)
+        }
     }
 
 //    private func deleteItem(item: Items) {
@@ -660,19 +693,18 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func realmSync() {
         // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
         // Observe Results Notifications
-        notificationToken = items!.observe { [self] (changes: RealmCollectionChange) in
-            guard let tableView = self.tableView else { return }
+        notificationToken = items?.observe { [weak self] (changes: RealmCollectionChange) in
+            guard let tableView = self?.tableView else { return }
             switch changes {
             case .initial:
-                // Results are now populated and can be accessed without blocking the UI
                 #if DEBUG
-                    print("calling initial load on realm for table")
+                    print("Initial load")
                 #endif
+                // Results are now populated and can be accessed without blocking the UI
                 tableView.reloadData()
-                self.updateBadge()
             case let .update(_, deletions, insertions, modifications):
                 #if DEBUG
-                    print("calling update load on realm for table")
+                    print("update detected")
                 #endif
                 // Query results have changed, so apply them to the UITableView
                 tableView.performBatchUpdates({
@@ -683,15 +715,17 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                     tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) },
                                          with: .fade)
                 }, completion: nil)
-                self.updateBadge()
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
-                print("\(error)")
+                fatalError("\(error)")
             }
         }
     }
 
     deinit {
+        #if DEBUG
+            print("\(#function) called. Tokens invalidated")
+        #endif
         notificationToken?.invalidate()
         debugOptionsToken?.invalidate()
         optionsToken?.invalidate()
@@ -704,20 +738,20 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func observeOptions() {
         let realm = try! Realm()
         if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-            #if DEBUG
-                debugOptionsToken = options.observe { change in
-                    switch change {
-                    case let .change(properties):
-                        properties.forEach { propertyChange in
-                            print("Options property \(propertyChange.name) changed from \(propertyChange.oldValue.debugDescription) to \(propertyChange.newValue.debugDescription).")
-                        }
-                    case let .error(error):
-                        print("Options observation error occurred: \(error)")
-                    case .deleted:
-                        print("The object was deleted.")
-                    }
-                }
-            #endif
+//            #if DEBUG
+//                debugOptionsToken = options.observe { change in
+//                    switch change {
+//                    case let .change(properties):
+//                        properties.forEach { propertyChange in
+//                            print("Options property \(propertyChange.name) changed from \(propertyChange.oldValue.debugDescription) to \(propertyChange.newValue.debugDescription).")
+//                        }
+//                    case let .error(error):
+//                        print("Options observation error occurred: \(error)")
+//                    case .deleted:
+//                        print("The object was deleted.")
+//                    }
+//                }
+//            #endif
             optionsToken = options.observe { change in
                 switch change {
                 case let .change(properties):
@@ -858,7 +892,31 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     @objc func deleteSelectedAlert() {
+        var itemCount: Int {
+            if let items = self.items {
+                return items.count
+            } else {
+                return 0
+            }
+        }
+        var selectedCount: Int {
+            if let selectedPaths = tableView.indexPathsForSelectedRows {
+                return selectedPaths.count
+            } else {
+                return 0
+            }
+        }
+
         let alertController = UIAlertController(title: "Are you sure?", message: "This will permanently delete these tasks.", preferredStyle: .alert)
+
+        if selectedCount != 0 {
+            alertController.message = "This will permanently delete \(selectedCount) selected tasks."
+        } else if selectedCount == 0, itemCount != 0 {
+            alertController.message = "This will permanently delete all \(itemCount) tasks shown."
+        } else {
+            return
+        }
+
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
             alertController.dismiss(animated: true, completion: nil)
         }))
