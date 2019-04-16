@@ -609,6 +609,7 @@ class OptionsTableViewController: UITableViewController {
                     properties.forEach { _ in
                         self.refreshUI()
                     }
+                // AppDelegate.refreshNotifications()
                 case let .error(error):
                     #if DEBUG
                         print("Options observation error occurred: \(error)")

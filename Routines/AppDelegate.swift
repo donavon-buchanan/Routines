@@ -678,7 +678,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         content.sound = UNNotificationSound.default
         content.threadIdentifier = String(getItemSegment(id: uuidString))
 
-        content.badge = NSNumber(integerLiteral: setBadgeNumber())
+        content.badge = NSNumber(integerLiteral: AppDelegate.setBadgeNumber())
 
         if let notesText = notes {
             content.body = notesText
@@ -765,9 +765,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         shortcutItemToProcess = shortcutItem
     }
 
-    open func setBadgeNumber() -> Int {
+    static func setBadgeNumber() -> Int {
         var badgeCount = Int()
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 // Get all the items in or under the current segment.

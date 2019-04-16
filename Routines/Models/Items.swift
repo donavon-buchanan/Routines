@@ -117,6 +117,7 @@ import UserNotifications
                 }
             }
         }
+        AppDelegate.refreshNotifications()
     }
 
     // MARK: - iCloud Sync
@@ -126,7 +127,7 @@ import UserNotifications
         #if DEBUG
             print("soft deleting item")
         #endif
-        removeNotification(uuidStrings: ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3", uuidString])
+        removeNotification()
         DispatchQueue.main.async {
             autoreleasepool {
                 let realm = try! Realm()
@@ -143,6 +144,23 @@ import UserNotifications
     }
 
     // MARK: - Notification Handling
+
+    static func setBadgeNumber() -> Int {
+        var badgeCount = Int()
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                // Get all the items in or under the current segment.
+                let items = realm.objects(Items.self) // .filter("segment <= %@", segment)
+                // Get what should be the furthest future trigger date
+                if let lastFutureDate = items.last?.completeUntil {
+                    badgeCount = items.filter("dateModified <= %@ AND isDeleted = \(false)", lastFutureDate).count
+                }
+            }
+        }
+        // print("setBadgeNumber found \(badgeCount) items")
+        return badgeCount
+    }
 
     static func requestNotificationPermission() {
         let center = UNUserNotificationCenter.current()
@@ -177,7 +195,7 @@ import UserNotifications
         // print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
-        center.removeDeliveredNotifications(withIdentifiers: uuidStrings)
+        //center.removeDeliveredNotifications(withIdentifiers: uuidStrings)
     }
 
     func removeNotification() {
@@ -188,7 +206,7 @@ import UserNotifications
         // print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
-        center.removeDeliveredNotifications(withIdentifiers: uuidStrings)
+        //center.removeDeliveredNotifications(withIdentifiers: uuidStrings)
     }
 
     func snooze() {
@@ -209,7 +227,6 @@ import UserNotifications
             addNewNotification()
             // print("snooze completed successfully")
         }
-
         AppDelegate.refreshNotifications()
     }
 
@@ -224,7 +241,89 @@ import UserNotifications
 
     func addNewNotification() {
         Items.requestNotificationPermission()
-        // TODO: Create notification when task is added
+
+        let firstDate = firstTriggerDate(segment: segment)
+
+        if Options.getSegmentNotification(segment: segment) {
+            createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+        }
+    }
+
+    func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
+        // print("createNotification running")
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.sound = UNNotificationSound.default
+        content.threadIdentifier = String(getItemSegment(id: uuidString))
+
+        content.badge = NSNumber(integerLiteral: Items.setBadgeNumber())
+
+        if let notesText = notes {
+            content.body = notesText
+        }
+
+        // Assign the category (and the associated actions).
+        switch segment {
+        case 1:
+            content.categoryIdentifier = "afternoon"
+        case 2:
+            content.categoryIdentifier = "evening"
+        case 3:
+            content.categoryIdentifier = "night"
+        default:
+            content.categoryIdentifier = "morning"
+        }
+
+        var dateComponents = DateComponents()
+        dateComponents.calendar = Calendar.autoupdatingCurrent
+        // Keep notifications from occurring too early for tasks created for tomorrow
+        if firstDate > Date() {
+            // print("Notification set to tomorrow")
+            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
+        }
+        dateComponents.timeZone = TimeZone.autoupdatingCurrent
+
+        dateComponents.hour = Options.getOptionHour(segment: segment)
+        dateComponents.minute = Options.getOptionMinute(segment: segment)
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeats)
+
+        // Create the request
+        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+
+        // Schedule the request with the system
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.add(request) { error in
+            if error != nil {
+                #if DEBUG
+                    print("Failed to create notification with error: \(String(describing: error))")
+                #endif
+            } else {
+                #if DEBUG
+                    print("Notification created successfully")
+                #endif
+            }
+        }
+    }
+
+    func getItemSegment(id: String) -> Int {
+        var identifier: String {
+            if id.count > 36 {
+                return String(id.dropLast())
+            } else {
+                return id
+            }
+        }
+        var segment = Int()
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let item = realm.object(ofType: Items.self, forPrimaryKey: identifier) {
+                    segment = item.segment
+                }
+            }
+        }
+        return segment
     }
 
 //    static func updateAppBadgeCount() {
