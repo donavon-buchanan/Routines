@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let center = UNUserNotificationCenter.current()
         center.delegate = self
 
-        registerNotificationCategoriesAndActions()
+        //AppDelegate.registerNotificationCategoriesAndActions()
 
         // Theme
         setUpTheme()
@@ -437,7 +437,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     // Notification Categories and Actions
 
-    func registerNotificationCategoriesAndActions() {
+    static func registerNotificationCategoriesAndActions() {
         let center = UNUserNotificationCenter.current()
 
         let completeAction = UNNotificationAction(identifier: "complete", title: "Completed", options: UNNotificationActionOptions(rawValue: 0))
