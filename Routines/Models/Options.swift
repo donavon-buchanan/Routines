@@ -253,7 +253,7 @@ import RealmSwift
             autoreleasepool {
                 let realm = try! Realm()
                 if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    print("Options UUID: \(options.optionsKey)")
+                    // print("Options UUID: \(options.optionsKey)")
                     do {
                         try realm.write {
                             options.darkMode = bool

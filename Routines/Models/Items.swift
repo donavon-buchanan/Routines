@@ -144,7 +144,7 @@ import UserNotifications
 
     // MARK: - Notification Handling
 
-    func requestNotificationPermission() {
+    static func requestNotificationPermission() {
         let center = UNUserNotificationCenter.current()
         // let center = UNUserNotificationCenter.current()
         // Request permission to display alerts and play sounds
@@ -181,6 +181,9 @@ import UserNotifications
     }
 
     func removeNotification() {
+        #if DEBUG
+            print("Removing notification for id: \(uuidString)")
+        #endif
         let uuidStrings: [String] = ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3", uuidString]
         // print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
@@ -207,7 +210,7 @@ import UserNotifications
             // print("snooze completed successfully")
         }
 
-        AppDelegate().updateAppBadgeCount()
+        AppDelegate.refreshNotifications()
     }
 
     fileprivate func snoozeTo() -> Int {
@@ -220,7 +223,7 @@ import UserNotifications
     }
 
     func addNewNotification() {
-        requestNotificationPermission()
+        Items.requestNotificationPermission()
         // TODO: Create notification when task is added
     }
 
