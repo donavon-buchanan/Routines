@@ -145,22 +145,26 @@ import UserNotifications
 
     // MARK: - Notification Handling
 
-    static func setBadgeNumber() -> Int {
-        var badgeCount = Int()
+    static func setBadgeNumber(id: String) -> Int {
+        var badgeCount = 0
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 // Get all the items in or under the current segment.
-                let items = realm.objects(Items.self) // .filter("segment <= %@", segment)
-                // Get what should the the furthest future trigger date
-                var futureDate = Date()
-                if let item = items.last {
-                    futureDate = item.firstTriggerDate(segment: item.segment)
+                let items = realm.objects(Items.self).filter("isDeleted = %@ AND completeUntil <= %@", false, Date().endOfDay).sorted(byKeyPath: "segment").sorted(byKeyPath: "dateModified")
+                if let item = realm.object(ofType: Items.self, forPrimaryKey: id) {
+                    let currentItemIndex = items.index(of: item)
+                    #if DEBUG
+                        print("Item matched for badge count. Current index is: \(currentItemIndex!)")
+                        print("Item title: \(item.title!)")
+                    #endif
+                    badgeCount = (currentItemIndex ?? 0) + 1
                 }
-                badgeCount = items.filter("completeUntil <= %@", futureDate).count
             }
         }
-        print("setBadgeNumber found \(badgeCount) items")
+        #if DEBUG
+            print("setBadgeNumber found \(badgeCount) items")
+        #endif
         return badgeCount
     }
 
@@ -246,7 +250,9 @@ import UserNotifications
 
         let firstDate = firstTriggerDate(segment: segment)
 
-        if Options.getSegmentNotification(segment: segment) {
+        // Check if notifications are enabled for the segment first
+        // Also check if item hasn't been marked as complete already
+        if Options.getSegmentNotification(segment: segment), completeUntil < Date().endOfDay {
             createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
         }
     }
@@ -258,7 +264,7 @@ import UserNotifications
         content.sound = UNNotificationSound.default
         content.threadIdentifier = String(getItemSegment(id: uuidString))
 
-        content.badge = NSNumber(integerLiteral: Items.setBadgeNumber())
+        content.badge = NSNumber(integerLiteral: Items.setBadgeNumber(id: uuidString))
 
         if let notesText = notes {
             content.body = notesText

@@ -43,14 +43,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    }
 //
     static func refreshNotifications() {
-        let center = UNUserNotificationCenter.current()
-        center.removeAllPendingNotificationRequests()
+        // let center = UNUserNotificationCenter.current()
+        // center.removeAllPendingNotificationRequests()
         let realm = try! Realm()
         let items = realm.objects(Items.self).filter("isDeleted = %@", false)
         items.forEach { item in
             item.addNewNotification()
         }
-        AppDelegate.updateAppBadgeCount()
+        // TODO: Check here to update app badge
     }
 
     func application(_: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
@@ -167,7 +167,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillTerminate(_: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Themes.saveLastTheme()
-        AppDelegate.updateAppBadgeCount()
+
         // itemCleanup()
     }
 
@@ -796,30 +796,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        return badge
 //    }
 
-    static func updateAppBadgeCount() {
-        if Options.getBadgeOption() {
-            // print("updating app badge number")
-            DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
-                autoreleasepool {
-                    let realm = try! Realm()
-                    let items = realm.objects(Items.self).filter("dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", Date(), Date().endOfDay)
-                    var badgeCount = 0
-                    items.forEach { item in
-                        if item.firstTriggerDate(segment: item.segment) < Date() {
-                            badgeCount += 1
-                        }
-                    }
-                    DispatchQueue.main.async {
-                        autoreleasepool {
-                            UIApplication.shared.applicationIconBadgeNumber = badgeCount
-                        }
-                    }
-                }
-            }
-        } else {
-            UIApplication.shared.applicationIconBadgeNumber = 0
-        }
-    }
+//    static func updateAppBadgeCount() {
+//        if Options.getBadgeOption() {
+//            // print("updating app badge number")
+//            DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+//                autoreleasepool {
+//                    let realm = try! Realm()
+//                    let items = realm.objects(Items.self).filter("dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", Date(), Date().endOfDay)
+//                    var badgeCount = 0
+//                    items.forEach { item in
+//                        if item.firstTriggerDate(segment: item.segment) < Date() {
+//                            badgeCount += 1
+//                        }
+//                    }
+//                    DispatchQueue.main.async {
+//                        autoreleasepool {
+//                            UIApplication.shared.applicationIconBadgeNumber = badgeCount
+//                        }
+//                    }
+//                }
+//            }
+//        } else {
+//            UIApplication.shared.applicationIconBadgeNumber = 0
+//        }
+//    }
 
     // MARK: - Conversion functions
 
