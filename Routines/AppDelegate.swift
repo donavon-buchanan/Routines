@@ -89,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             shortcutItemToProcess = shortcutItem
         }
         // refreshNotifications()
-        removeOldNotifications()
+        // removeOldNotifications()
 
         return true
     }
@@ -134,7 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // itemCleanup()
     }
 
-    fileprivate func removeOldNotifications() {
+    static func removeOldNotifications() {
         let center = UNUserNotificationCenter.current()
         center.removeAllDeliveredNotifications()
 
@@ -146,7 +146,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func applicationWillEnterForeground(_: UIApplication) {
-        removeOldNotifications()
+//        removeOldNotifications()
     }
 
     func applicationDidBecomeActive(_: UIApplication) {
@@ -171,6 +171,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // itemCleanup()
         // updateAppBadgeCount()
+
+        removeOrphanedNotifications()
+    }
+
+    func removeOrphanedNotifications() {
+        DispatchQueue.main.async {
+            autoreleasepool {
+                let center = UNUserNotificationCenter.current()
+                var orphanNotifications: [String] = []
+                center.getPendingNotificationRequests(completionHandler: { pendingNotifications in
+                    pendingNotifications.forEach { notification in
+                        let id = notification.identifier
+                        let realm = try! Realm()
+                        if realm.object(ofType: Items.self, forPrimaryKey: id) == nil {
+                            orphanNotifications.append(id)
+                        }
+                    }
+                })
+                center.removePendingNotificationRequests(withIdentifiers: orphanNotifications)
+            }
+        }
     }
 
     func applicationWillTerminate(_: UIApplication) {
@@ -540,56 +561,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func userNotificationCenter(_: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        // print("running userNotificationCenter:didReceive:withCompletionHandler")
-        if response.notification.request.content.categoryIdentifier == "morning" {
-            // print("running response: morning")
-            switch response.actionIdentifier {
-            case "complete":
-                completeItem(uuidString: response.notification.request.identifier)
-            case "snooze":
-                snoozeItem(uuidString: response.notification.request.identifier)
-            default:
-                restoreSelectedTab(tab: getNotificationSegment(id: response.notification.request.identifier))
-            }
-        }
-
-        if response.notification.request.content.categoryIdentifier == "afternoon" {
-            // print("running response: afternoon")
-            switch response.actionIdentifier {
-            case "complete":
-                completeItem(uuidString: response.notification.request.identifier)
-            case "snooze":
-                snoozeItem(uuidString: response.notification.request.identifier)
-            default:
-                restoreSelectedTab(tab: getNotificationSegment(id: response.notification.request.identifier))
-            }
-        }
-
-        if response.notification.request.content.categoryIdentifier == "evening" {
-            // print("running response: evening")
-            switch response.actionIdentifier {
-            case "complete":
-                completeItem(uuidString: response.notification.request.identifier)
-            case "snooze":
-                snoozeItem(uuidString: response.notification.request.identifier)
-            default:
-                restoreSelectedTab(tab: getNotificationSegment(id: response.notification.request.identifier))
-            }
-        }
-
-        if response.notification.request.content.categoryIdentifier == "night" {
-            // print("running response: night")
-            switch response.actionIdentifier {
-            case "complete":
-                completeItem(uuidString: response.notification.request.identifier)
-            case "snooze":
-                snoozeItem(uuidString: response.notification.request.identifier)
-            default:
-                restoreSelectedTab(tab: getNotificationSegment(id: response.notification.request.identifier))
-            }
+        switch response.actionIdentifier {
+        case "complete":
+            completeItem(uuidString: response.notification.request.identifier)
+            decrementBadge()
+        case "snooze":
+            snoozeItem(uuidString: response.notification.request.identifier)
+            decrementBadge()
+        default:
+            restoreSelectedTab(tab: getNotificationSegment(id: response.notification.request.identifier))
         }
 
         completionHandler()
+    }
+
+    func decrementBadge() {
+        let currentBadgeNumber = UIApplication.shared.applicationIconBadgeNumber
+        if currentBadgeNumber > 0 {
+            UIApplication.shared.applicationIconBadgeNumber -= 1
+        }
     }
 
 //    func removeAllNotificationsForItem(uuidString: String) {
