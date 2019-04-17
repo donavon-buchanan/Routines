@@ -102,7 +102,7 @@ import UserNotifications
             #if DEBUG
                 print("marking completed until: \(completeUntil)")
             #endif
-            DispatchQueue.main.async {
+            DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
                     do {
@@ -128,7 +128,7 @@ import UserNotifications
             print("soft deleting item")
         #endif
         removeNotification()
-        DispatchQueue.main.async {
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
@@ -151,7 +151,7 @@ import UserNotifications
             autoreleasepool {
                 let realm = try! Realm()
                 // Get all the items in or under the current segment.
-                let items = realm.objects(Items.self).filter("isDeleted = %@ AND completeUntil <= %@", false, Date().endOfDay).sorted(byKeyPath: "segment").sorted(byKeyPath: "dateModified")
+                let items = realm.objects(Items.self).filter("isDeleted = %@ AND completeUntil <= %@", false, Date().endOfDay).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
                 if let item = realm.object(ofType: Items.self, forPrimaryKey: id) {
                     let currentItemIndex = items.index(of: item)
                     #if DEBUG
@@ -159,12 +159,13 @@ import UserNotifications
                         print("Item title: \(item.title!)")
                     #endif
                     badgeCount = (currentItemIndex ?? 0) + 1
+                    #if DEBUG
+                        print("setBadgeNumber to \(badgeCount) for \(item.title!)")
+                    #endif
                 }
             }
         }
-        #if DEBUG
-            print("setBadgeNumber found \(badgeCount) items")
-        #endif
+
         return badgeCount
     }
 
