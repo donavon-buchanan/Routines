@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let center = UNUserNotificationCenter.current()
         center.delegate = self
 
-        // AppDelegate.registerNotificationCategoriesAndActions()
+        AppDelegate.registerNotificationCategoriesAndActions()
 
         // Theme
         setUpTheme()
@@ -89,6 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             shortcutItemToProcess = shortcutItem
         }
         // refreshNotifications()
+        removeOldNotifications()
 
         return true
     }
@@ -133,11 +134,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // itemCleanup()
     }
 
+    fileprivate func removeOldNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.removeAllDeliveredNotifications()
+
+        DispatchQueue.main.async {
+            autoreleasepool {
+                UIApplication.shared.applicationIconBadgeNumber = 0
+            }
+        }
+    }
+
     func applicationWillEnterForeground(_: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        // TableViewController().refreshItems()
-        // itemCleanup()
-        // updateAppBadgeCount()
+        removeOldNotifications()
     }
 
     func applicationDidBecomeActive(_: UIApplication) {
@@ -765,22 +774,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         shortcutItemToProcess = shortcutItem
     }
 
-    static func setBadgeNumber() -> Int {
-        var badgeCount = Int()
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                // Get all the items in or under the current segment.
-                let items = realm.objects(Items.self) // .filter("segment <= %@", segment)
-                // Get what should the the furthest future trigger date
-                if let lastFutureDate = items.last?.completeUntil {
-                    badgeCount = items.filter("dateModified <= %@ AND isDeleted = \(false)", lastFutureDate).count
-                }
-            }
-        }
-        // print("setBadgeNumber found \(badgeCount) items")
-        return badgeCount
-    }
+//    static func setBadgeNumber() -> Int {
+//        var badgeCount = Int()
+//        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                // Get all the items in or under the current segment.
+//                let items = realm.objects(Items.self) // .filter("segment <= %@", segment)
+//                // Get what should the the furthest future trigger date
+//                if let lastFutureDate = items.last?.completeUntil {
+//                    badgeCount = items.filter("dateModified <= %@ AND isDeleted = \(false)", lastFutureDate).count
+//                }
+//            }
+//        }
+//        // print("setBadgeNumber found \(badgeCount) items")
+//        return badgeCount
+//    }
 
 //    //Doesn't work. Create notification seems to just time out
 //    open func setBadgeNumber() -> Int {
