@@ -91,7 +91,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButtonPressed))
         // Disable button until all values are filled
         navigationItem.rightBarButtonItem?.isEnabled = false
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissView))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissView))
 
         tableView.theme_backgroundColor = GlobalPicker.backgroundColor
 //        cells.forEach { (cell) in
