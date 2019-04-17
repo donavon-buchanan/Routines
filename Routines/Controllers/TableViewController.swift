@@ -914,9 +914,17 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         let alertController = UIAlertController(title: "Are you sure?", message: "This will permanently delete these tasks.", preferredStyle: .alert)
 
         if selectedCount != 0 {
-            alertController.message = "This will permanently delete \(selectedCount) selected tasks."
+            if selectedCount == 1 {
+                alertController.message = "This will permanently delete the selected task."
+            } else {
+                alertController.message = "This will permanently delete \(selectedCount) selected tasks."
+            }
         } else if selectedCount == 0, itemCount != 0 {
-            alertController.message = "This will permanently delete all \(itemCount) tasks shown."
+            if itemCount == 1 {
+                alertController.message = "This will permanently delete the task shown."
+            } else {
+                alertController.message = "This will permanently delete all \(itemCount) tasks shown."
+            }
         } else {
             return
         }

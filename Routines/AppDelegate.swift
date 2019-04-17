@@ -594,136 +594,136 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        }
 //    }
 
-    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-        // print("running scheduleNewNotification")
-        let notificationCenter = UNUserNotificationCenter.current()
-
-        notificationCenter.getNotificationSettings { settings in
-            // DO not schedule notifications if not authorized
-            guard settings.authorizationStatus == .authorized else {
-                // self.requestNotificationPermission()
-                // print("Authorization status has changed to unauthorized for notifications")
-                return
-            }
-
-            DispatchQueue(label: self.realmDispatchQueueLabel).sync {
-                autoreleasepool {
-                    let realm = try! Realm()
-                    let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                    switch segment {
-                    case 1:
-                        if (options?.afternoonNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-                        } else {
-                            // print("Afternoon Notifications toggled off. Aborting")
-                            return
-                        }
-                    case 2:
-                        if (options?.eveningNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-                        } else {
-                            // print("Afternoon Notifications toggled off. Aborting")
-                            return
-                        }
-                    case 3:
-                        if (options?.nightNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-                        } else {
-                            // print("Afternoon Notifications toggled off. Aborting")
-                            return
-                        }
-                    default:
-                        if (options?.morningNotificationsOn)! {
-                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-                        } else {
-                            // print("Afternoon Notifications toggled off. Aborting")
-                            return
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    func createBasicNotification(title: String, notes: String?) {
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.sound = UNNotificationSound.default
-
-        if let notesText = notes {
-            content.body = notesText
-        }
-
-        // let trigger = UNNotificationTrigger()
-
-        // Create the request
-        let request = UNNotificationRequest(identifier: "test", content: content, trigger: nil)
-
-        // Schedule the request with the system
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.add(request) { error in
-            if error != nil {
-                // TODO: handle notification errors
-                // print(String(describing: error))
-            } else {
-                // print("Notification created successfully")
-            }
-        }
-    }
-
-    func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-        // print("createNotification running")
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.sound = UNNotificationSound.default
-        content.threadIdentifier = String(getItemSegment(id: uuidString))
-
-        content.badge = NSNumber(integerLiteral: AppDelegate.setBadgeNumber())
-
-        if let notesText = notes {
-            content.body = notesText
-        }
-
-        // Assign the category (and the associated actions).
-        switch segment {
-        case 1:
-            content.categoryIdentifier = "afternoon"
-        case 2:
-            content.categoryIdentifier = "evening"
-        case 3:
-            content.categoryIdentifier = "night"
-        default:
-            content.categoryIdentifier = "morning"
-        }
-
-        var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.autoupdatingCurrent
-        // Keep notifications from occurring too early for tasks created for tomorrow
-        if firstDate > Date() {
-            // print("Notification set to tomorrow")
-            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
-        }
-        dateComponents.timeZone = TimeZone.autoupdatingCurrent
-
-        dateComponents.hour = Options.getOptionHour(segment: segment)
-        dateComponents.minute = Options.getOptionMinute(segment: segment)
-
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-
-        // Create the request
-        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-
-        // Schedule the request with the system
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.add(request) { error in
-            if error != nil {
-                // TODO: handle notification errors
-                // print(String(describing: error))
-            } else {
-                // print("Notification created successfully")
-            }
-        }
-    }
+//    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
+//        // print("running scheduleNewNotification")
+//        let notificationCenter = UNUserNotificationCenter.current()
+//
+//        notificationCenter.getNotificationSettings { settings in
+//            // DO not schedule notifications if not authorized
+//            guard settings.authorizationStatus == .authorized else {
+//                // self.requestNotificationPermission()
+//                // print("Authorization status has changed to unauthorized for notifications")
+//                return
+//            }
+//
+//            DispatchQueue(label: self.realmDispatchQueueLabel).sync {
+//                autoreleasepool {
+//                    let realm = try! Realm()
+//                    let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                    switch segment {
+//                    case 1:
+//                        if (options?.afternoonNotificationsOn)! {
+//                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+//                        } else {
+//                            // print("Afternoon Notifications toggled off. Aborting")
+//                            return
+//                        }
+//                    case 2:
+//                        if (options?.eveningNotificationsOn)! {
+//                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+//                        } else {
+//                            // print("Afternoon Notifications toggled off. Aborting")
+//                            return
+//                        }
+//                    case 3:
+//                        if (options?.nightNotificationsOn)! {
+//                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+//                        } else {
+//                            // print("Afternoon Notifications toggled off. Aborting")
+//                            return
+//                        }
+//                    default:
+//                        if (options?.morningNotificationsOn)! {
+//                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+//                        } else {
+//                            // print("Afternoon Notifications toggled off. Aborting")
+//                            return
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    func createBasicNotification(title: String, notes: String?) {
+//        let content = UNMutableNotificationContent()
+//        content.title = title
+//        content.sound = UNNotificationSound.default
+//
+//        if let notesText = notes {
+//            content.body = notesText
+//        }
+//
+//        // let trigger = UNNotificationTrigger()
+//
+//        // Create the request
+//        let request = UNNotificationRequest(identifier: "test", content: content, trigger: nil)
+//
+//        // Schedule the request with the system
+//        let notificationCenter = UNUserNotificationCenter.current()
+//        notificationCenter.add(request) { error in
+//            if error != nil {
+//                // TODO: handle notification errors
+//                // print(String(describing: error))
+//            } else {
+//                // print("Notification created successfully")
+//            }
+//        }
+//    }
+//
+//    func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
+//        // print("createNotification running")
+//        let content = UNMutableNotificationContent()
+//        content.title = title
+//        content.sound = UNNotificationSound.default
+//        content.threadIdentifier = String(getItemSegment(id: uuidString))
+//
+//        content.badge = NSNumber(integerLiteral: AppDelegate.setBadgeNumber())
+//
+//        if let notesText = notes {
+//            content.body = notesText
+//        }
+//
+//        // Assign the category (and the associated actions).
+//        switch segment {
+//        case 1:
+//            content.categoryIdentifier = "afternoon"
+//        case 2:
+//            content.categoryIdentifier = "evening"
+//        case 3:
+//            content.categoryIdentifier = "night"
+//        default:
+//            content.categoryIdentifier = "morning"
+//        }
+//
+//        var dateComponents = DateComponents()
+//        dateComponents.calendar = Calendar.autoupdatingCurrent
+//        // Keep notifications from occurring too early for tasks created for tomorrow
+//        if firstDate > Date() {
+//            // print("Notification set to tomorrow")
+//            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
+//        }
+//        dateComponents.timeZone = TimeZone.autoupdatingCurrent
+//
+//        dateComponents.hour = Options.getOptionHour(segment: segment)
+//        dateComponents.minute = Options.getOptionMinute(segment: segment)
+//
+//        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+//
+//        // Create the request
+//        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+//
+//        // Schedule the request with the system
+//        let notificationCenter = UNUserNotificationCenter.current()
+//        notificationCenter.add(request) { error in
+//            if error != nil {
+//                // TODO: handle notification errors
+//                // print(String(describing: error))
+//            } else {
+//                // print("Notification created successfully")
+//            }
+//        }
+//    }
 
     // Notification Settings Screen
     fileprivate func goToSettings() {
