@@ -34,6 +34,7 @@ import UserNotifications
     }
 
     func addNewItem(_ item: Items) {
+        Items.requestNotificationPermission()
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -151,14 +152,16 @@ import UserNotifications
             autoreleasepool {
                 let realm = try! Realm()
                 // Get all the items in or under the current segment.
-                let items = realm.objects(Items.self).filter("isDeleted = %@ AND completeUntil <= %@", false, Date().endOfDay).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
                 if let item = realm.object(ofType: Items.self, forPrimaryKey: id) {
-                    let currentItemIndex = items.index(of: item)
+                    let itemSegment = item.segment
+                    // Only count the items who's segment is equal or greater than the current item
+                    // TODO: Maybe completeUntil should be compared against item completeUntil instead of endOfDay
+                    let items = realm.objects(Items.self).filter("segment >= %@ AND isDeleted = %@ AND completeUntil <= %@", itemSegment, false, item.completeUntil).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
+                    guard let currentItemIndex = items.index(of: item) else { return }
                     #if DEBUG
-                        print("Item matched for badge count. Current index is: \(currentItemIndex!)")
-                        print("Item title: \(item.title!)")
+                        print("Item title: \(item.title!) at index: \(currentItemIndex)")
                     #endif
-                    badgeCount = (currentItemIndex ?? 0) + 1
+                    badgeCount = currentItemIndex + 1
                     #if DEBUG
                         print("setBadgeNumber to \(badgeCount) for \(item.title!)")
                     #endif
@@ -247,8 +250,6 @@ import UserNotifications
     }
 
     func addNewNotification() {
-        Items.requestNotificationPermission()
-
         let firstDate = firstTriggerDate(segment: segment)
 
         // Check if notifications are enabled for the segment first

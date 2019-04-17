@@ -404,14 +404,14 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     @objc func showClearAlert() {
-        showAlert(title: "Are you sure?", body: "This will clear all the tasks shown.")
+        showAlert(title: "Are you sure?", body: "This will mark all the tasks shown as completed. Repeating tasks will still appear again tomorrow.")
     }
 
     @objc private func clearAll() {
         items?.forEach { item in
             // TODO: Might be better to just grab a whole filtered list and then delete from there
             item.completeItem()
-            updateBadge()
+            // updateBadge()
         }
         endEdit()
         resetTableView()
@@ -945,7 +945,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         config.duration = .forever
 
         let alert = MessageView.viewFromNib(layout: .cardView)
-        let icon = "💥"
+        let icon = "⁉️"
         alert.configureTheme(.info, iconStyle: .default)
         alert.configureContent(title: title, body: body, iconText: icon)
         alert.titleLabel?.textColor = .black

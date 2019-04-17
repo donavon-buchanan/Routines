@@ -43,6 +43,21 @@ import RealmSwift
     // dynamic var smartSnooze: Bool = false
 
     dynamic var darkMode: Bool = true
+
+    dynamic var cloudSync: Bool = false
+
+    static func getCloudSync() -> Bool {
+        var status = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+                status = options?.cloudSync ?? false
+            }
+        }
+        return status
+    }
+
     dynamic var themeIndex: Int = 0
 
     dynamic var selectedIndex: Int = 0
