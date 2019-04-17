@@ -115,9 +115,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             // // print("Items's uuidString is \((item?.uuidString)!)")
             // repeatDailySwitch.setOn(item?.disableAutoSnooze ?? false, animated: false)
 
-            title = "Edit Task"
+            title = "Editing Task"
         } else {
-            title = "Add New Task"
+            title = "Adding New Task"
         }
 
         // load in segment from add segue
