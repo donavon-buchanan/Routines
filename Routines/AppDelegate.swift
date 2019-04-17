@@ -43,14 +43,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    }
 //
     static func refreshNotifications() {
-        // let center = UNUserNotificationCenter.current()
-        // center.removeAllPendingNotificationRequests()
-        let realm = try! Realm()
-        let items = realm.objects(Items.self).filter("isDeleted = %@", false)
-        items.forEach { item in
-            item.addNewNotification()
+        DispatchQueue.main.async {
+            autoreleasepool {
+                let realm = try! Realm()
+                let items = realm.objects(Items.self).filter("isDeleted = %@", false)
+                items.forEach { item in
+                    item.addNewNotification()
+                }
+            }
         }
-        // TODO: Check here to update app badge
     }
 
     func application(_: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
@@ -159,7 +160,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             shortcutItemToProcess = nil
         }
 
-        realmSync()
+        // realmSync()
 
 //        //If presentedVC is nil, that means that Settings or Add were not called, so load the proper tab
 //        if self.window?.rootViewController?.presentedViewController == nil {
@@ -291,7 +292,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 14,
+            schemaVersion: 15,
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -337,7 +338,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //                    }
 //                }
 
-                if oldSchemaVersion < 13 {
+                if oldSchemaVersion < 15 {
                     migration.enumerateObjects(ofType: Options.className()) { newObject, oldObject in
                         print("oldObject: " + String(describing: oldObject))
                         print("newObject: " + String(describing: newObject))

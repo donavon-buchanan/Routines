@@ -26,6 +26,15 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var eveningSubLabel: UILabel!
     @IBOutlet var nightSubLabel: UILabel!
 
+    @IBOutlet var cloudSyncLabel: UILabel!
+    @IBOutlet var cloudSyncSwitch: UISwitch!
+    @IBAction func cloudSyncSwitchToggled(_ sender: UISwitch) {
+        guard cloudSyncSwitch.isEnabled else { return }
+        #if DEBUG
+            print("Cloud sync switch: \(sender.isOn)")
+        #endif
+    }
+
     override var keyCommands: [UIKeyCommand]? {
         return [
             UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit"),
@@ -90,48 +99,52 @@ class OptionsTableViewController: UITableViewController {
     // Make the full width of the cell toggle the switch along with typical haptic
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         let haptic = UIImpactFeedbackGenerator(style: .light)
-        if indexPath.section == 1 {
+        switch indexPath.section {
+        case 1:
             switch indexPath.row {
             case 1:
                 // print("Tapped Afternoon Cell")
                 let isOn = !afternoonSwitch.isOn
                 afternoonSwitch.setOn(isOn, animated: true)
-//                addOrRemoveNotifications(isOn: isOn, segment: 1)
-//                // print("Afternoon switch is now set to: \(afternoonSwitch.isOn)")
-//                updateNotificationOptions(segment: 1, isOn: afternoonSwitch.isOn)
+                //                addOrRemoveNotifications(isOn: isOn, segment: 1)
+                //                // print("Afternoon switch is now set to: \(afternoonSwitch.isOn)")
+                //                updateNotificationOptions(segment: 1, isOn: afternoonSwitch.isOn)
                 haptic.impactOccurred()
             case 2:
                 // print("Tapped Evening Cell")
                 let isOn = !eveningSwitch.isOn
                 eveningSwitch.setOn(isOn, animated: true)
-//                addOrRemoveNotifications(isOn: isOn, segment: 2)
-//                // print("Evening switch is now set to: \(eveningSwitch.isOn)")
-//                updateNotificationOptions(segment: 2, isOn: eveningSwitch.isOn)
+                //                addOrRemoveNotifications(isOn: isOn, segment: 2)
+                //                // print("Evening switch is now set to: \(eveningSwitch.isOn)")
+                //                updateNotificationOptions(segment: 2, isOn: eveningSwitch.isOn)
                 haptic.impactOccurred()
             case 3:
                 // print("Tapped Night Cell")
                 let isOn = !nightSwitch.isOn
                 nightSwitch.setOn(isOn, animated: true)
-//                addOrRemoveNotifications(isOn: isOn, segment: 3)
-//                // print("Night switch is now set to: \(nightSwitch.isOn)")
-//                updateNotificationOptions(segment: 3, isOn: nightSwitch.isOn)
+                //                addOrRemoveNotifications(isOn: isOn, segment: 3)
+                //                // print("Night switch is now set to: \(nightSwitch.isOn)")
+                //                updateNotificationOptions(segment: 3, isOn: nightSwitch.isOn)
                 haptic.impactOccurred()
             default:
                 // print("Tapped Morning Cell")
                 let isOn = !morningSwitch.isOn
                 morningSwitch.setOn(isOn, animated: true)
-//                addOrRemoveNotifications(isOn: isOn, segment: 0)
-//                // print("Morning switch is now set to: \(morningSwitch.isOn)")
-//                updateNotificationOptions(segment: 0, isOn: morningSwitch.isOn)
+                //                addOrRemoveNotifications(isOn: isOn, segment: 0)
+                //                // print("Morning switch is now set to: \(morningSwitch.isOn)")
+                //                updateNotificationOptions(segment: 0, isOn: morningSwitch.isOn)
                 haptic.impactOccurred()
             }
-        }
-
-        if indexPath.section == 2 {
+        case 2:
             darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
             Options.setDarkMode(darkModeSwtich.isOn)
             setAppearance(tab: Options.getSelectedIndex())
             haptic.impactOccurred()
+        case 3:
+            guard cloudSyncSwitch.isEnabled else { return }
+            cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
+        default:
+            return
         }
     }
 
@@ -194,12 +207,15 @@ class OptionsTableViewController: UITableViewController {
 //    }
 
     func setUpUI() {
-        morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: true)
-        afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: true)
-        eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: true)
-        nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: true)
+        morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: false)
+        afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: false)
+        eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: false)
+        nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: false)
 
-        darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: true)
+        cloudSyncSwitch.setOn(Options.getCloudSync(), animated: false)
+        cloudSyncSwitch.isEnabled = false
+
+        darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: false)
 
         morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
         afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
@@ -213,6 +229,8 @@ class OptionsTableViewController: UITableViewController {
         afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: true)
         eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: true)
         nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: true)
+
+        cloudSyncSwitch.setOn(Options.getCloudSync(), animated: true)
 
         darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: true)
 
