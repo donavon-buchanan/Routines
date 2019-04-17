@@ -111,12 +111,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         #if DEBUG
             print("Received push notification")
         #endif
-        // itemCleanup()
 
-        // TableViewController().refreshItems()
-        //try to refresh notifications in the background
-        // TODO: This is still needed
-        AppDelegate.refreshNotifications()
+        realmSync()
     }
 
     func applicationWillResignActive(_: UIApplication) {
@@ -162,6 +158,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
             shortcutItemToProcess = nil
         }
+
+        realmSync()
 
 //        //If presentedVC is nil, that means that Settings or Add were not called, so load the proper tab
 //        if self.window?.rootViewController?.presentedViewController == nil {
@@ -459,44 +457,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         item.snooze()
     }
 
-    // MARK: - Manage Notifications
+    // MARK: - Update after Notifications
 
-//    var notificationToken: NotificationToken?
-//
-//    func realmSync() {
-//        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
-//        // Observe Results Notifications
-//        let realm = try! Realm()
-//        let items = realm.objects(Items.self)
-//
-//        notificationToken = items.observe { changes in
-//            switch changes {
-//            case .initial:
-//                #if DEBUG
-//                    print("Initial remote load")
-//                #endif
-//            // Results are now populated and can be accessed without blocking the UI
-//            case let .update(itemsResults, deletions, insertions, modifications):
-//                #if DEBUG
-//                    print("remote update detected")
-//                #endif
-//
-//            // Query results have changed
-//            case let .error(error):
-//                // An error occurred while opening the Realm file on the background worker thread
-//                fatalError("\(error)")
-//            }
-//        }
-//    }
-//
-//    deinit {
-//        #if DEBUG
-//            print("\(#function) called. Tokens invalidated")
-//        #endif
-//        notificationToken?.invalidate()
-//    }
+    var notificationToken: NotificationToken?
 
-    // Notification Categories and Actions
+    private func realmSync() {
+        // Observe Results Notifications
+        let realm = try! Realm()
+        let items = realm.objects(Items.self)
+
+        notificationToken = items.observe { changes in
+            switch changes {
+            case let .error(error):
+                // An error occurred while opening the Realm file on the background worker thread
+                fatalError("\(error)")
+            default:
+                AppDelegate.refreshNotifications()
+                AppDelegate.updateBadgeFromPush()
+            }
+        }
+    }
+
+    deinit {
+        #if DEBUG
+            print("\(#function) called. Tokens invalidated")
+        #endif
+        notificationToken?.invalidate()
+    }
+
+    // MARK: - Notification Categories and Actions
 
     static func registerNotificationCategoriesAndActions() {
         let center = UNUserNotificationCenter.current()
@@ -580,6 +569,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if currentBadgeNumber > 0 {
             UIApplication.shared.applicationIconBadgeNumber -= 1
         }
+    }
+
+    private static func updateBadgeFromPush() {
+        #if DEBUG
+            print("updating badge from remote push")
+        #endif
+        let center = UNUserNotificationCenter.current()
+        var remoteBadge = 0
+        center.getDeliveredNotifications { deliveredNotifications in
+            remoteBadge = deliveredNotifications.count
+        }
+        UIApplication.shared.applicationIconBadgeNumber = remoteBadge
     }
 
 //    func removeAllNotificationsForItem(uuidString: String) {
