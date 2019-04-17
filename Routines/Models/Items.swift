@@ -147,18 +147,20 @@ import UserNotifications
 
     static func setBadgeNumber() -> Int {
         var badgeCount = Int()
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 // Get all the items in or under the current segment.
                 let items = realm.objects(Items.self) // .filter("segment <= %@", segment)
-                // Get what should be the furthest future trigger date
-                if let lastFutureDate = items.last?.completeUntil {
-                    badgeCount = items.filter("dateModified <= %@ AND isDeleted = \(false)", lastFutureDate).count
+                // Get what should the the furthest future trigger date
+                var futureDate = Date()
+                if let item = items.last {
+                    futureDate = item.firstTriggerDate(segment: item.segment)
                 }
+                badgeCount = items.filter("completeUntil <= %@", futureDate).count
             }
         }
-        // print("setBadgeNumber found \(badgeCount) items")
+        print("setBadgeNumber found \(badgeCount) items")
         return badgeCount
     }
 
@@ -195,7 +197,7 @@ import UserNotifications
         // print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
-        //center.removeDeliveredNotifications(withIdentifiers: uuidStrings)
+        // center.removeDeliveredNotifications(withIdentifiers: uuidStrings)
     }
 
     func removeNotification() {
@@ -206,7 +208,7 @@ import UserNotifications
         // print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
-        //center.removeDeliveredNotifications(withIdentifiers: uuidStrings)
+        // center.removeDeliveredNotifications(withIdentifiers: uuidStrings)
     }
 
     func snooze() {
