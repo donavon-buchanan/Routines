@@ -34,7 +34,6 @@ import UserNotifications
     }
 
     func addNewItem(_ item: Items) {
-        Items.requestNotificationPermission()
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -47,6 +46,7 @@ import UserNotifications
                 }
             }
         }
+        Items.requestNotificationPermission()
         addNewNotification()
     }
 
@@ -177,25 +177,13 @@ import UserNotifications
         // let center = UNUserNotificationCenter.current()
         // Request permission to display alerts and play sounds
         if #available(iOS 12.0, *) {
-            center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { granted, _ in
+            center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { _, _ in
                 // Enable or disable features based on authorization.
-                if granted {
-                    // print("App Delegate: App has notification permission")
-                } else {
-                    // print("App Delegate: App does not have notification permission")
-                    return
-                }
             }
         } else {
             // Fallback on earlier versions
-            center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
+            center.requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in
                 // Enable or disable features based on authorization.
-                if granted {
-                    // print("App Delegate: App has notification permission")
-                } else {
-                    // print("App Delegate: App does not have notification permission")
-                    return
-                }
             }
         }
     }

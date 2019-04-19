@@ -7,12 +7,12 @@
 //
 
 import RealmSwift
+import StoreKit
 import SwiftTheme
 import UIKit
 import UserNotifications
-// import UserNotificationsUI
 
-class OptionsTableViewController: UITableViewController {
+class OptionsTableViewController: UITableViewController, SKProductsRequestDelegate {
     @IBOutlet var cellLabels: [UILabel]!
     @IBOutlet var switches: [UISwitch]!
 
@@ -639,5 +639,23 @@ class OptionsTableViewController: UITableViewController {
                 }
             }
         }
+    }
+
+    // MARK: - IAP
+
+    var productRequest = SKProductsRequest()
+
+    func productsRequest(_: SKProductsRequest, didReceive _: SKProductsResponse) {}
+
+    fileprivate func fetchProducts(matchingIdentifiers _: [String]) {
+        // Create a set for the product identifiers.
+        let productIdentifiers: Set = ["lifetime1", "routines_plus_monthly", "routines_plus_yearly"]
+
+        // Initialize the product request with the above identifiers.
+        productRequest = SKProductsRequest(productIdentifiers: productIdentifiers)
+        productRequest.delegate = self
+
+        // Send the request to the App Store.
+        productRequest.start()
     }
 }

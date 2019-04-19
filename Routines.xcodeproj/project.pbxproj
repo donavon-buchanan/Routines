@@ -12,6 +12,9 @@
 		F807D3CD216073E300FF36D9 /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3CC216073E300FF36D9 /* Options.swift */; };
 		F807D3CF2160964E00FF36D9 /* OptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3CE2160964E00FF36D9 /* OptionsTableViewController.swift */; };
 		F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3D02160A05600FF36D9 /* CustomTimesTableViewController.swift */; };
+		F81194F72267D8E0002E8E7A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F81194F62267D8E0002E8E7A /* StoreKit.framework */; };
+		F81194F92267F278002E8E7A /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81194F82267F278002E8E7A /* StoreObserver.swift */; };
+		F81194FB2267F875002E8E7A /* SKProductPriceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81194FA2267F875002E8E7A /* SKProductPriceExtension.swift */; };
 		F814CF5A2192A8E000E3C0F5 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F814CF592192A8E000E3C0F5 /* TabBarViewController.swift */; };
 		F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TableViewController.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
@@ -110,6 +113,9 @@
 		F807D3CC216073E300FF36D9 /* Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
 		F807D3CE2160964E00FF36D9 /* OptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTableViewController.swift; sourceTree = "<group>"; };
 		F807D3D02160A05600FF36D9 /* CustomTimesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTimesTableViewController.swift; sourceTree = "<group>"; };
+		F81194F62267D8E0002E8E7A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		F81194F82267F278002E8E7A /* StoreObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreObserver.swift; sourceTree = "<group>"; };
+		F81194FA2267F875002E8E7A /* SKProductPriceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKProductPriceExtension.swift; sourceTree = "<group>"; };
 		F814CF592192A8E000E3C0F5 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		F816DB332155CFBA009C6907 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TableViewController.swift; sourceTree = "<group>"; };
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
@@ -155,6 +161,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F802FC982254C3E10054CF22 /* CloudKit.framework in Frameworks */,
+				F81194F72267D8E0002E8E7A /* StoreKit.framework in Frameworks */,
 				F8FF25A922085A2C0063295F /* Realm.framework in Frameworks */,
 				F8FF25AA22085A2C0063295F /* RealmSwift.framework in Frameworks */,
 				F8FF25AB22085A2C0063295F /* SwiftMessages.framework in Frameworks */,
@@ -178,6 +185,7 @@
 		6049E5BF6B515664E2AA6A8D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F81194F62267D8E0002E8E7A /* StoreKit.framework */,
 				F8A761F022580AB400FB9654 /* CloudKit.framework */,
 				F802FC972254C3E10054CF22 /* CloudKit.framework */,
 				F8FF259122085A180063295F /* Pods.xcodeproj */,
@@ -202,6 +210,7 @@
 			children = (
 				F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */,
 				F86AFEB721AFD1B4004DC7F2 /* UITabBarControllerExtension.swift */,
+				F81194FA2267F875002E8E7A /* SKProductPriceExtension.swift */,
 			);
 			path = "Other Extensions";
 			sourceTree = "<group>";
@@ -282,6 +291,7 @@
 			children = (
 				F8B831CC2155CBE300DAF60E /* Items.swift */,
 				F807D3CC216073E300FF36D9 /* Options.swift */,
+				F81194F82267F278002E8E7A /* StoreObserver.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -365,6 +375,9 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.InAppPurchase = {
 								enabled = 1;
 							};
 							com.apple.Push = {
@@ -597,10 +610,12 @@
 				F86AFEB821AFD1B4004DC7F2 /* UITabBarControllerExtension.swift in Sources */,
 				F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */,
 				F814CF5A2192A8E000E3C0F5 /* TabBarViewController.swift in Sources */,
+				F81194FB2267F875002E8E7A /* SKProductPriceExtension.swift in Sources */,
 				F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */,
 				F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */,
 				F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */,
 				F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */,
+				F81194F92267F278002E8E7A /* StoreObserver.swift in Sources */,
 				F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */,
 				F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */,
 				F8CBBA5721A9058D00A4FFFD /* TaskTableViewCell.swift in Sources */,
