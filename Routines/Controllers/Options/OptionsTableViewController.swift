@@ -9,8 +9,15 @@
 import RealmSwift
 import StoreKit
 import SwiftTheme
+import SwiftyStoreKit
 import UIKit
 import UserNotifications
+
+enum RegisteredPurchase: String {
+    case lifetime = "lifetime1"
+    case yearly = "routines_plus_yearly"
+    case monthly = "routines_plus_monthly"
+}
 
 class OptionsTableViewController: UITableViewController {
     @IBOutlet var cellLabels: [UILabel]!
@@ -29,7 +36,11 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var cloudSyncLabel: UILabel!
     @IBOutlet var cloudSyncSwitch: UISwitch!
     @IBAction func cloudSyncSwitchToggled(_ sender: UISwitch) {
-        guard cloudSyncSwitch.isEnabled else { return }
+        if !cloudSyncSwitch.isEnabled {
+            showPurchaseOptions()
+        } else {
+            return
+        }
         #if DEBUG
             print("Cloud sync switch: \(sender.isOn)")
         #endif
@@ -141,8 +152,11 @@ class OptionsTableViewController: UITableViewController {
             setAppearance(tab: Options.getSelectedIndex())
             haptic.impactOccurred()
         case 3:
-            guard cloudSyncSwitch.isEnabled else { return }
-            cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
+            if !cloudSyncSwitch.isEnabled {
+                showPurchaseOptions()
+            } else {
+                cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
+            }
         default:
             return
         }
@@ -213,7 +227,7 @@ class OptionsTableViewController: UITableViewController {
         nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: false)
 
         cloudSyncSwitch.setOn(Options.getCloudSync(), animated: false)
-        cloudSyncSwitch.isEnabled = false
+        cloudSyncSwitch.isEnabled = Options.getPurchasedStatus()
 
         darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: false)
 
@@ -231,6 +245,7 @@ class OptionsTableViewController: UITableViewController {
         nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: true)
 
         cloudSyncSwitch.setOn(Options.getCloudSync(), animated: true)
+        cloudSyncSwitch.isEnabled = Options.getPurchasedStatus()
 
         darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: true)
 
@@ -239,350 +254,6 @@ class OptionsTableViewController: UITableViewController {
         eveningSubLabel.text = Options.getSegmentTimeString(segment: 2)
         nightSubLabel.text = Options.getSegmentTimeString(segment: 3)
     }
-
-//    open func getSegmentNotificationOption(segment: Int) -> Bool {
-//        var isOn = true
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-//                switch segment {
-//                case 1:
-//                    if let on = options?.afternoonNotificationsOn {
-//                        isOn = on
-//                    }
-//                case 2:
-//                    if let on = options?.eveningNotificationsOn {
-//                        isOn = on
-//                    }
-//                case 3:
-//                    if let on = options?.nightNotificationsOn {
-//                        isOn = on
-//                    }
-//                default:
-//                    if let on = options?.morningNotificationsOn {
-//                        isOn = on
-//                    }
-//                }
-//            }
-//        }
-//        return isOn
-//    }
-
-//    func getOptionTimes(timePeriod: Int) -> String {
-//        var time: String = " "
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-//                var timeOption = DateComponents()
-//                timeOption.calendar = Calendar.autoupdatingCurrent
-//                timeOption.timeZone = TimeZone.autoupdatingCurrent
-//
-//                switch timePeriod {
-//                case 1:
-//                    timeOption.hour = options?.afternoonHour
-//                    timeOption.minute = options?.afternoonMinute
-//                case 2:
-//                    timeOption.hour = options?.eveningHour
-//                    timeOption.minute = options?.eveningMinute
-//                case 3:
-//                    timeOption.hour = options?.nightHour
-//                    timeOption.minute = options?.nightMinute
-//                default:
-//                    timeOption.hour = options?.morningHour
-//                    timeOption.minute = options?.morningMinute
-//                }
-//
-//                let periods = ["morning", "afternoon", "evening", "night"]
-//                let dateFormatter = DateFormatter()
-//                dateFormatter.timeStyle = .short
-//                dateFormatter.locale = Locale.autoupdatingCurrent
-//                dateFormatter.setLocalizedDateFormatFromTemplate("HH:mm")
-//                // print("timeOption DateComponents: \(String(describing: timeOption))")
-//
-//                time = "Your \(periods[timePeriod]) begins at \(DateFormatter.localizedString(from: timeOption.date!, dateStyle: .none, timeStyle: .short))"
-//            }
-//        }
-//
-//        return time
-//    }
-
-//    func getOptionTimesAsDate(timePeriod: Int, timeOption: Date?) -> Date {
-//        var time: Date
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.timeStyle = .short
-//
-//        if let setTime = timeOption {
-//            time = setTime
-//        } else {
-//            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
-//        }
-//
-//        return time
-//    }
-
-//
-//    func getHour(date: Date) -> Int {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "HH"
-//        let hour = dateFormatter.string(from: date)
-//        return Int(hour)!
-//    }
-//
-//    func getMinute(date: Date) -> Int {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "mm"
-//        let minutes = dateFormatter.string(from: date)
-//        return Int(minutes)!
-//    }
-
-//    func updateItemUUID(item: Item, uuidString: String) {
-//        DispatchQueue(label: realmDispatchQueueLabel).async {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                do {
-//                    try realm.write {
-//                        item.uuidString = uuidString
-//                    }
-//                } catch {
-//                    // print("updateItemUUID failed")
-//                }
-//            }
-//        }
-//    }
-
-    // MARK: - Manage Notifications
-
-//    func enableNotificationsForSegment(segment: Int) {
-//        DispatchQueue(label: realmDispatchQueueLabel).async {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)")
-//                items.forEach { item in
-//                    item.createNotification()
-//                }
-//            }
-//        }
-//    }
-//
-//    func removeNotificationsForSegment(segment: Int) {
-//        DispatchQueue(label: realmDispatchQueueLabel).async {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)")
-//                items.forEach { item in
-//                    item.removeNotification()
-//                }
-//            }
-//        }
-//    }
-//
-//    open func addOrRemoveNotifications(isOn: Bool, segment: Int) {
-//        if isOn {
-//            enableNotificationsForSegment(segment: segment)
-//        } else {
-//            removeNotificationsForSegment(segment: segment)
-//        }
-//    }
-
-    // MARK: - Conversion functions
-
-//    let defaultTimeStrings = ["07:00", "12:00", "17:00", "21:00"]
-//
-//    func getLocalTimeString(date: Date) -> String {
-//        return DateFormatter.localizedString(from: date, dateStyle: .none, timeStyle: .short)
-//    }
-//
-//    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
-//        var time: Date
-//        let dateFormatter = DateFormatter()
-//        // dateFormatter.timeStyle = .short
-//        dateFormatter.locale = Locale.autoupdatingCurrent
-//        dateFormatter.setLocalizedDateFormatFromTemplate("HH:mm")
-//        if let setTime = timeOption {
-//            time = setTime
-//        } else {
-//            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
-//        }
-//
-//        return time
-//    }
-//
-//    func getHour(date: Date) -> Int {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "HH"
-//        let hour = dateFormatter.string(from: date)
-//        return Int(hour)!
-//    }
-//
-//    func getMinute(date: Date) -> Int {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "mm"
-//        let minutes = dateFormatter.string(from: date)
-//        return Int(minutes)!
-//    }
-//
-//    func getOptionHour(segment: Int) -> Int {
-//        var hour = Int()
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-//                switch segment {
-//                case 1:
-//                    hour = (options?.afternoonHour)!
-//                case 2:
-//                    hour = (options?.eveningHour)!
-//                case 3:
-//                    hour = (options?.nightHour)!
-//                default:
-//                    hour = (options?.morningHour)!
-//                }
-//            }
-//        }
-//        return hour
-//    }
-//
-//    func getOptionMinute(segment: Int) -> Int {
-//        var minute = Int()
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-//                switch segment {
-//                case 1:
-//                    minute = (options?.afternoonMinute)!
-//                case 2:
-//                    minute = (options?.eveningMinute)!
-//                case 3:
-//                    minute = (options?.nightMinute)!
-//                default:
-//                    minute = (options?.morningMinute)!
-//                }
-//            }
-//        }
-//        return minute
-//    }
-
-    // Set the notification badge count
-//    func getSegmentCount(segment: Int) -> Int {
-//        var count = Int()
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                count = realm.objects(Items.self).filter("segment = \(segment)").count
-//            }
-//        }
-//        return count
-//    }
-
-    // MARK: - Realm
-
-//    let realmDispatchQueueLabel: String = "background"
-//    let optionsKey = "optionsKey"
-//
-//    lazy var morningHour: Int = 7
-//    lazy var morningMinute: Int = 0
-//
-//    lazy var afternoonHour: Int = 12
-//    lazy var afternoonMinute: Int = 0
-//
-//    lazy var eveningHour: Int = 17
-//    lazy var eveningMinute: Int = 0
-//
-//    lazy var nightHour: Int = 21
-//    lazy var nightMinute: Int = 0
-//
-//    // Load Options
-//    func loadOptions() {
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//                    self.morningHour = options.morningHour
-//                    self.morningMinute = options.morningMinute
-//
-//                    self.afternoonHour = options.afternoonHour
-//                    self.afternoonMinute = options.afternoonMinute
-//
-//                    self.eveningHour = options.eveningHour
-//                    self.eveningMinute = options.eveningMinute
-//
-//                    self.nightHour = options.nightHour
-//                    self.nightMinute = options.nightMinute
-//                }
-//            }
-//        }
-//    }
-//
-//    public func getSegmentNotification(segment: Int) -> Bool {
-//        var enabled = false
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
-//                    switch segment {
-//                    case 1:
-//                        enabled = options.afternoonNotificationsOn
-//                    case 2:
-//                        enabled = options.eveningNotificationsOn
-//                    case 3:
-//                        enabled = options.nightNotificationsOn
-//                    default:
-//                        enabled = options.morningNotificationsOn
-//                    }
-//                }
-//            }
-//        }
-//        return enabled
-//    }
-
-    // MARK: - Themeing
-
-//    func saveDarkModeOption(isOn: Bool) {
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//                    do {
-//                        try realm.write {
-//                            options.darkMode = isOn
-//                        }
-//                    } catch {
-//                        // print("failed to update dark mode")
-//                    }
-//                }
-//            }
-//        }
-//        setAppearance(tab: getSelectedTab())
-//    }
-
-//    func getDarkModeStatus() -> Bool {
-//        var darkMode = true
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//                    darkMode = options.darkMode
-//                }
-//            }
-//        }
-//        return darkMode
-//    }
-
-//    func getSelectedTab() -> Int {
-//        var selectedIndex = 0
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//                    selectedIndex = options.selectedIndex
-//                }
-//            }
-//        }
-//        return selectedIndex
-//    }
 
     func setAppearance(tab: Int) {
         if Options.getDarkModeStatus() {
@@ -643,19 +314,33 @@ class OptionsTableViewController: UITableViewController {
 
     // MARK: - IAP
 
-//    var productRequest = SKProductsRequest()
-//
-//    func productsRequest(_: SKProductsRequest, didReceive _: SKProductsResponse) {}
-//
-//    fileprivate func fetchProducts(matchingIdentifiers _: [String]) {
-//        // Create a set for the product identifiers.
-//        let productIdentifiers: Set = ["lifetime1", "routines_plus_monthly", "routines_plus_yearly"]
-//
-//        // Initialize the product request with the above identifiers.
-//        productRequest = SKProductsRequest(productIdentifiers: productIdentifiers)
-//        productRequest.delegate = self
-//
-//        // Send the request to the App Store.
-//        productRequest.start()
-//    }
+    func showPurchaseOptions() {
+        let monthlyAction = UIAlertAction(title: "Routines+ Monthly Subscription", style: .default) { _ in
+            // TODO: monthly purchase
+        }
+        let yearlyAction = UIAlertAction(title: "Routines+ Yearly Subscription", style: .default) { _ in
+            // TODO: monthly purchase
+        }
+        let lifetimeAction = UIAlertAction(title: "Routines+ Lifetime Unlock", style: .default) { _ in
+            // TODO: monthly purchase
+        }
+
+        showProductAlert(alertActions: [monthlyAction, yearlyAction, lifetimeAction])
+    }
+
+    func showProductAlert(alertActions: [UIAlertAction]) {
+        let alertController = UIAlertController(title: "Upgrade to Routines+", message: "Choose from Monthly or Annual subscription options,\nor pay once to unlock forever.", preferredStyle: .actionSheet)
+        alertActions.forEach { action in
+            alertController.addAction(action)
+        }
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(alertController, animated: true, completion: nil)
+    }
+
+    func showFailAlert() {
+        let alertController = UIAlertController(title: "Connection Failure", message: "Failed to get purchase options from the App Store. Please check your internet conenction and try again.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
+    }
 }
