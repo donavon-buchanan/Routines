@@ -10,20 +10,12 @@ import StoreKit
 import SwiftyStoreKit
 import UIKit
 
-extension OptionsTableViewController {
+extension UIViewController {
     func getInfo(purchase: RegisteredPurchase) {
         NetworkActivityIndicatorManager.networkOperationStarted()
         SwiftyStoreKit.retrieveProductsInfo([purchase.rawValue]) { result in
             NetworkActivityIndicatorManager.networkOperationEnded()
             self.showAlert(alert: self.alertForProductRetrievalInfo(result: result))
-        }
-    }
-
-    func getAllProductInfo(productIDs: Set<String>) {
-        NetworkActivityIndicatorManager.networkOperationStarted()
-        SwiftyStoreKit.retrieveProductsInfo(productIDs) { results in
-            NetworkActivityIndicatorManager.networkOperationEnded()
-            self.productInfo = results
         }
     }
 
@@ -33,10 +25,12 @@ extension OptionsTableViewController {
             NetworkActivityIndicatorManager.networkOperationEnded()
             switch result {
             case let .success(product):
+                Options.setPurchasedProduct(productID: product.productId)
+                Options.setPurchasedStatus(status: true)
                 if product.needsFinishTransaction {
                     SwiftyStoreKit.finishTransaction(product.transaction)
                 }
-                self.showAlert(alert: self.alertForPurchaseResult(result: result))
+            // self.showAlert(alert: self.alertForPurchaseResult(result: result))
             default:
                 self.showAlert(alert: self.alertForPurchaseResult(result: result))
             }
@@ -48,6 +42,8 @@ extension OptionsTableViewController {
         SwiftyStoreKit.restorePurchases(atomically: true, applicationUsername: "") { result in
             NetworkActivityIndicatorManager.networkOperationEnded()
             result.restoredPurchases.forEach { product in
+                Options.setPurchasedProduct(productID: product.productId)
+                Options.setPurchasedStatus(status: true)
                 if product.needsFinishTransaction {
                     SwiftyStoreKit.finishTransaction(product.transaction)
                 }
@@ -58,10 +54,10 @@ extension OptionsTableViewController {
 
     func verifyReceipt() {
         NetworkActivityIndicatorManager.networkOperationStarted()
-        let appleValidator = AppleReceiptValidator(service: .sandbox, sharedSecret: sharedSecret)
+        let appleValidator = AppleReceiptValidator(service: .production, sharedSecret: sharedSecret)
         SwiftyStoreKit.verifyReceipt(using: appleValidator) { result in
             NetworkActivityIndicatorManager.networkOperationEnded()
-            self.showAlert(alert: self.alertForVerifyReceipt(result: result))
+            // self.showAlert(alert: self.alertForVerifyReceipt(result: result))
 
             if case let .error(error) = result {
                 if case .noReceiptData = error {
@@ -73,22 +69,24 @@ extension OptionsTableViewController {
 
     func verifyPurchase(product: RegisteredPurchase) {
         NetworkActivityIndicatorManager.networkOperationStarted()
-        let appleValidator = AppleReceiptValidator(service: .sandbox, sharedSecret: sharedSecret)
+        let appleValidator = AppleReceiptValidator(service: .production, sharedSecret: sharedSecret)
         SwiftyStoreKit.verifyReceipt(using: appleValidator) { result in
             NetworkActivityIndicatorManager.networkOperationEnded()
             switch result {
-            case let .success(receipt):
-                switch product {
-                case .lifetime:
-                    let purchaseResult = SwiftyStoreKit.verifyPurchase(productId: product.rawValue, inReceipt: receipt)
-                    self.showAlert(alert: self.alertForVerifyPurchase(result: purchaseResult))
-                default:
-                    // let purchaseResult = SwiftyStoreKit.verifySubscription(ofType: .autoRenewable, productId: product.rawValue, inReceipt: receipt)
-                    let purchaseResult = SwiftyStoreKit.verifySubscription(ofType: .autoRenewable, productId: product.rawValue, inReceipt: receipt, validUntil: Date())
-                    self.showAlert(alert: self.alertForVerifySubscription(result: purchaseResult))
-                }
-
+            case .success:
+                Options.setPurchasedProduct(productID: product.rawValue)
+                Options.setPurchasedStatus(status: true)
+            //                switch product {
+            //                case .lifetime:
+            //                    // let purchaseResult = SwiftyStoreKit.verifyPurchase(productId: product.rawValue, inReceipt: receipt)
+            //                   // Options.setPurchaseExpiration(expiryDate: DateComponents(year: 10000).date!)
+            //                default:
+            //                    let purchaseResult = SwiftyStoreKit.verifySubscription(ofType: .autoRenewable, productId: product.rawValue, inReceipt: receipt, validUntil: Date())
+            //                    // self.showAlert(alert: self.alertForVerifySubscription(result: purchaseResult))
+            //                }
             case let .error(error):
+                Options.setPurchasedProduct(productID: "")
+                Options.setPurchasedStatus(status: false)
                 self.showAlert(alert: self.alertForVerifyReceipt(result: result))
                 if case .noReceiptData = error {
                     self.refreshReceipt()
@@ -98,8 +96,8 @@ extension OptionsTableViewController {
     }
 
     func refreshReceipt() {
-        SwiftyStoreKit.fetchReceipt(forceRefresh: false) { result in
-            self.showAlert(alert: self.alertForRefreshReceipt(result: result))
+        SwiftyStoreKit.fetchReceipt(forceRefresh: false) { _ in
+            // self.showAlert(alert: self.alertForRefreshReceipt(result: result))
         }
     }
 }

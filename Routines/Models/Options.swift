@@ -46,6 +46,7 @@ import RealmSwift
 
     dynamic var routinesPlusPurchased: Bool = false
     dynamic var purchasedProduct: String = ""
+    // dynamic var purchaseExpiration: Date?
 
     dynamic var cloudSync: Bool = false
 
@@ -127,6 +128,28 @@ import RealmSwift
         let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
         return options?.purchasedProduct ?? ""
     }
+
+//    static func getPurchaseExpiration() -> Date? {
+//        let realm = try! Realm()
+//        let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//        return options?.purchaseExpiration
+//    }
+//
+//    static func setPurchaseExpiration(expiryDate: Date) {
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                do {
+//                    try realm.write {
+//                        options?.purchaseExpiration = expiryDate
+//                    }
+//                } catch {
+//                    fatalError("\(#function) - Failed to write expiry date to Options: \(error)")
+//                }
+//            }
+//        }
+//    }
 
     dynamic var themeIndex: Int = 0
 
