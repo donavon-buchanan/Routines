@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    let center = UNUserNotificationCenter.current()
     var shortcutItemToProcess: UIApplicationShortcutItem?
 
-    var syncEngine: SyncEngine?
+    static var syncEngine: SyncEngine?
 
     // static let iapObserver = StoreObserver()
 
@@ -78,11 +78,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         migrateRealm()
 
         // Sync with iCloud
-        if Options.getCloudSync() {
-            syncEngine = SyncEngine(objects: [
+        if Options.getPurchasedStatus() {
+            AppDelegate.syncEngine = SyncEngine(objects: [
                 SyncObject<Items>(),
                 SyncObject<Options>(),
             ])
+        } else {
+            AppDelegate.syncEngine = nil
         }
 
         UIApplication.shared.registerForRemoteNotifications()
@@ -109,7 +111,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 switch purchase.transaction.transactionState {
                 case .purchased, .restored:
                     if purchase.needsFinishTransaction {
-                        // Deliver content from server, then:
                         SwiftyStoreKit.finishTransaction(purchase.transaction)
                     }
                     // Unlock content
@@ -321,7 +322,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 16,
+            schemaVersion: 17,
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -384,7 +385,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
 
-                if oldSchemaVersion < 16 {}
+                if oldSchemaVersion < 17 {}
             }
         )
 

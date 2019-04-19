@@ -36,10 +36,12 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var cloudSyncLabel: UILabel!
     @IBOutlet var cloudSyncSwitch: UISwitch!
     @IBAction func cloudSyncSwitchToggled(_ sender: UISwitch) {
-        if !cloudSyncSwitch.isEnabled {
-            // showPurchaseOptions()
+        if cloudSyncSwitch.isEnabled {
+            // cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
+            Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
         } else {
-            return
+            // Show Purchase Options
+            showPurchaseOptions()
         }
         #if DEBUG
             print("Cloud sync switch: \(sender.isOn)")
@@ -101,6 +103,11 @@ class OptionsTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setUpUI()
+        if !Options.getPurchasedStatus() {
+            getAllProductInfo(productIDs: Set(arrayLiteral: RegisteredPurchase.monthly.rawValue, RegisteredPurchase.yearly.rawValue, RegisteredPurchase.lifetime.rawValue))
+        } else {
+            
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -152,13 +159,16 @@ class OptionsTableViewController: UITableViewController {
             setAppearance(tab: Options.getSelectedIndex())
             haptic.impactOccurred()
         case 3:
-            if !cloudSyncSwitch.isEnabled {
-                // showPurchaseOptions()
-            } else {
+            if cloudSyncSwitch.isEnabled {
                 cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
+                Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
+                haptic.impactOccurred()
+            } else {
+                // Show Purchase Options
+                showPurchaseOptions()
             }
         default:
-            return
+            break
         }
     }
 
@@ -314,81 +324,38 @@ class OptionsTableViewController: UITableViewController {
 
     // MARK: - IAP
 
-    func getInfo(purchase: RegisteredPurchase) {
-        NetworkActivityIndicatorManager.networkOperationStarted()
-        SwiftyStoreKit.retrieveProductsInfo([purchase.rawValue]) { _ in
-            //
-            NetworkActivityIndicatorManager.networkOperationEnded()
+    var productInfo: RetrieveResults?
+
+    func showPurchaseOptions() {
+        var alertActions: [UIAlertAction] = []
+        guard (productInfo?.retrievedProducts.count ?? 0) > 0 else { showFailAlert(); return }
+        productInfo?.retrievedProducts.forEach { product in
+            alertActions.append(UIAlertAction(title: product.localizedTitle + " : \(product.localizedPrice!)", style: .default, handler: { _ in
+                self.purchase(purchase: RegisteredPurchase(rawValue: product.productIdentifier)!)
+            }))
         }
+
+        let restoreAction = UIAlertAction(title: "Restore Purchases", style: .default) { _ in
+            self.restorePurchase()
+        }
+        alertActions.append(restoreAction)
+        showProductAlert(alertActions: alertActions)
     }
 
-    func purchase(purchase: RegisteredPurchase) {
-        NetworkActivityIndicatorManager.networkOperationStarted()
-        SwiftyStoreKit.purchaseProduct(purchase.rawValue) { _ in
-            //
-            NetworkActivityIndicatorManager.networkOperationEnded()
+    func showProductAlert(alertActions: [UIAlertAction]) {
+        let alertController = UIAlertController(title: "Upgrade to Routines+", message: "Choose from Monthly or Annual subscription options,\nor pay once to unlock forever.", preferredStyle: .actionSheet)
+        alertActions.forEach { action in
+            alertController.addAction(action)
         }
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(alertController, animated: true, completion: nil)
     }
 
-    func restorePurchase() {
-        NetworkActivityIndicatorManager.networkOperationStarted()
-        SwiftyStoreKit.restorePurchases(atomically: true, applicationUsername: "") { _ in
-            //
-            NetworkActivityIndicatorManager.networkOperationEnded()
-        }
+    func showFailAlert() {
+        getAllProductInfo(productIDs: Set(arrayLiteral: RegisteredPurchase.monthly.rawValue, RegisteredPurchase.yearly.rawValue, RegisteredPurchase.lifetime.rawValue))
+        let alertController = UIAlertController(title: "Connection Failure", message: "Failed to get purchase options from the App Store. Please check your internet conenction or try again.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
     }
-
-    func verifyReceipt() {
-        NetworkActivityIndicatorManager.networkOperationStarted()
-        let appleValidator = AppleReceiptValidator(service: .sandbox, sharedSecret: sharedSecret)
-        SwiftyStoreKit.verifyReceipt(using: appleValidator) { _ in
-            //
-            NetworkActivityIndicatorManager.networkOperationEnded()
-        }
-    }
-
-    func verifyPurchase() {
-        NetworkActivityIndicatorManager.networkOperationStarted()
-        let appleValidator = AppleReceiptValidator(service: .sandbox, sharedSecret: sharedSecret)
-        SwiftyStoreKit.verifyReceipt(using: appleValidator) { _ in
-            //
-            NetworkActivityIndicatorManager.networkOperationEnded()
-        }
-    }
-
-    func refreshReceipt() {
-        SwiftyStoreKit.fetchReceipt(forceRefresh: false) { _ in
-            //
-        }
-    }
-
-//    func showPurchaseOptions() {
-//        let monthlyAction = UIAlertAction(title: "Routines+ Monthly Subscription", style: .default) { _ in
-//            // TODO: monthly purchase
-//        }
-//        let yearlyAction = UIAlertAction(title: "Routines+ Yearly Subscription", style: .default) { _ in
-//            // TODO: monthly purchase
-//        }
-//        let lifetimeAction = UIAlertAction(title: "Routines+ Lifetime Unlock", style: .default) { _ in
-//            // TODO: monthly purchase
-//        }
-//
-//        showProductAlert(alertActions: [monthlyAction, yearlyAction, lifetimeAction])
-//    }
-//
-//    func showProductAlert(alertActions: [UIAlertAction]) {
-//        let alertController = UIAlertController(title: "Upgrade to Routines+", message: "Choose from Monthly or Annual subscription options,\nor pay once to unlock forever.", preferredStyle: .actionSheet)
-//        alertActions.forEach { action in
-//            alertController.addAction(action)
-//        }
-//        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-//        present(alertController, animated: true, completion: nil)
-//    }
-//
-//    func showFailAlert() {
-//        let alertController = UIAlertController(title: "Connection Failure", message: "Failed to get purchase options from the App Store. Please check your internet conenction and try again.", preferredStyle: .alert)
-//        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-//        alertController.addAction(okAction)
-//        present(alertController, animated: true, completion: nil)
-//    }
 }

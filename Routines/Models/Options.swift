@@ -45,6 +45,7 @@ import RealmSwift
     dynamic var darkMode: Bool = true
 
     dynamic var routinesPlusPurchased: Bool = false
+    dynamic var purchasedProduct: String = ""
 
     dynamic var cloudSync: Bool = false
 
@@ -58,6 +59,23 @@ import RealmSwift
             }
         }
         return status
+    }
+
+    static func setCloudSync(toggle: Bool) {
+        // TODO: Verify purchase?
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+                do {
+                    try realm.write {
+                        options?.cloudSync = toggle
+                    }
+                } catch {
+                    fatalError("\(#function) - Failed to save cloudSync option. Error: \(error)")
+                }
+            }
+        }
     }
 
     static func getPurchasedStatus() -> Bool {
@@ -86,6 +104,28 @@ import RealmSwift
                 }
             }
         }
+    }
+    
+    static func setPurchasedProduct(productID: String) {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool{
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+                do {
+                    try realm.write {
+                        options?.purchasedProduct = productID
+                    }
+                } catch {
+                    fatalError("\(#function) - Error saving purchased product: \(error)")
+                }
+            }
+        }
+    }
+    
+    static func getPurchasedProduct() -> String {
+        let realm = try! Realm()
+        let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+        return options?.purchasedProduct ?? ""
     }
 
     dynamic var themeIndex: Int = 0
