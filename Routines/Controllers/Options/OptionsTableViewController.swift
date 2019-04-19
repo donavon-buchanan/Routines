@@ -105,8 +105,6 @@ class OptionsTableViewController: UITableViewController {
         setUpUI()
         if !Options.getPurchasedStatus() {
             getAllProductInfo(productIDs: Set(arrayLiteral: RegisteredPurchase.monthly.rawValue, RegisteredPurchase.yearly.rawValue, RegisteredPurchase.lifetime.rawValue))
-        } else {
-            
         }
     }
 
@@ -334,7 +332,6 @@ class OptionsTableViewController: UITableViewController {
                 self.purchase(purchase: RegisteredPurchase(rawValue: product.productIdentifier)!)
             }))
         }
-
         let restoreAction = UIAlertAction(title: "Restore Purchases", style: .default) { _ in
             self.restorePurchase()
         }
