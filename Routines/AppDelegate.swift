@@ -9,8 +9,9 @@
 import CloudKit
 import IceCream
 import RealmSwift
-import StoreKit
+// import StoreKit
 import SwiftTheme
+import SwiftyStoreKit
 import UIKit
 import UserNotifications
 
@@ -23,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var syncEngine: SyncEngine?
 
-    static let iapObserver = StoreObserver()
+    // static let iapObserver = StoreObserver()
 
 //    private func itemCleanup() {
 //        let realm = try! Realm()
@@ -100,7 +101,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // removeOldNotifications()
 
         // IAP Observer
-        SKPaymentQueue.default().add(AppDelegate.iapObserver)
+        // SKPaymentQueue.default().add(AppDelegate.iapObserver)
+
+        // SwiftyStoreKit
+        SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
+            for purchase in purchases {
+                switch purchase.transaction.transactionState {
+                case .purchased, .restored:
+                    if purchase.needsFinishTransaction {
+                        // Deliver content from server, then:
+                        SwiftyStoreKit.finishTransaction(purchase.transaction)
+                    }
+                    // Unlock content
+                    Options.setPurchasedStatus(status: true)
+                case .failed, .purchasing, .deferred:
+                    break // do nothing
+                @unknown default:
+                    break
+                }
+            }
+        }
+
         return true
     }
 
@@ -205,7 +226,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillTerminate(_: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 
-        SKPaymentQueue.default().remove(AppDelegate.iapObserver)
+        // SKPaymentQueue.default().remove(AppDelegate.iapObserver)
     }
 
 //    func application(_: UIApplication, shouldSaveApplicationState _: NSCoder) -> Bool {
@@ -300,7 +321,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 15,
+            schemaVersion: 16,
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -362,6 +383,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         // print("newObject: " + String(describing: newObject))
                     }
                 }
+
+                if oldSchemaVersion < 16 {}
             }
         )
 

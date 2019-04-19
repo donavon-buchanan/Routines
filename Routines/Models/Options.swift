@@ -44,6 +44,8 @@ import RealmSwift
 
     dynamic var darkMode: Bool = true
 
+    dynamic var routinesPlusPurchased: Bool = false
+
     dynamic var cloudSync: Bool = false
 
     static func getCloudSync() -> Bool {
@@ -56,6 +58,34 @@ import RealmSwift
             }
         }
         return status
+    }
+
+    static func getPurchasedStatus() -> Bool {
+        var status = false
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+                status = options?.routinesPlusPurchased ?? false
+            }
+        }
+        return status
+    }
+
+    static func setPurchasedStatus(status: Bool) {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+                do {
+                    try realm.write {
+                        options?.routinesPlusPurchased = status
+                    }
+                } catch {
+                    fatalError("\(#function) - Failed to set purchased status in options with error: \(error)")
+                }
+            }
+        }
     }
 
     dynamic var themeIndex: Int = 0
