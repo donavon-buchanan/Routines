@@ -32,7 +32,10 @@
 		F8B831CD2155CBE300DAF60E /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831CC2155CBE300DAF60E /* Items.swift */; };
 		F8CBBA5721A9058D00A4FFFD /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */; };
 		F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */; };
+		F8D5DB492269AC59005857F2 /* NetworkActivityIndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5DB482269AC59005857F2 /* NetworkActivityIndicatorManager.swift */; };
+		F8D5DB532269BCAD005857F2 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */; };
 		F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */; };
+		F8E031862269C410002C2E32 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E031852269C410002C2E32 /* Messages.swift */; };
 		F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */; };
 		F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */; };
 		F8F3270E215C8509004AC619 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8F3270D215C8509004AC619 /* Media.xcassets */; };
@@ -146,7 +149,10 @@
 		F8B831CC2155CBE300DAF60E /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatTableViewController.swift; sourceTree = "<group>"; };
+		F8D5DB482269AC59005857F2 /* NetworkActivityIndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkActivityIndicatorManager.swift; sourceTree = "<group>"; };
+		F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTableViewController.swift; sourceTree = "<group>"; };
+		F8E031852269C410002C2E32 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTableViewController.swift; sourceTree = "<group>"; };
 		F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTableViewCell.swift; sourceTree = "<group>"; };
 		F8F3270D215C8509004AC619 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -221,6 +227,8 @@
 				F86AFEB721AFD1B4004DC7F2 /* UITabBarControllerExtension.swift */,
 				F81194FA2267F875002E8E7A /* SKProductPriceExtension.swift */,
 				F87D49EE2269AA1700845E0D /* AppSecrets.swift */,
+				F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */,
+				F8E031852269C410002C2E32 /* Messages.swift */,
 			);
 			path = "Other Extensions";
 			sourceTree = "<group>";
@@ -268,6 +276,7 @@
 				F8B831C02155CBB100DAF60E /* LaunchScreen.storyboard */,
 				F8B831C32155CBB100DAF60E /* Info.plist */,
 				F8F3270D215C8509004AC619 /* Media.xcassets */,
+				F8D5DB482269AC59005857F2 /* NetworkActivityIndicatorManager.swift */,
 			);
 			path = Routines;
 			sourceTree = "<group>";
@@ -630,7 +639,9 @@
 				F86AFEB821AFD1B4004DC7F2 /* UITabBarControllerExtension.swift in Sources */,
 				F87D49EF2269AA1700845E0D /* AppSecrets.swift in Sources */,
 				F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */,
+				F8E031862269C410002C2E32 /* Messages.swift in Sources */,
 				F814CF5A2192A8E000E3C0F5 /* TabBarViewController.swift in Sources */,
+				F8D5DB492269AC59005857F2 /* NetworkActivityIndicatorManager.swift in Sources */,
 				F81194FB2267F875002E8E7A /* SKProductPriceExtension.swift in Sources */,
 				F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */,
 				F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */,
@@ -642,6 +653,7 @@
 				F8CBBA5721A9058D00A4FFFD /* TaskTableViewCell.swift in Sources */,
 				F807D3CF2160964E00FF36D9 /* OptionsTableViewController.swift in Sources */,
 				F843324B21F4680200086BFF /* CheckableTableViewCell.swift in Sources */,
+				F8D5DB532269BCAD005857F2 /* ViewControllerExtension.swift in Sources */,
 				F8B30789219C13B500437AAA /* GlobalPicker.swift in Sources */,
 				F807D3CD216073E300FF36D9 /* Options.swift in Sources */,
 				F8B30787219C0DAB00437AAA /* Themes.swift in Sources */,
