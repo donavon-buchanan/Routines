@@ -29,9 +29,9 @@ extension UIViewController {
             let priceString = product.localizedPrice!
             return alertWithTitle(title: product.localizedTitle, message: "\(product.localizedDescription) - \(priceString)")
         } else if let invalidProductID = result.invalidProductIDs.first {
-            return alertWithTitle(title: Messages.productInfoFail.rawValue, message: "Invalid Product ID: \(invalidProductID). Please contact support.")
+            return alertWithTitle(title: Messages.productInfoFail, message: "Invalid Product ID: \(invalidProductID). Please contact support.")
         } else {
-            let error = result.error?.localizedDescription ?? Messages.unknownError.rawValue
+            let error = result.error?.localizedDescription ?? Messages.unknownError
             return alertWithTitle(title: "Error", message: error)
         }
     }
@@ -42,7 +42,7 @@ extension UIViewController {
             #if DEBUG
                 print("Purchase Sucessful: \(product.productId)")
             #endif
-            return alertWithTitle(title: Messages.purchaseCompelte.rawValue, message: Messages.thank.rawValue)
+            return alertWithTitle(title: Messages.purchaseCompelte, message: Messages.thank)
         case let .error(error):
             #if DEBUG
                 print("Purchase Failed: \(error)")
@@ -50,20 +50,20 @@ extension UIViewController {
             switch error.code {
             case .cloudServiceNetworkConnectionFailed:
                 if (error as NSError).domain == SKErrorDomain {
-                    return alertWithTitle(title: Messages.purchaseFailed.rawValue, message: Messages.checkConnection.rawValue)
+                    return alertWithTitle(title: Messages.purchaseFailed, message: Messages.checkConnection)
                 } else {
-                    return alertWithTitle(title: Messages.purchaseFailed.rawValue, message: Messages.checkConnection.rawValue)
+                    return alertWithTitle(title: Messages.purchaseFailed, message: Messages.checkConnection)
                 }
             case .invalidOfferIdentifier:
-                return alertWithTitle(title: Messages.purchaseFailed.rawValue, message: Messages.invalidID.rawValue)
+                return alertWithTitle(title: Messages.purchaseFailed, message: Messages.invalidID)
             case .paymentCancelled:
-                return alertWithTitle(title: Messages.purchaseIncomplete.rawValue, message: Messages.paymentCanceled.rawValue)
+                return alertWithTitle(title: Messages.purchaseIncomplete, message: Messages.paymentCanceled)
             case .paymentNotAllowed:
-                return alertWithTitle(title: Messages.purchaseFailed.rawValue, message: Messages.paymentNotAllowed.rawValue)
+                return alertWithTitle(title: Messages.purchaseFailed, message: Messages.paymentNotAllowed)
             case .privacyAcknowledgementRequired:
-                return alertWithTitle(title: Messages.purchaseIncomplete.rawValue, message: Messages.privacyAcknowledgementRequired.rawValue)
+                return alertWithTitle(title: Messages.purchaseIncomplete, message: Messages.privacyAcknowledgementRequired)
             default:
-                return alertWithTitle(title: Messages.purchaseFailed.rawValue, message: Messages.unknownError.rawValue)
+                return alertWithTitle(title: Messages.purchaseFailed, message: Messages.unknownError)
             }
         }
     }
@@ -73,24 +73,24 @@ extension UIViewController {
             #if DEBUG
                 print(result.restoreFailedPurchases)
             #endif
-            return alertWithTitle(title: Messages.restoreFailed.rawValue, message: Messages.restoreFailedMessage.rawValue)
+            return alertWithTitle(title: Messages.restoreFailed, message: Messages.restoreFailedMessage)
         } else if result.restoredPurchases.count > 0 {
-            return alertWithTitle(title: Messages.purchaseRestored.rawValue, message: Messages.thank.rawValue)
+            return alertWithTitle(title: Messages.purchaseRestored, message: Messages.thank)
         } else {
-            return alertWithTitle(title: Messages.restoreFailed.rawValue, message: Messages.noPurchase.rawValue)
+            return alertWithTitle(title: Messages.restoreFailed, message: Messages.noPurchase)
         }
     }
 
     func alertForVerifyReceipt(result: VerifyReceiptResult) -> UIAlertController {
         switch result {
         case .success:
-            return alertWithTitle(title: Messages.success.rawValue, message: Messages.receiptVerified.rawValue)
+            return alertWithTitle(title: Messages.success, message: Messages.receiptVerified)
         case let .error(error):
             switch error {
             case .noReceiptData:
-                return alertWithTitle(title: Messages.verificationFailed.rawValue, message: Messages.noReceiptFound.rawValue)
+                return alertWithTitle(title: Messages.verificationFailed, message: Messages.noReceiptFound)
             default:
-                return alertWithTitle(title: Messages.verificationFailed.rawValue, message: Messages.verificationUnknown.rawValue)
+                return alertWithTitle(title: Messages.verificationFailed, message: Messages.verificationUnknown)
             }
         }
     }
@@ -100,29 +100,29 @@ extension UIViewController {
         dateFormatter.dateStyle = .medium
         switch result {
         case let .expired(expiredSubInfo):
-            return alertWithTitle(title: Messages.subExpired.rawValue, message: Messages.subExpiryDate.rawValue + dateFormatter.string(from: expiredSubInfo.expiryDate))
+            return alertWithTitle(title: Messages.subExpired, message: Messages.subExpiryDate + dateFormatter.string(from: expiredSubInfo.expiryDate))
         case .notPurchased:
-            return alertWithTitle(title: Messages.notPurchased.rawValue, message: Messages.noPurchase.rawValue)
+            return alertWithTitle(title: Messages.notPurchased, message: Messages.noPurchase)
         case let .purchased(subInfo):
-            return alertWithTitle(title: Messages.subActive.rawValue, message: Messages.subActiveUntil.rawValue + dateFormatter.string(from: subInfo.expiryDate))
+            return alertWithTitle(title: Messages.subActive, message: Messages.subActiveUntil + dateFormatter.string(from: subInfo.expiryDate))
         }
     }
 
     func alertForVerifyPurchase(result: VerifyPurchaseResult) -> UIAlertController {
         switch result {
         case .purchased:
-            return alertWithTitle(title: Messages.purchased.rawValue, message: Messages.purchasedMessage.rawValue)
+            return alertWithTitle(title: Messages.purchased, message: Messages.purchasedMessage)
         case .notPurchased:
-            return alertWithTitle(title: Messages.notPurchased.rawValue, message: Messages.notPurchasedMessage.rawValue)
+            return alertWithTitle(title: Messages.notPurchased, message: Messages.notPurchasedMessage)
         }
     }
 
     func alertForRefreshReceipt(result: FetchReceiptResult) -> UIAlertController {
         switch result {
         case .success:
-            return alertWithTitle(title: Messages.fetchedReceipt.rawValue, message: Messages.fetchedReceiptMessage.rawValue)
+            return alertWithTitle(title: Messages.fetchedReceipt, message: Messages.fetchedReceiptMessage)
         case let .error(error):
-            return alertWithTitle(title: Messages.receiptFailed.rawValue, message: Messages.receiptFailedMessage.rawValue + "\(error)")
+            return alertWithTitle(title: Messages.receiptFailed, message: Messages.receiptFailedMessage + "\(error)")
         }
     }
 }

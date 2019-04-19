@@ -105,10 +105,10 @@ import RealmSwift
             }
         }
     }
-    
+
     static func setPurchasedProduct(productID: String) {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool{
+            autoreleasepool {
                 let realm = try! Realm()
                 let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
                 do {
@@ -121,7 +121,7 @@ import RealmSwift
             }
         }
     }
-    
+
     static func getPurchasedProduct() -> String {
         let realm = try! Realm()
         let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
