@@ -252,19 +252,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         if let updatedItem = item {
             updatedItem.updateItem(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
         } else {
-            let realm = try! Realm()
-            do {
-                try realm.write {
-                    let newItem = Items()
-                    newItem.title = taskTextField.text!
-                    newItem.segment = segmentSelection.selectedSegmentIndex
-                    newItem.repeats = repeatDailySwitch.isOn
-                    newItem.notes = notesTextView.text
-                    realm.add(newItem)
-                }
-            } catch {
-                fatalError("\(#function): failed to add new item")
-            }
+            let newItem = Items()
+            newItem.title = taskTextField.text!
+            newItem.segment = segmentSelection.selectedSegmentIndex
+            newItem.repeats = repeatDailySwitch.isOn
+            newItem.notes = notesTextView.text
+            newItem.addNewItem(newItem)
         }
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }

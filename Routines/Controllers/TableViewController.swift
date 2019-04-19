@@ -162,7 +162,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         // removeDeliveredNotifications()
         loadItems()
         updateBadge()
-        AppDelegate.removeOldNotifications()
+        // AppDelegate.removeOldNotifications()
     }
 
     override func viewWillAppear(_ animated: Bool) {

@@ -9,6 +9,7 @@
 import CloudKit
 import IceCream
 import RealmSwift
+import StoreKit
 import SwiftTheme
 import UIKit
 import UserNotifications
@@ -21,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var shortcutItemToProcess: UIApplicationShortcutItem?
 
     var syncEngine: SyncEngine?
+
+    static let iapObserver = StoreObserver()
 
 //    private func itemCleanup() {
 //        let realm = try! Realm()
@@ -43,10 +46,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    }
 //
     static func refreshNotifications() {
+        Items.requestNotificationPermission()
         DispatchQueue.main.async {
             autoreleasepool {
                 let realm = try! Realm()
-                let items = realm.objects(Items.self).filter("isDeleted = %@", false)
+                let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
                 items.forEach { item in
                     item.addNewNotification()
                 }
@@ -73,10 +77,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         migrateRealm()
 
         // Sync with iCloud
-        syncEngine = SyncEngine(objects: [
-            SyncObject<Items>(),
-            SyncObject<Options>(),
-        ])
+        if Options.getCloudSync() {
+            syncEngine = SyncEngine(objects: [
+                SyncObject<Items>(),
+                SyncObject<Options>(),
+            ])
+        }
+
         UIApplication.shared.registerForRemoteNotifications()
 
         // checkToCreateOptions()
@@ -92,6 +99,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // refreshNotifications()
         // removeOldNotifications()
 
+        // IAP Observer
+        SKPaymentQueue.default().add(AppDelegate.iapObserver)
         return true
     }
 
@@ -143,7 +152,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func applicationWillEnterForeground(_: UIApplication) {
-//        removeOldNotifications()
+        AppDelegate.removeOldNotifications()
     }
 
     func applicationDidBecomeActive(_: UIApplication) {
@@ -195,9 +204,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillTerminate(_: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        // Themes.saveLastTheme()
 
-        // itemCleanup()
+        SKPaymentQueue.default().remove(AppDelegate.iapObserver)
     }
 
 //    func application(_: UIApplication, shouldSaveApplicationState _: NSCoder) -> Bool {
