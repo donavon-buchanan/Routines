@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    }
 //
     static func refreshNotifications() {
-        Items.requestNotificationPermission()
+        // Items.requestNotificationPermission()
         DispatchQueue.main.async {
             autoreleasepool {
                 let realm = try! Realm()
@@ -78,14 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         migrateRealm()
 
         // Sync with iCloud
-        if Options.getPurchasedStatus() {
-            AppDelegate.syncEngine = SyncEngine(objects: [
-                SyncObject<Items>(),
-                SyncObject<Options>(),
-            ])
-        } else {
-            AppDelegate.syncEngine = nil
-        }
+        AppDelegate.setSync()
 
         UIApplication.shared.registerForRemoteNotifications()
 
@@ -127,6 +120,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        AppDelegate.syncEngine?.pull()
+
         let dict = userInfo as! [String: NSObject]
         let notification = CKNotification(fromRemoteNotificationDictionary: dict)
 
@@ -490,6 +485,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         item.snooze()
     }
 
+    static func setSync() {
+        if Options.getPurchasedStatus(), Options.getCloudSync() {
+            AppDelegate.syncEngine = SyncEngine(objects: [
+                SyncObject<Items>(),
+                SyncObject<Options>(),
+            ])
+        } else {
+            AppDelegate.syncEngine = nil
+        }
+    }
+
     // MARK: - Update after Notifications
 
     var notificationToken: NotificationToken?
@@ -770,7 +776,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // This is kind of a cheat, but it works
         let navVC = rootVC.children[index] as! NavigationViewController
         navVC.pushViewController(optionsViewController, animated: true)
-        TableViewController().setAppearance(segment: index)
+        TableViewController.setAppearance(segment: index)
     }
 
     fileprivate func goToAdd() {
@@ -785,7 +791,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let navVC = rootVC.children[index] as! NavigationViewController
         navVC.pushViewController(addViewController, animated: true)
         addViewController.editingSegment = index
-        TableViewController().setAppearance(segment: index)
+        TableViewController.setAppearance(segment: index)
     }
 
     func userNotificationCenter(_: UNUserNotificationCenter, openSettingsFor _: UNNotification?) {

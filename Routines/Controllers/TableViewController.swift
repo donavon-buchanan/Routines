@@ -156,6 +156,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         title = setNavTitle()
         // loadItems()
+        if Options.getPurchasedStatus(), Options.getPurchasedProduct() != "" {
+            verifyPurchase(product: RegisteredPurchase(rawValue: Options.getPurchasedProduct())!)
+        }
     }
 
     @objc func appBecameActive() {
@@ -174,7 +177,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // print("viewDidAppear \n")
-        setAppearance(segment: segment)
+        TableViewController.setAppearance(segment: segment)
         loadItems()
     }
 
@@ -758,7 +761,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 case let .change(properties):
                     properties.forEach { propertyChange in
                         if propertyChange.name == "darkMode" {
-                            self.setAppearance(segment: self.tabBarController?.selectedIndex ?? 0)
+                            TableViewController.setAppearance(segment: self.tabBarController?.selectedIndex ?? 0)
                         }
                     }
                 case let .error(error):
@@ -776,7 +779,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // MARK: - Themeing
 
-    open func setAppearance(segment: Int) {
+    static func setAppearance(segment: Int) {
         #if DEBUG
             print("Dark mode is: \(Options.getDarkModeStatus())")
         #endif

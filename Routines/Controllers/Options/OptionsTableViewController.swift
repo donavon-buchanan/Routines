@@ -39,6 +39,7 @@ class OptionsTableViewController: UITableViewController {
         if cloudSyncSwitch.isEnabled {
             // cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
             Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
+            AppDelegate.setSync()
         } else {
             // Show Purchase Options
             showPurchaseOptions()
@@ -160,6 +161,7 @@ class OptionsTableViewController: UITableViewController {
             if cloudSyncSwitch.isEnabled {
                 cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
                 Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
+                AppDelegate.setSync()
                 haptic.impactOccurred()
             } else {
                 // Show Purchase Options
@@ -289,7 +291,7 @@ class OptionsTableViewController: UITableViewController {
         }
     }
 
-    // MARK: - Observation
+    // MARK: - Options
 
     var optionsToken: NotificationToken?
 
@@ -323,6 +325,14 @@ class OptionsTableViewController: UITableViewController {
     // MARK: - IAP
 
     var productInfo: RetrieveResults?
+
+    func getAllProductInfo(productIDs: Set<String>) {
+        NetworkActivityIndicatorManager.networkOperationStarted()
+        SwiftyStoreKit.retrieveProductsInfo(productIDs) { results in
+            NetworkActivityIndicatorManager.networkOperationEnded()
+            self.productInfo = results
+        }
+    }
 
     func showPurchaseOptions() {
         var alertActions: [UIAlertAction] = []
