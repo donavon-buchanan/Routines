@@ -21,5 +21,6 @@ target 'Routines' do
   pod 'IceCream'
   #pod 'RxSwift'
   #pod 'RxRealm'
+  pod 'SwiftyStoreKit'
 
 end
