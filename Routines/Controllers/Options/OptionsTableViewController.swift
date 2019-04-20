@@ -40,6 +40,12 @@ class OptionsTableViewController: UITableViewController {
             // cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
             Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
             AppDelegate.setSync()
+            if cloudSyncSwitch.isOn {
+                Items.requestNotificationPermission()
+                AppDelegate.syncEngine?.pushAll()
+                AppDelegate.syncEngine?.pull()
+                AppDelegate.refreshNotifications()
+            }
         } else {
             // Show Purchase Options
             showPurchaseOptions()
@@ -163,6 +169,12 @@ class OptionsTableViewController: UITableViewController {
                 Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
                 AppDelegate.setSync()
                 haptic.impactOccurred()
+                if cloudSyncSwitch.isOn {
+                    Items.requestNotificationPermission()
+                    AppDelegate.syncEngine?.pushAll()
+                    AppDelegate.syncEngine?.pull()
+                    AppDelegate.refreshNotifications()
+                }
             } else {
                 // Show Purchase Options
                 showPurchaseOptions()
