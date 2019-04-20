@@ -457,6 +457,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             items?.forEach { item in
                 item.softDelete()
             }
+            endEdit()
+            resetTableView()
+            changeTabBar(hidden: false, animated: true)
         }
 
         updateBadge()
