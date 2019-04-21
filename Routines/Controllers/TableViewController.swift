@@ -159,6 +159,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         if Options.getPurchasedStatus(), Options.getPurchasedProduct() != "" {
             verifyPurchase(product: RegisteredPurchase(rawValue: Options.getPurchasedProduct())!)
         }
+
+        tableView.estimatedRowHeight = 115
+        tableView.rowHeight = UITableView.automaticDimension
     }
 
     @objc func appBecameActive() {
@@ -366,17 +369,17 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        }
 //    }
 
-    override func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if let notes = items?[indexPath.row].notes {
-            if notes.count > 0 {
-                return UITableView.automaticDimension
-            } else {
-                return 80
-            }
-        } else {
-            return 80
-        }
-    }
+//    override func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        if let notes = items?[indexPath.row].notes {
+//            if notes.count > 0 {
+//                return UITableView.automaticDimension
+//            } else {
+//                return 80
+//            }
+//        } else {
+//            return 80
+//        }
+//    }
 
 //    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
 //        DispatchQueue(label: realmDispatchQueueLabel).async {
@@ -509,6 +512,10 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 destination.item = items?[indexPath.row]
                 // destination.segue = segue
             }
+        }
+
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPath, animated: false)
         }
     }
 
