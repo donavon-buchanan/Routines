@@ -42,8 +42,6 @@ class OptionsTableViewController: UITableViewController {
             AppDelegate.setSync()
             if cloudSyncSwitch.isOn {
                 Items.requestNotificationPermission()
-                AppDelegate.syncEngine?.pushAll()
-                AppDelegate.syncEngine?.pull()
                 AppDelegate.refreshNotifications()
             }
         } else {
@@ -177,8 +175,6 @@ class OptionsTableViewController: UITableViewController {
                 haptic.impactOccurred()
                 if cloudSyncSwitch.isOn {
                     Items.requestNotificationPermission()
-                    AppDelegate.syncEngine?.pushAll()
-                    AppDelegate.syncEngine?.pull()
                     AppDelegate.refreshNotifications()
                 }
             } else {
