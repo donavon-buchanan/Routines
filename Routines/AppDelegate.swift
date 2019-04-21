@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    }
 //
     static func refreshNotifications() {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         // Items.requestNotificationPermission()
         DispatchQueue.main.async {
             autoreleasepool {

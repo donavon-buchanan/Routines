@@ -216,12 +216,14 @@ import UserNotifications
                 let realm = try! Realm()
                 do {
                     try realm.write {
+                        self.dateModified = Date()
                         self.segment = snoozeTo()
                     }
                 } catch {
                     // print("failed to snooze item")
                 }
             }
+            //Little bit redundant. But this hasn't proven to be the most reliable system.
             addNewNotification()
             // print("snooze completed successfully")
         }
