@@ -164,7 +164,13 @@ class OptionsTableViewController: UITableViewController {
             setAppearance(tab: Options.getSelectedIndex())
             haptic.impactOccurred()
         case 3:
+            #if DEBUG
+                print("\(#function) - Case 3")
+            #endif
             if cloudSyncSwitch.isEnabled {
+                #if DEBUG
+                    print("\(#function) - cloudSyncSwitch.isEnabled")
+                #endif
                 cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
                 Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
                 AppDelegate.setSync()
@@ -176,11 +182,16 @@ class OptionsTableViewController: UITableViewController {
                     AppDelegate.refreshNotifications()
                 }
             } else {
+                #if DEBUG
+                    print("\(#function) - Case 3 else, should show purchase options")
+                #endif
                 // Show Purchase Options
                 showPurchaseOptions()
             }
         default:
-            break
+            #if DEBUG
+                print("\(#function) - Default case triggered")
+            #endif
         }
     }
 
@@ -347,6 +358,9 @@ class OptionsTableViewController: UITableViewController {
     }
 
     func showPurchaseOptions() {
+        #if DEBUG
+            print("\(#function)")
+        #endif
         var alertActions: [UIAlertAction] = []
         guard (productInfo?.retrievedProducts.count ?? 0) > 0 else { showFailAlert(); return }
         productInfo?.retrievedProducts.forEach { product in
@@ -362,7 +376,7 @@ class OptionsTableViewController: UITableViewController {
     }
 
     func showProductAlert(alertActions: [UIAlertAction]) {
-        let alertController = UIAlertController(title: "Upgrade to Routines+", message: "Choose from Monthly or Annual subscription options,\nor pay once to unlock forever.", preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: "Upgrade to Routines+", message: "Choose from Monthly or Annual subscription options, or pay once to unlock forever with the Lifetime unlock.", preferredStyle: .actionSheet)
         alertActions.forEach { action in
             alertController.addAction(action)
         }

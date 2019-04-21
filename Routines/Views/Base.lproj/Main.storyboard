@@ -1603,7 +1603,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Style" id="cQu-xu-L8m">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" id="EtT-PD-IKk">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="darkModeCell" id="EtT-PD-IKk">
                                         <rect key="frame" x="0.0" y="519" width="540" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="EtT-PD-IKk" id="GcJ-9q-cHn">
@@ -1644,7 +1644,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Routines+" footerTitle="More to come 😉" id="2LE-Iq-fqA" userLabel="Routines+">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" id="hbh-VZ-ZBu">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="plusCell" id="hbh-VZ-ZBu">
                                         <rect key="frame" x="0.0" y="646.5" width="540" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hbh-VZ-ZBu" id="EUE-Da-TdW">
@@ -1654,8 +1654,8 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Vsv-zf-oUG">
                                                     <rect key="frame" x="8" y="8" width="524" height="47.5"/>
                                                     <subviews>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ovq-Sh-onJ">
-                                                            <rect key="frame" x="0.0" y="5.5" width="475" height="36.5"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Ovq-Sh-onJ">
+                                                            <rect key="frame" x="0.0" y="3.5" width="475" height="40.5"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iCloud Sync" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VCc-OP-gnR" userLabel="Cloud Sync">
                                                                     <rect key="frame" x="0.0" y="0.0" width="475" height="20.5"/>
@@ -1664,7 +1664,7 @@
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keep the app in sync on multiple devices" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CCq-Ns-yte">
-                                                                    <rect key="frame" x="0.0" y="20.5" width="475" height="16"/>
+                                                                    <rect key="frame" x="0.0" y="24.5" width="475" height="16"/>
                                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     <nil key="highlightedColor"/>
@@ -1673,10 +1673,6 @@
                                                         </stackView>
                                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MGB-Cp-D5F">
                                                             <rect key="frame" x="475" y="8.5" width="51" height="31"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="49" id="929-eF-GeN"/>
-                                                                <constraint firstAttribute="height" constant="31" id="yXI-Qo-EhX"/>
-                                                            </constraints>
                                                             <connections>
                                                                 <action selector="cloudSyncSwitchToggled:" destination="a3q-M5-d7t" eventType="valueChanged" id="WeW-ad-e0s"/>
                                                             </connections>
@@ -1685,10 +1681,10 @@
                                                 </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Vsv-zf-oUG" firstAttribute="leading" secondItem="EUE-Da-TdW" secondAttribute="leadingMargin" id="39R-H9-3um"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="Vsv-zf-oUG" secondAttribute="trailing" id="nFh-f2-LX2"/>
-                                                <constraint firstItem="Vsv-zf-oUG" firstAttribute="top" secondItem="EUE-Da-TdW" secondAttribute="topMargin" id="sxW-FO-eoH"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="Vsv-zf-oUG" secondAttribute="bottom" id="uSW-eX-FL1"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Vsv-zf-oUG" secondAttribute="trailing" id="06E-iU-Tdg"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Vsv-zf-oUG" secondAttribute="bottom" id="970-Hy-QSo"/>
+                                                <constraint firstItem="Vsv-zf-oUG" firstAttribute="leading" secondItem="EUE-Da-TdW" secondAttribute="leadingMargin" id="GGk-QT-Rek"/>
+                                                <constraint firstItem="Vsv-zf-oUG" firstAttribute="top" secondItem="EUE-Da-TdW" secondAttribute="topMargin" id="nEX-KC-ibZ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1700,7 +1696,7 @@
                                         <rect key="frame" x="0.0" y="778.5" width="540" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JZL-NA-pX6" id="XeW-Nf-qRm">
-                                            <rect key="frame" x="0.0" y="0.0" width="502" height="64"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="514" height="63.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="2c7-3J-lux">
@@ -1766,22 +1762,6 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zqO-d3-61K" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="1aL-IG-qEf" userLabel="Exit" sceneMemberID="exit"/>
-                <stackView opaque="NO" contentMode="scaleToFill" id="FN8-nf-MkM">
-                    <rect key="frame" x="0.0" y="0.0" width="343" height="32"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qhT-A6-4aO">
-                            <rect key="frame" x="0.0" y="0.0" width="294" height="32"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="yoh-RR-E5A">
-                            <rect key="frame" x="294" y="0.0" width="51" height="32"/>
-                        </switch>
-                    </subviews>
-                    <viewLayoutGuide key="safeArea" id="v7W-Za-YZU"/>
-                </stackView>
             </objects>
             <point key="canvasLocation" x="1739.0625" y="922.85156249999989"/>
         </scene>
