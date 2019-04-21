@@ -223,7 +223,7 @@ import UserNotifications
                     // print("failed to snooze item")
                 }
             }
-            //Little bit redundant. But this hasn't proven to be the most reliable system.
+            // Little bit redundant. But this hasn't proven to be the most reliable system.
             addNewNotification()
             // print("snooze completed successfully")
         }
