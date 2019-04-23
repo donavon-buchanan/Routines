@@ -108,9 +108,6 @@ class OptionsTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setUpUI()
-        if !Options.getPurchasedStatus() {
-            getAllProductInfo(productIDs: Set(arrayLiteral: RegisteredPurchase.monthly.rawValue, RegisteredPurchase.yearly.rawValue, RegisteredPurchase.lifetime.rawValue))
-        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -343,46 +340,14 @@ class OptionsTableViewController: UITableViewController {
 
     // MARK: - IAP
 
-    var productInfo: RetrieveResults?
-
-    func getAllProductInfo(productIDs: Set<String>) {
-        NetworkActivityIndicatorManager.networkOperationStarted()
-        SwiftyStoreKit.retrieveProductsInfo(productIDs) { results in
-            NetworkActivityIndicatorManager.networkOperationEnded()
-            self.productInfo = results
-        }
-    }
-
     func showPurchaseOptions() {
         #if DEBUG
             print("\(#function)")
         #endif
-        var alertActions: [UIAlertAction] = []
-        guard (productInfo?.retrievedProducts.count ?? 0) > 0 else { showFailAlert(); return }
-        productInfo?.retrievedProducts.forEach { product in
-            alertActions.append(UIAlertAction(title: product.localizedTitle + " : \(product.localizedPrice!)", style: .default, handler: { _ in
-                self.purchase(purchase: RegisteredPurchase(rawValue: product.productIdentifier)!)
-            }))
-        }
-        let restoreAction = UIAlertAction(title: "Restore Purchases", style: .default) { _ in
-            self.restorePurchase()
-        }
-        alertActions.append(restoreAction)
-        showProductAlert(alertActions: alertActions)
-    }
-
-    func showProductAlert(alertActions: [UIAlertAction]) {
-        let alertController = UIAlertController(title: "Upgrade to Routines+", message: "Choose from Monthly or Annual subscription options, or pay once to unlock forever with the Lifetime unlock.", preferredStyle: .actionSheet)
-        alertActions.forEach { action in
-            alertController.addAction(action)
-        }
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        present(alertController, animated: true, completion: nil)
     }
 
     func showFailAlert() {
-        getAllProductInfo(productIDs: Set(arrayLiteral: RegisteredPurchase.monthly.rawValue, RegisteredPurchase.yearly.rawValue, RegisteredPurchase.lifetime.rawValue))
-        let alertController = UIAlertController(title: "Connection Failure", message: "Failed to get purchase options from the App Store. Please check your internet conenction or try again.", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Connection Failure", message: "Failed to fetch purchase options from the App Store. Please check your internet conenction or try again.", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
