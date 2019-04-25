@@ -1898,14 +1898,14 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="984" height="120"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IeI-kI-wOG" userLabel="contentView">
-                                                        <rect key="frame" x="0.0" y="0.0" width="984" height="46.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="984" height="30.5"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3Dw-Iy-uDy">
-                                                                <rect key="frame" x="0.0" y="0.0" width="984" height="46.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="984" height="30.5"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="30" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zrP-cq-aqF">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="984" height="46.5"/>
-                                                                        <string key="text">Payment will be charged to your Apple ID account at the confirmation of purchase. The subscription automatically renews unless it is canceled at least 24 hours before the end of the current period. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase.</string>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="984" height="30.5"/>
+                                                                        <string key="text">After the free trial period, your subscription will automatically renew. Your account will be charged for renewal unless the subscription is canceled at least 24 hours prior to the end of the trial period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase.</string>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <nil key="highlightedColor"/>
