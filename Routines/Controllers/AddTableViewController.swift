@@ -255,6 +255,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             let newItem = Items()
             newItem.title = taskTextField.text!
             newItem.segment = segmentSelection.selectedSegmentIndex
+            newItem.originalSegment = segmentSelection.selectedSegmentIndex
             newItem.repeats = repeatDailySwitch.isOn
             newItem.notes = notesTextView.text
             newItem.addNewItem(newItem)
