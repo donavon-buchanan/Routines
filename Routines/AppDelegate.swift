@@ -156,6 +156,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         AppDelegate.refreshNotifications()
         // itemCleanup()
+        AppDelegate.removeOldNotifications()
     }
 
     static func removeOldNotifications() {
@@ -170,7 +171,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func applicationWillEnterForeground(_: UIApplication) {
-        AppDelegate.removeOldNotifications()
+        // AppDelegate.removeOldNotifications()
     }
 
     func applicationDidBecomeActive(_: UIApplication) {
@@ -224,6 +225,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 
         // SKPaymentQueue.default().remove(AppDelegate.iapObserver)
+        AppDelegate.removeOldNotifications()
     }
 
 //    func application(_: UIApplication, shouldSaveApplicationState _: NSCoder) -> Bool {

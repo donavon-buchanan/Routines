@@ -8,6 +8,7 @@
 
 import RealmSwift
 import StoreKit
+import SwiftMessages
 import SwiftTheme
 import SwiftyStoreKit
 import UIKit
@@ -46,7 +47,7 @@ class OptionsTableViewController: UITableViewController {
             }
         } else {
             // Show Purchase Options
-            showPurchaseOptions()
+            segueToRoutinesPlusViewController()
         }
         #if DEBUG
             print("Cloud sync switch: \(sender.isOn)")
@@ -178,23 +179,16 @@ class OptionsTableViewController: UITableViewController {
                 #if DEBUG
                     print("\(#function) - Case 3 else, should show purchase options")
                 #endif
-                // Show Purchase Options
-                showPurchaseOptions()
+                segueToRoutinesPlusViewController()
             }
         default:
             #if DEBUG
                 print("\(#function) - Default case triggered")
             #endif
         }
-    }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 1 {
-            tableView.estimatedRowHeight = 60
-            return UITableView.automaticDimension
-        } else {
-            return 60
-        }
+        tableView.estimatedRowHeight = 64
+        tableView.rowHeight = UITableView.automaticDimension
     }
 
     // MARK: - Options Realm
@@ -340,10 +334,11 @@ class OptionsTableViewController: UITableViewController {
 
     // MARK: - IAP
 
-    func showPurchaseOptions() {
-        #if DEBUG
-            print("\(#function)")
-        #endif
+    func segueToRoutinesPlusViewController() {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let RoutinesPlusViewController = storyBoard.instantiateViewController(withIdentifier: "RoutinesPlusView") as! RoutinesPlusViewController
+        let segue = iAPSegue(identifier: nil, source: self, destination: RoutinesPlusViewController)
+        segue.perform()
     }
 
     func showFailAlert() {
