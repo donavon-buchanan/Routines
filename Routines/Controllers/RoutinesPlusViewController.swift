@@ -19,21 +19,24 @@ class RoutinesPlusViewController: UIViewController {
 
     @IBOutlet var routinesPlusLabel: UILabel!
     @IBOutlet var routinesLabelPlusSymbol: UILabel!
-    
-    @IBOutlet weak var monthlyButton: UIButton!
-    @IBOutlet weak var yearlyButton: UIButton!
-    @IBOutlet weak var lifetimeButton: UIButton!
-    
+
+    @IBOutlet var paymentButtons: [UIButton]!
+
+    @IBOutlet var monthlyButton: UIButton!
+    @IBOutlet var yearlyButton: UIButton!
+    @IBOutlet var lifetimeButton: UIButton!
+
     @IBAction func monthlyAction(_ sender: UIButton) {
         print(sender)
     }
+
     @IBAction func yearlyAction(_ sender: UIButton) {
         print(sender)
     }
+
     @IBAction func lifetimeAction(_ sender: UIButton) {
         print(sender)
     }
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,18 +48,20 @@ class RoutinesPlusViewController: UIViewController {
     }
 
     func setUpUI() {
-        let gradient = CAGradientLayer()
-        gradient.frame = gradientView.bounds
-        gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
-        gradient.locations = [0.5, 1]
-        gradientView.layer.mask = gradient
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+            gradientView.backgroundColor = .clear
+        default:
+            let gradient = CAGradientLayer()
+            gradient.frame = gradientView.bounds
+            gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+            gradient.locations = [0.5, 1]
+            gradientView.layer.mask = gradient
+        }
 
         let windowHeight = UIScreen.main.bounds.height
 
-        switch UIDevice.current.userInterfaceIdiom {
-        case .pad:
-            preferredContentSize = .init(width: 0, height: windowHeight * 0.6)
-        default:
+        if UIDevice.current.userInterfaceIdiom == .phone {
             preferredContentSize = .init(width: 0, height: windowHeight * 0.9)
         }
 
@@ -71,7 +76,16 @@ class RoutinesPlusViewController: UIViewController {
         routinesLabelPlusSymbol.layer.shadowOpacity = 1
         routinesLabelPlusSymbol.layer.shadowOffset = CGSize(width: 0, height: 0)
         routinesLabelPlusSymbol.layer.masksToBounds = false
-        
-        
+
+        paymentButtons.forEach { button in
+            button.layer.masksToBounds = true
+            button.layer.cornerRadius = 12
+            button.backgroundColor = titleColor
+        }
+        yearlyButton.layer.shadowColor = shadowColor.cgColor
+        yearlyButton.layer.shadowRadius = 16
+        yearlyButton.layer.shadowOpacity = 1
+        yearlyButton.layer.shadowOffset = CGSize(width: 0, height: 0)
+        yearlyButton.layer.masksToBounds = false
     }
 }
