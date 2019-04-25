@@ -191,6 +191,23 @@ class OptionsTableViewController: UITableViewController {
         tableView.rowHeight = UITableView.automaticDimension
     }
 
+    override func tableView(_: UITableView, titleForFooterInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "Set when each time period should begin"
+        case 1:
+            return "Enable to receive notifications at the start of each period"
+        case 3:
+            if Options.getPurchasedStatus() {
+                return "Thanks for your support!"
+            } else {
+                return "Tap to unlock"
+            }
+        default:
+            return nil
+        }
+    }
+
     // MARK: - Options Realm
 
 //    func updateNotificationOptions(segment: Int, isOn: Bool) {
