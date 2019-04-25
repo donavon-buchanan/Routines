@@ -335,20 +335,15 @@ class OptionsTableViewController: UITableViewController {
     // MARK: - IAP
 
     func segueToRoutinesPlusViewController() {
+        guard (AppDelegate.productInfo?.retrievedProducts.count ?? 0) > 0 else { showFailAlert(); return }
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let RoutinesPlusViewController = storyBoard.instantiateViewController(withIdentifier: "RoutinesPlusView") as! RoutinesPlusViewController
         switch UIDevice.current.userInterfaceIdiom {
         case .pad:
             navigationController?.pushViewController(RoutinesPlusViewController, animated: true)
         default:
-            iAPSegue(identifier: nil, source: self, destination: RoutinesPlusViewController).perform()
+//            iAPSegue(identifier: nil, source: self, destination: RoutinesPlusViewController).perform()
+            navigationController?.pushViewController(RoutinesPlusViewController, animated: true)
         }
-    }
-
-    func showFailAlert() {
-        let alertController = UIAlertController(title: "Connection Failure", message: "Failed to fetch purchase options from the App Store. Please check your internet conenction or try again.", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(okAction)
-        present(alertController, animated: true, completion: nil)
     }
 }

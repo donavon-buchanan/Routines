@@ -160,6 +160,11 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             verifyPurchase(product: RegisteredPurchase(rawValue: Options.getPurchasedProduct())!)
         }
 
+        // prefetch prices
+        if !Options.getPurchasedStatus() {
+            getAllProductInfo(productIDs: [RegisteredPurchase.lifetime.rawValue, RegisteredPurchase.monthly.rawValue, RegisteredPurchase.yearly.rawValue])
+        }
+
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
     }

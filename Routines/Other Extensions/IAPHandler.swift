@@ -19,6 +19,14 @@ extension UIViewController {
         }
     }
 
+    func getAllProductInfo(productIDs: Set<String>) {
+        NetworkActivityIndicatorManager.networkOperationStarted()
+        SwiftyStoreKit.retrieveProductsInfo(productIDs) { results in
+            NetworkActivityIndicatorManager.networkOperationEnded()
+            AppDelegate.productInfo = results
+        }
+    }
+
     func purchase(purchase: RegisteredPurchase) {
         NetworkActivityIndicatorManager.networkOperationStarted()
         SwiftyStoreKit.purchaseProduct(purchase.rawValue) { result in

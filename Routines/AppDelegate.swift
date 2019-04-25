@@ -24,6 +24,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     static var syncEngine: SyncEngine?
 
+    static var productInfo: RetrieveResults?
+
+    func application(_: UIApplication, supportedInterfaceOrientationsFor _: UIWindow?) -> UIInterfaceOrientationMask {
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+            return UIInterfaceOrientationMask.all
+        default:
+            return UIInterfaceOrientationMask.portrait
+        }
+    }
+
     // static let iapObserver = StoreObserver()
 
 //    private func itemCleanup() {

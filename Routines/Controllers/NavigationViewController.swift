@@ -12,8 +12,6 @@ import UserNotifications
 class NavigationViewController: UINavigationController, UNUserNotificationCenterDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-//        center.delegate = self
     }
 
 //    let center = UNUserNotificationCenter.current()
