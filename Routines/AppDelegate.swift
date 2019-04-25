@@ -331,7 +331,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 17,
+            schemaVersion: 18,
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -394,7 +394,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
 
-                if oldSchemaVersion < 17 {}
+                if oldSchemaVersion < 18 {
+                    migration.enumerateObjects(ofType: Items.className()) { oldObject, newObject in
+                        print("oldObject: " + String(describing: oldObject))
+                        print("newObject: " + String(describing: newObject))
+                        let originalSegment = oldObject!["segment"] as! Int
+                        newObject!["originalSegment"] = originalSegment
+                    }
+                }
             }
         )
 

@@ -20,6 +20,7 @@ import UserNotifications
     dynamic var title: String?
     dynamic var dateModified = Date()
     dynamic var segment: Int = 0
+    dynamic var originalSegment: Int = 0
     dynamic var completeUntil = Date()
     dynamic var repeats: Bool = true
     dynamic var notes: String?
@@ -59,6 +60,7 @@ import UserNotifications
                         self.dateModified = Date()
                         self.title = title
                         self.segment = segment
+                        self.originalSegment = segment
                         self.repeats = repeats
                         self.notes = notes
                         realm.add(self, update: true)
@@ -108,6 +110,7 @@ import UserNotifications
                     let realm = try! Realm()
                     do {
                         try realm.write {
+                            self.segment = originalSegment
                             self.completeUntil = self.dateModified.startOfNextDay
                             self.dateModified = Date()
                         }
@@ -227,6 +230,9 @@ import UserNotifications
             addNewNotification()
             // print("snooze completed successfully")
         }
+        #if DEBUG
+            print("Snoozing to \(segment). Original segment was \(originalSegment)")
+        #endif
         AppDelegate.refreshNotifications()
     }
 
