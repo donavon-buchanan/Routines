@@ -26,25 +26,56 @@ class RoutinesPlusViewController: UIViewController {
     @IBOutlet var yearlyButton: UIButton!
     @IBOutlet var lifetimeButton: UIButton!
 
-    @IBAction func monthlyAction(_ sender: UIButton) {
-        print(sender)
+    @IBOutlet var restoreButton: UIButton!
+    @IBAction func restoreButtonTapped(_: UIButton) {
+        restorePurchase()
     }
 
-    @IBAction func yearlyAction(_ sender: UIButton) {
-        print(sender)
+    @IBAction func monthlyButtonTapped(_: UIButton) {
+        purchase(purchase: .monthly)
     }
 
-    @IBAction func lifetimeAction(_ sender: UIButton) {
-        print(sender)
+    @IBAction func yearlyButtonTapped(_: UIButton) {
+        purchase(purchase: .yearly)
+    }
+
+    @IBAction func lifetimeButtonTapped(_: UIButton) {
+        purchase(purchase: .lifetime)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        getPrices()
         #if DEBUG
             print("routines plus view loaded")
         #endif
         // Do stuff
         setUpUI()
+    }
+
+    var monthlyPrice = ""
+    var yearlyPrice = ""
+    var lifetimePrice = ""
+
+    func getPrices() {
+        AppDelegate.productInfo?.retrievedProducts.forEach { product in
+            if product.productIdentifier == RegisteredPurchase.monthly.rawValue {
+                monthlyPrice = product.localizedPrice ?? "Failed to fetch price"
+            } else if product.productIdentifier == RegisteredPurchase.yearly.rawValue {
+                yearlyPrice = product.localizedPrice ?? "Failed to fetch price"
+            } else if product.productIdentifier == RegisteredPurchase.lifetime.rawValue {
+                lifetimePrice = product.localizedPrice ?? "Failed to fetch price"
+            }
+        }
+    }
+
+    func setButtonText() {
+        #if DEBUG
+            print("setting prices on buttons")
+        #endif
+        monthlyButton.setTitle("\(monthlyPrice) / Month", for: .normal)
+        yearlyButton.setTitle("\(yearlyPrice) / Year", for: .normal)
+        lifetimeButton.setTitle("\(lifetimePrice) / Lifetime", for: .normal)
     }
 
     func setUpUI() {
@@ -55,15 +86,15 @@ class RoutinesPlusViewController: UIViewController {
             let gradient = CAGradientLayer()
             gradient.frame = gradientView.bounds
             gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
-            gradient.locations = [0.5, 1]
+            gradient.locations = [0.5, 0.85]
             gradientView.layer.mask = gradient
         }
 
-        let windowHeight = UIScreen.main.bounds.height
+//        let windowHeight = UIScreen.main.bounds.height
 
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            preferredContentSize = .init(width: 0, height: windowHeight * 0.9)
-        }
+//        if UIDevice.current.userInterfaceIdiom == .phone {
+//            preferredContentSize = .init(width: 0, height: windowHeight * 0.9)
+//        }
 
         paymentScrollView.contentInset.bottom = 40
 
@@ -87,5 +118,9 @@ class RoutinesPlusViewController: UIViewController {
         yearlyButton.layer.shadowOpacity = 1
         yearlyButton.layer.shadowOffset = CGSize(width: 0, height: 0)
         yearlyButton.layer.masksToBounds = false
+
+        restoreButton.setTitleColor(titleColor, for: .normal)
+
+        setButtonText()
     }
 }

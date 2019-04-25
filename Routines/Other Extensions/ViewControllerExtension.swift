@@ -24,6 +24,14 @@ extension UIViewController {
         }
     }
 
+    func showFailAlert() {
+        let alertController = UIAlertController(title: "Connection Failure", message: "Failed to fetch purchase options from the App Store. Please check your internet conenction and try again.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        present(alertController, animated: true, completion: nil)
+        getAllProductInfo(productIDs: [RegisteredPurchase.lifetime.rawValue, RegisteredPurchase.monthly.rawValue, RegisteredPurchase.yearly.rawValue])
+    }
+
     func alertForProductRetrievalInfo(result: RetrieveResults) -> UIAlertController {
         if let product = result.retrievedProducts.first {
             let priceString = product.localizedPrice!
