@@ -337,8 +337,12 @@ class OptionsTableViewController: UITableViewController {
     func segueToRoutinesPlusViewController() {
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let RoutinesPlusViewController = storyBoard.instantiateViewController(withIdentifier: "RoutinesPlusView") as! RoutinesPlusViewController
-        let segue = iAPSegue(identifier: nil, source: self, destination: RoutinesPlusViewController)
-        segue.perform()
+        switch UIDevice.current.userInterfaceIdiom {
+        case .pad:
+            navigationController?.pushViewController(RoutinesPlusViewController, animated: true)
+        default:
+            iAPSegue(identifier: nil, source: self, destination: RoutinesPlusViewController).perform()
+        }
     }
 
     func showFailAlert() {

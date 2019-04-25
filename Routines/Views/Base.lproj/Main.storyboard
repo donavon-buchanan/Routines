@@ -1773,11 +1773,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ivK-xM-S1b">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="ivK-xM-S1b">
                                 <rect key="frame" x="20" y="64" width="319" height="748"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="26" translatesAutoresizingMaskIntoConstraints="NO" id="aPh-yC-B6x">
-                                        <rect key="frame" x="0.0" y="0.0" width="319" height="191.66666666666666"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="aPh-yC-B6x">
+                                        <rect key="frame" x="0.0" y="0.0" width="319" height="185.66666666666666"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="AQa-HY-9OH">
                                                 <rect key="frame" x="56.333333333333329" y="0.0" width="206.33333333333337" height="57.333333333333336"/>
@@ -1797,7 +1797,7 @@
                                                 </subviews>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FCi-C3-B4C">
-                                                <rect key="frame" x="0.0" y="83.333333333333343" width="319" height="108.33333333333334"/>
+                                                <rect key="frame" x="0.0" y="77.333333333333343" width="319" height="108.33333333333334"/>
                                                 <string key="text">Subscribe to Routines+ to unlock additional features including Device Sync and help support continued development of this app. More features will be included in future updates.</string>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1805,39 +1805,70 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="yDX-8W-k3h">
-                                        <rect key="frame" x="102" y="211.66666666666671" width="115" height="396.33333333333326"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="yDX-8W-k3h">
+                                        <rect key="frame" x="20" y="258.33333333333331" width="279" height="296.99999999999994"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZOF-EA-FND">
-                                                <rect key="frame" x="0.0" y="0.0" width="115" height="40"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="Azm-5M-5RZ"/>
-                                                </constraints>
-                                                <state key="normal" title="$0.99 / Month">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="monthlyAction:" destination="SYJ-I4-gfd" eventType="touchUpInside" id="ZNx-aa-U8p"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IpV-dM-2Fq">
-                                                <rect key="frame" x="0.0" y="178.33333333333331" width="115" height="40"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="x3g-q7-U3G"/>
-                                                </constraints>
-                                                <state key="normal" title="$5.99 / Year">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="yearlyAction:" destination="SYJ-I4-gfd" eventType="touchUpInside" id="Vf0-04-knM"/>
-                                                </connections>
-                                            </button>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Uro-Kp-TtQ">
+                                                <rect key="frame" x="0.0" y="0.0" width="279" height="79.333333333333329"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZOF-EA-FND">
+                                                        <rect key="frame" x="0.0" y="0.0" width="279" height="60"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="60" id="Azm-5M-5RZ"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                        <state key="normal" title="Monthly">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="monthlyAction:" destination="SYJ-I4-gfd" eventType="touchUpInside" id="ZNx-aa-U8p"/>
+                                                        </connections>
+                                                    </button>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 week free trial" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HNZ-VA-GoU">
+                                                        <rect key="frame" x="0.0" y="65" width="279" height="14.333333333333329"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="1FW-Bg-ao8">
+                                                <rect key="frame" x="0.0" y="109.33333333333337" width="279" height="97.666666666666686"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IpV-dM-2Fq">
+                                                        <rect key="frame" x="0.0" y="0.0" width="279" height="60"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="60" id="5FX-vW-pL8"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                        <state key="normal" title="Yearly">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="yearlyAction:" destination="SYJ-I4-gfd" eventType="touchUpInside" id="Vf0-04-knM"/>
+                                                        </connections>
+                                                    </button>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 week free trial" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FJA-3t-hbP">
+                                                        <rect key="frame" x="0.0" y="65" width="279" height="14.333333333333329"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(12 months at $0.49 / mo. Save 50%)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n8W-Q1-2pm">
+                                                        <rect key="frame" x="0.0" y="84.333333333333314" width="279" height="13.333333333333329"/>
+                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ajf-Xb-fhl">
-                                                <rect key="frame" x="0.0" y="356.33333333333331" width="115" height="40"/>
+                                                <rect key="frame" x="0.0" y="237.00000000000006" width="279" height="60"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="T83-41-Wzn"/>
+                                                    <constraint firstAttribute="height" constant="60" id="LQR-pe-hgk"/>
                                                 </constraints>
-                                                <state key="normal" title="$14.99 / Lifetime">
+                                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                <state key="normal" title="Lifetime">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
                                                 <connections>
@@ -1845,10 +1876,6 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstItem="ajf-Xb-fhl" firstAttribute="width" secondItem="ZOF-EA-FND" secondAttribute="width" id="AiH-Ts-hd4"/>
-                                            <constraint firstItem="IpV-dM-2Fq" firstAttribute="width" secondItem="ZOF-EA-FND" secondAttribute="width" id="iV8-c3-xYK"/>
-                                        </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="2Gz-0J-v16">
                                         <rect key="frame" x="0.0" y="628" width="319" height="120"/>
@@ -1893,6 +1920,10 @@
                                         </subviews>
                                     </stackView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="yDX-8W-k3h" firstAttribute="leading" secondItem="ivK-xM-S1b" secondAttribute="leading" constant="20" id="Ugg-NI-Oe8"/>
+                                    <constraint firstAttribute="trailing" secondItem="yDX-8W-k3h" secondAttribute="trailing" constant="20" id="vaa-vp-BSL"/>
+                                </constraints>
                             </stackView>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oa7-tG-f1e">
                                 <rect key="frame" x="0.0" y="684" width="375" height="128"/>
@@ -1904,12 +1935,8 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="ivK-xM-S1b" secondAttribute="trailing" constant="20" id="Fmy-rc-fcf">
-                                <variation key="heightClass=regular-widthClass=regular" constant="200"/>
-                            </constraint>
-                            <constraint firstItem="ivK-xM-S1b" firstAttribute="leading" secondItem="JMR-JR-2Ce" secondAttribute="leading" constant="20" id="HNz-VU-TYT">
-                                <variation key="heightClass=regular-widthClass=regular" constant="200"/>
-                            </constraint>
+                            <constraint firstAttribute="trailingMargin" secondItem="ivK-xM-S1b" secondAttribute="trailing" constant="20" id="Fmy-rc-fcf"/>
+                            <constraint firstItem="ivK-xM-S1b" firstAttribute="leading" secondItem="JMR-JR-2Ce" secondAttribute="leading" constant="20" id="HNz-VU-TYT"/>
                             <constraint firstAttribute="bottom" secondItem="Oa7-tG-f1e" secondAttribute="bottom" id="HOW-SB-6RF"/>
                             <constraint firstItem="ivK-xM-S1b" firstAttribute="top" secondItem="JMR-JR-2Ce" secondAttribute="top" constant="20" id="Jro-cG-QBw"/>
                             <constraint firstItem="JMR-JR-2Ce" firstAttribute="trailing" secondItem="Oa7-tG-f1e" secondAttribute="trailing" id="L32-HD-iHn"/>
@@ -1929,6 +1956,9 @@
                         <outlet property="routinesLabelPlusSymbol" destination="ffd-xv-A4B" id="IHv-jq-iWz"/>
                         <outlet property="routinesPlusLabel" destination="AQW-DU-zZt" id="QJT-w1-ebl"/>
                         <outlet property="yearlyButton" destination="IpV-dM-2Fq" id="9mV-vk-8BV"/>
+                        <outletCollection property="paymentButtons" destination="ajf-Xb-fhl" collectionClass="NSMutableArray" id="DJd-JT-AEB"/>
+                        <outletCollection property="paymentButtons" destination="IpV-dM-2Fq" collectionClass="NSMutableArray" id="iqW-VG-AWK"/>
+                        <outletCollection property="paymentButtons" destination="ZOF-EA-FND" collectionClass="NSMutableArray" id="7ag-1U-qrg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZeZ-WR-VcT" userLabel="First Responder" sceneMemberID="firstResponder"/>
