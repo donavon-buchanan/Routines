@@ -1649,7 +1649,7 @@
                                         <rect key="frame" x="0.0" y="639" width="540" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hbh-VZ-ZBu" id="EUE-Da-TdW">
-                                            <rect key="frame" x="0.0" y="0.0" width="540" height="80"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="540" height="79.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Vsv-zf-oUG">
@@ -1697,14 +1697,14 @@
                                         <rect key="frame" x="0.0" y="775" width="540" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JZL-NA-pX6" id="XeW-Nf-qRm">
-                                            <rect key="frame" x="0.0" y="0.0" width="502" height="64"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="514" height="63.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="2c7-3J-lux">
-                                                    <rect key="frame" x="8" y="8" width="372" height="47.5"/>
+                                                    <rect key="frame" x="8" y="8" width="498" height="47.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="App Info" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xVv-xA-Cm0">
-                                                            <rect key="frame" x="0.0" y="0.0" width="372" height="47.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="498" height="47.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1966,6 +1966,7 @@
                         <outlet property="restoreButton" destination="LLS-WM-Atk" id="B2K-xg-Ugl"/>
                         <outlet property="routinesLabelPlusSymbol" destination="ffd-xv-A4B" id="IHv-jq-iWz"/>
                         <outlet property="routinesPlusLabel" destination="AQW-DU-zZt" id="QJT-w1-ebl"/>
+                        <outlet property="yearlyBreakdownLabel" destination="n8W-Q1-2pm" id="ivC-u3-UDM"/>
                         <outlet property="yearlyButton" destination="IpV-dM-2Fq" id="9mV-vk-8BV"/>
                         <outletCollection property="paymentButtons" destination="ajf-Xb-fhl" collectionClass="NSMutableArray" id="DJd-JT-AEB"/>
                         <outletCollection property="paymentButtons" destination="IpV-dM-2Fq" collectionClass="NSMutableArray" id="iqW-VG-AWK"/>
