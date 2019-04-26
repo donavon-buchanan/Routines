@@ -20,6 +20,8 @@ class RoutinesPlusViewController: UIViewController {
     @IBOutlet var routinesPlusLabel: UILabel!
     @IBOutlet var routinesLabelPlusSymbol: UILabel!
 
+    @IBOutlet var yearlyBreakdownLabel: UILabel!
+
     @IBOutlet var paymentButtons: [UIButton]!
 
     @IBOutlet var monthlyButton: UIButton!
@@ -56,6 +58,20 @@ class RoutinesPlusViewController: UIViewController {
     var monthlyPrice = ""
     var yearlyPrice = ""
     var lifetimePrice = ""
+    var twelveMonthPrice: String {
+        let priceString = yearlyPrice.dropFirst()
+        let priceDouble = Double(priceString)
+        guard let currencySymbol = yearlyPrice.first else { return "$0.49" }
+        if let monthlyBreakdown = priceDouble {
+            let localMonthly = monthlyBreakdown / 12
+            var localMonthlyString = localMonthly.regularPrice
+            localMonthlyString = "\(localMonthlyString!.dropFirst())"
+            localMonthlyString = "\(currencySymbol)\(localMonthlyString!)"
+            return localMonthlyString ?? "$0.49"
+        } else {
+            return "$0.49"
+        }
+    }
 
     func getPrices() {
         AppDelegate.productInfo?.retrievedProducts.forEach { product in
@@ -76,6 +92,7 @@ class RoutinesPlusViewController: UIViewController {
         monthlyButton.setTitle("\(monthlyPrice) / Month", for: .normal)
         yearlyButton.setTitle("\(yearlyPrice) / Year", for: .normal)
         lifetimeButton.setTitle("\(lifetimePrice) / Lifetime", for: .normal)
+        yearlyBreakdownLabel.text = "(12 months at \(twelveMonthPrice) / mo. Save 50%)"
     }
 
     func setUpUI() {

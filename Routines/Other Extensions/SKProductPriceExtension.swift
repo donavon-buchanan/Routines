@@ -18,3 +18,12 @@ extension SKProduct {
         return formatter.string(from: price)
     }
 }
+
+extension Double {
+    var regularPrice: String? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = .autoupdatingCurrent
+        return formatter.string(from: NSNumber(value: self))
+    }
+}
