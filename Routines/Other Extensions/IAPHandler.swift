@@ -50,6 +50,9 @@ extension UIViewController {
         SwiftyStoreKit.restorePurchases(atomically: true, applicationUsername: "") { result in
             NetworkActivityIndicatorManager.networkOperationEnded()
             result.restoredPurchases.forEach { product in
+                #if DEBUG
+                    print("Restored purchase with ID: \(product.productId)")
+                #endif
                 Options.setPurchasedProduct(productID: product.productId)
                 Options.setPurchasedStatus(status: true)
                 if product.needsFinishTransaction {
@@ -82,6 +85,9 @@ extension UIViewController {
             NetworkActivityIndicatorManager.networkOperationEnded()
             switch result {
             case .success:
+                #if DEBUG
+                    print("Verify purchase result: Success. \(product.rawValue) is valid")
+                #endif
                 Options.setPurchasedProduct(productID: product.rawValue)
                 Options.setPurchasedStatus(status: true)
             //                switch product {
@@ -93,6 +99,9 @@ extension UIViewController {
             //                    // self.showAlert(alert: self.alertForVerifySubscription(result: purchaseResult))
             //                }
             case let .error(error):
+                #if DEBUG
+                    print("Verify purchase result: Error. No valid purchase active.")
+                #endif
                 Options.setPurchasedProduct(productID: "")
                 Options.setPurchasedStatus(status: false)
                 self.showAlert(alert: self.alertForVerifyReceipt(result: result))
