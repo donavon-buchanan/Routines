@@ -11,12 +11,6 @@ import SwiftTheme
 import UIKit
 
 class RoutinesPlusViewController: UIViewController {
-    @IBOutlet var paymentTermsLabel: UILabel!
-    @IBOutlet var paymentScrollView: UIScrollView!
-    @IBOutlet var paymentStackView: UIStackView!
-    @IBOutlet var mainStackView: UIStackView!
-    @IBOutlet var gradientView: UIView!
-
     @IBOutlet var routinesPlusLabel: UILabel!
     @IBOutlet var routinesLabelPlusSymbol: UILabel!
 
@@ -29,6 +23,13 @@ class RoutinesPlusViewController: UIViewController {
     @IBOutlet var lifetimeButton: UIButton!
 
     @IBOutlet var restoreButton: UIButton!
+    
+    @IBOutlet weak var lifetimeTermsLabel: UILabel!
+    @IBOutlet weak var subscriptionTermsLabel: UILabel!
+    
+    @IBOutlet weak var privacyPolicyButton: UIButton!
+    @IBOutlet weak var termsOfServiceButton: UIButton!
+    
     @IBAction func restoreButtonTapped(_: UIButton) {
         restorePurchase()
     }
@@ -43,6 +44,13 @@ class RoutinesPlusViewController: UIViewController {
 
     @IBAction func lifetimeButtonTapped(_: UIButton) {
         purchase(purchase: .lifetime)
+    }
+    
+    @IBOutlet var policyButtons: [UIButton]!
+    
+    @IBAction func privacyPolicyButtonTapped(_ sender: UIButton) {
+    }
+    @IBAction func termsOfServiceButtonTapped(_ sender: UIButton) {
     }
 
     override func viewDidLoad() {
@@ -96,25 +104,6 @@ class RoutinesPlusViewController: UIViewController {
     }
 
     func setUpUI() {
-        switch UIDevice.current.userInterfaceIdiom {
-        case .pad:
-            gradientView.backgroundColor = .clear
-        default:
-            let gradient = CAGradientLayer()
-            gradient.frame = gradientView.bounds
-            gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
-            gradient.locations = [0.5, 0.85]
-            gradientView.layer.mask = gradient
-        }
-
-//        let windowHeight = UIScreen.main.bounds.height
-
-//        if UIDevice.current.userInterfaceIdiom == .phone {
-//            preferredContentSize = .init(width: 0, height: windowHeight * 0.9)
-//        }
-
-        paymentScrollView.contentInset.bottom = 40
-
         let titleColor = UIColor(rgba: "#645be7", defaultColor: .white)
         let shadowColor = UIColor(rgba: "#645be7", defaultColor: .white)
         routinesLabelPlusSymbol.textColor = titleColor
@@ -130,6 +119,14 @@ class RoutinesPlusViewController: UIViewController {
             button.layer.cornerRadius = 12
             button.backgroundColor = titleColor
         }
+        
+        let policyColor = UIColor(red: 0.05, green: 0.30, blue: 0.57, alpha: 1.00)
+        policyButtons.forEach { button in
+            button.layer.masksToBounds = true
+            button.layer.cornerRadius = 20
+            button.backgroundColor = policyColor
+        }
+        
         yearlyButton.layer.shadowColor = shadowColor.cgColor
         yearlyButton.layer.shadowRadius = 16
         yearlyButton.layer.shadowOpacity = 1
