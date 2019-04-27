@@ -50,12 +50,12 @@ class RoutinesPlusViewController: UIViewController {
     @IBOutlet var policyButtons: [UIButton]!
 
     @IBAction func privacyPolicyButtonTapped(_: UIButton) {
-        guard let url = URL(string: "https://donavon.app/privacy-policy") else { return }
+        guard let url = URL(string: "https://donavon.app/privacy-policy/") else { return }
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 
     @IBAction func termsOfServiceButtonTapped(_: UIButton) {
-        guard let url = URL(string: "https://donavon.app/tos") else { return }
+        guard let url = URL(string: "https://donavon.app/tos/") else { return }
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 
