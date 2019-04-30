@@ -22,4 +22,4 @@ DerivedData/
 *.perspectivev3
 !default.perspectivev3
 Routines/Other Extensions/AppSecrets.swift
-*.DS_Store
+.DS_Store
