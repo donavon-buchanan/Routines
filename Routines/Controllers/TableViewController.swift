@@ -779,11 +779,11 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                         if propertyChange.name == "darkMode" {
                             TableViewController.setAppearance(segment: self.tabBarController?.selectedIndex ?? 0)
                         }
-                        if propertyChange.name == "cloudSync" {
-                            if Options.getPurchasedStatus(), Options.getPurchasedProduct() != "" {
-                                AppDelegate.setSync()
-                            }
-                        }
+//                        if propertyChange.name == "cloudSync" {
+//                            if Options.getPurchasedStatus(), Options.getPurchasedProduct() != "" {
+//                                AppDelegate.setSync()
+//                            }
+//                        }
                     }
                 case let .error(error):
                     #if DEBUG
