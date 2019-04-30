@@ -513,7 +513,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 SyncObject<Options>(),
             ])
         } else {
-            AppDelegate.syncEngine = nil
+            AppDelegate.syncEngine = SyncEngine(objects: [
+                SyncObject<Options>(),
+            ])
         }
     }
 

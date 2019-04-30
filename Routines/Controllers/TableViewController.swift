@@ -159,6 +159,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         if Options.getPurchasedStatus(), Options.getPurchasedProduct() != "" {
             verifyPurchase(product: RegisteredPurchase(rawValue: Options.getPurchasedProduct())!)
         }
+        // AppDelegate.setSync()
 
         // prefetch prices
         if !Options.getPurchasedStatus() {
@@ -777,6 +778,11 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                     properties.forEach { propertyChange in
                         if propertyChange.name == "darkMode" {
                             TableViewController.setAppearance(segment: self.tabBarController?.selectedIndex ?? 0)
+                        }
+                        if propertyChange.name == "cloudSync" {
+                            if Options.getPurchasedStatus(), Options.getPurchasedProduct() != "" {
+                                AppDelegate.setSync()
+                            }
                         }
                     }
                 case let .error(error):
