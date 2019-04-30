@@ -103,7 +103,7 @@ import UserNotifications
             softDelete()
         } else {
             #if DEBUG
-                print("marking completed until: \(completeUntil)")
+                print("marking completed until: \(Date().startOfNextDay)")
             #endif
             DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
                 autoreleasepool {
@@ -111,7 +111,7 @@ import UserNotifications
                     do {
                         try realm.write {
                             self.segment = originalSegment
-                            self.completeUntil = self.dateModified.startOfNextDay
+                            self.completeUntil = Date().startOfNextDay
                             self.dateModified = Date()
                         }
                     } catch {
