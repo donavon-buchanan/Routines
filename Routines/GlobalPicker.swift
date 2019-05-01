@@ -12,10 +12,12 @@ enum GlobalPicker {
     static let backgroundColor: ThemeColorPicker = ["#fff", "#fff", "#fff", "#222831", "#000", "#000", "#000", "#000", "#000"]
     static let barTintColor: ThemeColorPicker = ["#fff", "#fff", "#fff", "#1C2026", "#000", "#000", "#000", "#000", "#000"]
     static let tabBarTintColor: ThemeColorPicker = ["#fff", "#fff", "#fff", "#1C2026", "#131415", "#131415", "#131415", "#131415", "#131415"]
+    static let purchaseTitleColor = ThemeColorPicker.pickerWithColors(["#645be7", "#645be7", "#645be7", "#645be7", "#645be7", "#645be7", "#645be7", "#645be7", "#645be7"])
 
     static let textColor: ThemeColorPicker = ["#f47645", "#26baee", "#62a388", "#645be7", "#f47645", "#26baee", "#62a388", "#645be7", "#FFF"]
     static let barTextColors: [String] = ["#f47645", "#26baee", "#62a388", "#645be7", "#f47645", "#26baee", "#62a388", "#645be7", "#FFF"]
     static let barTextColor = ThemeColorPicker.pickerWithColors(barTextColors)
+    static let shadowColor = ThemeCGColorPicker.pickerWithColors(barTextColors)
 
     static let switchTintColor = ThemeColorPicker.pickerWithColors(["#f47645", "#26baee", "#62a388", "#645be7", "#f47645", "#26baee", "#62a388", "#645be7", "#BBB"])
 

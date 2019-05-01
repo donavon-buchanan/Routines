@@ -2293,6 +2293,12 @@
                         <outletCollection property="policyButtons" destination="CBQ-Ba-dK8" collectionClass="NSMutableArray" id="wBC-SS-HnJ"/>
                         <outletCollection property="paymentButtons" destination="jTq-Zm-IoS" collectionClass="NSMutableArray" id="b6c-aJ-9CK"/>
                         <outletCollection property="paymentButtons" destination="Gkf-Qf-BMy" collectionClass="NSMutableArray" id="QJc-yh-x2W"/>
+                        <outletCollection property="textLabelCollection" destination="0bC-8i-oUq" collectionClass="NSMutableArray" id="5tr-6g-iZS"/>
+                        <outletCollection property="textLabelCollection" destination="JeC-XE-Gen" collectionClass="NSMutableArray" id="vW0-rW-A5O"/>
+                        <outletCollection property="textLabelCollection" destination="Pj6-8P-JdO" collectionClass="NSMutableArray" id="3Ip-1b-UXx"/>
+                        <outletCollection property="textLabelCollection" destination="vOt-gg-5gU" collectionClass="NSMutableArray" id="P3B-7o-TdS"/>
+                        <outletCollection property="textLabelCollection" destination="zJW-Ry-dIl" collectionClass="NSMutableArray" id="AjS-Xs-0IB"/>
+                        <outletCollection property="textLabelCollection" destination="xQg-8L-dRw" collectionClass="NSMutableArray" id="q7q-aM-kJo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="izU-iG-Jgv" userLabel="First Responder" sceneMemberID="firstResponder"/>

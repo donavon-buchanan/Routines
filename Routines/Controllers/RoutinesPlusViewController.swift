@@ -31,6 +31,8 @@ class RoutinesPlusViewController: UIViewController {
     @IBOutlet var privacyPolicyButton: UIButton!
     @IBOutlet var termsOfServiceButton: UIButton!
 
+    @IBOutlet var textLabelCollection: [UILabel]!
+
     @IBAction func restoreButtonTapped(_: UIButton) {
         restorePurchase()
     }
@@ -127,11 +129,12 @@ class RoutinesPlusViewController: UIViewController {
     }
 
     func setUpUI() {
-        let titleColor = UIColor(rgba: "#645be7", defaultColor: .white)
-        let shadowColor = UIColor(rgba: "#645be7", defaultColor: .white)
-        routinesLabelPlusSymbol.textColor = titleColor
-        routinesPlusLabel.textColor = titleColor
-        routinesLabelPlusSymbol.layer.shadowColor = shadowColor.cgColor
+//        let shadowColor = UIColor(rgba: "#645be7", defaultColor: .white)
+
+        routinesLabelPlusSymbol.theme_textColor = GlobalPicker.barTextColor
+        routinesPlusLabel.theme_textColor = GlobalPicker.barTextColor
+//        routinesLabelPlusSymbol.layer.shadowColor = shadowColor.cgColor
+        routinesLabelPlusSymbol.layer.theme_shadowColor = GlobalPicker.shadowColor
         routinesLabelPlusSymbol.layer.shadowRadius = 7
         routinesLabelPlusSymbol.layer.shadowOpacity = 1
         routinesLabelPlusSymbol.layer.shadowOffset = CGSize(width: 0, height: 0)
@@ -140,7 +143,7 @@ class RoutinesPlusViewController: UIViewController {
         paymentButtons.forEach { button in
             button.layer.masksToBounds = true
             button.layer.cornerRadius = 12
-            button.backgroundColor = titleColor
+            button.theme_backgroundColor = GlobalPicker.barTextColor
         }
 
         let policyColor = UIColor(red: 0.05, green: 0.30, blue: 0.57, alpha: 1.00)
@@ -150,16 +153,22 @@ class RoutinesPlusViewController: UIViewController {
             button.backgroundColor = policyColor
         }
 
-        yearlyButton.layer.shadowColor = shadowColor.cgColor
+        yearlyButton.layer.theme_shadowColor = GlobalPicker.shadowColor
         yearlyButton.layer.shadowRadius = 16
         yearlyButton.layer.shadowOpacity = 1
         yearlyButton.layer.shadowOffset = CGSize(width: 0, height: 0)
         yearlyButton.layer.masksToBounds = false
 
-        restoreButton.setTitleColor(titleColor, for: .normal)
+        restoreButton.theme_setTitleColor(GlobalPicker.barTextColor, forState: .normal)
 
         setButtonText()
 
         subscriptionTermsLabel.text = subscriptionTermsString
+
+        view.theme_backgroundColor = GlobalPicker.backgroundColor
+
+        textLabelCollection.forEach { label in
+            label.theme_textColor = GlobalPicker.cellTextColors
+        }
     }
 }
