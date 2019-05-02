@@ -317,12 +317,20 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     @available(iOS 11.0, *)
     override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let completeAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
+        let completeAction = UIContextualAction(style: .destructive, title: "Complete Task") { _, _, completion in
             self.completeItemAtIndex(at: indexPath)
             completion(true)
         }
-        let snoozeAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
+        let snoozeAction = UIContextualAction(style: .destructive, title: "Snooze Task") { _, _, completion in
             self.snoozeItem(indexPath: indexPath)
+            if !self.linesBarButtonSelected {
+                completion(true)
+            } else {
+                completion(false)
+            }
+        }
+        let nextSectionAction = UIContextualAction(style: .destructive, title: "Next Section") { _, _, completion in
+            self.moveItemToNext(indexPath: indexPath)
             if !self.linesBarButtonSelected {
                 completion(true)
             } else {
@@ -334,7 +342,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         completeAction.backgroundColor = UIColor(red: 0.30, green: 0.43, blue: 1.00, alpha: 1.00)
         snoozeAction.backgroundColor = .orange
         snoozeAction.image = UIImage(imageLiteralResourceName: "snooze")
-        let actions = UISwipeActionsConfiguration(actions: [completeAction, snoozeAction])
+        nextSectionAction.backgroundColor = UIColor(rgba: "#26baee", defaultColor: .blue)
+        nextSectionAction.image = UIImage(imageLiteralResourceName: "arrow-right")
+        let actions = UISwipeActionsConfiguration(actions: [completeAction, snoozeAction, nextSectionAction])
         return actions
     }
 
@@ -556,6 +566,11 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func snoozeItem(indexPath: IndexPath) {
         guard let item = items?[indexPath.row] else { return }
         item.snooze()
+    }
+
+    func moveItemToNext(indexPath: IndexPath) {
+        guard let item = items?[indexPath.row] else { return }
+        item.moveToNextSegment()
     }
 
 //    func setItemToIgnore(indexPath: IndexPath, ignore: Bool) {

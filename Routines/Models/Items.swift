@@ -237,11 +237,34 @@ import UserNotifications
     }
 
     fileprivate func snoozeTo() -> Int {
+        let segment = Options.getCurrentSegmentFromTime()
         switch segment {
         case 3:
             return 0
         default:
             return segment + 1
+        }
+    }
+
+    func moveToNextSegment() {
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                do {
+                    try realm.write {
+                        switch self.segment {
+                        case 3:
+                            self.segment = 0
+                        default:
+                            self.segment += 1
+                        }
+                    }
+                } catch {
+                    #if DEBUG
+                        print("\(#function): \(error)")
+                    #endif
+                }
+            }
         }
     }
 
