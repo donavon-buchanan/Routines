@@ -182,6 +182,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         // removeDeliveredNotifications()
     }
 
+    override func viewWillDisappear(_: Bool) {
+        #if DEBUG
+            print("\(#function)")
+        #endif
+//        removeBarViewFromCell()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // print("viewDidAppear \n")
@@ -279,23 +286,40 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         cell.selectedBackgroundView = cellSelectedBackgroundView
         cell.multipleSelectionBackgroundView = cellSelectedBackgroundView
 
-//        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.prominent)
-//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-//        blurEffectView.frame = cell.contentView.bounds
-//        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        cell.contentView.addSubview(blurEffectView)
+//        var barView = UIView()
+//        barView.tag = 2
 
-//        cell.layer.masksToBounds = true
-//        if indexPath.row == 0, items?.filter("segment = \(displaySection)").count ?? 0 > 1 {
-//            cell.roundCorners(corners: [.topLeft, .topRight], radius: 20)
-//        } else if indexPath.row == (items?.count ?? 1) - 1, items?.filter("segment = \(displaySection)").count ?? 0 > 1 {
-//            cell.roundCorners(corners: [.bottomLeft, .bottomRight], radius: 20)
-//        } else if indexPath.row == 0 {
-//            cell.roundCorners(corners: [.topLeft, .topRight, .bottomLeft, .bottomRight], radius: 20)
+//        if linesBarButtonSelected {
+//            var segmentColor: UIColor {
+//                switch items?[indexPath.row].segment {
+//                case 0:
+//                    return UIColor(rgba: "#f47645", defaultColor: .red)
+//                case 1:
+//                    return UIColor(rgba: "#26baee", defaultColor: .red)
+//                case 2:
+//                    return UIColor(rgba: "#62a388", defaultColor: .red)
+//                case 3:
+//                    return UIColor(rgba: "#645be7", defaultColor: .red)
+//                default:
+//                    return .clear
+//                }
+//            }
+//
+//            barView.frame = CGRect(x: 0, y: 0, width: 6, height: cell.frame.height)
+//            barView.backgroundColor = segmentColor
+//            cell.contentView.addSubview(barView)
 //        }
 
         return cell
     }
+
+//    func removeBarViewFromCell() {
+//        DispatchQueue.main.async {
+//            self.tableView.visibleCells.forEach { cell in
+//                cell.contentView.viewWithTag(2)?.removeFromSuperview()
+//            }
+//        }
+//    }
 
     override func tableView(_: UITableView, canEditRowAt _: IndexPath) -> Bool {
         return true
@@ -504,6 +528,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                     self.changeTabBar(hidden: false, animated: true)
                 }
             }
+//            removeBarViewFromCell()
         }
     }
 
