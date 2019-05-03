@@ -29,6 +29,7 @@ struct Messages {
     static let verificationFailed = "Receipt Verification Failed"
     static let noReceiptFound = "No receipt data was found. We'll try to fetch a new one. Try again."
     static let verificationUnknown = "Receipt verification failed with an unknown error. Please try again. If this error continues, contact support."
+    static let receiptInvalidMessage = "Looks like your subscription has expired. Certain features may be disabled."
     static let subActive = "Subscription Active"
     static let subActiveUntil = "Your subscription will renew on "
     static let subExpired = "Subscription Expired"
