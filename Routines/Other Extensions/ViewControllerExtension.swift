@@ -98,7 +98,7 @@ extension UIViewController {
             case .noReceiptData:
                 return alertWithTitle(title: Messages.verificationFailed, message: Messages.noReceiptFound)
             default:
-                return alertWithTitle(title: Messages.verificationFailed, message: Messages.verificationUnknown)
+                return alertWithTitle(title: Messages.verificationFailed, message: Messages.receiptInvalidMessage)
             }
         }
     }

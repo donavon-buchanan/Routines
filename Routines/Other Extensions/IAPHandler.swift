@@ -104,6 +104,8 @@ extension UIViewController {
                 #endif
                 Options.setPurchasedProduct(productID: "")
                 Options.setPurchasedStatus(status: false)
+                Options.setCloudSync(toggle: false)
+                AppDelegate.syncEngine = nil
                 self.showAlert(alert: self.alertForVerifyReceipt(result: result))
                 if case .noReceiptData = error {
                     self.refreshReceipt()

@@ -36,9 +36,4 @@ enum GlobalPicker {
     static let afternoon = ThemeImagePicker(arrayLiteral: "afternoon", "afternoon", "afternoon", "afternoon-white", "afternoon-white", "afternoon-white", "afternoon-white", "afternoon-white", "afternoon-white")
     static let evening = ThemeImagePicker(arrayLiteral: "evening", "evening", "evening", "evening-white", "evening-white", "evening-white", "evening-white", "evening-white", "evening-white")
     static let night = ThemeImagePicker(arrayLiteral: "night", "night", "night", "night-white", "night-white", "night-white", "night-white", "night-white", "night-white")
-
-    // static let snoozeStrike = ThemeImagePicker(arrayLiteral: "snooze-strike", "snooze-strike", "snooze-strike", "snooze-dark-strike", "snooze-dark-strike", "snooze-dark-strike", "snooze-dark-strike", "snooze-dark-strike", "snooze-dark-strike")
-    // static let repeats = ThemeImagePicker(arrayLiteral: "repeat", "repeat", "repeat", "repeat-dark", "repeat-dark", "repeat-dark", "repeat-dark", "repeat-dark", "repeat-dark")
-    // static let anchorCell = ThemeImagePicker(arrayLiteral: "anchor-grey", "anchor-grey", "anchor-grey", "anchor-dark-grey", "anchor-dark-grey", "anchor-dark-grey", "anchor-dark-grey", "anchor-dark-grey", "anchor-dark-grey")
-    // static let repeatsCell = ThemeImagePicker(arrayLiteral: "repeat-grey", "repeat-grey", "repeat-grey", "repeat-dark-grey", "repeat-dark-grey", "repeat-dark-grey", "repeat-dark-grey", "repeat-dark-grey", "repeat-dark-grey")
 }
