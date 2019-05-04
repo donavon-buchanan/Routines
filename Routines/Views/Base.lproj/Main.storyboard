@@ -2068,10 +2068,10 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="734"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ypN-sW-PBb">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1100.3333333333333"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1136.3333333333333"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="I52-pP-ghG" userLabel="Content View">
-                                                <rect key="frame" x="28" y="8" width="319" height="1084.3333333333333"/>
+                                                <rect key="frame" x="28" y="8" width="319" height="1120.3333333333333"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="jYP-oa-Gpd" userLabel="Top Text">
                                                         <rect key="frame" x="0.0" y="0.0" width="319" height="185"/>
@@ -2103,7 +2103,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="kga-bb-WIu" userLabel="Buttons And Text">
-                                                        <rect key="frame" x="0.0" y="209.00000000000006" width="319" height="875.33333333333348"/>
+                                                        <rect key="frame" x="0.0" y="209.00000000000006" width="319" height="911.33333333333348"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="g70-O9-e6O" userLabel="Monthly Buttons">
                                                                 <rect key="frame" x="15.333333333333343" y="0.0" width="288.33333333333326" height="89.666666666666671"/>
@@ -2186,7 +2186,7 @@
                                                                 </connections>
                                                             </button>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="KWp-aK-FLz" userLabel="Terms">
-                                                                <rect key="frame" x="0.0" y="422" width="319" height="327.33333333333326"/>
+                                                                <rect key="frame" x="0.0" y="422" width="319" height="363.33333333333326"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vOt-gg-5gU">
                                                                         <rect key="frame" x="6.3333333333333428" y="0.0" width="306.66666666666663" height="87.666666666666671"/>
@@ -2196,8 +2196,8 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zJW-Ry-dIl">
-                                                                        <rect key="frame" x="0.0" y="95.666666666666615" width="319" height="231.66666666666663"/>
-                                                                        <string key="text">For new subscribers, monthly subscription includes a 1 week free trial, or 2 weeks for the yearly subscription. At the end of your free trial, your Apple ID account will be billed $0.99 for monthly subscription, or $5.99 for yearly subscription unless your subscription is canceled at least 24 hours before the end of the free trial period. If you continue your subscription, your account will automatically be charged for renewal unless canceled at least 24 hours prior to the end of the current subscription period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase.</string>
+                                                                        <rect key="frame" x="0.0" y="95.666666666666629" width="319" height="267.66666666666669"/>
+                                                                        <mutableString key="text">For new subscribers, monthly subscription includes a 1 week free trial, or 2 weeks for the yearly subscription. During your free trial period, if the subscription is canceled, any unused portion of the free trial will be forfeited. At the end of your free trial, your Apple ID account will be billed $0.99 for monthly subscription, or $5.99 for yearly subscription unless your subscription is canceled at least 24 hours before the end of the free trial period. If you continue your subscription, your account will automatically be charged for renewal unless canceled at least 24 hours prior to the end of the current subscription period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase.</mutableString>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <nil key="highlightedColor"/>
@@ -2205,7 +2205,7 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dQD-qC-9kw" userLabel="Policy Buttons">
-                                                                <rect key="frame" x="15.333333333333343" y="779.33333333333326" width="288.33333333333326" height="96"/>
+                                                                <rect key="frame" x="15.333333333333343" y="815.33333333333326" width="288.33333333333326" height="96"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M4D-CB-oXV">
                                                                         <rect key="frame" x="0.0" y="0.0" width="288.33333333333331" height="40"/>

@@ -101,7 +101,7 @@ class RoutinesPlusViewController: UIViewController {
     }
 
     var subscriptionTermsString: String {
-        return "For new subscribers, monthly subscription includes a 1 week free trial, or 2 weeks for the yearly subscription. At the end of your free trial, your Apple ID account will be billed \(monthlyPrice) for monthly subscription, or \(yearlyPrice) for yearly subscription unless your subscription is canceled at least 24 hours before the end of the free trial period. If you continue your subscription, your account will automatically be charged for renewal unless canceled at least 24 hours prior to the end of the current subscription period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase."
+        return "For new subscribers, monthly subscription includes a 1 week free trial, or 2 weeks for the yearly subscription. During your free trial period, if the subscription is canceled, any unused portion of the free trial will be forfeited. At the end of your free trial, your Apple ID account will be billed \(monthlyPrice) for monthly subscription, or \(yearlyPrice) for yearly subscription unless your subscription is canceled at least 24 hours before the end of the free trial period. If you continue your subscription, your account will automatically be charged for renewal unless canceled at least 24 hours prior to the end of the current subscription period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase."
     }
 
     func getPrices() {
