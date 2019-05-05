@@ -24,10 +24,11 @@ public final class SyncObject<T> where T: Object & CKRecordConvertible & CKRecor
     public var pipeToEngine: ((_ recordsToStore: [CKRecord], _ recordIDsToDelete: [CKRecord.ID]) -> ())?
     
     public var realm: Realm
+    public var databaseScope: CKDatabase.Scope = .private
     
     public init(realm: Realm = try! Realm()) {
-        self.realm = realm
-    }
+      self.realm = realm
+  }
 }
 
 // MARK: - Zone information
@@ -38,8 +39,8 @@ extension SyncObject: Syncable {
         return T.recordType
     }
     
-    public var customZoneID: CKRecordZone.ID {
-        return T.customZoneID
+    public var zoneID: CKRecordZone.ID {
+        return T.zoneID
     }
     
     public var zoneChangesToken: CKServerChangeToken? {
@@ -58,7 +59,6 @@ extension SyncObject: Syncable {
             UserDefaults.standard.set(data, forKey: T.className() + IceCreamKey.zoneChangesTokenKey.value)
         }
     }
-
 
     public var isCustomZoneCreated: Bool {
         get {

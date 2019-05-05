@@ -22,5 +22,6 @@ target 'Routines' do
   #pod 'RxSwift'
   #pod 'RxRealm'
   pod 'SwiftyStoreKit'
+  #pod 'fluid-slider'
 
 end

@@ -13,21 +13,26 @@ import UserNotifications
 
 class AddTableViewController: UITableViewController, UITextViewDelegate, UITextFieldDelegate {
     // MARK: - Properties
-    
-    @IBOutlet weak var prioritySlider: UISlider!
+
+    @IBOutlet var priorityNumberLabel: UILabel!
+
+    @IBOutlet var prioritySlider: UISlider!
     @IBAction func prioritySliderChanged(_ sender: UISlider) {
         #if DEBUG
-        print(sender)
+            print(sender)
         #endif
+        priorityNumberLabel.text = String(Int(sender.value))
     }
+
     @IBAction func prioritySliderTouched(_ sender: UISlider) {
         #if DEBUG
-        print(sender)
+            print(sender)
         #endif
-        
+        if item != nil, taskTextField.hasText {
+            navigationItem.rightBarButtonItem?.isEnabled = true
+        }
     }
-    
-    
+
     @IBOutlet var taskTextField: UITextField!
     @IBOutlet var segmentSelection: UISegmentedControl!
     @IBOutlet var notesTextView: UITextView!
@@ -82,6 +87,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         repeatDailySwitch.layer.masksToBounds = true
 
         repeatDailyLabel.theme_textColor = GlobalPicker.cellTextColors
+
+        priorityNumberLabel.theme_textColor = GlobalPicker.textColor
+        prioritySlider.theme_thumbTintColor = GlobalPicker.textColor
     }
 
     @objc func dismissView() {
@@ -126,6 +134,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             segmentSelection.selectedSegmentIndex = item?.segment ?? 0
             notesTextView.text = item?.notes
             repeatDailySwitch.setOn(item!.repeats, animated: false)
+            priorityNumberLabel.text = "\(item?.priority ?? 0)"
+            prioritySlider.value = Float(item?.priority ?? 0)
             // // print("Items's uuidString is \((item?.uuidString)!)")
             // repeatDailySwitch.setOn(item?.disableAutoSnooze ?? false, animated: false)
 
@@ -176,8 +186,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         notesTextView.theme_keyboardAppearance = GlobalPicker.keyboardStyle
         notesTextView.theme_textColor = GlobalPicker.cellTextColors
         notesTextView.theme_backgroundColor = GlobalPicker.textInputBackground
-        
-        prioritySlider.theme_thumbTintColor = GlobalPicker.textColor
     }
 
 //    override func viewWillAppear(_ animated: Bool) {
@@ -221,7 +229,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 3 {
+        if indexPath.section == 4 {
             let haptic = UIImpactFeedbackGenerator(style: .light)
             haptic.impactOccurred()
             repeatDailySwitch.setOn(!repeatDailySwitch.isOn, animated: true)
@@ -274,6 +282,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             newItem.originalSegment = segmentSelection.selectedSegmentIndex
             newItem.repeats = repeatDailySwitch.isOn
             newItem.notes = notesTextView.text
+            newItem.priority = Int(prioritySlider.value)
             newItem.addNewItem(newItem)
         }
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)

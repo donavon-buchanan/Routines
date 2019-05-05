@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E059D6202C7849D59255D046 /* Pods_Routines.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4744FFB4F502141AF8B8E0B3 /* Pods_Routines.framework */; };
+		998378E6FFA903AA4CE06F18 /* Pods_Routines.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65FBDAD6166A801F44F8FA45 /* Pods_Routines.framework */; };
 		F802FC982254C3E10054CF22 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F802FC972254C3E10054CF22 /* CloudKit.framework */; };
 		F807D3CD216073E300FF36D9 /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3CC216073E300FF36D9 /* Options.swift */; };
 		F807D3CF2160964E00FF36D9 /* OptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3CE2160964E00FF36D9 /* OptionsTableViewController.swift */; };
@@ -120,9 +120,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		27144954F957C9F942DA3E3E /* Pods-Routines.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routines.debug.xcconfig"; path = "Target Support Files/Pods-Routines/Pods-Routines.debug.xcconfig"; sourceTree = "<group>"; };
-		4744FFB4F502141AF8B8E0B3 /* Pods_Routines.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Routines.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8895E6316FBA3C4D1C6F4A2A /* Pods-Routines.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routines.release.xcconfig"; path = "Target Support Files/Pods-Routines/Pods-Routines.release.xcconfig"; sourceTree = "<group>"; };
+		14BDFE9E2DB504EFBFF6A6BA /* Pods-Routines.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routines.release.xcconfig"; path = "Target Support Files/Pods-Routines/Pods-Routines.release.xcconfig"; sourceTree = "<group>"; };
+		65FBDAD6166A801F44F8FA45 /* Pods_Routines.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Routines.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B058E9742BE774C3274AC672 /* Pods-Routines.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routines.debug.xcconfig"; path = "Target Support Files/Pods-Routines/Pods-Routines.debug.xcconfig"; sourceTree = "<group>"; };
 		F802FC962254C3D60054CF22 /* Routines.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Routines.entitlements; sourceTree = "<group>"; };
 		F802FC972254C3E10054CF22 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		F807D3CC216073E300FF36D9 /* Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
@@ -189,7 +189,7 @@
 				F8FF25AA22085A2C0063295F /* RealmSwift.framework in Frameworks */,
 				F8FF25AB22085A2C0063295F /* SwiftMessages.framework in Frameworks */,
 				F8FF25AC22085A2C0063295F /* SwiftTheme.framework in Frameworks */,
-				E059D6202C7849D59255D046 /* Pods_Routines.framework in Frameworks */,
+				998378E6FFA903AA4CE06F18 /* Pods_Routines.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,8 +199,8 @@
 		245142063868388EBE73944F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				27144954F957C9F942DA3E3E /* Pods-Routines.debug.xcconfig */,
-				8895E6316FBA3C4D1C6F4A2A /* Pods-Routines.release.xcconfig */,
+				B058E9742BE774C3274AC672 /* Pods-Routines.debug.xcconfig */,
+				14BDFE9E2DB504EFBFF6A6BA /* Pods-Routines.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -212,7 +212,7 @@
 				F8A761F022580AB400FB9654 /* CloudKit.framework */,
 				F802FC972254C3E10054CF22 /* CloudKit.framework */,
 				F8FF259122085A180063295F /* Pods.xcodeproj */,
-				4744FFB4F502141AF8B8E0B3 /* Pods_Routines.framework */,
+				65FBDAD6166A801F44F8FA45 /* Pods_Routines.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -367,14 +367,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F8B831C62155CBB100DAF60E /* Build configuration list for PBXNativeTarget "Routines" */;
 			buildPhases = (
-				9287A89A9B4BF354E965E5A7 /* [CP] Check Pods Manifest.lock */,
+				AF21DAECD190BB716E2E6C40 /* [CP] Check Pods Manifest.lock */,
 				F8B831B02155CBB000DAF60E /* Sources */,
 				F8B831B12155CBB000DAF60E /* Frameworks */,
 				F8B831B22155CBB000DAF60E /* Resources */,
 				F888607E2182757300FDF808 /* Increment Build */,
 				F890109921F9A85A00ED2002 /* SwiftLint */,
 				F890109821F9A5FB00ED2002 /* SwiftFormat */,
-				620B11E1EDAD31632BC6E7AD /* [CP] Embed Pods Frameworks */,
+				4769075248851D40CD85ADBE /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -527,7 +527,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		620B11E1EDAD31632BC6E7AD /* [CP] Embed Pods Frameworks */ = {
+		4769075248851D40CD85ADBE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -557,7 +557,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Routines/Pods-Routines-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9287A89A9B4BF354E965E5A7 /* [CP] Check Pods Manifest.lock */ = {
+		AF21DAECD190BB716E2E6C40 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -855,7 +855,7 @@
 		};
 		F8B831C72155CBB100DAF60E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 27144954F957C9F942DA3E3E /* Pods-Routines.debug.xcconfig */;
+			baseConfigurationReference = B058E9742BE774C3274AC672 /* Pods-Routines.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Routines/Routines.entitlements;
@@ -876,7 +876,7 @@
 		};
 		F8B831C82155CBB100DAF60E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8895E6316FBA3C4D1C6F4A2A /* Pods-Routines.release.xcconfig */;
+			baseConfigurationReference = 14BDFE9E2DB504EFBFF6A6BA /* Pods-Routines.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Routines/Routines.entitlements;

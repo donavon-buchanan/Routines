@@ -15,7 +15,7 @@ public protocol Syncable: class {
     
     /// CKRecordZone related
     var recordType: String { get }
-    var customZoneID: CKRecordZone.ID { get }
+    var zoneID: CKRecordZone.ID { get }
     
     /// Local storage
     var zoneChangesToken: CKServerChangeToken? { get set }
@@ -35,4 +35,5 @@ public protocol Syncable: class {
     
     /// Callback
     var pipeToEngine: ((_ recordsToStore: [CKRecord], _ recordIDsToDelete: [CKRecord.ID]) -> ())? { get set }
+    
 }
