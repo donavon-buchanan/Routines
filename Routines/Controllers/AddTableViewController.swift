@@ -28,6 +28,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         #if DEBUG
             print(sender)
         #endif
+        view.endEditing(true)
         if item != nil, taskTextField.hasText {
             navigationItem.rightBarButtonItem?.isEnabled = true
         }
