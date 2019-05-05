@@ -13,7 +13,11 @@ class TaskTableViewCell: UITableViewCell {
     @IBOutlet var cellSubtitleLabel: UILabel!
     @IBOutlet var repeatLabel: UILabel!
     // @IBOutlet var cellIndicatorImage: UIImageView!
+
+    // Changing this to let causes issue with making the view vanish
     var barView = UIView()
+    var backgroundBarView = UIView()
+
     func configColorBar(segment: Int?) {
         var segmentColor: UIColor {
             switch segment {
@@ -29,12 +33,21 @@ class TaskTableViewCell: UITableViewCell {
                 return .clear
             }
         }
+
+        // Show colored bar based on segment when viewing all tasks
         barView.tag = 2
-        barView.frame = CGRect(x: 5, y: 0, width: 5, height: frame.height)
+        barView.frame = CGRect(x: 0, y: 0, width: 7, height: frame.height)
         barView.backgroundColor = segmentColor
+        addSubview(barView)
+
         selectedBackgroundView = UIView(frame: frame)
         selectedBackgroundView?.theme_backgroundColor = GlobalPicker.backgroundColor
-        contentView.addSubview(barView)
+
+        // Have to set up the same for the background view during selection
+        backgroundBarView.frame = CGRect(x: 0, y: 0, width: 7, height: frame.height)
+        backgroundBarView.tag = 2
+        backgroundBarView.backgroundColor = segmentColor
+        selectedBackgroundView?.addSubview(backgroundBarView)
 
         cellTitleLabel.theme_textColor = GlobalPicker.cellTextColors
         theme_backgroundColor = GlobalPicker.backgroundColor

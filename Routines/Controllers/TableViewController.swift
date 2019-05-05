@@ -286,7 +286,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             }
         }
 
-        if linesBarButtonSelected, !tableView.isEditing {
+        if linesBarButtonSelected {
             cell.configColorBar(segment: segment)
         } else {
             cell.configColorBar(segment: nil)
