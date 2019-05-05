@@ -11,22 +11,34 @@ import RealmSwift
 
 public protocol CKRecordConvertible {
     static var recordType: String { get }
-    static var customZoneID: CKRecordZone.ID { get }
+    static var zoneID: CKRecordZone.ID { get }
+    static var databaseScope: CKDatabase.Scope { get }
     
     var recordID: CKRecord.ID { get }
     var record: CKRecord { get }
-    
+
     var isDeleted: Bool { get }
 }
 
 extension CKRecordConvertible where Self: Object {
     
+    public static var databaseScope: CKDatabase.Scope {
+        return .private
+    }
+    
     public static var recordType: String {
         return className()
     }
     
-    public static var customZoneID: CKRecordZone.ID {
-        return CKRecordZone.ID(zoneName: "\(recordType)sZone", ownerName: CKCurrentUserDefaultName)
+    public static var zoneID: CKRecordZone.ID {
+        switch Self.databaseScope {
+        case .private:
+            return CKRecordZone.ID(zoneName: "\(recordType)sZone", ownerName: CKCurrentUserDefaultName)
+        case .public:
+            return CKRecordZone.default().zoneID
+        default:
+            fatalError("Shared Database is not supported now")
+        }
     }
     
     /// recordName : this is the unique identifier for the record, used to locate records on the database. We can create our own ID or leave it to CloudKit to generate a random UUID.
@@ -41,9 +53,9 @@ extension CKRecordConvertible where Self: Object {
         }
         
         if let primaryValueString = self[primaryKeyProperty.name] as? String {
-            return CKRecord.ID(recordName: primaryValueString, zoneID: Self.customZoneID)
+            return CKRecord.ID(recordName: primaryValueString, zoneID: Self.zoneID)
         } else if let primaryValueInt = self[primaryKeyProperty.name] as? Int {
-            return CKRecord.ID(recordName: "\(primaryValueInt)", zoneID: Self.customZoneID)
+            return CKRecord.ID(recordName: "\(primaryValueInt)", zoneID: Self.zoneID)
         } else {
             fatalError("Primary key should be String or Int")
         }

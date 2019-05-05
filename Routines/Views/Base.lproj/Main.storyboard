@@ -914,7 +914,7 @@
                         <sections>
                             <tableViewSection headerTitle="Title" id="wDR-3K-ugE">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" id="Njk-SZ-nFt">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="none" indentationWidth="10" id="Njk-SZ-nFt">
                                         <rect key="frame" x="0.0" y="55.333333333333343" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="Njk-SZ-nFt" id="0hz-1i-JRw">
@@ -941,7 +941,7 @@
                             </tableViewSection>
                             <tableViewSection id="UXS-ab-XNk">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="L3m-ad-YEk">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="L3m-ad-YEk">
                                         <rect key="frame" x="0.0" y="145.33333333333334" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L3m-ad-YEk" id="cQa-1a-Ibo">
@@ -974,26 +974,40 @@
                             </tableViewSection>
                             <tableViewSection id="yLk-2n-t8m" userLabel="Priority">
                                 <cells>
-                                    <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="priorityCell" id="Weq-oS-I3S">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="priorityCell" id="Weq-oS-I3S">
                                         <rect key="frame" x="0.0" y="235.33333333333337" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Weq-oS-I3S" id="vFr-t4-RCT">
-                                            <rect key="frame" x="0.0" y="0.0" width="341" height="54"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="9tc-rB-pQW">
-                                                    <rect key="frame" x="14" y="11" width="321" height="33"/>
-                                                    <connections>
-                                                        <action selector="prioritySliderChanged:" destination="A8c-r3-V1W" eventType="valueChanged" id="Wzg-Gb-xUK"/>
-                                                        <action selector="prioritySliderTouched:" destination="A8c-r3-V1W" eventType="touchDown" id="iMQ-gT-Rnq"/>
-                                                    </connections>
-                                                </slider>
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="Tg5-FE-mM7">
+                                                    <rect key="frame" x="16" y="11" width="343" height="32"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="50P-Kb-XOA">
+                                                            <rect key="frame" x="0.0" y="0.0" width="50" height="32"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="Rpq-al-hKJ"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="uru-dm-5ex">
+                                                            <rect key="frame" x="78" y="0.0" width="267" height="33"/>
+                                                            <connections>
+                                                                <action selector="prioritySliderChanged:" destination="A8c-r3-V1W" eventType="valueChanged" id="lSV-x0-57L"/>
+                                                                <action selector="prioritySliderTouched:" destination="A8c-r3-V1W" eventType="valueChanged" id="zgF-cW-Qkf"/>
+                                                            </connections>
+                                                        </slider>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="9tc-rB-pQW" secondAttribute="trailing" id="BAk-UE-cAF"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="9tc-rB-pQW" secondAttribute="bottom" id="VS8-Zf-y4e"/>
-                                                <constraint firstItem="9tc-rB-pQW" firstAttribute="top" secondItem="vFr-t4-RCT" secondAttribute="topMargin" id="YRU-SM-UuW"/>
-                                                <constraint firstItem="9tc-rB-pQW" firstAttribute="leading" secondItem="vFr-t4-RCT" secondAttribute="leadingMargin" id="lks-w3-vzO"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Tg5-FE-mM7" secondAttribute="trailing" id="DbA-EE-96d"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Tg5-FE-mM7" secondAttribute="bottom" id="lFv-Hg-odO"/>
+                                                <constraint firstItem="Tg5-FE-mM7" firstAttribute="leading" secondItem="vFr-t4-RCT" secondAttribute="leadingMargin" id="lSk-BC-3oD"/>
+                                                <constraint firstItem="Tg5-FE-mM7" firstAttribute="top" secondItem="vFr-t4-RCT" secondAttribute="topMargin" id="tXa-IU-lua"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1049,7 +1063,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Notes" id="xBc-ny-cEg">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="152" id="wRF-7D-3zD">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="152" id="wRF-7D-3zD">
                                         <rect key="frame" x="0.0" y="435.33333333333337" width="375" height="152"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wRF-7D-3zD" id="Fv4-fQ-urg">
@@ -1077,7 +1091,7 @@
                             </tableViewSection>
                             <tableViewSection id="dyV-UY-6E5" userLabel="Repeat">
                                 <cells>
-                                    <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="repeatCell" textLabel="Hdb-1m-7cT" detailTextLabel="gKB-mN-ePQ" style="IBUITableViewCellStyleValue1" id="Ld2-5h-hcf">
+                                    <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="repeatCell" textLabel="Hdb-1m-7cT" detailTextLabel="gKB-mN-ePQ" style="IBUITableViewCellStyleValue1" id="Ld2-5h-hcf">
                                         <rect key="frame" x="0.0" y="623.33333333333337" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ld2-5h-hcf" id="Ijn-dM-N4C">
@@ -1115,7 +1129,8 @@
                     <navigationItem key="navigationItem" id="bNH-3Y-BOP"/>
                     <connections>
                         <outlet property="notesTextView" destination="5iE-Oy-Fuc" id="9Q2-Os-Y9c"/>
-                        <outlet property="prioritySlider" destination="9tc-rB-pQW" id="NWR-Uf-AMB"/>
+                        <outlet property="priorityNumberLabel" destination="50P-Kb-XOA" id="v7G-5J-LKJ"/>
+                        <outlet property="prioritySlider" destination="uru-dm-5ex" id="Sl4-FJ-EOz"/>
                         <outlet property="repeatDailyLabel" destination="HU5-Hc-8tR" id="Re9-dG-MXi"/>
                         <outlet property="repeatDailySwitch" destination="vDF-7W-QTO" id="2qJ-PD-btc"/>
                         <outlet property="segmentSelection" destination="ee6-Ut-pWz" id="Oke-MH-Y6V"/>
