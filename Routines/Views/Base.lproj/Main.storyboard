@@ -21,7 +21,7 @@
                         <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="kKH-bE-y9t"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" id="7pz-fE-Rks" customClass="TaskTableViewCell" customModule="Routines" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationLevel="1" indentationWidth="10" reuseIdentifier="cell" id="7pz-fE-Rks" customClass="TaskTableViewCell" customModule="Routines" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="115"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7pz-fE-Rks" id="fSe-63-Vch">
@@ -972,38 +972,37 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Notes" id="xBc-ny-cEg">
+                            <tableViewSection id="yLk-2n-t8m" userLabel="Priority">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="152" id="wRF-7D-3zD">
-                                        <rect key="frame" x="0.0" y="255.33333333333337" width="375" height="152"/>
+                                    <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="priorityCell" id="Weq-oS-I3S">
+                                        <rect key="frame" x="0.0" y="235.33333333333337" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wRF-7D-3zD" id="Fv4-fQ-urg">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="152"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Weq-oS-I3S" id="vFr-t4-RCT">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5iE-Oy-Fuc">
-                                                    <rect key="frame" x="10" y="11" width="355" height="130"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
-                                                    <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES" shipmentTrackingNumber="YES" flightNumber="YES" lookupSuggestion="YES"/>
-                                                </textView>
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="9tc-rB-pQW">
+                                                    <rect key="frame" x="14" y="11" width="321" height="33"/>
+                                                    <connections>
+                                                        <action selector="prioritySliderChanged:" destination="A8c-r3-V1W" eventType="valueChanged" id="Wzg-Gb-xUK"/>
+                                                        <action selector="prioritySliderTouched:" destination="A8c-r3-V1W" eventType="touchDown" id="iMQ-gT-Rnq"/>
+                                                    </connections>
+                                                </slider>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottomMargin" secondItem="5iE-Oy-Fuc" secondAttribute="bottom" id="bEc-uY-QsS"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="5iE-Oy-Fuc" secondAttribute="trailing" constant="-6" id="n4H-XY-ZbP"/>
-                                                <constraint firstItem="5iE-Oy-Fuc" firstAttribute="top" secondItem="Fv4-fQ-urg" secondAttribute="topMargin" id="pce-Tl-GB3"/>
-                                                <constraint firstItem="5iE-Oy-Fuc" firstAttribute="leading" secondItem="Fv4-fQ-urg" secondAttribute="leadingMargin" constant="-6" id="zLI-08-iev"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="9tc-rB-pQW" secondAttribute="trailing" id="BAk-UE-cAF"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="9tc-rB-pQW" secondAttribute="bottom" id="VS8-Zf-y4e"/>
+                                                <constraint firstItem="9tc-rB-pQW" firstAttribute="top" secondItem="vFr-t4-RCT" secondAttribute="topMargin" id="YRU-SM-UuW"/>
+                                                <constraint firstItem="9tc-rB-pQW" firstAttribute="leading" secondItem="vFr-t4-RCT" secondAttribute="leadingMargin" id="lks-w3-vzO"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection id="Cdy-rr-nKo" userLabel="Repeat Daily">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="vcq-aH-HrX">
-                                        <rect key="frame" x="0.0" y="443.33333333333337" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="325.33333333333337" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vcq-aH-HrX" id="PGB-Py-pYO">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
@@ -1048,10 +1047,38 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Notes" id="xBc-ny-cEg">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="152" id="wRF-7D-3zD">
+                                        <rect key="frame" x="0.0" y="435.33333333333337" width="375" height="152"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wRF-7D-3zD" id="Fv4-fQ-urg">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="152"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5iE-Oy-Fuc">
+                                                    <rect key="frame" x="10" y="11" width="355" height="130"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
+                                                    <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES" shipmentTrackingNumber="YES" flightNumber="YES" lookupSuggestion="YES"/>
+                                                </textView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="5iE-Oy-Fuc" secondAttribute="bottom" id="bEc-uY-QsS"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="5iE-Oy-Fuc" secondAttribute="trailing" constant="-6" id="n4H-XY-ZbP"/>
+                                                <constraint firstItem="5iE-Oy-Fuc" firstAttribute="top" secondItem="Fv4-fQ-urg" secondAttribute="topMargin" id="pce-Tl-GB3"/>
+                                                <constraint firstItem="5iE-Oy-Fuc" firstAttribute="leading" secondItem="Fv4-fQ-urg" secondAttribute="leadingMargin" constant="-6" id="zLI-08-iev"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                             <tableViewSection id="dyV-UY-6E5" userLabel="Repeat">
                                 <cells>
                                     <tableViewCell hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="repeatCell" textLabel="Hdb-1m-7cT" detailTextLabel="gKB-mN-ePQ" style="IBUITableViewCellStyleValue1" id="Ld2-5h-hcf">
-                                        <rect key="frame" x="0.0" y="533.33333333333337" width="375" height="54"/>
+                                        <rect key="frame" x="0.0" y="623.33333333333337" width="375" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ld2-5h-hcf" id="Ijn-dM-N4C">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="54"/>
@@ -1088,6 +1115,7 @@
                     <navigationItem key="navigationItem" id="bNH-3Y-BOP"/>
                     <connections>
                         <outlet property="notesTextView" destination="5iE-Oy-Fuc" id="9Q2-Os-Y9c"/>
+                        <outlet property="prioritySlider" destination="9tc-rB-pQW" id="NWR-Uf-AMB"/>
                         <outlet property="repeatDailyLabel" destination="HU5-Hc-8tR" id="Re9-dG-MXi"/>
                         <outlet property="repeatDailySwitch" destination="vDF-7W-QTO" id="2qJ-PD-btc"/>
                         <outlet property="segmentSelection" destination="ee6-Ut-pWz" id="Oke-MH-Y6V"/>
@@ -2197,7 +2225,7 @@
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zJW-Ry-dIl">
                                                                         <rect key="frame" x="0.0" y="95.666666666666629" width="319" height="267.66666666666669"/>
-                                                                        <mutableString key="text">For new subscribers, monthly subscription includes a 1 week free trial, or 2 weeks for the yearly subscription. During your free trial period, if the subscription is canceled, any unused portion of the free trial will be forfeited. At the end of your free trial, your Apple ID account will be billed $0.99 for monthly subscription, or $5.99 for yearly subscription unless your subscription is canceled at least 24 hours before the end of the free trial period. If you continue your subscription, your account will automatically be charged for renewal unless canceled at least 24 hours prior to the end of the current subscription period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase.</mutableString>
+                                                                        <string key="text">For new subscribers, monthly subscription includes a 1 week free trial, or 2 weeks for the yearly subscription. During your free trial period, if the subscription is canceled, any unused portion of the free trial will be forfeited. At the end of your free trial, your Apple ID account will be billed $0.99 for monthly subscription, or $5.99 for yearly subscription unless your subscription is canceled at least 24 hours before the end of the free trial period. If you continue your subscription, your account will automatically be charged for renewal unless canceled at least 24 hours prior to the end of the current subscription period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase.</string>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <nil key="highlightedColor"/>

@@ -186,7 +186,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         #if DEBUG
             print("\(#function)")
         #endif
-//        removeBarViewFromCell()
+        // removeColorBarViewFromCells()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -250,7 +250,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TaskTableViewCell
-
+        let segment = items?[indexPath.row].segment
         let cellTitle: String = (items?[indexPath.row].title)!
         var cellSubtitle: String? {
             if let subtitle = self.items?[indexPath.row].notes {
@@ -270,53 +270,64 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 return ""
             }
         }
+
+        var segmentColor: UIColor {
+            switch segment {
+            case 0:
+                return UIColor(rgba: "#f47645", defaultColor: .red)
+            case 1:
+                return UIColor(rgba: "#26baee", defaultColor: .red)
+            case 2:
+                return UIColor(rgba: "#62a388", defaultColor: .red)
+            case 3:
+                return UIColor(rgba: "#645be7", defaultColor: .red)
+            default:
+                return .clear
+            }
+        }
+
+        if linesBarButtonSelected, !tableView.isEditing {
+            cell.configColorBar(segment: segment)
+        } else {
+            cell.configColorBar(segment: nil)
+        }
+
         cell.repeatLabel?.text = repeatLabel
-        // cell.delegate = self
+        cell.repeatLabel?.textColor = segmentColor
 
         cell.cellTitleLabel?.text = cellTitle
         cell.cellSubtitleLabel?.text = cellSubtitle
-        // cell.cellIndicatorImage.image? = indicatorImage.image?.withRenderingMode(.alwaysTemplate) ?? UIImage()
-        // cell.cellIndicatorImage.theme_tintColor = GlobalPicker.cellIndicatorTint
-
-        cell.cellTitleLabel?.theme_textColor = GlobalPicker.cellTextColors
-        cell.repeatLabel?.theme_textColor = GlobalPicker.barTextColor
-        cell.theme_backgroundColor = GlobalPicker.backgroundColor
-        let cellSelectedBackgroundView = UIView()
-        cellSelectedBackgroundView.theme_backgroundColor = GlobalPicker.cellBackground
-        cell.selectedBackgroundView = cellSelectedBackgroundView
-        cell.multipleSelectionBackgroundView = cellSelectedBackgroundView
-
-//        var barView = UIView()
-//        barView.tag = 2
-
-//        if linesBarButtonSelected {
-//            var segmentColor: UIColor {
-//                switch items?[indexPath.row].segment {
-//                case 0:
-//                    return UIColor(rgba: "#f47645", defaultColor: .red)
-//                case 1:
-//                    return UIColor(rgba: "#26baee", defaultColor: .red)
-//                case 2:
-//                    return UIColor(rgba: "#62a388", defaultColor: .red)
-//                case 3:
-//                    return UIColor(rgba: "#645be7", defaultColor: .red)
-//                default:
-//                    return .clear
-//                }
-//            }
-//
-//            barView.frame = CGRect(x: 0, y: 0, width: 6, height: cell.frame.height)
-//            barView.backgroundColor = segmentColor
-//            cell.contentView.addSubview(barView)
-//        }
 
         return cell
     }
 
-//    func removeBarViewFromCell() {
-//        DispatchQueue.main.async {
-//            self.tableView.visibleCells.forEach { cell in
-//                cell.contentView.viewWithTag(2)?.removeFromSuperview()
+//    func addColorBarsViewToCells() {
+//        var barView = UIView()
+//        barView.tag = 2
+//
+//        tableView.indexPathsForVisibleRows?.forEach { indexPath in
+//            if let cell = self.tableView.cellForRow(at: indexPath) {
+//                var barView = UIView()
+//                barView.tag = 2
+//
+//                var segmentColor: UIColor {
+//                    switch self.items?[indexPath.row].segment {
+//                    case 0:
+//                        return UIColor(rgba: "#f47645", defaultColor: .red)
+//                    case 1:
+//                        return UIColor(rgba: "#26baee", defaultColor: .red)
+//                    case 2:
+//                        return UIColor(rgba: "#62a388", defaultColor: .red)
+//                    case 3:
+//                        return UIColor(rgba: "#645be7", defaultColor: .red)
+//                    default:
+//                        return .clear
+//                    }
+//                }
+//
+//                barView.frame = CGRect(x: 0, y: 0, width: 6, height: cell.frame.height)
+//                barView.backgroundColor = segmentColor
+//                cell.contentView.addSubview(barView)
 //            }
 //        }
 //    }
@@ -528,7 +539,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                     self.changeTabBar(hidden: false, animated: true)
                 }
             }
-//            removeBarViewFromCell()
         }
     }
 
