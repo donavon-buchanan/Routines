@@ -24,6 +24,7 @@ import UserNotifications
     dynamic var completeUntil = Date()
     dynamic var repeats: Bool = true
     dynamic var notes: String?
+    dynamic var priority: Int = 0
 
     // For syncing
     dynamic var isDeleted: Bool = false
@@ -51,7 +52,7 @@ import UserNotifications
         addNewNotification()
     }
 
-    func updateItem(title: String, segment: Int, repeats: Bool, notes: String?) {
+    func updateItem(title: String, segment: Int, repeats: Bool, notes: String?, priority: Int) {
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -63,6 +64,7 @@ import UserNotifications
                         self.originalSegment = segment
                         self.repeats = repeats
                         self.notes = notes
+                        self.priority = priority
                         realm.add(self, update: true)
                     }
                 } catch {

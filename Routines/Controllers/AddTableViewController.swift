@@ -13,7 +13,21 @@ import UserNotifications
 
 class AddTableViewController: UITableViewController, UITextViewDelegate, UITextFieldDelegate {
     // MARK: - Properties
-
+    
+    @IBOutlet weak var prioritySlider: UISlider!
+    @IBAction func prioritySliderChanged(_ sender: UISlider) {
+        #if DEBUG
+        print(sender)
+        #endif
+    }
+    @IBAction func prioritySliderTouched(_ sender: UISlider) {
+        #if DEBUG
+        print(sender)
+        #endif
+        
+    }
+    
+    
     @IBOutlet var taskTextField: UITextField!
     @IBOutlet var segmentSelection: UISegmentedControl!
     @IBOutlet var notesTextView: UITextView!
@@ -162,6 +176,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         notesTextView.theme_keyboardAppearance = GlobalPicker.keyboardStyle
         notesTextView.theme_textColor = GlobalPicker.cellTextColors
         notesTextView.theme_backgroundColor = GlobalPicker.textInputBackground
+        
+        prioritySlider.theme_thumbTintColor = GlobalPicker.textColor
     }
 
 //    override func viewWillAppear(_ animated: Bool) {
@@ -250,7 +266,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     @objc func saveButtonPressed() {
         if let updatedItem = item {
-            updatedItem.updateItem(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
+            updatedItem.updateItem(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text, priority: Int(prioritySlider.value))
         } else {
             let newItem = Items()
             newItem.title = taskTextField.text!
