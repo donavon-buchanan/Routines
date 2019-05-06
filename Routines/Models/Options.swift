@@ -205,7 +205,6 @@ import RealmSwift
     }
 
     static func setCloudSync(toggle: Bool) {
-        // TODO: Verify purchase?
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()

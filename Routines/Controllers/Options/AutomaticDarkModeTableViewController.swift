@@ -25,7 +25,7 @@ class AutomaticDarkModeTableViewController: UITableViewController {
         let hour = Options.getHour(date: sender.date)
         let minute = Options.getMinute(date: sender.date)
         Options.setAutomaticDarkModeStartTime(hour: hour, minute: minute)
-//        Options.automaticDarkModeCheck()
+        Options.automaticDarkModeCheck()
         perform(#selector(refreshUI), with: nil, afterDelay: 0.2)
     }
 
@@ -34,7 +34,7 @@ class AutomaticDarkModeTableViewController: UITableViewController {
         let hour = Options.getHour(date: sender.date)
         let minute = Options.getMinute(date: sender.date)
         Options.setAutomaticDarkModeEndTime(hour: hour, minute: minute)
-//        Options.automaticDarkModeCheck()
+        Options.automaticDarkModeCheck()
         perform(#selector(refreshUI), with: nil, afterDelay: 0.2)
     }
 
