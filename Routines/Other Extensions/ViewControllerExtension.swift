@@ -11,9 +11,28 @@ import SwiftyStoreKit
 import UIKit
 
 extension UIViewController {
+    // MARK: Segues
+
+    func segueToRoutinesPlusViewController() {
+        guard (AppDelegate.productInfo?.retrievedProducts.count ?? 0) > 0 else { showFailAlert(); return }
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let RoutinesPlusViewController = storyBoard.instantiateViewController(withIdentifier: "RoutinesPlusView") as! RoutinesPlusViewController
+        navigationController?.pushViewController(RoutinesPlusViewController, animated: true)
+    }
+
+    // MARK: - IAP Alerts
+
     func alertWithTitle(title: String, message: String) -> UIAlertController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        return alertController
+    }
+
+    func alertWithTitleAndDismiss(title: String, message: String) -> UIAlertController {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            self.navigationController?.popViewController(animated: true)
+        }))
         return alertController
     }
 
@@ -50,7 +69,7 @@ extension UIViewController {
             #if DEBUG
                 print("Purchase Sucessful: \(product.productId)")
             #endif
-            return alertWithTitle(title: Messages.purchaseCompelte, message: Messages.thank)
+            return alertWithTitleAndDismiss(title: Messages.purchaseCompelte, message: Messages.thank)
         case let .error(error):
             #if DEBUG
                 print("Purchase Failed: \(error)")
@@ -83,7 +102,7 @@ extension UIViewController {
             #endif
             return alertWithTitle(title: Messages.restoreFailed, message: Messages.restoreFailedMessage)
         } else if result.restoredPurchases.count > 0 {
-            return alertWithTitle(title: Messages.purchaseRestored, message: Messages.thank)
+            return alertWithTitleAndDismiss(title: Messages.purchaseRestored, message: Messages.thank)
         } else {
             return alertWithTitle(title: Messages.restoreFailed, message: Messages.noPurchase)
         }

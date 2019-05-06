@@ -90,6 +90,12 @@ class OptionsTableViewController: UITableViewController {
         setAppearance(tab: Options.getSelectedIndex())
     }
 
+    // MARK: Task Priorities
+
+    @IBOutlet var taskPrioritiesLabel: UILabel!
+    @IBOutlet var taskPrioritiesStatusLabel: UILabel!
+    @IBOutlet var taskPrioritiesCell: UITableViewCell!
+
     @objc func dismissView() {
         // dismiss(animated: true, completion: nil)
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
@@ -194,6 +200,10 @@ class OptionsTableViewController: UITableViewController {
                 }
             case 1:
                 segueToAutomaticDarkModeTableView()
+            case 2:
+                if !Options.getPurchasedStatus() {
+                    segueToRoutinesPlusViewController()
+                }
             default:
                 break
             }
@@ -271,34 +281,6 @@ class OptionsTableViewController: UITableViewController {
 //    }
 
     func setUpUI() {
-        morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: false)
-        afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: false)
-        eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: false)
-        nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: false)
-
-        cloudSyncSwitch.setOn(Options.getCloudSync(), animated: false)
-        cloudSyncSwitch.isEnabled = Options.getPurchasedStatus()
-
-        darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: false)
-        darkModeSwtich.isEnabled = !Options.getAutomaticDarkModeStatus()
-
-        switch Options.getAutomaticDarkModeStatus() {
-        case true:
-            automaticDarkModeStatusLabel.text = "Enabled"
-            automaticDarkModeStatusLabel.theme_textColor = GlobalPicker.textColor
-        case false:
-            automaticDarkModeStatusLabel.text = "Disabled"
-            automaticDarkModeStatusLabel.textColor = .lightGray
-        }
-
-        morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
-        afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
-        eveningSubLabel.text = Options.getSegmentTimeString(segment: 2)
-        nightSubLabel.text = Options.getSegmentTimeString(segment: 3)
-    }
-
-    func refreshUI() {
-        // TODO: This should be a bit more granular
         morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: true)
         afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: true)
         eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: true)
@@ -319,10 +301,27 @@ class OptionsTableViewController: UITableViewController {
             automaticDarkModeStatusLabel.textColor = .lightGray
         }
 
+        taskPrioritiesLabel.theme_textColor = GlobalPicker.cellTextColors
+
+        if Options.getPurchasedStatus() {
+            taskPrioritiesStatusLabel.text = "Enabled"
+            taskPrioritiesStatusLabel.theme_textColor = GlobalPicker.textColor
+            taskPrioritiesCell.accessoryType = .none
+        } else {
+            taskPrioritiesStatusLabel.text = "Disabled"
+            taskPrioritiesStatusLabel.textColor = .lightGray
+            taskPrioritiesCell.accessoryType = .disclosureIndicator
+        }
+
         morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
         afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
         eveningSubLabel.text = Options.getSegmentTimeString(segment: 2)
         nightSubLabel.text = Options.getSegmentTimeString(segment: 3)
+    }
+
+    func refreshUI() {
+        // TODO: Refactor this. Just bad
+        setUpUI()
     }
 
     func setAppearance(tab: Int) {
@@ -383,13 +382,6 @@ class OptionsTableViewController: UITableViewController {
     }
 
     // MARK: - IAP
-
-    func segueToRoutinesPlusViewController() {
-        guard (AppDelegate.productInfo?.retrievedProducts.count ?? 0) > 0 else { showFailAlert(); return }
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let RoutinesPlusViewController = storyBoard.instantiateViewController(withIdentifier: "RoutinesPlusView") as! RoutinesPlusViewController
-        navigationController?.pushViewController(RoutinesPlusViewController, animated: true)
-    }
 
     func segueToAutomaticDarkModeTableView() {
         if !Options.getPurchasedStatus() {
