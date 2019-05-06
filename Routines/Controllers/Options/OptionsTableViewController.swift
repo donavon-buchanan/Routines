@@ -202,9 +202,6 @@ class OptionsTableViewController: UITableViewController {
                 print("\(#function) - Default case triggered")
             #endif
         }
-
-        tableView.estimatedRowHeight = 64
-        tableView.rowHeight = UITableView.automaticDimension
     }
 
     override func tableView(_: UITableView, titleForFooterInSection section: Int) -> String? {
