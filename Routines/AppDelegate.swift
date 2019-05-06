@@ -242,6 +242,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // updateAppBadgeCount()
 
         removeOrphanedNotifications()
+
+        // Options.automaticDarkModeTimer()
         #if DEBUG
             print("\(#function) - End")
         #endif
@@ -377,7 +379,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 19,
+            schemaVersion: 20,
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -449,7 +451,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
 
-                if oldSchemaVersion < 19 {
+                if oldSchemaVersion < 20 {
                     // let realm do its thing
                 }
             }

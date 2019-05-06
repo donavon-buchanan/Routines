@@ -34,6 +34,8 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var eveningSubLabel: UILabel!
     @IBOutlet var nightSubLabel: UILabel!
 
+    // MARK: - Routines+
+
     @IBOutlet var cloudSyncLabel: UILabel!
     @IBOutlet var cloudSyncSwitch: UISwitch!
     @IBAction func cloudSyncSwitchToggled(_ sender: UISwitch) {
@@ -53,6 +55,11 @@ class OptionsTableViewController: UITableViewController {
             print("Cloud sync switch: \(sender.isOn)")
         #endif
     }
+
+    // MARK: Automatic Dark Mode
+
+    @IBOutlet var automaticDarkModeLabel: UILabel!
+    @IBOutlet var automaticDarkModeStatusLabel: UILabel!
 
     override var keyCommands: [UIKeyCommand]? {
         return [
@@ -155,31 +162,40 @@ class OptionsTableViewController: UITableViewController {
                 haptic.impactOccurred()
             }
         case 2:
-            darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
-            Options.setDarkMode(darkModeSwtich.isOn)
-            setAppearance(tab: Options.getSelectedIndex())
-            haptic.impactOccurred()
-        case 3:
-            #if DEBUG
-                print("\(#function) - Case 3")
-            #endif
-            if cloudSyncSwitch.isEnabled {
-                #if DEBUG
-                    print("\(#function) - cloudSyncSwitch.isEnabled")
-                #endif
-                cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
-                Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
-                AppDelegate.setSync()
+            if darkModeSwtich.isEnabled {
+                darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
+                Options.setDarkMode(darkModeSwtich.isOn)
+                setAppearance(tab: Options.getSelectedIndex())
                 haptic.impactOccurred()
-                if cloudSyncSwitch.isOn {
-                    Items.requestNotificationPermission()
-                    AppDelegate.refreshNotifications()
-                }
-            } else {
+            }
+        case 3:
+            switch indexPath.row {
+            case 0:
                 #if DEBUG
-                    print("\(#function) - Case 3 else, should show purchase options")
+                    print("\(#function) - Case 3")
                 #endif
-                segueToRoutinesPlusViewController()
+                if cloudSyncSwitch.isEnabled {
+                    #if DEBUG
+                        print("\(#function) - cloudSyncSwitch.isEnabled")
+                    #endif
+                    cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
+                    Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
+                    AppDelegate.setSync()
+                    haptic.impactOccurred()
+                    if cloudSyncSwitch.isOn {
+                        Items.requestNotificationPermission()
+                        AppDelegate.refreshNotifications()
+                    }
+                } else {
+                    #if DEBUG
+                        print("\(#function) - Case 3 else, should show purchase options")
+                    #endif
+                    segueToRoutinesPlusViewController()
+                }
+            case 1:
+                segueToAutomaticDarkModeTableView()
+            default:
+                break
             }
         default:
             #if DEBUG
@@ -267,6 +283,14 @@ class OptionsTableViewController: UITableViewController {
         cloudSyncSwitch.isEnabled = Options.getPurchasedStatus()
 
         darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: false)
+        darkModeSwtich.isEnabled = !Options.getAutomaticDarkModeStatus()
+
+        switch Options.getAutomaticDarkModeStatus() {
+        case true:
+            automaticDarkModeStatusLabel.text = "Enabled"
+        case false:
+            automaticDarkModeStatusLabel.text = "Disabled"
+        }
 
         morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
         afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
@@ -285,6 +309,14 @@ class OptionsTableViewController: UITableViewController {
         cloudSyncSwitch.isEnabled = Options.getPurchasedStatus()
 
         darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: true)
+        darkModeSwtich.isEnabled = !Options.getAutomaticDarkModeStatus()
+
+        switch Options.getAutomaticDarkModeStatus() {
+        case true:
+            automaticDarkModeStatusLabel.text = "Enabled"
+        case false:
+            automaticDarkModeStatusLabel.text = "Disabled"
+        }
 
         morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
         afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
@@ -355,12 +387,16 @@ class OptionsTableViewController: UITableViewController {
         guard (AppDelegate.productInfo?.retrievedProducts.count ?? 0) > 0 else { showFailAlert(); return }
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let RoutinesPlusViewController = storyBoard.instantiateViewController(withIdentifier: "RoutinesPlusView") as! RoutinesPlusViewController
-        switch UIDevice.current.userInterfaceIdiom {
-        case .pad:
-            navigationController?.pushViewController(RoutinesPlusViewController, animated: true)
-        default:
-//            iAPSegue(identifier: nil, source: self, destination: RoutinesPlusViewController).perform()
-            navigationController?.pushViewController(RoutinesPlusViewController, animated: true)
+        navigationController?.pushViewController(RoutinesPlusViewController, animated: true)
+    }
+
+    func segueToAutomaticDarkModeTableView() {
+        if !Options.getPurchasedStatus() {
+            segueToRoutinesPlusViewController()
+        } else {
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let AutomaticDarkModeTableViewController = storyBoard.instantiateViewController(withIdentifier: "AutomaticDarkModeTableView") as! AutomaticDarkModeTableViewController
+            navigationController?.pushViewController(AutomaticDarkModeTableViewController, animated: true)
         }
     }
 }

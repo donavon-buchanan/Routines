@@ -26,6 +26,7 @@
 		F85DA34F22084C9800A6716C /* RoutinesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85DA34E22084C9800A6716C /* RoutinesUITests.swift */; };
 		F86AFEB821AFD1B4004DC7F2 /* UITabBarControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86AFEB721AFD1B4004DC7F2 /* UITabBarControllerExtension.swift */; };
 		F87D49EF2269AA1700845E0D /* AppSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87D49EE2269AA1700845E0D /* AppSecrets.swift */; };
+		F896D96F22802E5B0005C899 /* AutomaticDarkModeTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F896D96E22802E5B0005C899 /* AutomaticDarkModeTimer.swift */; };
 		F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */; };
 		F8ACD4642269F89100E136E9 /* IAPHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ACD4632269F89100E136E9 /* IAPHandler.swift */; };
 		F8B30787219C0DAB00437AAA /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B30786219C0DAB00437AAA /* Themes.swift */; };
@@ -145,6 +146,7 @@
 		F85DA35022084C9800A6716C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F86AFEB721AFD1B4004DC7F2 /* UITabBarControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBarControllerExtension.swift; sourceTree = "<group>"; };
 		F87D49EE2269AA1700845E0D /* AppSecrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSecrets.swift; sourceTree = "<group>"; };
+		F896D96E22802E5B0005C899 /* AutomaticDarkModeTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticDarkModeTimer.swift; sourceTree = "<group>"; };
 		F8A761F022580AB400FB9654 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS5.2.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
 		F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		F8ACD4632269F89100E136E9 /* IAPHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPHandler.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 				F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */,
 				F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */,
 				F8352C52227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift */,
+				F896D96E22802E5B0005C899 /* AutomaticDarkModeTimer.swift */,
 			);
 			path = Options;
 			sourceTree = "<group>";
@@ -660,6 +663,7 @@
 				F8D5DB492269AC59005857F2 /* NetworkActivityIndicatorManager.swift in Sources */,
 				F81194FB2267F875002E8E7A /* SKProductPriceExtension.swift in Sources */,
 				F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */,
+				F896D96F22802E5B0005C899 /* AutomaticDarkModeTimer.swift in Sources */,
 				F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */,
 				F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */,
 				F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */,

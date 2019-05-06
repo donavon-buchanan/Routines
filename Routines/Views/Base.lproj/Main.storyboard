@@ -1734,7 +1734,7 @@
                                                     <rect key="frame" x="16" y="34.333333333333329" width="39" height="15.666666666666666"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                    <nil key="textColor"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -1786,6 +1786,8 @@
                     <connections>
                         <outlet property="afternoonSubLabel" destination="TUo-1L-76t" id="72X-gF-7Mv"/>
                         <outlet property="afternoonSwitch" destination="ZmJ-rT-USa" id="VaE-y0-Ieg"/>
+                        <outlet property="automaticDarkModeLabel" destination="9en-xT-Fgu" id="7zs-hU-Clq"/>
+                        <outlet property="automaticDarkModeStatusLabel" destination="ery-I4-dEm" id="got-N6-v5f"/>
                         <outlet property="cloudSyncLabel" destination="VCc-OP-gnR" id="GdX-ZO-8yk"/>
                         <outlet property="cloudSyncSwitch" destination="MGB-Cp-D5F" id="l6T-hF-5na"/>
                         <outlet property="darkModeSwtich" destination="aa0-0h-djV" id="eiN-Ya-Woj"/>
@@ -1809,6 +1811,7 @@
                         <outletCollection property="switches" destination="aa0-0h-djV" collectionClass="NSMutableArray" id="41a-A8-zco"/>
                         <outletCollection property="switches" destination="MGB-Cp-D5F" collectionClass="NSMutableArray" id="ZEK-rx-NwM"/>
                         <outletCollection property="cellLabels" destination="VCc-OP-gnR" collectionClass="NSMutableArray" id="QpP-Ja-68K"/>
+                        <outletCollection property="cellLabels" destination="9en-xT-Fgu" collectionClass="NSMutableArray" id="jOk-jT-g6U"/>
                         <segue destination="1aL-IG-qEf" kind="unwind" identifier="unwindToTableViewController" unwindAction="unwindToTableViewControllerWithSegue:" id="hf9-Xq-OiU"/>
                     </connections>
                 </tableViewController>
@@ -2375,8 +2378,8 @@
         <!--Automatic Dark Mode-->
         <scene sceneID="vAl-qZ-ezk">
             <objects>
-                <tableViewController storyboardIdentifier="automaticDarkModeTableView" title="Automatic Dark Mode" useStoryboardIdentifierAsRestorationIdentifier="YES" id="g3a-4M-BZt" customClass="AutomaticDarkModeTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="krG-g4-mQm">
+                <tableViewController storyboardIdentifier="AutomaticDarkModeTableView" title="Automatic Dark Mode" useStoryboardIdentifierAsRestorationIdentifier="YES" id="g3a-4M-BZt" customClass="AutomaticDarkModeTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="krG-g4-mQm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -2387,7 +2390,7 @@
                                         <rect key="frame" x="0.0" y="35" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PNg-1K-w4Z" id="H7g-2E-46p">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="121" translatesAutoresizingMaskIntoConstraints="NO" id="JgO-R8-ONu">
@@ -2401,6 +2404,9 @@
                                                         </label>
                                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="35Y-mQ-uwv">
                                                             <rect key="frame" x="294" y="6.3333333333333321" width="51" height="30.999999999999996"/>
+                                                            <connections>
+                                                                <action selector="automaticDarkModeSwitchAction:" destination="g3a-4M-BZt" eventType="valueChanged" id="P88-mH-mLc"/>
+                                                            </connections>
                                                         </switch>
                                                     </subviews>
                                                 </stackView>
@@ -2421,17 +2427,20 @@
                                         <rect key="frame" x="0.0" y="142.33333333333334" width="375" height="120.00000000000003"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Woi-qi-gKC" id="2tr-uO-Eaj">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119.66666666666667"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="5" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LI1-mt-gxK">
-                                                    <rect key="frame" x="88" y="0.0" width="200" height="120"/>
+                                                    <rect key="frame" x="87.666666666666686" y="0.0" width="200" height="119.66666666666667"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="200" id="mp2-DH-HZ5"/>
                                                     </constraints>
                                                     <date key="date" timeIntervalSinceReferenceDate="578790000.17582405">
                                                         <!--2019-05-05 23:00:00 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="startTimeDatePickerAction:" destination="g3a-4M-BZt" eventType="valueChanged" id="0S8-yy-2GX"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
@@ -2450,7 +2459,7 @@
                                         <rect key="frame" x="0.0" y="337.66666666666669" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0GJ-RA-PXT" id="FC6-aa-SHb">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119.66666666666667"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="5" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Bd-NQ-jSU">
@@ -2461,6 +2470,9 @@
                                                     <date key="date" timeIntervalSinceReferenceDate="578746800.17582405">
                                                         <!--2019-05-05 11:00:00 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="endTimeDatePickerAction:" destination="g3a-4M-BZt" eventType="valueChanged" id="9V5-tN-HM5"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                             <constraints>
@@ -2479,6 +2491,12 @@
                             <outlet property="delegate" destination="g3a-4M-BZt" id="G3C-g5-9co"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="automaticDarkModeLabel" destination="rZ4-hN-Znq" id="BzC-um-hcs"/>
+                        <outlet property="automaticDarkModeSwitch" destination="35Y-mQ-uwv" id="coK-4E-i0a"/>
+                        <outlet property="endTimeDatePicker" destination="8Bd-NQ-jSU" id="6qZ-dk-SPp"/>
+                        <outlet property="startTimeDatePicker" destination="LI1-mt-gxK" id="mw2-q9-ckV"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KVh-2H-pox" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
