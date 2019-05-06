@@ -18,16 +18,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     @IBOutlet var prioritySlider: UISlider!
     @IBAction func prioritySliderChanged(_ sender: UISlider) {
-        #if DEBUG
-            print(sender)
-        #endif
         priorityNumberLabel.text = String(Int(sender.value))
     }
 
-    @IBAction func prioritySliderTouched(_ sender: UISlider) {
-        #if DEBUG
-            print(sender)
-        #endif
+    @IBAction func prioritySliderTouched(_: UISlider) {
         view.endEditing(true)
         if item != nil, taskTextField.hasText {
             navigationItem.rightBarButtonItem?.isEnabled = true
@@ -91,6 +85,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
         priorityNumberLabel.theme_textColor = GlobalPicker.textColor
         prioritySlider.theme_thumbTintColor = GlobalPicker.textColor
+
+        if !Options.getPurchasedStatus() {
+            prioritySlider.isEnabled = false
+        } else {
+            prioritySlider.isEnabled = true
+        }
     }
 
     @objc func dismissView() {
@@ -99,16 +99,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        DispatchQueue.main.async {
-            autoreleasepool {
-                do {
-                    self.taskTextField.becomeFirstResponder()
-
-                    self.setUpUI()
-                }
-            }
-        }
 
         // Set right bar item as "Save"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButtonPressed))
@@ -189,9 +179,17 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         notesTextView.theme_backgroundColor = GlobalPicker.textInputBackground
     }
 
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//    }
+    override func viewWillAppear(_: Bool) {
+        DispatchQueue.main.async {
+            autoreleasepool {
+                do {
+                    self.taskTextField.becomeFirstResponder()
+
+                    self.setUpUI()
+                }
+            }
+        }
+    }
 
     @objc func setNotesEditable(_: UITapGestureRecognizer) {
         notesTextView.dataDetectorTypes = []
@@ -201,7 +199,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         // notesTextView.backgroundColor = UIColor.groupTableViewBackground
     }
 
-    @objc func viewTapped(_: UITapGestureRecognizer) {
+    @objc func viewTapped() {
         view.endEditing(true)
     }
 
@@ -236,6 +234,11 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             repeatDailySwitch.setOn(!repeatDailySwitch.isOn, animated: true)
             if item != nil, taskTextField.hasText {
                 navigationItem.rightBarButtonItem?.isEnabled = true
+            }
+        }
+        if indexPath.section == 2 {
+            if !prioritySlider.isEnabled {
+                segueToRoutinesPlusViewController()
             }
         }
     }

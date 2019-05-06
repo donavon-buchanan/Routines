@@ -1723,7 +1723,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Automatic Dark Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9en-xT-Fgu">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Automatic Dark Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="9en-xT-Fgu">
                                                     <rect key="frame" x="16" y="10.999999999999998" width="173" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
@@ -1740,12 +1740,36 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="taskPrioritiesCell" textLabel="FGl-8X-v3d" detailTextLabel="kBL-JP-NNm" style="IBUITableViewCellStyleSubtitle" id="GAE-kO-018">
+                                        <rect key="frame" x="0.0" y="766.66666666666674" width="375" height="64"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="GAE-kO-018" id="2NK-FW-Nj9">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Task Priorities" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="FGl-8X-v3d">
+                                                    <rect key="frame" x="16" y="10.999999999999998" width="113" height="20.333333333333332"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kBL-JP-NNm">
+                                                    <rect key="frame" x="16" y="34.333333333333329" width="39" height="15.666666666666666"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="About" id="Mh0-Xn-pCD">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" id="JZL-NA-pX6">
-                                        <rect key="frame" x="0.0" y="822.66666666666674" width="375" height="64"/>
+                                        <rect key="frame" x="0.0" y="886.66666666666674" width="375" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JZL-NA-pX6" id="XeW-Nf-qRm">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="64"/>
@@ -1797,6 +1821,9 @@
                         <outlet property="morningSwitch" destination="sr5-g1-2Wx" id="fxs-kv-RAv"/>
                         <outlet property="nightSubLabel" destination="RBy-Vs-22B" id="vo0-6e-R9I"/>
                         <outlet property="nightSwitch" destination="6Be-Gy-fuV" id="zOC-H7-Hsz"/>
+                        <outlet property="taskPrioritiesCell" destination="GAE-kO-018" id="bUm-55-Kbn"/>
+                        <outlet property="taskPrioritiesLabel" destination="FGl-8X-v3d" id="XbS-gw-Mq3"/>
+                        <outlet property="taskPrioritiesStatusLabel" destination="kBL-JP-NNm" id="vSK-Od-FVt"/>
                         <outletCollection property="cellLabels" destination="X1n-I8-wot" collectionClass="NSMutableArray" id="UWm-Ts-c4c"/>
                         <outletCollection property="cellLabels" destination="t8n-qX-FiY" collectionClass="NSMutableArray" id="try-qJ-RZM"/>
                         <outletCollection property="cellLabels" destination="CQu-dM-fZe" collectionClass="NSMutableArray" id="uox-s2-yc2"/>
