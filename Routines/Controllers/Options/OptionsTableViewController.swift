@@ -288,8 +288,10 @@ class OptionsTableViewController: UITableViewController {
         switch Options.getAutomaticDarkModeStatus() {
         case true:
             automaticDarkModeStatusLabel.text = "Enabled"
+            automaticDarkModeStatusLabel.theme_textColor = GlobalPicker.textColor
         case false:
             automaticDarkModeStatusLabel.text = "Disabled"
+            automaticDarkModeStatusLabel.textColor = .lightGray
         }
 
         morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
@@ -314,8 +316,10 @@ class OptionsTableViewController: UITableViewController {
         switch Options.getAutomaticDarkModeStatus() {
         case true:
             automaticDarkModeStatusLabel.text = "Enabled"
+            automaticDarkModeStatusLabel.theme_textColor = GlobalPicker.textColor
         case false:
             automaticDarkModeStatusLabel.text = "Disabled"
+            automaticDarkModeStatusLabel.textColor = .lightGray
         }
 
         morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
