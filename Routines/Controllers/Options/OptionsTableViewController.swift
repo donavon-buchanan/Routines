@@ -304,7 +304,7 @@ class OptionsTableViewController: UITableViewController {
         taskPrioritiesLabel.theme_textColor = GlobalPicker.cellTextColors
 
         if Options.getPurchasedStatus() {
-            taskPrioritiesStatusLabel.text = "Enabled"
+            taskPrioritiesStatusLabel.text = "Unlocked"
             taskPrioritiesStatusLabel.theme_textColor = GlobalPicker.textColor
             taskPrioritiesCell.accessoryType = .none
         } else {
