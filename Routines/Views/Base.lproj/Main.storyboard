@@ -2425,7 +2425,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="5" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LI1-mt-gxK">
-                                                    <rect key="frame" x="87.666666666666686" y="0.0" width="200" height="119.66666666666667"/>
+                                                    <rect key="frame" x="88" y="0.0" width="200" height="120"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="200" id="mp2-DH-HZ5"/>
                                                     </constraints>

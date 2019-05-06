@@ -73,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         #if DEBUG
-        print("\(#function) - Start")
+            print("\(#function) - Start")
         #endif
         let center = UNUserNotificationCenter.current()
         center.delegate = self
@@ -83,14 +83,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Theme
         setUpTheme()
         #if DEBUG
-        print("\(#function) - End")
+            print("\(#function) - End")
         #endif
         return true
     }
 
     func application(_: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         #if DEBUG
-        print("\(#function) - Start")
+            print("\(#function) - Start")
         #endif
         // check if Options exist
         // checkOptions()
@@ -136,7 +136,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
         #if DEBUG
-        print("\(#function) - End")
+            print("\(#function) - End")
         #endif
         return true
     }
@@ -166,7 +166,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillResignActive(_: UIApplication) {
         #if DEBUG
-        print("\(#function) - Start")
+            print("\(#function) - Start")
         #endif
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -174,13 +174,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // setSelectedIndex()
         // itemCleanup()
         #if DEBUG
-        print("\(#function) - End")
+            print("\(#function) - End")
         #endif
     }
 
     func applicationDidEnterBackground(_: UIApplication) {
         #if DEBUG
-        print("\(#function) - Start")
+            print("\(#function) - Start")
         #endif
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
@@ -188,7 +188,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // itemCleanup()
         AppDelegate.removeOldNotifications()
         #if DEBUG
-        print("\(#function) - End")
+            print("\(#function) - End")
         #endif
     }
 
@@ -205,17 +205,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillEnterForeground(_: UIApplication) {
         #if DEBUG
-        print("\(#function) - Start")
+            print("\(#function) - Start")
         #endif
         // AppDelegate.removeOldNotifications()
         #if DEBUG
-        print("\(#function) - End")
+            print("\(#function) - End")
         #endif
     }
 
     func applicationDidBecomeActive(_: UIApplication) {
         #if DEBUG
-        print("\(#function) - Start")
+            print("\(#function) - Start")
         #endif
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         // restoreSelectedTab(tab: nil)
@@ -243,13 +243,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         removeOrphanedNotifications()
         #if DEBUG
-        print("\(#function) - End")
+            print("\(#function) - End")
         #endif
     }
 
     func removeOrphanedNotifications() {
         #if DEBUG
-        print("\(#function) - Start")
+            print("\(#function) - Start")
         #endif
         DispatchQueue.main.async {
             autoreleasepool {
@@ -268,20 +268,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
         #if DEBUG
-        print("\(#function) - End")
+            print("\(#function) - End")
         #endif
     }
 
     func applicationWillTerminate(_: UIApplication) {
         #if DEBUG
-        print("\(#function) - Start")
+            print("\(#function) - Start")
         #endif
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 
         // SKPaymentQueue.default().remove(AppDelegate.iapObserver)
         AppDelegate.removeOldNotifications()
         #if DEBUG
-        print("\(#function) - End")
+            print("\(#function) - End")
         #endif
     }
 
