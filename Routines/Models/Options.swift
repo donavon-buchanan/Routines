@@ -35,17 +35,156 @@ import RealmSwift
 
     dynamic var badge: Bool = true
 
-    // TODO: This should be removed
-    // dynamic var firstItemAdded: Bool = false
-
-    // TODO: This should be renamed at some point in the future
-    // dynamic var smartSnooze: Bool = false
+    // MARK: Dark Mode
 
     dynamic var darkMode: Bool = true
 
+    static func getDarkModeStatus() -> Bool {
+        var darkMode = false
+        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                    darkMode = options.darkMode
+                }
+            }
+        }
+        return darkMode
+    }
+
+    static func setDarkMode(_ bool: Bool) {
+        #if DEBUG
+            print("Setting dark mode to: \(bool)")
+        #endif
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                    // print("Options UUID: \(options.optionsKey)")
+                    do {
+                        try realm.write {
+                            options.darkMode = bool
+                        }
+                    } catch {
+                        fatalError("Failed to save dark mode: \(error)")
+                    }
+                }
+            }
+        }
+    }
+
+//    static func darkModeOff() {
+//        Options.setDarkMode(false)
+//    }
+//
+//    static func darkModeOn() {
+//        Options.setDarkMode(true)
+//    }
+
+    dynamic var autoDarkMode: Bool = false
+    dynamic var autoDarkModeStartHour: Int = 19
+    dynamic var autoDarkModeStartMinute: Int = 0
+    dynamic var autoDarkModeEndHour: Int = 7
+    dynamic var autoDarkModeEndMinute: Int = 0
+
+    static func automaticDarkModeCheck() {
+        #if DEBUG
+            print(#function)
+        #endif
+        if Options.getAutomaticDarkModeStatus() {
+            guard let startTime = Options.getAutomaticDarkModeStartTime() else { return }
+            guard let endTime = Options.getAutomaticDarkModeEndTime() else { return }
+            #if DEBUG
+                print("Current Generic Time: \(Options.getCurrentGenericDate())")
+                print("startTime: \(startTime)")
+                print("endTime: \(endTime)")
+            #endif
+            if Options.getCurrentGenericDate() >= startTime || Options.getCurrentGenericDate() <= endTime {
+                Options.setDarkMode(true)
+            } else {
+                Options.setDarkMode(false)
+            }
+        }
+    }
+
+    static func getAutomaticDarkModeStatus() -> Bool {
+        let realm = try! Realm()
+        guard let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) else { return false }
+        return options.autoDarkMode
+    }
+
+    static func getAutomaticDarkModeStartTime() -> Date? {
+        let realm = try! Realm()
+        guard let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) else { return nil }
+        return Options.getDateFromComponents(hour: options.autoDarkModeStartHour, minute: options.autoDarkModeStartMinute)
+    }
+
+    static func getAutomaticDarkModeEndTime() -> Date? {
+        let realm = try! Realm()
+        guard let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) else { return nil }
+        return Options.getDateFromComponents(hour: options.autoDarkModeEndHour, minute: options.autoDarkModeEndMinute)
+    }
+
+    static func setAutomaticDarkModeStatus(_ isOn: Bool) {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                guard let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) else { return }
+                do {
+                    try realm.write {
+                        options.autoDarkMode = isOn
+                    }
+                } catch {
+                    #if DEBUG
+                        print("\(#function): Error: \(error)")
+                    #endif
+                }
+            }
+        }
+    }
+
+    static func setAutomaticDarkModeStartTime(hour: Int, minute: Int) {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                guard let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) else { return }
+                do {
+                    try realm.write {
+                        options.autoDarkModeStartHour = hour
+                        options.autoDarkModeStartMinute = minute
+                    }
+                } catch {
+                    #if DEBUG
+                        print("\(#function): Error: \(error)")
+                    #endif
+                }
+            }
+        }
+    }
+
+    static func setAutomaticDarkModeEndTime(hour: Int, minute: Int) {
+        DispatchQueue(label: realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                guard let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) else { return }
+                do {
+                    try realm.write {
+                        options.autoDarkModeEndHour = hour
+                        options.autoDarkModeEndMinute = minute
+                    }
+                } catch {
+                    #if DEBUG
+                        print("\(#function): Error: \(error)")
+                    #endif
+                }
+            }
+        }
+    }
+
+    // MARK: Routines+
+
     dynamic var routinesPlusPurchased: Bool = false
     dynamic var purchasedProduct: String = ""
-    // dynamic var purchaseExpiration: Date?
 
     dynamic var cloudSync: Bool = false
 
@@ -339,38 +478,8 @@ import RealmSwift
         return dateComponent.date!
     }
 
-    static func getDarkModeStatus() -> Bool {
-        var darkMode = false
-        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    darkMode = options.darkMode
-                }
-            }
-        }
-        return darkMode
-    }
-
-    static func setDarkMode(_ bool: Bool) {
-        #if DEBUG
-            print("Setting dark mode to: \(bool)")
-        #endif
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    // print("Options UUID: \(options.optionsKey)")
-                    do {
-                        try realm.write {
-                            options.darkMode = bool
-                        }
-                    } catch {
-                        fatalError("Failed to save dark mode: \(error)")
-                    }
-                }
-            }
-        }
+    static func getCurrentGenericDate() -> Date {
+        return getDateFromComponents(hour: getHour(date: Date()), minute: getMinute(date: Date()))
     }
 
     static func getSegmentTimeString(segment: Int) -> String {

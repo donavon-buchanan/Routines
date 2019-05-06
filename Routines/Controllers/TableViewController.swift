@@ -804,29 +804,27 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     var debugOptionsToken: NotificationToken?
     var optionsToken: NotificationToken?
 
+    let automaticDarkModeTimer = AutomaticDarkModeTimer()
+
     func observeOptions() {
         let realm = try! Realm()
         if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//            #if DEBUG
-//                debugOptionsToken = options.observe { change in
-//                    switch change {
-//                    case let .change(properties):
-//                        properties.forEach { propertyChange in
-//                            print("Options property \(propertyChange.name) changed from \(propertyChange.oldValue.debugDescription) to \(propertyChange.newValue.debugDescription).")
-//                        }
-//                    case let .error(error):
-//                        print("Options observation error occurred: \(error)")
-//                    case .deleted:
-//                        print("The object was deleted.")
-//                    }
-//                }
-//            #endif
             optionsToken = options.observe { change in
                 switch change {
                 case let .change(properties):
                     properties.forEach { propertyChange in
                         if propertyChange.name == "darkMode" {
                             TableViewController.setAppearance(segment: self.tabBarController?.selectedIndex ?? 0)
+                        }
+                        if propertyChange.name == "autoDarkMode" || propertyChange.name == "autoDarkModeStartHour" || propertyChange.name == "autoDarkModeStartMinute" || propertyChange.name == "autoDarkModeEndHour" || propertyChange.name == "autoDarkModeEndMinute" {
+                            if Options.getAutomaticDarkModeStatus() {
+                                self.automaticDarkModeTimer.startTimer()
+                            } else {
+                                self.automaticDarkModeTimer.stopTimer()
+                            }
+                            #if DEBUG
+                                print("Automatic Dark Mode property changed")
+                            #endif
                         }
                     }
                 case let .error(error):
