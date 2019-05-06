@@ -36,7 +36,7 @@ class TaskTableViewCell: UITableViewCell {
 
         // Show colored bar based on segment when viewing all tasks
         barView.tag = 2
-        barView.frame = CGRect(x: 0, y: 0, width: 7, height: frame.height)
+        barView.frame = CGRect(x: 0, y: 0, width: 7, height: 200)
         barView.backgroundColor = segmentColor
         addSubview(barView)
 
@@ -44,7 +44,7 @@ class TaskTableViewCell: UITableViewCell {
         selectedBackgroundView?.theme_backgroundColor = GlobalPicker.backgroundColor
 
         // Have to set up the same for the background view during selection
-        backgroundBarView.frame = CGRect(x: 0, y: 0, width: 7, height: frame.height)
+        backgroundBarView.frame = CGRect(x: 0, y: 0, width: 7, height: 200)
         backgroundBarView.tag = 2
         backgroundBarView.backgroundColor = segmentColor
         selectedBackgroundView?.addSubview(backgroundBarView)
