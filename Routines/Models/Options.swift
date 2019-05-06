@@ -56,7 +56,7 @@ import RealmSwift
         #if DEBUG
             print("Setting dark mode to: \(bool)")
         #endif
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {

@@ -817,6 +817,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                             TableViewController.setAppearance(segment: self.tabBarController?.selectedIndex ?? 0)
                         }
                         if propertyChange.name == "autoDarkMode" || propertyChange.name == "autoDarkModeStartHour" || propertyChange.name == "autoDarkModeStartMinute" || propertyChange.name == "autoDarkModeEndHour" || propertyChange.name == "autoDarkModeEndMinute" {
+                            Options.automaticDarkModeCheck()
                             if Options.getAutomaticDarkModeStatus() {
                                 self.automaticDarkModeTimer.startTimer()
                             } else {

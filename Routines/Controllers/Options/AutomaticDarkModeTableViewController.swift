@@ -16,8 +16,8 @@ class AutomaticDarkModeTableViewController: UITableViewController {
     @IBOutlet var automaticDarkModeSwitch: UISwitch!
     @IBAction func automaticDarkModeSwitchAction(_ sender: UISwitch) {
         Options.setAutomaticDarkModeStatus(sender.isOn)
-        Options.automaticDarkModeCheck()
-        refreshUI()
+//        Options.automaticDarkModeCheck()
+        perform(#selector(refreshUI), with: nil, afterDelay: 0.2)
     }
 
     @IBOutlet var startTimeDatePicker: UIDatePicker!
@@ -25,8 +25,8 @@ class AutomaticDarkModeTableViewController: UITableViewController {
         let hour = Options.getHour(date: sender.date)
         let minute = Options.getMinute(date: sender.date)
         Options.setAutomaticDarkModeStartTime(hour: hour, minute: minute)
-        Options.automaticDarkModeCheck()
-        refreshUI()
+//        Options.automaticDarkModeCheck()
+        perform(#selector(refreshUI), with: nil, afterDelay: 0.2)
     }
 
     @IBOutlet var endTimeDatePicker: UIDatePicker!
@@ -34,8 +34,8 @@ class AutomaticDarkModeTableViewController: UITableViewController {
         let hour = Options.getHour(date: sender.date)
         let minute = Options.getMinute(date: sender.date)
         Options.setAutomaticDarkModeEndTime(hour: hour, minute: minute)
-        Options.automaticDarkModeCheck()
-        refreshUI()
+//        Options.automaticDarkModeCheck()
+        perform(#selector(refreshUI), with: nil, afterDelay: 0.2)
     }
 
     func setUpUI() {
@@ -71,7 +71,7 @@ class AutomaticDarkModeTableViewController: UITableViewController {
         automaticDarkModeLabel.theme_textColor = GlobalPicker.cellTextColors
     }
 
-    func refreshUI() {
+    @objc func refreshUI() {
         DispatchQueue.main.async {
             // Set view theme
             self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
