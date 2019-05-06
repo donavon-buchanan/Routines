@@ -804,8 +804,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     var debugOptionsToken: NotificationToken?
     var optionsToken: NotificationToken?
 
-    let automaticDarkModeTimer = AutomaticDarkModeTimer()
-
     func observeOptions() {
         let realm = try! Realm()
         if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
@@ -816,13 +814,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                         if propertyChange.name == "darkMode" {
                             TableViewController.setAppearance(segment: self.tabBarController?.selectedIndex ?? 0)
                         }
-                        if propertyChange.name == "autoDarkMode" || propertyChange.name == "autoDarkModeStartHour" || propertyChange.name == "autoDarkModeStartMinute" || propertyChange.name == "autoDarkModeEndHour" || propertyChange.name == "autoDarkModeEndMinute" {
-                            Options.automaticDarkModeCheck()
-                            if Options.getAutomaticDarkModeStatus() {
-                                self.automaticDarkModeTimer.startTimer()
-                            } else {
-                                self.automaticDarkModeTimer.stopTimer()
-                            }
+                        if propertyChange.name == "autoDarkMode" {
+                            AppDelegate.setAutomaticDarkModeTimer()
                             #if DEBUG
                                 print("Automatic Dark Mode property changed")
                             #endif
