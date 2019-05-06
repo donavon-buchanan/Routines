@@ -100,9 +100,13 @@ import RealmSwift
                 print("endTime: \(endTime)")
             #endif
             if Options.getCurrentGenericDate() >= startTime || Options.getCurrentGenericDate() <= endTime {
-                Options.setDarkMode(true)
+                if !Options.getDarkModeStatus() {
+                    Options.setDarkMode(true)
+                }
             } else {
-                Options.setDarkMode(false)
+                if Options.getDarkModeStatus() {
+                    Options.setDarkMode(false)
+                }
             }
         }
     }

@@ -19,6 +19,15 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
 
+    static var automaticDarkModeTimer = AutomaticDarkModeTimer()
+    static func setAutomaticDarkModeTimer() {
+        if Options.getAutomaticDarkModeStatus() {
+            automaticDarkModeTimer.startTimer()
+        } else {
+            automaticDarkModeTimer.stopTimer()
+        }
+    }
+
 //    let center = UNUserNotificationCenter.current()
     var shortcutItemToProcess: UIApplicationShortcutItem?
 
@@ -243,7 +252,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         removeOrphanedNotifications()
 
-        // Options.automaticDarkModeTimer()
+        AppDelegate.setAutomaticDarkModeTimer()
         #if DEBUG
             print("\(#function) - End")
         #endif
