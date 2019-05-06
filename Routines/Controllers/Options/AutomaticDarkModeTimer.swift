@@ -30,21 +30,23 @@ class AutomaticDarkModeTimer {
     }
 
     @objc func automaticDarkModeCheck() {
-        #if DEBUG
-            print(#function)
-        #endif
-        if Options.getAutomaticDarkModeStatus() {
-            guard let startTime = Options.getAutomaticDarkModeStartTime() else { return }
-            guard let endTime = Options.getAutomaticDarkModeEndTime() else { return }
+        DispatchQueue.main.async {
             #if DEBUG
-                print("Current Generic Time: \(Options.getCurrentGenericDate())")
-                print("startTime: \(startTime)")
-                print("endTime: \(endTime)")
+                print(#function)
             #endif
-            if Options.getCurrentGenericDate() >= startTime || Options.getCurrentGenericDate() <= endTime {
-                Options.setDarkMode(true)
-            } else {
-                Options.setDarkMode(false)
+            if Options.getAutomaticDarkModeStatus() {
+                guard let startTime = Options.getAutomaticDarkModeStartTime() else { return }
+                guard let endTime = Options.getAutomaticDarkModeEndTime() else { return }
+                #if DEBUG
+                    print("Current Generic Time: \(Options.getCurrentGenericDate())")
+                    print("startTime: \(startTime)")
+                    print("endTime: \(endTime)")
+                #endif
+                if Options.getCurrentGenericDate() >= startTime || Options.getCurrentGenericDate() <= endTime {
+                    Options.setDarkMode(true)
+                } else {
+                    Options.setDarkMode(false)
+                }
             }
         }
     }
