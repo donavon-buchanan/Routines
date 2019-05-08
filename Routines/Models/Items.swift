@@ -160,7 +160,7 @@ import UserNotifications
                 if let item = realm.object(ofType: Items.self, forPrimaryKey: id) {
                     let itemSegment = item.segment
                     // Only count the items who's segment is equal or greater than the current item
-                    // TODO: Maybe completeUntil should be compared against item completeUntil instead of endOfDay
+                    // TODO: Maybe should match this against "originalSegment"?
                     let items = realm.objects(Items.self).filter("segment >= %@ AND isDeleted = %@ AND completeUntil <= %@", itemSegment, false, item.completeUntil).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
                     guard let currentItemIndex = items.index(of: item) else { return }
                     #if DEBUG
