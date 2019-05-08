@@ -8,7 +8,9 @@
 
 import Foundation
 
-struct Messages {
+struct AppStrings {
+    // MARK: - IAP Alerts
+
     static let unknownError = "Unkown Error. Please contact support"
     static let checkConnection = "Please check your internet connection and try again."
     static let purchaseFailed = "Purchase Failed"
@@ -42,4 +44,8 @@ struct Messages {
     static let fetchedReceiptMessage = "Successfully fetched new receipt."
     static let receiptFailed = "Refresh Failed"
     static let receiptFailedMessage = "Failed to refresh receipt. Please contact support. Error: "
+
+    // MARK: - User Interface
+
+    static let allDay = "All Day"
 }

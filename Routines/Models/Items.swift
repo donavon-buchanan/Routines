@@ -277,6 +277,8 @@ import UserNotifications
         // Also check if item hasn't been marked as complete already
         if Options.getSegmentNotification(segment: segment), completeUntil < Date().endOfDay {
             createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+        } else if Options.getSegmentNotification(segment: segment), completeUntil > Date().endOfDay {
+            createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate.addingTimeInterval(86400))
         }
     }
 
