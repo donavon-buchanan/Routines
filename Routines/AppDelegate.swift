@@ -19,7 +19,9 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
 
-    static var automaticDarkModeTimer = AutomaticDarkModeTimer()
+    static let afterSyncTimer = AfterSyncTimer()
+
+    static let automaticDarkModeTimer = AutomaticDarkModeTimer()
     static func setAutomaticDarkModeTimer() {
         if Options.getAutomaticDarkModeStatus() {
             automaticDarkModeTimer.startTimer()
@@ -170,7 +172,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             print("Received push notification")
         #endif
 
-        realmSync()
+        AppDelegate.afterSyncTimer.startTimer()
     }
 
     func applicationWillResignActive(_: UIApplication) {
@@ -582,8 +584,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var notificationToken: NotificationToken?
 
-    private func realmSync() {
+    @objc private func realmSync() {
         // Observe Results Notifications
+        // TODO: This seems like a stupid way to do this
         let realm = try! Realm()
         let items = realm.objects(Items.self)
 
@@ -597,6 +600,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 AppDelegate.updateBadgeFromPush()
             }
         }
+    }
+
+    @objc static func refreshAndUpdate() {
+        AppDelegate.refreshNotifications()
+        AppDelegate.updateBadgeFromPush()
+
+        // called from timer, so invalidate when done
+        AppDelegate.afterSyncTimer.stopTimer()
     }
 
     deinit {
