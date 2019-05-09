@@ -68,6 +68,9 @@ class OptionsTableViewController: UITableViewController {
     }
 
     @IBAction func notificationSwitchToggled(_ sender: UISwitch) {
+        if sender.isOn {
+            checkNotificationPermission()
+        }
         switch sender.tag {
         case 1:
             Options.setSegmentNotification(segment: 1, bool: sender.isOn)
@@ -133,38 +136,27 @@ class OptionsTableViewController: UITableViewController {
         let haptic = UIImpactFeedbackGenerator(style: .light)
         switch indexPath.section {
         case 1:
+            checkNotificationPermission()
             switch indexPath.row {
             case 1:
                 // print("Tapped Afternoon Cell")
                 let isOn = !afternoonSwitch.isOn
                 afternoonSwitch.setOn(isOn, animated: true)
-                //                addOrRemoveNotifications(isOn: isOn, segment: 1)
-                //                // print("Afternoon switch is now set to: \(afternoonSwitch.isOn)")
-                //                updateNotificationOptions(segment: 1, isOn: afternoonSwitch.isOn)
                 haptic.impactOccurred()
             case 2:
                 // print("Tapped Evening Cell")
                 let isOn = !eveningSwitch.isOn
                 eveningSwitch.setOn(isOn, animated: true)
-                //                addOrRemoveNotifications(isOn: isOn, segment: 2)
-                //                // print("Evening switch is now set to: \(eveningSwitch.isOn)")
-                //                updateNotificationOptions(segment: 2, isOn: eveningSwitch.isOn)
                 haptic.impactOccurred()
             case 3:
                 // print("Tapped Night Cell")
                 let isOn = !nightSwitch.isOn
                 nightSwitch.setOn(isOn, animated: true)
-                //                addOrRemoveNotifications(isOn: isOn, segment: 3)
-                //                // print("Night switch is now set to: \(nightSwitch.isOn)")
-                //                updateNotificationOptions(segment: 3, isOn: nightSwitch.isOn)
                 haptic.impactOccurred()
             default:
                 // print("Tapped Morning Cell")
                 let isOn = !morningSwitch.isOn
                 morningSwitch.setOn(isOn, animated: true)
-                //                addOrRemoveNotifications(isOn: isOn, segment: 0)
-                //                // print("Morning switch is now set to: \(morningSwitch.isOn)")
-                //                updateNotificationOptions(segment: 0, isOn: morningSwitch.isOn)
                 haptic.impactOccurred()
             }
         case 2:

@@ -9,15 +9,41 @@
 import StoreKit
 import SwiftyStoreKit
 import UIKit
+import UserNotifications
 
 extension UIViewController {
-    // MARK: Segues
+    // MARK: - Notifications
+
+    func checkNotificationPermission() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: .alert) { notificationsOn, _ in
+            if !notificationsOn {
+                self.notificationPermissionsAlert()
+            }
+        }
+    }
+
+    // MARK: - Segues
 
     func segueToRoutinesPlusViewController() {
         guard (AppDelegate.productInfo?.retrievedProducts.count ?? 0) > 0 else { showFailAlert(); return }
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let RoutinesPlusViewController = storyBoard.instantiateViewController(withIdentifier: "RoutinesPlusView") as! RoutinesPlusViewController
         navigationController?.pushViewController(RoutinesPlusViewController, animated: true)
+    }
+
+    // MARK: - Settings Alerts
+
+    func notificationPermissionsAlert() {
+        let alertController = UIAlertController(title: AppStrings.notificationPermissionsAlertTitle, message: AppStrings.notificationPermissionsMessage, preferredStyle: .alert)
+        let notNowAction = UIAlertAction(title: "Not Now", style: .cancel, handler: nil)
+        let settingsAction = UIAlertAction(title: "Go to Settings", style: .default) { _ in
+            // go to app's Settings
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        }
+        alertController.addAction(notNowAction)
+        alertController.addAction(settingsAction)
+        showAlert(alert: alertController)
     }
 
     // MARK: - IAP Alerts

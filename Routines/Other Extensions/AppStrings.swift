@@ -48,4 +48,9 @@ struct AppStrings {
     // MARK: - User Interface
 
     static let allDay = "All Day"
+
+    // MARK: - Notification Alerts
+
+    static let notificationPermissionsMessage = "Looks like you've disabled notifications permissions for this app in iOS Settings. You'll have to enable notifications again for these setings to take effect."
+    static let notificationPermissionsAlertTitle = "Enable Notifications?"
 }
