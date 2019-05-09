@@ -213,11 +213,7 @@ class OptionsTableViewController: UITableViewController {
         case 1:
             return "Enable to receive notifications at the start of each period"
         case 3:
-            if Options.getPurchasedStatus() {
-                return "Thanks for your support!"
-            } else {
-                return "Tap to unlock"
-            }
+            return "Thanks for your support!"
         default:
             return nil
         }
@@ -279,7 +275,7 @@ class OptionsTableViewController: UITableViewController {
         nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: true)
 
         cloudSyncSwitch.setOn(Options.getCloudSync(), animated: true)
-        cloudSyncSwitch.isEnabled = Options.getPurchasedStatus()
+//        cloudSyncSwitch.isEnabled = Options.getPurchasedStatus()
 
         darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: true)
         darkModeSwtich.isEnabled = !Options.getAutomaticDarkModeStatus()
@@ -295,15 +291,9 @@ class OptionsTableViewController: UITableViewController {
 
         taskPrioritiesLabel.theme_textColor = GlobalPicker.cellTextColors
 
-        if Options.getPurchasedStatus() {
-            taskPrioritiesStatusLabel.text = "Unlocked"
-            taskPrioritiesStatusLabel.theme_textColor = GlobalPicker.textColor
-            taskPrioritiesCell.accessoryType = .none
-        } else {
-            taskPrioritiesStatusLabel.text = "Disabled"
-            taskPrioritiesStatusLabel.textColor = .lightGray
-            taskPrioritiesCell.accessoryType = .disclosureIndicator
-        }
+        taskPrioritiesStatusLabel.text = "Unlocked"
+        taskPrioritiesStatusLabel.theme_textColor = GlobalPicker.textColor
+        taskPrioritiesCell.accessoryType = .none
 
         morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
         afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
@@ -376,12 +366,8 @@ class OptionsTableViewController: UITableViewController {
     // MARK: - IAP
 
     func segueToAutomaticDarkModeTableView() {
-        if !Options.getPurchasedStatus() {
-            segueToRoutinesPlusViewController()
-        } else {
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let AutomaticDarkModeTableViewController = storyBoard.instantiateViewController(withIdentifier: "AutomaticDarkModeTableView") as! AutomaticDarkModeTableViewController
-            navigationController?.pushViewController(AutomaticDarkModeTableViewController, animated: true)
-        }
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let AutomaticDarkModeTableViewController = storyBoard.instantiateViewController(withIdentifier: "AutomaticDarkModeTableView") as! AutomaticDarkModeTableViewController
+        navigationController?.pushViewController(AutomaticDarkModeTableViewController, animated: true)
     }
 }

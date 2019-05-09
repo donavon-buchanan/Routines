@@ -570,14 +570,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     static func setSync() {
-        if Options.getPurchasedStatus(), Options.getCloudSync() {
-            AppDelegate.syncEngine = SyncEngine(objects: [
-                SyncObject<Items>(),
-                SyncObject<Options>(),
+        AppDelegate.syncEngine = SyncEngine(objects: [
+            SyncObject<Items>(),
+            SyncObject<Options>(),
             ])
-        } else {
-            AppDelegate.syncEngine = nil
-        }
     }
 
     // MARK: - Update after Notifications

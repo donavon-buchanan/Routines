@@ -156,9 +156,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         title = setNavTitle()
         // loadItems()
-        if Options.getPurchasedStatus(), Options.getPurchasedProduct() != "" {
-            verifyPurchase(product: RegisteredPurchase(rawValue: Options.getPurchasedProduct())!)
-        }
+//        if Options.getPurchasedStatus(), Options.getPurchasedProduct() != "" {
+//            verifyPurchase(product: RegisteredPurchase(rawValue: Options.getPurchasedProduct())!)
+//        }
 
         // prefetch prices
         if !Options.getPurchasedStatus() {
