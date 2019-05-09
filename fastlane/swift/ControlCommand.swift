@@ -51,12 +51,12 @@ struct ControlCommand: RubyCommandable {
     let message: String?
     let shutdownCommandType: ShutdownCommandType
     var commandJson: String {
-        var jsonDictionary: [String: Any] = [ControlCommand.commandKey: self.shutdownCommandType.token]
+        var jsonDictionary: [String: Any] = [ControlCommand.commandKey : self.shutdownCommandType.token]
 
         if let message = message {
             jsonDictionary[ShutdownCommandType.userMessageKey] = message
         }
-        if case let .cancel(reason) = shutdownCommandType {
+        if case .cancel(let reason) = shutdownCommandType {
             jsonDictionary[ShutdownCommandType.CancelReason.reasonKey] = reason.reasonText
         }
 
@@ -66,7 +66,7 @@ struct ControlCommand: RubyCommandable {
     }
 
     init(commandType: ShutdownCommandType, message: String? = nil) {
-        shutdownCommandType = commandType
+        self.shutdownCommandType = commandType
         self.message = message
     }
 }
