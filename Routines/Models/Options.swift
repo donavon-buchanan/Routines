@@ -201,7 +201,11 @@ import RealmSwift
                 status = options?.cloudSync ?? false
             }
         }
-        return status
+        #if targetEnvironment(simulator)
+            return true
+        #else
+            return status
+        #endif
     }
 
     static func setCloudSync(toggle: Bool) {
@@ -229,7 +233,11 @@ import RealmSwift
                 status = options?.routinesPlusPurchased ?? false
             }
         }
-        return status
+        #if targetEnvironment(simulator)
+            return true
+        #else
+            return status
+        #endif
     }
 
     static func setPurchasedStatus(status: Bool) {
@@ -267,7 +275,11 @@ import RealmSwift
     static func getPurchasedProduct() -> String {
         let realm = try! Realm()
         let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-        return options?.purchasedProduct ?? ""
+        #if targetEnvironment(simulator)
+            return ""
+        #else
+            return options?.purchasedProduct ?? ""
+        #endif
     }
 
 //    static func getPurchaseExpiration() -> Date? {
