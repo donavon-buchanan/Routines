@@ -16,7 +16,7 @@ extension UIViewController {
 
     func checkNotificationPermission() {
         let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: .alert) { notificationsOn, _ in
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { notificationsOn, _ in
             if !notificationsOn {
                 self.notificationPermissionsAlert()
             }
@@ -35,15 +35,17 @@ extension UIViewController {
     // MARK: - Settings Alerts
 
     func notificationPermissionsAlert() {
-        let alertController = UIAlertController(title: AppStrings.notificationPermissionsAlertTitle, message: AppStrings.notificationPermissionsMessage, preferredStyle: .alert)
-        let notNowAction = UIAlertAction(title: "Not Now", style: .cancel, handler: nil)
-        let settingsAction = UIAlertAction(title: "Go to Settings", style: .default) { _ in
-            // go to app's Settings
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: AppStrings.notificationPermissionsAlertTitle, message: AppStrings.notificationPermissionsMessage, preferredStyle: .alert)
+            let notNowAction = UIAlertAction(title: "Not Now", style: .cancel, handler: nil)
+            let settingsAction = UIAlertAction(title: "Go to Settings", style: .default) { _ in
+                // go to app's Settings
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            }
+            alertController.addAction(settingsAction)
+            alertController.addAction(notNowAction)
+            self.showAlert(alert: alertController)
         }
-        alertController.addAction(notNowAction)
-        alertController.addAction(settingsAction)
-        showAlert(alert: alertController)
     }
 
     // MARK: - IAP Alerts
@@ -63,9 +65,11 @@ extension UIViewController {
     }
 
     func showAlert(alert: UIAlertController) {
-        guard let _ = self.presentedViewController else {
-            present(alert, animated: true, completion: nil)
-            return
+        DispatchQueue.main.async {
+            guard let _ = self.presentedViewController else {
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
         }
     }
 
