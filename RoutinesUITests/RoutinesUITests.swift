@@ -27,7 +27,8 @@ class RoutinesUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
+    // Would be nice if somewhere here it mentioned that the naming convention of testFuncName is required
+    func testGenerateScreenshots() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         let app = XCUIApplication()
