@@ -75,6 +75,13 @@
 			remoteGlobalIDString = F8B831B32155CBB000DAF60E;
 			remoteInfo = Routines;
 		};
+		F8B5C7B7228470C900FA088E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8FF259122085A180063295F /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7D7C69F1A97F463B37AAA34399549117;
+			remoteInfo = SimulatorStatusMagic;
+		};
 		F8FF259B22085A180063295F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8FF259122085A180063295F /* Pods.xcodeproj */;
@@ -338,6 +345,7 @@
 				F8FF259C22085A180063295F /* Pods_Routines.framework */,
 				F8FF259E22085A180063295F /* Realm.framework */,
 				F8FF25A022085A180063295F /* RealmSwift.framework */,
+				F8B5C7B8228470C900FA088E /* SimulatorStatusMagic.framework */,
 				F8FF25A222085A180063295F /* SwiftMessages.framework */,
 				F8FF25A422085A180063295F /* SwiftMessages.bundle */,
 				F8FF25A622085A180063295F /* SwiftTheme.framework */,
@@ -465,6 +473,13 @@
 			remoteRef = F87D49F82269AA1800845E0D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		F8B5C7B8228470C900FA088E /* SimulatorStatusMagic.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SimulatorStatusMagic.framework;
+			remoteRef = F8B5C7B7228470C900FA088E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		F8FF259C22085A180063295F /* Pods_Routines.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -563,6 +578,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-Routines/Pods-Routines-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SimulatorStatusMagic/SimulatorStatusMagic.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftMessages/SwiftMessages.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftTheme/SwiftTheme.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyStoreKit/SwiftyStoreKit.framework",
@@ -573,6 +589,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SimulatorStatusMagic.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftMessages.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftTheme.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyStoreKit.framework",
@@ -612,7 +629,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftformat >/dev/null; then\nswiftformat . --exclude Pods,Generated --swiftversion 5\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftformat >/dev/null; then\nswiftformat . --exclude Pods,Generated,/Users/donavon/Developer/Projects/Routines/fastlane/* --swiftversion 5\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
 		};
 		F890109921F9A85A00ED2002 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;

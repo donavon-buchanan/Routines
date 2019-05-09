@@ -1,0 +1,9 @@
+//
+//  RoutinesUITests.swiftformat
+//  RoutinesUITests
+//
+//  Created by Donavon Buchanan on 5/9/19.
+//  Copyright © 2019 Donavon Buchanan. All rights reserved.
+//
+
+--exclude *.swift
