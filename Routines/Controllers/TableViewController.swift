@@ -157,6 +157,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         title = setNavTitle()
         // loadItems()
         if Options.getPurchasedStatus(), Options.getPurchasedProduct() != "" {
+            // TODO: Need actual error handling here.
             verifyPurchase(product: RegisteredPurchase(rawValue: Options.getPurchasedProduct())!)
         }
 
