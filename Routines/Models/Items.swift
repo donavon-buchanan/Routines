@@ -278,7 +278,7 @@ import UserNotifications
         if Options.getSegmentNotification(segment: segment), completeUntil < Date().endOfDay {
             createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
         } else if Options.getSegmentNotification(segment: segment), completeUntil > Date().endOfDay {
-            createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate.addingTimeInterval(86400))
+            createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
         }
     }
 

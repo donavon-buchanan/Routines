@@ -13,8 +13,8 @@ class Fastfile: LaneFile {
         desc("Generate new localized screenshots")
         captureScreenshots(
             workspace: "Routines.xcworkspace",
-            scheme: "RoutinesUITests",
-            skip_open_summary: true,
+            skipOpenSummary: true,
+            scheme: "RoutinesUITests"
         )
     }
 }
