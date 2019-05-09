@@ -15,7 +15,7 @@
 import Foundation
 import XCTest
 
-var deviceLanguage = "en-US"
+var deviceLanguage = ""
 var locale = ""
 
 func setupSnapshot(_ app: XCUIApplication, waitForAnimations: Bool = true) {

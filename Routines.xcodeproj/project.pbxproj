@@ -36,13 +36,13 @@
 		F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831BB2155CBB000DAF60E /* Main.storyboard */; };
 		F8B831C22155CBB100DAF60E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831C02155CBB100DAF60E /* LaunchScreen.storyboard */; };
 		F8B831CD2155CBE300DAF60E /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831CC2155CBE300DAF60E /* Items.swift */; };
+		F8C9C2E32284154500F20ABA /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C9C2E22284154500F20ABA /* SnapshotHelper.swift */; };
 		F8CBBA5721A9058D00A4FFFD /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */; };
 		F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */; };
 		F8CE29C622714E9A00CD9BAE /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CE29C522714E9A00CD9BAE /* UIColorExtensions.swift */; };
 		F8D5DB492269AC59005857F2 /* NetworkActivityIndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5DB482269AC59005857F2 /* NetworkActivityIndicatorManager.swift */; };
 		F8D5DB532269BCAD005857F2 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */; };
 		F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */; };
-		F8DEEE3922840AD600840F3B /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DEEE3022840AD600840F3B /* SnapshotHelper.swift */; };
 		F8E031862269C410002C2E32 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E031852269C410002C2E32 /* AppStrings.swift */; };
 		F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */; };
 		F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */; };
@@ -157,13 +157,13 @@
 		F8B831C12155CBB100DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F8B831C32155CBB100DAF60E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F8B831CC2155CBE300DAF60E /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
+		F8C9C2E22284154500F20ABA /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatTableViewController.swift; sourceTree = "<group>"; };
 		F8CE29C522714E9A00CD9BAE /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		F8D5DB482269AC59005857F2 /* NetworkActivityIndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkActivityIndicatorManager.swift; sourceTree = "<group>"; };
 		F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTableViewController.swift; sourceTree = "<group>"; };
-		F8DEEE3022840AD600840F3B /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		F8E031852269C410002C2E32 /* AppStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStrings.swift; sourceTree = "<group>"; };
 		F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTableViewController.swift; sourceTree = "<group>"; };
 		F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTableViewCell.swift; sourceTree = "<group>"; };
@@ -249,7 +249,7 @@
 		F8AD3C54228403080003CFCA /* RoutinesUITests */ = {
 			isa = PBXGroup;
 			children = (
-				F8DEEE3022840AD600840F3B /* SnapshotHelper.swift */,
+				F8C9C2E22284154500F20ABA /* SnapshotHelper.swift */,
 				F8AD3C55228403080003CFCA /* RoutinesUITests.swift */,
 				F8AD3C57228403080003CFCA /* Info.plist */,
 			);
@@ -640,7 +640,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8AD3C56228403080003CFCA /* RoutinesUITests.swift in Sources */,
-				F8DEEE3922840AD600840F3B /* SnapshotHelper.swift in Sources */,
+				F8C9C2E32284154500F20ABA /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
