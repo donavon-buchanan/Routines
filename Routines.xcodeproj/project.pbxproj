@@ -23,13 +23,13 @@
 		F85213B5218F5EE600291CFE /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85213B4218F5EE600291CFE /* NavigationViewController.swift */; };
 		F85D2A8A227036CF009CE6CE /* RoutinesPlusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85D2A89227036CF009CE6CE /* RoutinesPlusViewController.swift */; };
 		F85D2A8C22703892009CE6CE /* iAPSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85D2A8B22703892009CE6CE /* iAPSegue.swift */; };
-		F85DA34F22084C9800A6716C /* RoutinesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85DA34E22084C9800A6716C /* RoutinesUITests.swift */; };
 		F86AFEB821AFD1B4004DC7F2 /* UITabBarControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86AFEB721AFD1B4004DC7F2 /* UITabBarControllerExtension.swift */; };
 		F87D49EF2269AA1700845E0D /* AppSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87D49EE2269AA1700845E0D /* AppSecrets.swift */; };
 		F896D96F22802E5B0005C899 /* AutomaticDarkModeTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F896D96E22802E5B0005C899 /* AutomaticDarkModeTimer.swift */; };
 		F8A8B2E2228356F9005C9E56 /* AfterSyncTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A8B2E1228356F9005C9E56 /* AfterSyncTimer.swift */; };
 		F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */; };
 		F8ACD4642269F89100E136E9 /* IAPHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ACD4632269F89100E136E9 /* IAPHandler.swift */; };
+		F8AD3C56228403080003CFCA /* RoutinesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AD3C55228403080003CFCA /* RoutinesUITests.swift */; };
 		F8B30787219C0DAB00437AAA /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B30786219C0DAB00437AAA /* Themes.swift */; };
 		F8B30789219C13B500437AAA /* GlobalPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B30788219C13B500437AAA /* GlobalPicker.swift */; };
 		F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831B72155CBB000DAF60E /* AppDelegate.swift */; };
@@ -50,10 +50,6 @@
 		F8FF25AA22085A2C0063295F /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FF25A022085A180063295F /* RealmSwift.framework */; };
 		F8FF25AB22085A2C0063295F /* SwiftMessages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FF25A222085A180063295F /* SwiftMessages.framework */; };
 		F8FF25AC22085A2C0063295F /* SwiftTheme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FF25A622085A180063295F /* SwiftTheme.framework */; };
-		F8FF25AE22085A3C0063295F /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FF259E22085A180063295F /* Realm.framework */; };
-		F8FF25AF22085A3C0063295F /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FF25A022085A180063295F /* RealmSwift.framework */; };
-		F8FF25B022085A3C0063295F /* SwiftMessages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FF25A222085A180063295F /* SwiftMessages.framework */; };
-		F8FF25B122085A3C0063295F /* SwiftTheme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FF25A622085A180063295F /* SwiftTheme.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,19 +60,19 @@
 			remoteGlobalIDString = 0E11D5875359CFA4E1ED1E1C803B79CF;
 			remoteInfo = IceCream;
 		};
-		F85DA35122084C9800A6716C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F8B831AC2155CBB000DAF60E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = F8B831B32155CBB000DAF60E;
-			remoteInfo = Routines;
-		};
 		F87D49F82269AA1800845E0D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8FF259122085A180063295F /* Pods.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = C4319CF22B98F3C6B88F5B6E05F71274;
 			remoteInfo = SwiftyStoreKit;
+		};
+		F8AD3C58228403080003CFCA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8B831AC2155CBB000DAF60E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F8B831B32155CBB000DAF60E;
+			remoteInfo = Routines;
 		};
 		F8FF259B22085A180063295F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -142,9 +138,6 @@
 		F85213B4218F5EE600291CFE /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		F85D2A89227036CF009CE6CE /* RoutinesPlusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinesPlusViewController.swift; sourceTree = "<group>"; };
 		F85D2A8B22703892009CE6CE /* iAPSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iAPSegue.swift; sourceTree = "<group>"; };
-		F85DA34C22084C9800A6716C /* RoutinesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoutinesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F85DA34E22084C9800A6716C /* RoutinesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinesUITests.swift; sourceTree = "<group>"; };
-		F85DA35022084C9800A6716C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F86AFEB721AFD1B4004DC7F2 /* UITabBarControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBarControllerExtension.swift; sourceTree = "<group>"; };
 		F87D49EE2269AA1700845E0D /* AppSecrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSecrets.swift; sourceTree = "<group>"; };
 		F896D96E22802E5B0005C899 /* AutomaticDarkModeTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticDarkModeTimer.swift; sourceTree = "<group>"; };
@@ -152,6 +145,9 @@
 		F8A8B2E1228356F9005C9E56 /* AfterSyncTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfterSyncTimer.swift; sourceTree = "<group>"; };
 		F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		F8ACD4632269F89100E136E9 /* IAPHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPHandler.swift; sourceTree = "<group>"; };
+		F8AD3C53228403080003CFCA /* RoutinesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoutinesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8AD3C55228403080003CFCA /* RoutinesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinesUITests.swift; sourceTree = "<group>"; };
+		F8AD3C57228403080003CFCA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F8B30786219C0DAB00437AAA /* Themes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themes.swift; sourceTree = "<group>"; };
 		F8B30788219C13B500437AAA /* GlobalPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalPicker.swift; sourceTree = "<group>"; };
 		F8B831B42155CBB000DAF60E /* Routines.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routines.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -174,14 +170,10 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		F85DA34922084C9800A6716C /* Frameworks */ = {
+		F8AD3C50228403080003CFCA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8FF25AE22085A3C0063295F /* Realm.framework in Frameworks */,
-				F8FF25AF22085A3C0063295F /* RealmSwift.framework in Frameworks */,
-				F8FF25B022085A3C0063295F /* SwiftMessages.framework in Frameworks */,
-				F8FF25B122085A3C0063295F /* SwiftTheme.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,11 +244,11 @@
 			path = "Other Extensions";
 			sourceTree = "<group>";
 		};
-		F85DA34D22084C9800A6716C /* RoutinesUITests */ = {
+		F8AD3C54228403080003CFCA /* RoutinesUITests */ = {
 			isa = PBXGroup;
 			children = (
-				F85DA34E22084C9800A6716C /* RoutinesUITests.swift */,
-				F85DA35022084C9800A6716C /* Info.plist */,
+				F8AD3C55228403080003CFCA /* RoutinesUITests.swift */,
+				F8AD3C57228403080003CFCA /* Info.plist */,
 			);
 			path = RoutinesUITests;
 			sourceTree = "<group>";
@@ -265,7 +257,7 @@
 			isa = PBXGroup;
 			children = (
 				F8B831B62155CBB000DAF60E /* Routines */,
-				F85DA34D22084C9800A6716C /* RoutinesUITests */,
+				F8AD3C54228403080003CFCA /* RoutinesUITests */,
 				F8B831B52155CBB000DAF60E /* Products */,
 				6049E5BF6B515664E2AA6A8D /* Frameworks */,
 				245142063868388EBE73944F /* Pods */,
@@ -276,7 +268,7 @@
 			isa = PBXGroup;
 			children = (
 				F8B831B42155CBB000DAF60E /* Routines.app */,
-				F85DA34C22084C9800A6716C /* RoutinesUITests.xctest */,
+				F8AD3C53228403080003CFCA /* RoutinesUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -354,22 +346,22 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F85DA34B22084C9800A6716C /* RoutinesUITests */ = {
+		F8AD3C52228403080003CFCA /* RoutinesUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F85DA35522084C9800A6716C /* Build configuration list for PBXNativeTarget "RoutinesUITests" */;
+			buildConfigurationList = F8AD3C5A228403080003CFCA /* Build configuration list for PBXNativeTarget "RoutinesUITests" */;
 			buildPhases = (
-				F85DA34822084C9800A6716C /* Sources */,
-				F85DA34922084C9800A6716C /* Frameworks */,
-				F85DA34A22084C9800A6716C /* Resources */,
+				F8AD3C4F228403080003CFCA /* Sources */,
+				F8AD3C50228403080003CFCA /* Frameworks */,
+				F8AD3C51228403080003CFCA /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				F85DA35222084C9800A6716C /* PBXTargetDependency */,
+				F8AD3C59228403080003CFCA /* PBXTargetDependency */,
 			);
 			name = RoutinesUITests;
 			productName = RoutinesUITests;
-			productReference = F85DA34C22084C9800A6716C /* RoutinesUITests.xctest */;
+			productReference = F8AD3C53228403080003CFCA /* RoutinesUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		F8B831B32155CBB000DAF60E /* Routines */ = {
@@ -404,9 +396,8 @@
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "Donavon Buchanan";
 				TargetAttributes = {
-					F85DA34B22084C9800A6716C = {
-						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1020;
+					F8AD3C52228403080003CFCA = {
+						CreatedOnToolsVersion = 10.2.1;
 						ProvisioningStyle = Automatic;
 						TestTargetID = F8B831B32155CBB000DAF60E;
 					};
@@ -451,7 +442,7 @@
 			projectRoot = "";
 			targets = (
 				F8B831B32155CBB000DAF60E /* Routines */,
-				F85DA34B22084C9800A6716C /* RoutinesUITests */,
+				F8AD3C52228403080003CFCA /* RoutinesUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -516,7 +507,7 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		F85DA34A22084C9800A6716C /* Resources */ = {
+		F8AD3C51228403080003CFCA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -618,7 +609,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftformat >/dev/null; then\nswiftformat . --exclude Pods,Generated --swiftversion 5\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftformat >/dev/null; then\nswiftformat . --exclude Pods,Generated,/Users/donavon/Developer/Projects/Routines/RoutinesUITests/RoutinesUITests.swift --swiftversion 5\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
 		};
 		F890109921F9A85A00ED2002 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -641,11 +632,11 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		F85DA34822084C9800A6716C /* Sources */ = {
+		F8AD3C4F228403080003CFCA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F85DA34F22084C9800A6716C /* RoutinesUITests.swift in Sources */,
+				F8AD3C56228403080003CFCA /* RoutinesUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -691,10 +682,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		F85DA35222084C9800A6716C /* PBXTargetDependency */ = {
+		F8AD3C59228403080003CFCA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F8B831B32155CBB000DAF60E /* Routines */;
-			targetProxy = F85DA35122084C9800A6716C /* PBXContainerItemProxy */;
+			targetProxy = F8AD3C58228403080003CFCA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -718,13 +709,13 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		F85DA35322084C9800A6716C /* Debug */ = {
+		F8AD3C5B228403080003CFCA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G8WL98TTBE;
 				INFOPLIST_FILE = RoutinesUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = app.donavon.RoutinesUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -734,13 +725,13 @@
 			};
 			name = Debug;
 		};
-		F85DA35422084C9800A6716C /* Release */ = {
+		F8AD3C5C228403080003CFCA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G8WL98TTBE;
 				INFOPLIST_FILE = RoutinesUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = app.donavon.RoutinesUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -910,11 +901,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F85DA35522084C9800A6716C /* Build configuration list for PBXNativeTarget "RoutinesUITests" */ = {
+		F8AD3C5A228403080003CFCA /* Build configuration list for PBXNativeTarget "RoutinesUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F85DA35322084C9800A6716C /* Debug */,
-				F85DA35422084C9800A6716C /* Release */,
+				F8AD3C5B228403080003CFCA /* Debug */,
+				F8AD3C5C228403080003CFCA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

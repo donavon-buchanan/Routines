@@ -573,7 +573,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         AppDelegate.syncEngine = SyncEngine(objects: [
             SyncObject<Items>(),
             SyncObject<Options>(),
-            ])
+        ])
     }
 
     // MARK: - Update after Notifications
