@@ -34,5 +34,47 @@ class RoutinesUITests: XCTestCase {
     func testGenerateScreenshots() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        let app = XCUIApplication()
+        snapshot("Morning-Light")
+        let tabBarsQuery = app.tabBars
+        let afternoonButton = tabBarsQuery.buttons["Afternoon"]
+        afternoonButton.tap()
+        snapshot("Afternoon-Light")
+        let button = app.navigationBars["Afternoon"].children(matching: .button).element(boundBy: 2)
+        button.tap()
+        
+        let tablesQuery = app.tables
+        let askJenniferWhereSheDLikeToHaveDinnerStaticText = tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Ask Jennifer where she’d like to have dinner"]/*[[".cells.staticTexts[\"Ask Jennifer where she’d like to have dinner\"]",".staticTexts[\"Ask Jennifer where she’d like to have dinner\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        askJenniferWhereSheDLikeToHaveDinnerStaticText.swipeLeft()
+        snapshot("AllDay-Light")
+        let button2 = app.navigationBars["All Day"].children(matching: .button).element(boundBy: 2)
+        button2.tap()
+        
+        let eveningButton = tabBarsQuery.buttons["Evening"]
+        eveningButton.tap()
+        snapshot("Evening-Light")
+        tabBarsQuery.buttons["Night"].tap()
+        app.navigationBars["Night"].buttons["Options"].tap()
+        snapshot("Night-Light")
+        tablesQuery.children(matching: .other)["STYLE"].children(matching: .other)["STYLE"].swipeUp()
+        tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Dark Mode"]/*[[".cells.staticTexts[\"Dark Mode\"]",".staticTexts[\"Dark Mode\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        snapshot("Settings-Dark")
+        app.navigationBars["Settings"].buttons["Done"].tap()
+        snapshot("Night-Dark")
+        eveningButton.tap()
+        snapshot("Evening-Dark")
+        afternoonButton.tap()
+        snapshot("Afternoon-Dark")
+        button.tap()
+        askJenniferWhereSheDLikeToHaveDinnerStaticText.swipeLeft()
+        snapshot("AllDay-Dark")
+        button2.tap()
+        tabBarsQuery.buttons["Morning"].tap()
+        snapshot("Morning-Dark")
+        app.navigationBars["Morning"].buttons["Options"].tap()
+        tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Dark Mode"]/*[[".cells.staticTexts[\"Dark Mode\"]",".staticTexts[\"Dark Mode\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        snapshot("Settings-Light")
+        app.navigationBars["Settings"].buttons["Done"].tap()
     }
 }
