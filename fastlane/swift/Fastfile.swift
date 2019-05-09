@@ -5,7 +5,7 @@
 
 import Foundation
 
-class Fastfile: LaneFile { }
+class Fastfile: LaneFile {}
 
 // Please don't remove the lines below
 // They are used to detect outdated files

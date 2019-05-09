@@ -35,7 +35,7 @@ protocol RubyCommandable {
 
 extension RubyCommandable {
     var json: String {
-        return "{\"commandType\" : \"\(self.type.token)\", \"command\" : \(self.commandJson)}"
+        return "{\"commandType\" : \"\(type.token)\", \"command\" : \(commandJson)}"
     }
 }
 

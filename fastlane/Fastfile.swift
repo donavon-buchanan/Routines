@@ -9,8 +9,8 @@
 import Foundation
 
 class Fastfile: LaneFile {
-	func screenshotsLane() {
-	desc("Generate new localized screenshots")
-		captureScreenshots(workspace: "Routines.xcworkspace", scheme: "RoutinesUITests")
-	}
+    func screenshotsLane() {
+        desc("Generate new localized screenshots")
+        captureScreenshots(workspace: "Routines.xcworkspace", scheme: "RoutinesUITests")
+    }
 }

@@ -15,40 +15,40 @@
 import Foundation
 
 let logger: Logger = {
-    return Logger()
+    Logger()
 }()
 
 let runner: Runner = {
-    return Runner()
+    Runner()
 }()
 
-func desc(_ laneDescription: String) {
+func desc(_: String) {
     // no-op, this is handled in fastlane/lane_list.rb
 }
 
 class Runner {
-    fileprivate var thread: Thread!
-    fileprivate var socketClient: SocketClient!
-    fileprivate let dispatchGroup: DispatchGroup = DispatchGroup()
-    fileprivate var returnValue: String? // lol, so safe
-    fileprivate var currentlyExecutingCommand: RubyCommandable? = nil
-    fileprivate var shouldLeaveDispatchGroupDuringDisconnect = false
-    
+    private var thread: Thread!
+    private var socketClient: SocketClient!
+    private let dispatchGroup: DispatchGroup = DispatchGroup()
+    private var returnValue: String? // lol, so safe
+    private var currentlyExecutingCommand: RubyCommandable?
+    private var shouldLeaveDispatchGroupDuringDisconnect = false
+
     func executeCommand(_ command: RubyCommandable) -> String {
-        self.dispatchGroup.enter()
+        dispatchGroup.enter()
         currentlyExecutingCommand = command
         socketClient.send(rubyCommand: command)
-        
+
         let secondsToWait = DispatchTimeInterval.seconds(SocketClient.defaultCommandTimeoutSeconds)
         let connectTimeout = DispatchTime.now() + secondsToWait
-        let timeoutResult = self.dispatchGroup.wait(timeout: connectTimeout)
+        let timeoutResult = dispatchGroup.wait(timeout: connectTimeout)
         let failureMessage = "command didn't execute in: \(SocketClient.defaultCommandTimeoutSeconds) seconds"
         let success = testDispatchTimeoutResult(timeoutResult, failureMessage: failureMessage, timeToWait: secondsToWait)
         guard success else {
             log(message: "command timeout")
             fatalError()
         }
-        
+
         if let returnValue = self.returnValue {
             return returnValue
         } else {
@@ -61,17 +61,17 @@ class Runner {
 extension Runner {
     func startSocketThread(port: UInt32) {
         let secondsToWait = DispatchTimeInterval.seconds(SocketClient.connectTimeoutSeconds)
-        
-        self.dispatchGroup.enter()
-        
-        self.socketClient = SocketClient(port: port, commandTimeoutSeconds:timeout, socketDelegate: self)
-        self.thread = Thread(target: self, selector: #selector(startSocketComs), object: nil)
-        self.thread!.name = "socket thread"
-        self.thread!.start()
-        
+
+        dispatchGroup.enter()
+
+        socketClient = SocketClient(port: port, commandTimeoutSeconds: timeout, socketDelegate: self)
+        thread = Thread(target: self, selector: #selector(startSocketComs), object: nil)
+        thread!.name = "socket thread"
+        thread!.start()
+
         let connectTimeout = DispatchTime.now() + secondsToWait
-        let timeoutResult = self.dispatchGroup.wait(timeout: connectTimeout)
-        
+        let timeoutResult = dispatchGroup.wait(timeout: connectTimeout)
+
         let failureMessage = "couldn't start socket thread in: \(SocketClient.connectTimeoutSeconds) seconds"
         let success = testDispatchTimeoutResult(timeoutResult, failureMessage: failureMessage, timeToWait: secondsToWait)
         guard success else {
@@ -79,26 +79,26 @@ extension Runner {
             fatalError()
         }
     }
-    
+
     func disconnectFromFastlaneProcess() {
-        self.shouldLeaveDispatchGroupDuringDisconnect = true
-        self.dispatchGroup.enter()
+        shouldLeaveDispatchGroupDuringDisconnect = true
+        dispatchGroup.enter()
         socketClient.sendComplete()
-        
+
         let connectTimeout = DispatchTime.now() + 2
-        _ = self.dispatchGroup.wait(timeout: connectTimeout)
+        _ = dispatchGroup.wait(timeout: connectTimeout)
     }
-    
+
     @objc func startSocketComs() {
         guard let socketClient = self.socketClient else {
             return
         }
-        
+
         socketClient.connectAndOpenStreams()
-        self.dispatchGroup.leave()
+        dispatchGroup.leave()
     }
-    
-    fileprivate func testDispatchTimeoutResult(_ timeoutResult: DispatchTimeoutResult, failureMessage: String, timeToWait: DispatchTimeInterval) -> Bool {
+
+    fileprivate func testDispatchTimeoutResult(_ timeoutResult: DispatchTimeoutResult, failureMessage: String, timeToWait _: DispatchTimeInterval) -> Bool {
         switch timeoutResult {
         case .success:
             return true
@@ -109,37 +109,37 @@ extension Runner {
     }
 }
 
-extension Runner : SocketClientDelegateProtocol {
+extension Runner: SocketClientDelegateProtocol {
     func commandExecuted(serverResponse: SocketClientResponse) {
         switch serverResponse {
-        case .success(let returnedObject, let closureArgumentValue):
+        case let .success(returnedObject, closureArgumentValue):
             verbose(message: "command executed")
-            self.returnValue = returnedObject
+            returnValue = returnedObject
             if let command = self.currentlyExecutingCommand as? RubyCommand {
                 if let closureArgumentValue = closureArgumentValue {
                     command.performCallback(callbackArg: closureArgumentValue)
                 }
             }
-            self.dispatchGroup.leave()
+            dispatchGroup.leave()
         case .clientInitiatedCancelAcknowledged:
             verbose(message: "server acknowledged a cancel request")
-            self.dispatchGroup.leave()
-            
+            dispatchGroup.leave()
+
         case .alreadyClosedSockets, .connectionFailure, .malformedRequest, .malformedResponse, .serverError:
             log(message: "error encountered while executing command:\n\(serverResponse)")
-            self.dispatchGroup.leave()
-            
-        case .commandTimeout(let timeout):
+            dispatchGroup.leave()
+
+        case let .commandTimeout(timeout):
             log(message: "Runner timed out after \(timeout) second(s)")
         }
     }
-    
+
     func connectionsOpened() {
         DispatchQueue.main.async {
             verbose(message: "connected!")
         }
     }
-    
+
     func connectionsClosed() {
         DispatchQueue.main.async {
             self.thread?.cancel()
@@ -167,17 +167,18 @@ class Logger {
                 self = .normal
             }
         }
+
         case normal
         case verbose
     }
-    
+
     public static var logMode: LogMode = .normal
-    
+
     func log(message: String) {
         let timestamp = NSDate().timeIntervalSince1970
         print("[\(timestamp)]: \(message)")
     }
-    
+
     func verbose(message: String) {
         if Logger.logMode == .verbose {
             let timestamp = NSDate().timeIntervalSince1970
@@ -197,4 +198,3 @@ func verbose(message: String) {
 // Please don't remove the lines below
 // They are used to detect outdated files
 // FastlaneRunnerAPIVersion [0.9.2]
-
