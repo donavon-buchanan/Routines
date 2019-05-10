@@ -64,9 +64,7 @@ class RoutinesPlusViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         getPrices()
-        #if DEBUG
-            print("routines plus view loaded")
-        #endif
+        printDebug("routines plus view loaded")
         // Do stuff
         setUpUI()
     }
@@ -117,9 +115,7 @@ class RoutinesPlusViewController: UIViewController {
     }
 
     func setButtonText() {
-        #if DEBUG
-            print("setting prices on buttons")
-        #endif
+        printDebug("setting prices on buttons")
         monthlyButton.setTitle("\(monthlyPrice) / Month", for: .normal)
         yearlyButton.setTitle("\(yearlyPrice) / Year", for: .normal)
         lifetimeButton.setTitle("\(lifetimePrice) / Lifetime", for: .normal)

@@ -51,9 +51,7 @@ class OptionsTableViewController: UITableViewController {
             // Show Purchase Options
             segueToRoutinesPlusViewController()
         }
-        #if DEBUG
-            print("Cloud sync switch: \(sender.isOn)")
-        #endif
+        printDebug("Cloud sync switch: \(sender.isOn)")
     }
 
     // MARK: Automatic Dark Mode
@@ -169,13 +167,9 @@ class OptionsTableViewController: UITableViewController {
         case 3:
             switch indexPath.row {
             case 0:
-                #if DEBUG
-                    print("\(#function) - Case 3")
-                #endif
+                printDebug("\(#function) - Case 3")
                 if cloudSyncSwitch.isEnabled {
-                    #if DEBUG
-                        print("\(#function) - cloudSyncSwitch.isEnabled")
-                    #endif
+                    printDebug("\(#function) - cloudSyncSwitch.isEnabled")
                     cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
                     Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
                     AppDelegate.setSync()
@@ -185,9 +179,7 @@ class OptionsTableViewController: UITableViewController {
                         AppDelegate.refreshNotifications()
                     }
                 } else {
-                    #if DEBUG
-                        print("\(#function) - Case 3 else, should show purchase options")
-                    #endif
+                    printDebug("\(#function) - Case 3 else, should show purchase options")
                     segueToRoutinesPlusViewController()
                 }
             case 1:
@@ -200,9 +192,7 @@ class OptionsTableViewController: UITableViewController {
                 break
             }
         default:
-            #if DEBUG
-                print("\(#function) - Default case triggered")
-            #endif
+            printDebug("\(#function) - Default case triggered")
         }
     }
 
@@ -361,13 +351,9 @@ class OptionsTableViewController: UITableViewController {
                     }
                 // AppDelegate.refreshNotifications()
                 case let .error(error):
-                    #if DEBUG
-                        print("Options observation error occurred: \(error)")
-                    #endif
+                    printDebug("Options observation error occurred: \(error)")
                 case .deleted:
-                    #if DEBUG
-                        print("The object was deleted.")
-                    #endif
+                    printDebug("The object was deleted.")
                 }
             }
         }

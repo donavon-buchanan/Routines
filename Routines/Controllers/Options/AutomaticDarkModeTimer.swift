@@ -15,18 +15,14 @@ class AutomaticDarkModeTimer {
         guard timer == nil else { return }
         automaticDarkModeCheck()
         timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(automaticDarkModeCheck), userInfo: nil, repeats: true)
-        #if DEBUG
-            print("automatic dark mode timer started")
-        #endif
+        printDebug("automatic dark mode timer started")
     }
 
     func stopTimer() {
         guard timer != nil else { return }
         timer?.invalidate()
         timer = nil
-        #if DEBUG
-            print("automatic dark mode timer invalidated")
-        #endif
+        printDebug("automatic dark mode timer invalidated")
     }
 
     @objc func automaticDarkModeCheck() {

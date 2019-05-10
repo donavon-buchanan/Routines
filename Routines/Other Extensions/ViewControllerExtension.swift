@@ -96,14 +96,10 @@ extension UIViewController {
     func alertForPurchaseResult(result: PurchaseResult) -> UIAlertController {
         switch result {
         case let .success(product):
-            #if DEBUG
-                print("Purchase Sucessful: \(product.productId)")
-            #endif
+            printDebug("Purchase Sucessful: \(product.productId)")
             return alertWithTitleAndDismiss(title: AppStrings.purchaseCompelte, message: AppStrings.thank)
         case let .error(error):
-            #if DEBUG
-                print("Purchase Failed: \(error)")
-            #endif
+            printDebug("Purchase Failed: \(error)")
             switch error.code {
             case .cloudServiceNetworkConnectionFailed:
                 if (error as NSError).domain == SKErrorDomain {
@@ -127,9 +123,7 @@ extension UIViewController {
 
     func alertForRestorePurchases(result: RestoreResults) -> UIAlertController {
         if result.restoreFailedPurchases.count > 0 {
-            #if DEBUG
-                print(result.restoreFailedPurchases)
-            #endif
+            printDebug(result.restoreFailedPurchases)
             return alertWithTitle(title: AppStrings.restoreFailed, message: AppStrings.restoreFailedMessage)
         } else if result.restoredPurchases.count > 0 {
             return alertWithTitleAndDismiss(title: AppStrings.purchaseRestored, message: AppStrings.thank)

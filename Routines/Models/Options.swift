@@ -53,9 +53,7 @@ import RealmSwift
     }
 
     static func setDarkMode(_ bool: Bool) {
-        #if DEBUG
-            print("Setting dark mode to: \(bool)")
-        #endif
+        printDebug("Setting dark mode to: \(bool)")
         DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -88,9 +86,7 @@ import RealmSwift
     dynamic var autoDarkModeEndMinute: Int = 0
 
     static func automaticDarkModeCheck() {
-        #if DEBUG
-            print(#function + "")
-        #endif
+        printDebug(#function + "")
         if Options.getAutomaticDarkModeStatus() {
             guard let startTime = Options.getAutomaticDarkModeStartTime() else { return }
             guard let endTime = Options.getAutomaticDarkModeEndTime() else { return }
@@ -139,9 +135,7 @@ import RealmSwift
                         options.autoDarkMode = isOn
                     }
                 } catch {
-                    #if DEBUG
-                        print("\(#function): Error: \(error)")
-                    #endif
+                    printDebug("\(#function): Error: \(error)")
                 }
             }
         }
@@ -158,9 +152,7 @@ import RealmSwift
                         options.autoDarkModeStartMinute = minute
                     }
                 } catch {
-                    #if DEBUG
-                        print("\(#function): Error: \(error)")
-                    #endif
+                    printDebug("\(#function): Error: \(error)")
                 }
             }
         }
@@ -177,9 +169,7 @@ import RealmSwift
                         options.autoDarkModeEndMinute = minute
                     }
                 } catch {
-                    #if DEBUG
-                        print("\(#function): Error: \(error)")
-                    #endif
+                    printDebug("\(#function): Error: \(error)")
                 }
             }
         }
@@ -229,9 +219,7 @@ import RealmSwift
         DispatchQueue.main.async {
             let defaults = UserDefaults.standard
             let hasRun = defaults.bool(forKey: "hasRun")
-            #if DEBUG
-                print("hasRun: \(hasRun)")
-            #endif
+            printDebug("hasRun: \(hasRun)")
             if !hasRun {
                 AppDelegate.syncEngine?.pull()
             }

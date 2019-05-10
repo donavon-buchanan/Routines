@@ -13,9 +13,7 @@ class AfterSyncTimer {
 
     func startTimer() {
         guard timer == nil else { return }
-        #if DEBUG
-            print("afterSyncTimer started")
-        #endif
+        printDebug("afterSyncTimer started")
         timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(doRefresh), userInfo: nil, repeats: false)
     }
 
@@ -23,9 +21,7 @@ class AfterSyncTimer {
         guard timer != nil else { return }
         timer?.invalidate()
         timer = nil
-        #if DEBUG
-            print("afterSyncTimer invalidated")
-        #endif
+        printDebug("afterSyncTimer invalidated")
     }
 
     @objc func doRefresh() {

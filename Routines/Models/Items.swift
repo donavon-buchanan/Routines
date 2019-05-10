@@ -104,9 +104,7 @@ import UserNotifications
         if !repeats {
             softDelete()
         } else {
-            #if DEBUG
-                print("marking completed until: \(Date().startOfNextDay)")
-            #endif
+            printDebug("marking completed until: \(Date().startOfNextDay)")
             DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
@@ -130,9 +128,7 @@ import UserNotifications
 
     // Sync soft delete
     func softDelete() {
-        #if DEBUG
-            print("soft deleting item")
-        #endif
+        printDebug("soft deleting item")
         removeNotification()
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -163,13 +159,9 @@ import UserNotifications
                     // TODO: Maybe should match this against "originalSegment"?
                     let items = realm.objects(Items.self).filter("segment >= %@ AND isDeleted = %@ AND completeUntil <= %@", itemSegment, false, item.completeUntil).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
                     guard let currentItemIndex = items.index(of: item) else { return }
-                    #if DEBUG
-                        print("Item title: \(item.title!) at index: \(currentItemIndex)")
-                    #endif
+                    printDebug("Item title: \(item.title!) at index: \(currentItemIndex)")
                     badgeCount = currentItemIndex + 1
-                    #if DEBUG
-                        print("setBadgeNumber to \(badgeCount) for \(item.title!)")
-                    #endif
+                    printDebug("setBadgeNumber to \(badgeCount) for \(item.title!)")
                 }
             }
         }
@@ -202,9 +194,7 @@ import UserNotifications
     }
 
     func removeNotification() {
-        #if DEBUG
-            print("Removing notification for id: \(uuidString)")
-        #endif
+        printDebug("Removing notification for id: \(uuidString)")
         let uuidStrings: [String] = ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3", uuidString]
         // print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
@@ -232,9 +222,7 @@ import UserNotifications
             addNewNotification()
             // print("snooze completed successfully")
         }
-        #if DEBUG
-            print("Snoozing to \(segment). Original segment was \(originalSegment)")
-        #endif
+        printDebug("Snoozing to \(segment). Original segment was \(originalSegment)")
         AppDelegate.refreshNotifications()
     }
 
@@ -262,9 +250,7 @@ import UserNotifications
                         }
                     }
                 } catch {
-                    #if DEBUG
-                        print("\(#function): \(error)")
-                    #endif
+                    printDebug("\(#function): \(error)")
                 }
             }
         }
@@ -328,13 +314,9 @@ import UserNotifications
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.add(request) { error in
             if error != nil {
-                #if DEBUG
-                    print("Failed to create notification with error: \(String(describing: error))")
-                #endif
+                printDebug("Failed to create notification with error: \(String(describing: error))")
             } else {
-                #if DEBUG
-                    print("Notification created successfully")
-                #endif
+                printDebug("Notification created successfully")
             }
         }
     }

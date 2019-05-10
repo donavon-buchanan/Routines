@@ -83,9 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        #if DEBUG
-            print("\(#function) - Start")
-        #endif
+        printDebug("\(#function) - Start")
         let center = UNUserNotificationCenter.current()
         center.delegate = self
 
@@ -93,16 +91,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Theme
         setUpTheme()
-        #if DEBUG
-            print("\(#function) - End")
-        #endif
+        printDebug("\(#function) - End")
         return true
     }
 
     func application(_: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        #if DEBUG
-            print("\(#function) - Start")
-        #endif
+        printDebug("\(#function) - Start")
         // check if Options exist
         // checkOptions()
         // Override point for customization after application launch.
@@ -146,9 +140,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
             }
         }
-        #if DEBUG
-            print("\(#function) - End")
-        #endif
+        printDebug("\(#function) - End")
         return true
     }
 
@@ -168,39 +160,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //            SyncObject<Items>(),
 //            SyncObject<Options>(),
 //        ])
-        #if DEBUG
-            print("Received push notification")
-        #endif
+        printDebug("Received push notification")
 
         AppDelegate.afterSyncTimer.startTimer()
     }
 
     func applicationWillResignActive(_: UIApplication) {
-        #if DEBUG
-            print("\(#function) - Start")
-        #endif
+        printDebug("\(#function) - Start")
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         // AppDelegate.updateAppBadgeCount()
         // setSelectedIndex()
         // itemCleanup()
-        #if DEBUG
-            print("\(#function) - End")
-        #endif
+        printDebug("\(#function) - End")
     }
 
     func applicationDidEnterBackground(_: UIApplication) {
-        #if DEBUG
-            print("\(#function) - Start")
-        #endif
+        printDebug("\(#function) - Start")
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         AppDelegate.refreshNotifications()
         // itemCleanup()
         AppDelegate.removeOldNotifications()
-        #if DEBUG
-            print("\(#function) - End")
-        #endif
+        printDebug("\(#function) - End")
     }
 
     static func removeOldNotifications() {
@@ -215,19 +197,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func applicationWillEnterForeground(_: UIApplication) {
-        #if DEBUG
-            print("\(#function) - Start")
-        #endif
+        printDebug("\(#function) - Start")
         // AppDelegate.removeOldNotifications()
-        #if DEBUG
-            print("\(#function) - End")
-        #endif
+        printDebug("\(#function) - End")
     }
 
     func applicationDidBecomeActive(_: UIApplication) {
-        #if DEBUG
-            print("\(#function) - Start")
-        #endif
+        printDebug("\(#function) - Start")
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         // restoreSelectedTab(tab: nil)
 
@@ -255,15 +231,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         removeOrphanedNotifications()
 
         AppDelegate.setAutomaticDarkModeTimer()
-        #if DEBUG
-            print("\(#function) - End")
-        #endif
+        printDebug("\(#function) - End")
     }
 
     func removeOrphanedNotifications() {
-        #if DEBUG
-            print("\(#function) - Start")
-        #endif
+        printDebug("\(#function) - Start")
         DispatchQueue.main.async {
             autoreleasepool {
                 let center = UNUserNotificationCenter.current()
@@ -280,22 +252,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 center.removePendingNotificationRequests(withIdentifiers: orphanNotifications)
             }
         }
-        #if DEBUG
-            print("\(#function) - End")
-        #endif
+        printDebug("\(#function) - End")
     }
 
     func applicationWillTerminate(_: UIApplication) {
-        #if DEBUG
-            print("\(#function) - Start")
-        #endif
+        printDebug("\(#function) - Start")
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 
         // SKPaymentQueue.default().remove(AppDelegate.iapObserver)
         AppDelegate.removeOldNotifications()
-        #if DEBUG
-            print("\(#function) - End")
-        #endif
+        printDebug("\(#function) - End")
     }
 
 //    func application(_: UIApplication, shouldSaveApplicationState _: NSCoder) -> Bool {
@@ -358,13 +324,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func checkOptions() {
         let realm = try! Realm()
         if realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil {
-            #if DEBUG
-                print("Options exist. App should continue")
-            #endif
+            printDebug("Options exist. App should continue")
         } else {
-            #if DEBUG
-                print("Options DO NOT exist. Creating")
-            #endif
+            printDebug("Options DO NOT exist. Creating")
             let newOptions = Options()
             newOptions.optionsKey = Options.primaryKey()
             do {
@@ -611,9 +573,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     deinit {
-        #if DEBUG
-            print("\(#function) called. Tokens invalidated")
-        #endif
+        printDebug("\(#function) called. Tokens invalidated")
         notificationToken?.invalidate()
     }
 
@@ -704,9 +664,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     private static func updateBadgeFromPush() {
-        #if DEBUG
-            print("updating badge from remote push")
-        #endif
+        printDebug("updating badge from remote push")
         let center = UNUserNotificationCenter.current()
         var remoteBadge = 0
         center.getDeliveredNotifications { deliveredNotifications in
