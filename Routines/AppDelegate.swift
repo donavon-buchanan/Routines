@@ -89,6 +89,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         AppDelegate.registerNotificationCategoriesAndActions()
 
+        migrateRealm()
+        checkOptions()
+
         // Theme
         setUpTheme()
         printDebug("\(#function) - End")
@@ -97,10 +100,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         printDebug("\(#function) - Start")
-        // check if Options exist
-        // checkOptions()
+
         // Override point for customization after application launch.
-        migrateRealm()
 
         // Sync with iCloud
         AppDelegate.setSync()
@@ -110,7 +111,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // checkToCreateOptions()
         // loadOptions()
         // setUpTheme()
-        checkOptions()
         // If launchOptions contains the appropriate launch options key, a Home screen quick action
         // is responsible for launching the app. Store the action for processing once the app has
         // completed initialization.

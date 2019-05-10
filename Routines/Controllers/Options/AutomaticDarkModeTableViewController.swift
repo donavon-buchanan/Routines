@@ -17,7 +17,7 @@ class AutomaticDarkModeTableViewController: UITableViewController {
     @IBAction func automaticDarkModeSwitchAction(_ sender: UISwitch) {
         Options.setAutomaticDarkModeStatus(sender.isOn)
 //        Options.automaticDarkModeCheck()
-        perform(#selector(refreshUI), with: nil, afterDelay: 0.2)
+        perform(#selector(refreshUI), with: nil, afterDelay: 0.1)
     }
 
     @IBOutlet var startTimeDatePicker: UIDatePicker!
@@ -26,7 +26,7 @@ class AutomaticDarkModeTableViewController: UITableViewController {
         let minute = Options.getMinute(date: sender.date)
         Options.setAutomaticDarkModeStartTime(hour: hour, minute: minute)
         Options.automaticDarkModeCheck()
-        perform(#selector(refreshUI), with: nil, afterDelay: 0.2)
+        perform(#selector(refreshUI), with: nil, afterDelay: 0.1)
     }
 
     @IBOutlet var endTimeDatePicker: UIDatePicker!
@@ -35,7 +35,7 @@ class AutomaticDarkModeTableViewController: UITableViewController {
         let minute = Options.getMinute(date: sender.date)
         Options.setAutomaticDarkModeEndTime(hour: hour, minute: minute)
         Options.automaticDarkModeCheck()
-        perform(#selector(refreshUI), with: nil, afterDelay: 0.2)
+        perform(#selector(refreshUI), with: nil, afterDelay: 0.1)
     }
 
     func setUpUI() {
