@@ -574,7 +574,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             AppDelegate.syncEngine = SyncEngine(objects: [
                 SyncObject<Items>(),
                 SyncObject<Options>(),
-            ])
+            ], databaseScope: .private)
         } else {
             AppDelegate.syncEngine = nil
         }
