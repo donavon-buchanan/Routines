@@ -184,9 +184,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     override func viewWillDisappear(_: Bool) {
-        #if DEBUG
-            print("\(#function)")
-        #endif
+        printDebug("\(#function)")
         // removeColorBarViewFromCells()
     }
 
@@ -767,15 +765,11 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             guard let tableView = self?.tableView else { return }
             switch changes {
             case .initial:
-                #if DEBUG
-                    print("Initial load")
-                #endif
+                printDebug("Initial load")
                 // Results are now populated and can be accessed without blocking the UI
                 tableView.reloadData()
             case let .update(_, deletions, insertions, modifications):
-                #if DEBUG
-                    print("update detected")
-                #endif
+                printDebug("update detected")
                 // Query results have changed, so apply them to the UITableView
                 tableView.performBatchUpdates({
                     tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) },
@@ -793,9 +787,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     deinit {
-        #if DEBUG
-            print("\(#function) called. Tokens invalidated")
-        #endif
+        printDebug("\(#function) called. Tokens invalidated")
         notificationToken?.invalidate()
         debugOptionsToken?.invalidate()
         optionsToken?.invalidate()
@@ -817,19 +809,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                         }
                         if propertyChange.name == "autoDarkMode" {
                             AppDelegate.setAutomaticDarkModeTimer()
-                            #if DEBUG
-                                print("Automatic Dark Mode property changed")
-                            #endif
+                            printDebug("Automatic Dark Mode property changed")
                         }
                     }
                 case let .error(error):
-                    #if DEBUG
-                        print("Options observation error occurred: \(error)")
-                    #endif
+                    printDebug("Options observation error occurred: \(error)")
                 case .deleted:
-                    #if DEBUG
-                        print("The object was deleted.")
-                    #endif
+                    printDebug("The object was deleted.")
                 }
             }
         }
@@ -838,9 +824,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // MARK: - Themeing
 
     static func setAppearance(segment: Int) {
-        #if DEBUG
-            print("Dark mode is: \(Options.getDarkModeStatus())")
-        #endif
+        printDebug("Dark mode is: \(Options.getDarkModeStatus())")
         if Options.getDarkModeStatus() {
             switch segment {
             case 0:

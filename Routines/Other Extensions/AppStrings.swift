@@ -8,17 +8,17 @@
 
 import Foundation
 
-public func println(_ items: Any...){
-    items.forEach { (item) in
+public func println(_ items: Any...) {
+    items.forEach { item in
         print(item, separator: " ", terminator: "\n\n")
     }
 }
 
-public func printDebug(_ items: Any...){
+public func printDebug(_ items: Any...) {
     #if DEBUG
-    items.forEach { (item) in
-        print(item, separator: " ", terminator: "\n\n")
-    }
+        items.forEach { item in
+            print(item, separator: " ", terminator: "\n\n")
+        }
     #endif
 }
 
