@@ -192,7 +192,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // print("viewDidAppear \n")
+        // print("viewDidAppear")
         TableViewController.setAppearance(segment: segment)
         loadItems()
     }

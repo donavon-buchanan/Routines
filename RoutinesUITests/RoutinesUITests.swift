@@ -55,8 +55,8 @@ class RoutinesUITests: XCTestCase {
         eveningButton.tap()
         snapshot("Evening-Light")
         tabBarsQuery.buttons["Night"].tap()
-        app.navigationBars["Night"].buttons["Options"].tap()
         snapshot("Night-Light")
+        app.navigationBars["Night"].buttons["Options"].tap()
         tablesQuery.children(matching: .other)["STYLE"].children(matching: .other)["STYLE"].swipeUp()
         tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Dark Mode"]/*[[".cells.staticTexts[\"Dark Mode\"]",".staticTexts[\"Dark Mode\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         snapshot("Settings-Dark")
@@ -74,6 +74,7 @@ class RoutinesUITests: XCTestCase {
         snapshot("Morning-Dark")
         app.navigationBars["Morning"].buttons["Options"].tap()
         tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Dark Mode"]/*[[".cells.staticTexts[\"Dark Mode\"]",".staticTexts[\"Dark Mode\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        tablesQuery.children(matching: .other)["STYLE"].children(matching: .other)["STYLE"].swipeUp()
         snapshot("Settings-Light")
         app.navigationBars["Settings"].buttons["Done"].tap()
     }

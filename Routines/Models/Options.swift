@@ -89,7 +89,7 @@ import RealmSwift
 
     static func automaticDarkModeCheck() {
         #if DEBUG
-            print(#function)
+            print(#function + "")
         #endif
         if Options.getAutomaticDarkModeStatus() {
             guard let startTime = Options.getAutomaticDarkModeStartTime() else { return }
@@ -221,6 +221,21 @@ import RealmSwift
                     fatalError("\(#function) - Failed to save cloudSync option. Error: \(error)")
                 }
             }
+        }
+    }
+
+    static func syncOnLaunch() {
+        // Try to overwrite local values first if things exist in iCloud
+        DispatchQueue.main.async {
+            let defaults = UserDefaults.standard
+            let hasRun = defaults.bool(forKey: "hasRun")
+            #if DEBUG
+                print("hasRun: \(hasRun)")
+            #endif
+            if !hasRun {
+                AppDelegate.syncEngine?.pull()
+            }
+            defaults.set(true, forKey: "hasRun")
         }
     }
 
