@@ -551,7 +551,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     static func setSync() {
         if Options.getPurchasedStatus(), Options.getCloudSync() {
-            //TODO: This is a bad idea
+            // TODO: This is a bad idea
             let defaults = UserDefaults.standard
             if !defaults.bool(forKey: "hasRun") {
                 debugPrint("first time turning cloud sync on")

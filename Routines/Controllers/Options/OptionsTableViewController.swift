@@ -335,24 +335,26 @@ class OptionsTableViewController: UITableViewController {
     var optionsToken: NotificationToken?
 
     deinit {
+        printDebug("\(#function) called from OptionsTableViewController. Options token invalidated")
         optionsToken?.invalidate()
     }
 
+    // Need to observe all options even though there will really only be one object because sometimes that object may need to be deleted
     func observeOptions() {
         let realm = try! Realm()
-        if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-            optionsToken = options.observe { change in
-                switch change {
-                case let .change(properties):
-                    properties.forEach { _ in
-                        self.refreshUI()
-                    }
-                // AppDelegate.refreshNotifications()
-                case let .error(error):
-                    printDebug("Options observation error occurred: \(error)")
-                case .deleted:
-                    printDebug("The object was deleted.")
-                }
+        let optionsList = realm.objects(Options.self)
+        optionsToken = optionsList.observe { [weak self] (changes: RealmCollectionChange) in
+            guard let self = self else { return }
+            switch changes {
+            case .initial:
+                printDebug("Initial load for Options. But don't do anything yet")
+            case .update:
+                // Don't bother taking action of Options don't even exist
+                guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else { return }
+                self.refreshUI()
+            case let .error(error):
+                // An error occurred while opening the Realm file on the background worker thread
+                fatalError("\(error)")
             }
         }
     }
