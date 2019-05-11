@@ -180,7 +180,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     override func viewDidAppear(_: Bool) {
-        //UI doesn't know to scroll up if this is called too soon
+        // UI doesn't know to scroll up if this is called too soon
         DispatchQueue.main.async {
             autoreleasepool {
                 do {
