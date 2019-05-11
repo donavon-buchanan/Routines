@@ -43,7 +43,6 @@ class OptionsTableViewController: UITableViewController {
             // cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
             Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
             if cloudSyncSwitch.isOn {
-                Items.requestNotificationPermission()
                 AppDelegate.refreshNotifications()
             }
         } else {
@@ -173,7 +172,6 @@ class OptionsTableViewController: UITableViewController {
                     Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
                     haptic.impactOccurred()
                     if cloudSyncSwitch.isOn {
-                        Items.requestNotificationPermission()
                         AppDelegate.refreshNotifications()
                     }
                 } else {
@@ -334,9 +332,17 @@ class OptionsTableViewController: UITableViewController {
 
     var optionsToken: NotificationToken?
 
+    var pleaseWaitAlert: SwiftMessagesAlertsController?
+    @objc private func dismissWaitAlert() {
+        guard pleaseWaitAlert != nil else { return }
+        pleaseWaitAlert?.dismissAlert()
+        Items.requestNotificationPermission()
+    }
+
     deinit {
         printDebug("\(#function) called from OptionsTableViewController. Options token invalidated")
         optionsToken?.invalidate()
+        pleaseWaitAlert = nil
     }
 
     // Need to observe all options even though there will really only be one object because sometimes that object may need to be deleted
@@ -350,8 +356,15 @@ class OptionsTableViewController: UITableViewController {
                 printDebug("Initial load for Options. But don't do anything yet")
             case .update:
                 // Don't bother taking action of Options don't even exist
-                guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else { return }
+                guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else {
+                    guard self.pleaseWaitAlert == nil else { return }
+                    self.pleaseWaitAlert = SwiftMessagesAlertsController()
+                    self.pleaseWaitAlert?.showAlert(title: "Please Wait", body: "Syncing your data from iCloud. This won't take long.")
+                    return
+                }
                 self.refreshUI()
+                guard self.pleaseWaitAlert != nil else { return }
+                self.perform(#selector(self.dismissWaitAlert), with: nil, afterDelay: 1)
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
                 fatalError("\(error)")
