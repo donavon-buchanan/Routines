@@ -17,6 +17,10 @@ extension Date {
         return Calendar.autoupdatingCurrent.nextDate(after: self, matching: DateComponents(hour: 23, minute: 59), matchingPolicy: .nextTimePreservingSmallerComponents)!
     }
 
+    var nextDay: Date {
+        return addingTimeInterval(86400)
+    }
+
     var secondsUntilTheNextDay: TimeInterval {
         return startOfNextDay.timeIntervalSince(self)
     }
