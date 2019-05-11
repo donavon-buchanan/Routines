@@ -797,19 +797,26 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     var debugOptionsToken: NotificationToken?
     var optionsToken: NotificationToken?
 
+    // Need to observe all options even though there will really only be one object because sometimes that object may need to be deleted
     func observeOptions() {
         let realm = try! Realm()
-        if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-            optionsToken = options.observe { change in
-                switch change {
-                case .change:
+        let optionsList = realm.objects(Options.self)
+        optionsToken = optionsList.observe { [weak self] (changes: RealmCollectionChange) in
+            guard let self = self else { return }
+            switch changes {
+            case .initial:
+                printDebug("Initial load for Options. But don't do anything yet")
+            //                TableViewController.setAppearance(segment: self.tabBarController?.selectedIndex ?? 0)
+            //                AppDelegate.setAutomaticDarkModeTimer()
+            case .update:
+                guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else { return }
+                DispatchQueue.main.async {
                     TableViewController.setAppearance(segment: self.tabBarController?.selectedIndex ?? 0)
                     AppDelegate.setAutomaticDarkModeTimer()
-                case let .error(error):
-                    printDebug("Options observation error occurred: \(error)")
-                case .deleted:
-                    printDebug("The object was deleted.")
                 }
+            case let .error(error):
+                // An error occurred while opening the Realm file on the background worker thread
+                fatalError("\(error)")
             }
         }
     }

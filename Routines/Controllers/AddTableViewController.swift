@@ -179,7 +179,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         notesTextView.theme_backgroundColor = GlobalPicker.textInputBackground
     }
 
-    override func viewWillAppear(_: Bool) {
+    override func viewDidAppear(_: Bool) {
+        //UI doesn't know to scroll up if this is called too soon
         DispatchQueue.main.async {
             autoreleasepool {
                 do {
