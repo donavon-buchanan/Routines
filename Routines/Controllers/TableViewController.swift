@@ -802,16 +802,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
             optionsToken = options.observe { change in
                 switch change {
-                case let .change(properties):
-                    properties.forEach { propertyChange in
-                        if propertyChange.name == "darkMode" {
-                            TableViewController.setAppearance(segment: self.tabBarController?.selectedIndex ?? 0)
-                        }
-                        if propertyChange.name == "autoDarkMode" {
-                            AppDelegate.setAutomaticDarkModeTimer()
-                            printDebug("Automatic Dark Mode property changed")
-                        }
-                    }
+                case .change:
+                    TableViewController.setAppearance(segment: self.tabBarController?.selectedIndex ?? 0)
+                    AppDelegate.setAutomaticDarkModeTimer()
                 case let .error(error):
                     printDebug("Options observation error occurred: \(error)")
                 case .deleted:

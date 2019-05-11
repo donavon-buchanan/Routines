@@ -90,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         AppDelegate.registerNotificationCategoriesAndActions()
 
         migrateRealm()
-        checkOptions()
+        AppDelegate.checkOptions()
 
         // Theme
         setUpTheme()
@@ -145,7 +145,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        AppDelegate.syncEngine?.pull()
+        // AppDelegate.syncEngine?.pull()
 
         let dict = userInfo as! [String: NSObject]
         let notification = CKNotification(fromRemoteNotificationDictionary: dict)
@@ -321,7 +321,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     let realmDispatchQueueLabel: String = "background"
 
-    func checkOptions() {
+    static func checkOptions() {
         let realm = try! Realm()
         if realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil {
             printDebug("Options exist. App should continue")
@@ -531,8 +531,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         item.snooze()
     }
 
+    fileprivate static func nullifyOptions() {
+        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                guard let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) else { return }
+                do {
+                    try realm.write {
+                        realm.delete(options)
+                    }
+                } catch {
+                    #if DEBUG
+                        print("\(#function): Error: \(error)")
+                    #endif
+                }
+            }
+        }
+    }
+
     static func setSync() {
         if Options.getPurchasedStatus(), Options.getCloudSync() {
+            //TODO: This is a bad idea
+            let defaults = UserDefaults.standard
+            if !defaults.bool(forKey: "hasRun") {
+                debugPrint("first time turning cloud sync on")
+                nullifyOptions()
+                defaults.set(true, forKey: "hasRun")
+            }
+
             AppDelegate.syncEngine = SyncEngine(objects: [
                 SyncObject<Items>(),
                 SyncObject<Options>(),

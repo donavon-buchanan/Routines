@@ -42,7 +42,6 @@ class OptionsTableViewController: UITableViewController {
         if cloudSyncSwitch.isEnabled {
             // cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
             Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
-            AppDelegate.setSync()
             if cloudSyncSwitch.isOn {
                 Items.requestNotificationPermission()
                 AppDelegate.refreshNotifications()
@@ -172,7 +171,6 @@ class OptionsTableViewController: UITableViewController {
                     printDebug("\(#function) - cloudSyncSwitch.isEnabled")
                     cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
                     Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
-                    AppDelegate.setSync()
                     haptic.impactOccurred()
                     if cloudSyncSwitch.isOn {
                         Items.requestNotificationPermission()
