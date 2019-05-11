@@ -212,19 +212,8 @@ import RealmSwift
                 }
             }
         }
-    }
 
-    static func syncOnLaunch() {
-        // Try to overwrite local values first if things exist in iCloud
-        DispatchQueue.main.async {
-            let defaults = UserDefaults.standard
-            let hasRun = defaults.bool(forKey: "hasRun")
-            printDebug("hasRun: \(hasRun)")
-            if !hasRun {
-                AppDelegate.syncEngine?.pull()
-            }
-            defaults.set(true, forKey: "hasRun")
-        }
+        AppDelegate.setSync()
     }
 
     static func getPurchasedStatus() -> Bool {
