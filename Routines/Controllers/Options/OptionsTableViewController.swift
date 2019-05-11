@@ -336,6 +336,7 @@ class OptionsTableViewController: UITableViewController {
     @objc private func dismissWaitAlert() {
         guard pleaseWaitAlert != nil else { return }
         pleaseWaitAlert?.dismissAlert()
+        pleaseWaitAlert = nil
         Items.requestNotificationPermission()
     }
 
@@ -359,7 +360,7 @@ class OptionsTableViewController: UITableViewController {
                 guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else {
                     guard self.pleaseWaitAlert == nil else { return }
                     self.pleaseWaitAlert = SwiftMessagesAlertsController()
-                    self.pleaseWaitAlert?.showAlert(title: "Please Wait", body: "Syncing your data from iCloud. This won't take long.")
+                    self.pleaseWaitAlert?.showAlert(title: "Please Wait", body: "Syncing your data from iCloud. This shouldn't take long.")
                     return
                 }
                 self.refreshUI()

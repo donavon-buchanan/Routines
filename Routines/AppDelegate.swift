@@ -173,6 +173,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // setSelectedIndex()
         // itemCleanup()
         printDebug("\(#function) - End")
+        syncFail()
+    }
+
+    private func syncFail() {
+        let realm = try! Realm()
+        guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) == nil else { return }
+        AppDelegate.checkOptions()
+        let defaults = UserDefaults.standard
+        defaults.set(false, forKey: "hasRun")
+        AppDelegate.syncEngine = nil
     }
 
     func applicationDidEnterBackground(_: UIApplication) {

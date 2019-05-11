@@ -6,13 +6,14 @@
 //  Copyright © 2019 Donavon Buchanan. All rights reserved.
 //
 
-import Foundation
+import IceCream
 import SwiftMessages
+import UIKit
 
-class SwiftMessagesAlertsController {
+class SwiftMessagesAlertsController: UIView {
+    let view = MessageView.viewFromNib(layout: .centeredView)
+
     func showAlert(title: String, body: String?) {
-        let view = MessageView.viewFromNib(layout: .centeredView)
-
         SwiftMessages.defaultConfig.presentationStyle = .center
         SwiftMessages.defaultConfig.duration = .forever
         SwiftMessages.defaultConfig.interactiveHide = false
@@ -31,6 +32,8 @@ class SwiftMessagesAlertsController {
         view.titleLabel?.textColor = .black
         view.bodyLabel?.textColor = .black
 
+        perform(#selector(tooLongMessage), with: nil, afterDelay: 15)
+
         // Increase the external margin around the card. In general, the effect of this setting
         // depends on how the given layout is constrained to the layout margins.
         view.layoutMarginAdditions = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
@@ -43,5 +46,13 @@ class SwiftMessagesAlertsController {
 
     func dismissAlert() {
         SwiftMessages.hide()
+    }
+
+    @objc func tooLongMessage() {
+        view.bodyLabel?.text = """
+        Looks like this is taking a while.
+        Please check your internet connection.
+        I'll keep trying.
+        """
     }
 }
