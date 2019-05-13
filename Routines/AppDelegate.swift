@@ -71,14 +71,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     static func refreshNotifications() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         // Items.requestNotificationPermission()
-        DispatchQueue.main.async {
-            autoreleasepool {
-                let realm = try! Realm()
-                let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
-                items.forEach { item in
-                    item.addNewNotification()
-                }
-            }
+        let realm = try! Realm()
+        let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+        items.forEach { item in
+            item.addNewNotification()
         }
     }
 
@@ -136,6 +132,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         AppDelegate.setSync()
+
+        observeItems()
         printDebug("\(#function) - End")
         return true
     }
@@ -486,85 +484,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         _ = try! Realm()
     }
 
-//    func getHour(date: Date) -> Int {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "HH"
-//        let hour = dateFormatter.string(from: date)
-//        return Int(hour)!
-//    }
-//
-//    func getMinute(date: Date) -> Int {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "mm"
-//        let minutes = dateFormatter.string(from: date)
-//        return Int(minutes)!
-//    }
-
-//    func getOptionHour(segment: Int) -> Int {
-//        var hour = Int()
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-//                switch segment {
-//                case 1:
-//                    hour = (options?.afternoonHour)!
-//                case 2:
-//                    hour = (options?.eveningHour)!
-//                case 3:
-//                    hour = (options?.nightHour)!
-//                default:
-//                    hour = (options?.morningHour)!
-//                }
-//            }
-//        }
-//        return hour
-//    }
-//
-//    func getOptionMinute(segment: Int) -> Int {
-//        var minute = Int()
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-//                switch segment {
-//                case 1:
-//                    minute = (options?.afternoonMinute)!
-//                case 2:
-//                    minute = (options?.eveningMinute)!
-//                case 3:
-//                    minute = (options?.nightMinute)!
-//                default:
-//                    minute = (options?.morningMinute)!
-//                }
-//            }
-//        }
-//        return minute
-//    }
-
-//    // Load Options
-//    func loadOptions() {
-//        let realm = try! Realm()
-//        optionsObject = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-//
-//        if let currentOptions = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
-//            optionsObject = currentOptions
-//            // print("AppDelegate: Options loaded successfully - \(String(describing: optionsObject))")
-//        } else {
-//            // print("AppDelegate: No Options exist yet. Creating it.")
-//            let newOptionsObject = Options()
-//            newOptionsObject.optionsKey = optionsKey
-//            do {
-//                try realm.write {
-//                    realm.add(newOptionsObject, update: false)
-//                }
-//            } catch {
-//                // print("Failed to create new options object")
-//            }
-//            //loadOptions()
-//        }
-//    }
-
     func completeItem(uuidString: String) {
         let realm = try! Realm()
         guard let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) else { return }
@@ -601,13 +520,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug(#function)
         if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getCloudSync() {
             printDebug("Enabling cloud syncEngine")
-            // TODO: This is a bad idea
-//            let defaults = UserDefaults.standard
-//            if !defaults.bool(forKey: "hasRun") {
-//                debugPrint("first time turning cloud sync on")
-//                nullifyOptions()
-//                defaults.set(true, forKey: "hasRun")
-//            }
 
             AppDelegate.syncEngine = SyncEngine(objects: [
                 SyncObject<Items>(),
@@ -623,35 +535,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var notificationToken: NotificationToken?
 
-    @objc private func realmSync() {
+    @objc func observeItems() {
+        printDebug(#function)
         // Observe Results Notifications
         // TODO: This seems like a stupid way to do this
         let realm = try! Realm()
         let items = realm.objects(Items.self)
 
-        notificationToken = items.observe { changes in
-            switch changes {
-            case let .error(error):
-                // An error occurred while opening the Realm file on the background worker thread
-                fatalError("\(error)")
-            default:
-                AppDelegate.refreshNotifications()
-                AppDelegate.updateBadgeFromPush()
-            }
+        notificationToken = items.observe { _ in
+            AppDelegate.refreshAndUpdate()
         }
     }
 
     @objc static func refreshAndUpdate() {
+        printDebug(#function)
         AppDelegate.refreshNotifications()
         AppDelegate.updateBadgeFromPush()
 
-        // called from timer, so invalidate when done
         AppDelegate.afterSyncTimer.stopTimer()
     }
 
     deinit {
         printDebug("\(#function) called. Tokens invalidated")
-        notificationToken?.invalidate()
+        // notificationToken?.invalidate()
     }
 
     // MARK: - Notification Categories and Actions
