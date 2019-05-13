@@ -86,7 +86,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         priorityNumberLabel.theme_textColor = GlobalPicker.textColor
         prioritySlider.theme_thumbTintColor = GlobalPicker.textColor
 
-        if !Options.getPurchasedStatus() {
+        if !RoutinesPlus.getPurchasedStatus() {
             prioritySlider.isEnabled = false
         } else {
             prioritySlider.isEnabled = true

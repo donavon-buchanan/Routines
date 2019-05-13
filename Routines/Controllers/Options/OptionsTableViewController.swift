@@ -41,7 +41,7 @@ class OptionsTableViewController: UITableViewController {
     @IBAction func cloudSyncSwitchToggled(_ sender: UISwitch) {
         if cloudSyncSwitch.isEnabled {
             // cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
-            Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
+            RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
             if cloudSyncSwitch.isOn {
                 AppDelegate.refreshNotifications()
             }
@@ -120,6 +120,7 @@ class OptionsTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setUpUI(animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -168,7 +169,7 @@ class OptionsTableViewController: UITableViewController {
                 if cloudSyncSwitch.isEnabled {
                     printDebug("\(#function) - cloudSyncSwitch.isEnabled")
                     cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
-                    Options.setCloudSync(toggle: cloudSyncSwitch.isOn)
+                    RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
                     haptic.impactOccurred()
                     if cloudSyncSwitch.isOn {
                         AppDelegate.refreshNotifications()
@@ -180,7 +181,7 @@ class OptionsTableViewController: UITableViewController {
             case 1:
                 segueToAutomaticDarkModeTableView()
             case 2:
-                if !Options.getPurchasedStatus() {
+                if !RoutinesPlus.getPurchasedStatus() {
                     segueToRoutinesPlusViewController()
                 }
             default:
@@ -198,7 +199,7 @@ class OptionsTableViewController: UITableViewController {
         case 1:
             return "Enable to receive notifications at the start of each period"
         case 3:
-            if Options.getPurchasedStatus() {
+            if RoutinesPlus.getPurchasedStatus() {
                 return "Thanks for your support!"
             } else {
                 return "Tap to unlock"
@@ -263,8 +264,8 @@ class OptionsTableViewController: UITableViewController {
         eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: animated)
         nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: animated)
 
-        cloudSyncSwitch.setOn(Options.getCloudSync(), animated: animated)
-        cloudSyncSwitch.isEnabled = Options.getPurchasedStatus()
+        cloudSyncSwitch.setOn(RoutinesPlus.getCloudSync(), animated: animated)
+        cloudSyncSwitch.isEnabled = RoutinesPlus.getPurchasedStatus()
 
         darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: animated)
         darkModeSwtich.isEnabled = !Options.getAutomaticDarkModeStatus()
@@ -280,7 +281,7 @@ class OptionsTableViewController: UITableViewController {
 
         taskPrioritiesLabel.theme_textColor = GlobalPicker.cellTextColors
 
-        if Options.getPurchasedStatus() {
+        if RoutinesPlus.getPurchasedStatus() {
             taskPrioritiesStatusLabel.text = "Unlocked"
             taskPrioritiesStatusLabel.theme_textColor = GlobalPicker.textColor
             taskPrioritiesCell.accessoryType = .none
@@ -330,6 +331,7 @@ class OptionsTableViewController: UITableViewController {
     // MARK: - Options
 
     var optionsToken: NotificationToken?
+    var routinesPlusToken: NotificationToken?
 
     var pleaseWaitAlert: SwiftMessagesAlertsController?
     @objc private func dismissWaitAlert() {
@@ -342,6 +344,7 @@ class OptionsTableViewController: UITableViewController {
     deinit {
         printDebug("\(#function) called from OptionsTableViewController. Options token invalidated")
         optionsToken?.invalidate()
+        routinesPlusToken?.invalidate()
         pleaseWaitAlert = nil
     }
 
@@ -357,7 +360,7 @@ class OptionsTableViewController: UITableViewController {
                 self.setUpUI(animated: false)
             case .update:
                 // Don't bother taking action of Options don't even exist
-                //TODO: Remove all this crap. Go back to just observing the one object
+                // TODO: Remove all this crap. Go back to just observing the one object
                 guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else {
                     guard self.pleaseWaitAlert == nil else { return }
                     self.pleaseWaitAlert = SwiftMessagesAlertsController()
@@ -374,10 +377,19 @@ class OptionsTableViewController: UITableViewController {
         }
     }
 
+    func observeRoutinesPlus() {
+        let realm = try! Realm()
+        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
+        routinesPlusToken = routinesPlus?.observe { _ in
+            printDebug("Something in RoutinesPlus changed")
+            self.refreshUI()
+        }
+    }
+
     // MARK: - IAP
 
     func segueToAutomaticDarkModeTableView() {
-        if !Options.getPurchasedStatus() {
+        if !RoutinesPlus.getPurchasedStatus() {
             segueToRoutinesPlusViewController()
         } else {
             let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
