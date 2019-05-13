@@ -177,102 +177,102 @@ import RealmSwift
 
     // MARK: Routines+
 
-    dynamic var routinesPlusPurchased: Bool = false
-    dynamic var purchasedProduct: String = ""
-
-    dynamic var cloudSync: Bool = false
-
-    static func getCloudSync() -> Bool {
-        var status = false
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                status = options?.cloudSync ?? false
-            }
-        }
-        #if targetEnvironment(simulator)
-            return true
-        #else
-            return status
-        #endif
-    }
-
-    static func setCloudSync(toggle: Bool) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                do {
-                    try realm.write {
-                        options?.cloudSync = toggle
-                    }
-                } catch {
-                    fatalError("\(#function) - Failed to save cloudSync option. Error: \(error)")
-                }
-            }
-        }
-
-        AppDelegate.setSync()
-    }
-
-    static func getPurchasedStatus() -> Bool {
-        var status = false
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                status = options?.routinesPlusPurchased ?? false
-            }
-        }
-        #if targetEnvironment(simulator)
-            return true
-        #else
-            return status
-        #endif
-    }
-
-    static func setPurchasedStatus(status: Bool) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                do {
-                    try realm.write {
-                        options?.routinesPlusPurchased = status
-                    }
-                } catch {
-                    fatalError("\(#function) - Failed to set purchased status in options with error: \(error)")
-                }
-            }
-        }
-    }
-
-    static func setPurchasedProduct(productID: String) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                do {
-                    try realm.write {
-                        options?.purchasedProduct = productID
-                    }
-                } catch {
-                    fatalError("\(#function) - Error saving purchased product: \(error)")
-                }
-            }
-        }
-    }
-
-    static func getPurchasedProduct() -> String {
-        let realm = try! Realm()
-        let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-        #if targetEnvironment(simulator)
-            return ""
-        #else
-            return options?.purchasedProduct ?? ""
-        #endif
-    }
+//    dynamic var routinesPlusPurchased: Bool = false
+//    dynamic var purchasedProduct: String = ""
+//
+//    dynamic var cloudSync: Bool = false
+//
+//    static func getCloudSync() -> Bool {
+//        var status = false
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                status = options?.cloudSync ?? false
+//            }
+//        }
+//        #if targetEnvironment(simulator)
+//            return true
+//        #else
+//            return status
+//        #endif
+//    }
+//
+//    static func setCloudSync(toggle: Bool) {
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                do {
+//                    try realm.write {
+//                        options?.cloudSync = toggle
+//                    }
+//                } catch {
+//                    fatalError("\(#function) - Failed to save cloudSync option. Error: \(error)")
+//                }
+//            }
+//        }
+//
+//        AppDelegate.setSync()
+//    }
+//
+//    static func getPurchasedStatus() -> Bool {
+//        var status = false
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                status = options?.routinesPlusPurchased ?? false
+//            }
+//        }
+//        #if targetEnvironment(simulator)
+//            return true
+//        #else
+//            return status
+//        #endif
+//    }
+//
+//    static func setPurchasedStatus(status: Bool) {
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                do {
+//                    try realm.write {
+//                        options?.routinesPlusPurchased = status
+//                    }
+//                } catch {
+//                    fatalError("\(#function) - Failed to set purchased status in options with error: \(error)")
+//                }
+//            }
+//        }
+//    }
+//
+//    static func setPurchasedProduct(productID: String) {
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                do {
+//                    try realm.write {
+//                        options?.purchasedProduct = productID
+//                    }
+//                } catch {
+//                    fatalError("\(#function) - Error saving purchased product: \(error)")
+//                }
+//            }
+//        }
+//    }
+//
+//    static func getPurchasedProduct() -> String {
+//        let realm = try! Realm()
+//        let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//        #if targetEnvironment(simulator)
+//            return ""
+//        #else
+//            return options?.purchasedProduct ?? ""
+//        #endif
+//    }
 
 //    static func getPurchaseExpiration() -> Date? {
 //        let realm = try! Realm()

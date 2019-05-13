@@ -120,7 +120,6 @@ class OptionsTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setUpUI()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -258,16 +257,16 @@ class OptionsTableViewController: UITableViewController {
 //        }
 //    }
 
-    func setUpUI() {
-        morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: true)
-        afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: true)
-        eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: true)
-        nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: true)
+    func setUpUI(animated: Bool) {
+        morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: animated)
+        afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: animated)
+        eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: animated)
+        nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: animated)
 
-        cloudSyncSwitch.setOn(Options.getCloudSync(), animated: true)
+        cloudSyncSwitch.setOn(Options.getCloudSync(), animated: animated)
         cloudSyncSwitch.isEnabled = Options.getPurchasedStatus()
 
-        darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: true)
+        darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: animated)
         darkModeSwtich.isEnabled = !Options.getAutomaticDarkModeStatus()
 
         switch Options.getAutomaticDarkModeStatus() {
@@ -299,7 +298,7 @@ class OptionsTableViewController: UITableViewController {
 
     func refreshUI() {
         // TODO: Refactor this. Just bad
-        setUpUI()
+        setUpUI(animated: true)
     }
 
     func setAppearance(tab: Int) {
@@ -354,9 +353,11 @@ class OptionsTableViewController: UITableViewController {
             guard let self = self else { return }
             switch changes {
             case .initial:
-                printDebug("Initial load for Options. But don't do anything yet")
+                printDebug("Initial load for Options. Set up UI")
+                self.setUpUI(animated: false)
             case .update:
                 // Don't bother taking action of Options don't even exist
+                //TODO: Remove all this crap. Go back to just observing the one object
                 guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else {
                     guard self.pleaseWaitAlert == nil else { return }
                     self.pleaseWaitAlert = SwiftMessagesAlertsController()
