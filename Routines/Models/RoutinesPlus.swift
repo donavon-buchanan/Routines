@@ -25,12 +25,10 @@ import RealmSwift
     // dynamic var cloudSync: Bool = false
 
     static func getCloudSync() -> Bool {
-        var status = false
-        status = UserDefaults.standard.bool(forKey: cloudSyncKey)
         #if targetEnvironment(simulator)
             return true
         #else
-            return status
+            return UserDefaults.standard.bool(forKey: cloudSyncKey)
         #endif
     }
 

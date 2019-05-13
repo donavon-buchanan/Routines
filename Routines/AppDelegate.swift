@@ -139,6 +139,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
             }
         }
+        
+        AppDelegate.setSync()
         printDebug("\(#function) - End")
         return true
     }
@@ -210,7 +212,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug("\(#function) - Start")
         // AppDelegate.removeOldNotifications()
         // Sync with iCloud
-        AppDelegate.setSync()
 
         printDebug("\(#function) - End")
     }
