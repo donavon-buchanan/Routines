@@ -156,9 +156,14 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         title = setNavTitle()
         // loadItems()
-        if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getPurchasedProduct() != "" {
-            // TODO: Need actual error handling here.
-            verifyPurchase(product: RegisteredPurchase(rawValue: RoutinesPlus.getPurchasedProduct())!)
+        if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getPurchasedProduct() != "", RoutinesPlus.getPurchasedProduct() != RegisteredPurchase.lifetime.rawValue, Date() >= RoutinesPlus.getExpiryDate() {
+            debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
+            debugPrint("Routines Plus Product: \(RoutinesPlus.getPurchasedProduct())")
+            verifyReceipt()
+        } else {
+            debugPrint("No need to verify yet. Will check on \(RoutinesPlus.getExpiryDate())")
+            debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
+            debugPrint("Routines Plus Product: \(RoutinesPlus.getPurchasedProduct())")
         }
 
         // prefetch prices

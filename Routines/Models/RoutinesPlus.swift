@@ -13,6 +13,7 @@ import RealmSwift
 @objcMembers class RoutinesPlus: Object {
     static let realmDispatchQueueLabel: String = "background"
     static let cloudSyncKey: String = "cloudSync"
+    static let expiryDateKey: String = "expiryDate"
 
     dynamic var routinesPlusKey = UUID().uuidString
     override static func primaryKey() -> String {
@@ -36,6 +37,15 @@ import RealmSwift
         UserDefaults.standard.set(toggle, forKey: cloudSyncKey)
 
         AppDelegate.setSync()
+    }
+
+    static func setExpiryDate(date: Date) {
+        printDebug("Setting Routines Plus expiration date to: \(date)")
+        UserDefaults.standard.set(date, forKey: expiryDateKey)
+    }
+
+    static func getExpiryDate() -> Date {
+        return (UserDefaults.standard.object(forKey: expiryDateKey) as? Date) ?? Date()
     }
 
     static func getPurchasedStatus() -> Bool {
