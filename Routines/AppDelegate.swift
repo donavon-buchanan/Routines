@@ -106,21 +106,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Override point for customization after application launch.
 
         UIApplication.shared.registerForRemoteNotifications()
+        
+        //Make sure data is up to date from iCloud
+        AppDelegate.syncEngine?.pull()
 
-        // checkToCreateOptions()
-        // loadOptions()
-        // setUpTheme()
         // If launchOptions contains the appropriate launch options key, a Home screen quick action
         // is responsible for launching the app. Store the action for processing once the app has
         // completed initialization.
         if let shortcutItem = launchOptions?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
             shortcutItemToProcess = shortcutItem
         }
-        // refreshNotifications()
-        // removeOldNotifications()
-
-        // IAP Observer
-        // SKPaymentQueue.default().add(AppDelegate.iapObserver)
 
         // SwiftyStoreKit
         SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
@@ -146,7 +141,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        // AppDelegate.syncEngine?.pull()
 
         let dict = userInfo as! [String: NSObject]
         let notification = CKNotification(fromRemoteNotificationDictionary: dict)
@@ -156,11 +150,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         completionHandler(.newData)
 
-//        // Sync with iCloud
-//        syncEngine = SyncEngine(objects: [
-//            SyncObject<Items>(),
-//            SyncObject<Options>(),
-//        ])
         printDebug("Received push notification")
 
         AppDelegate.afterSyncTimer.startTimer()
