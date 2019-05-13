@@ -25,6 +25,7 @@ class AfterSyncTimer {
     }
 
     @objc func doRefresh() {
+        printDebug(#function)
         AppDelegate.refreshAndUpdate()
     }
 }
