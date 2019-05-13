@@ -173,17 +173,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // setSelectedIndex()
         // itemCleanup()
         printDebug("\(#function) - End")
-        syncFail()
+//        syncFail()
     }
 
-    private func syncFail() {
-        let realm = try! Realm()
-        guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) == nil else { return }
-        AppDelegate.checkOptions()
-        let defaults = UserDefaults.standard
-        defaults.set(false, forKey: "hasRun")
-        AppDelegate.syncEngine = nil
-    }
+//    private func syncFail() {
+//        // Prevent user from returning to a broken app
+//        AppDelegate.syncEngine?.pull()
+//        AppDelegate.syncEngine = nil
+//        let realm = try! Realm()
+//        guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) == nil else { return }
+//        AppDelegate.checkOptions()
+//        let defaults = UserDefaults.standard
+//        defaults.set(false, forKey: "hasRun")
+//    }
 
     func applicationDidEnterBackground(_: UIApplication) {
         printDebug("\(#function) - Start")
@@ -562,12 +564,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     static func setSync() {
         if Options.getPurchasedStatus(), Options.getCloudSync() {
             // TODO: This is a bad idea
-            let defaults = UserDefaults.standard
-            if !defaults.bool(forKey: "hasRun") {
-                debugPrint("first time turning cloud sync on")
-                nullifyOptions()
-                defaults.set(true, forKey: "hasRun")
-            }
+//            let defaults = UserDefaults.standard
+//            if !defaults.bool(forKey: "hasRun") {
+//                debugPrint("first time turning cloud sync on")
+//                nullifyOptions()
+//                defaults.set(true, forKey: "hasRun")
+//            }
 
             AppDelegate.syncEngine = SyncEngine(objects: [
                 SyncObject<Items>(),
