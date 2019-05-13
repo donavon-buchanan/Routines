@@ -139,7 +139,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
             }
         }
-        
+
         AppDelegate.setSync()
         printDebug("\(#function) - End")
         return true
@@ -610,7 +610,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    }
 
     static func setSync() {
+        printDebug(#function)
         if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getCloudSync() {
+            printDebug("Enabling cloud syncEngine")
             // TODO: This is a bad idea
 //            let defaults = UserDefaults.standard
 //            if !defaults.bool(forKey: "hasRun") {
@@ -624,6 +626,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 SyncObject<Options>(),
             ], databaseScope: .private)
         } else {
+            printDebug("Disabling cloud syncEngine")
             AppDelegate.syncEngine = nil
         }
     }
