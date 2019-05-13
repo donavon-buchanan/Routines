@@ -116,11 +116,12 @@ class OptionsTableViewController: UITableViewController {
 
         tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         observeOptions()
+        observeRoutinesPlus()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setUpUI(animated: false)
+        // setUpUI(animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -367,6 +368,7 @@ class OptionsTableViewController: UITableViewController {
                     self.pleaseWaitAlert?.showAlert(title: "Please Wait", body: "Syncing your data from iCloud. This shouldn't take long.")
                     return
                 }
+                Items.requestNotificationPermission()
                 self.refreshUI()
                 guard self.pleaseWaitAlert != nil else { return }
                 self.perform(#selector(self.dismissWaitAlert), with: nil, afterDelay: 1)
