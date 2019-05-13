@@ -90,7 +90,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         AppDelegate.registerNotificationCategoriesAndActions()
 
         migrateRealm()
+
         AppDelegate.checkOptions()
+        AppDelegate.checkRoutinesPlus()
 
         // Theme
         setUpTheme()
@@ -102,9 +104,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug("\(#function) - Start")
 
         // Override point for customization after application launch.
-
-        // Sync with iCloud
-        AppDelegate.setSync()
 
         UIApplication.shared.registerForRemoteNotifications()
 
@@ -132,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         SwiftyStoreKit.finishTransaction(purchase.transaction)
                     }
                     // Unlock content
-                    Options.setPurchasedStatus(status: true)
+                    RoutinesPlus.setPurchasedStatus(status: true)
                 case .failed, .purchasing, .deferred:
                     break // do nothing
                 @unknown default:
@@ -183,8 +182,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        let realm = try! Realm()
 //        guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) == nil else { return }
 //        AppDelegate.checkOptions()
-//        let defaults = UserDefaults.standard
-//        defaults.set(false, forKey: "hasRun")
+//        UserDefaults.standard.set(false, forKey: "hasRun")
 //    }
 
     func applicationDidEnterBackground(_: UIApplication) {
@@ -211,6 +209,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillEnterForeground(_: UIApplication) {
         printDebug("\(#function) - Start")
         // AppDelegate.removeOldNotifications()
+        // Sync with iCloud
+        AppDelegate.setSync()
+
         printDebug("\(#function) - End")
     }
 
@@ -295,7 +296,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func getSelectedTab() -> Int {
         var selectedIndex = 0
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
@@ -331,22 +332,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    //Options Properties
     // let realm = try! Realm()
 
-    let realmDispatchQueueLabel: String = "background"
+    // let realmDispatchQueueLabel: String = "background"
 
     static func checkOptions() {
-        let realm = try! Realm()
-        if realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil {
-            printDebug("Options exist. App should continue")
-        } else {
-            printDebug("Options DO NOT exist. Creating")
-            let newOptions = Options()
-            newOptions.optionsKey = Options.primaryKey()
-            do {
-                try realm.write {
-                    realm.add(newOptions)
+        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil {
+                    printDebug("Options exist. App should continue")
+                } else {
+                    printDebug("Options DO NOT exist. Creating")
+                    let newOptions = Options()
+                    newOptions.optionsKey = Options.primaryKey()
+                    do {
+                        try realm.write {
+                            realm.add(newOptions)
+                        }
+                    } catch {
+                        fatalError("Failed to create first Options object: \(error)")
+                    }
                 }
-            } catch {
-                fatalError("Failed to create first Options object: \(error)")
+            }
+        }
+    }
+
+    static func checkRoutinesPlus() {
+        DispatchQueue(label: RoutinesPlus.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                if realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey()) != nil {
+                    printDebug("RoutinesPlus exist. App should continue")
+                } else {
+                    printDebug("RoutinesPlus DOES NOT exist. Creating")
+                    let newRoutinesPlus = RoutinesPlus()
+                    newRoutinesPlus.routinesPlusKey = RoutinesPlus.primaryKey()
+                    do {
+                        try realm.write {
+                            realm.add(newRoutinesPlus)
+                        }
+                    } catch {
+                        fatalError("Failed to create first RoutinesPlus object: \(error)")
+                    }
+                }
             }
         }
     }
@@ -364,7 +391,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 20,
+            schemaVersion: 21,
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -411,7 +438,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //                }
 
                 if oldSchemaVersion < 15 {
-                    migration.enumerateObjects(ofType: Options.className()) { newObject, oldObject in
+                    migration.enumerateObjects(ofType: Options.className()) { oldObject, newObject in
                         print("oldObject: " + String(describing: oldObject))
                         print("newObject: " + String(describing: newObject))
                     }
@@ -436,8 +463,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
 
-                if oldSchemaVersion < 20 {
-                    // let realm do its thing
+                if oldSchemaVersion < 21 {
+                    // migrate the Options split to RoutinesPlus
+
+                    migration.enumerateObjects(ofType: Options.className()) { oldObject, newObject in
+                        debugPrint("oldObject: \(String(describing: oldObject))")
+                        debugPrint("newObject: \(String(describing: newObject))")
+
+                        let cloudSync = oldObject!["cloudSync"] as! Bool
+                        UserDefaults.standard.set(cloudSync, forKey: "cloudSync")
+
+                        let purchasedProduct = oldObject!["purchasedProduct"] as! String
+
+                        let routinesPlusPurchased = oldObject!["routinesPlusPurchased"] as! Bool
+
+                        let newRoutinesPlus = RoutinesPlus()
+
+                        newRoutinesPlus.routinesPlusKey = RoutinesPlus.primaryKey()
+                        newRoutinesPlus.purchasedProduct = purchasedProduct
+                        newRoutinesPlus.routinesPlusPurchased = routinesPlusPurchased
+
+                        migration.create("RoutinesPlus", value: newRoutinesPlus)
+                    }
                 }
             }
         )
@@ -543,26 +590,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         item.snooze()
     }
 
-    fileprivate static func nullifyOptions() {
-        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                guard let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) else { return }
-                do {
-                    try realm.write {
-                        realm.delete(options)
-                    }
-                } catch {
-                    #if DEBUG
-                        print("\(#function): Error: \(error)")
-                    #endif
-                }
-            }
-        }
-    }
+//    fileprivate static func nullifyOptions() {
+//        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                guard let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) else { return }
+//                do {
+//                    try realm.write {
+//                        realm.delete(options)
+//                    }
+//                } catch {
+//                    #if DEBUG
+//                        print("\(#function): Error: \(error)")
+//                    #endif
+//                }
+//            }
+//        }
+//    }
 
     static func setSync() {
-        if Options.getPurchasedStatus(), Options.getCloudSync() {
+        if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getCloudSync() {
             // TODO: This is a bad idea
 //            let defaults = UserDefaults.standard
 //            if !defaults.bool(forKey: "hasRun") {
@@ -1011,7 +1058,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
         var segment = Int()
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 if let item = realm.object(ofType: Items.self, forPrimaryKey: identifier) {

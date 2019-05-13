@@ -33,8 +33,8 @@ extension UIViewController {
             NetworkActivityIndicatorManager.networkOperationEnded()
             switch result {
             case let .success(product):
-                Options.setPurchasedProduct(productID: product.productId)
-                Options.setPurchasedStatus(status: true)
+                RoutinesPlus.setPurchasedProduct(productID: product.productId)
+                RoutinesPlus.setPurchasedStatus(status: true)
                 if product.needsFinishTransaction {
                     SwiftyStoreKit.finishTransaction(product.transaction)
                 }
@@ -51,8 +51,8 @@ extension UIViewController {
             NetworkActivityIndicatorManager.networkOperationEnded()
             result.restoredPurchases.forEach { product in
                 printDebug("Restored purchase with ID: \(product.productId)")
-                Options.setPurchasedProduct(productID: product.productId)
-                Options.setPurchasedStatus(status: true)
+                RoutinesPlus.setPurchasedProduct(productID: product.productId)
+                RoutinesPlus.setPurchasedStatus(status: true)
                 if product.needsFinishTransaction {
                     SwiftyStoreKit.finishTransaction(product.transaction)
                 }
@@ -84,8 +84,8 @@ extension UIViewController {
             switch result {
             case .success:
                 printDebug("Verify purchase result: Success. \(product.rawValue) is valid")
-                Options.setPurchasedProduct(productID: product.rawValue)
-                Options.setPurchasedStatus(status: true)
+                RoutinesPlus.setPurchasedProduct(productID: product.rawValue)
+                RoutinesPlus.setPurchasedStatus(status: true)
             //                switch product {
             //                case .lifetime:
             //                    // let purchaseResult = SwiftyStoreKit.verifyPurchase(productId: product.rawValue, inReceipt: receipt)
@@ -96,9 +96,9 @@ extension UIViewController {
             //                }
             case let .error(error):
                 printDebug("Verify purchase result: Error. No valid purchase active.")
-                Options.setPurchasedProduct(productID: "")
-                Options.setPurchasedStatus(status: false)
-                Options.setCloudSync(toggle: false)
+                RoutinesPlus.setPurchasedProduct(productID: "")
+                RoutinesPlus.setPurchasedStatus(status: false)
+                RoutinesPlus.setCloudSync(toggle: false)
                 Options.setAutomaticDarkModeStatus(false)
                 AppDelegate.syncEngine = nil
                 self.showAlert(alert: self.alertForVerifyReceipt(result: result))
