@@ -368,7 +368,6 @@ class OptionsTableViewController: UITableViewController {
                     self.pleaseWaitAlert?.showAlert(title: "Please Wait", body: "Syncing your data from iCloud. This shouldn't take long.")
                     return
                 }
-                Items.requestNotificationPermission()
                 self.refreshUI()
                 guard self.pleaseWaitAlert != nil else { return }
                 self.perform(#selector(self.dismissWaitAlert), with: nil, afterDelay: 1)
@@ -384,6 +383,7 @@ class OptionsTableViewController: UITableViewController {
         let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
         routinesPlusToken = routinesPlus?.observe { _ in
             printDebug("Something in RoutinesPlus changed")
+            Items.requestNotificationPermission()
             self.refreshUI()
         }
     }

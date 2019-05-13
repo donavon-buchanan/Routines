@@ -106,8 +106,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Override point for customization after application launch.
 
         UIApplication.shared.registerForRemoteNotifications()
-        
-        //Make sure data is up to date from iCloud
+
+        // Make sure data is up to date from iCloud
         AppDelegate.syncEngine?.pull()
 
         // If launchOptions contains the appropriate launch options key, a Home screen quick action
@@ -141,7 +141,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-
         let dict = userInfo as! [String: NSObject]
         let notification = CKNotification(fromRemoteNotificationDictionary: dict)
 
