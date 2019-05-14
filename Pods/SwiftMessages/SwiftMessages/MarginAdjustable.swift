@@ -14,15 +14,14 @@ import UIKit
  status bar (when displayed under the status bar) and a small amount of
  overshoot in the bounce animation. `MessageView` implements this protocol
  by way of its parent class `BaseView`.
- 
+
  For the effect of this protocol to work, subviews should be pinned to the
  message view's margins and the `layoutMargins` property should not be modified.
- 
+
  This protocol is optional. A message view that doesn't implement `MarginAdjustable`
  is responsible for setting is own internal margins appropriately.
  */
 public protocol MarginAdjustable {
-
     /// The amount to add to the safe area insets in calculating
     /// the layout margins.
     var layoutMarginAdditions: UIEdgeInsets { get }
@@ -49,4 +48,3 @@ public protocol MarginAdjustable {
     @available(iOS, deprecated, message: "Use the `bottomLayoutMarginAddition` instead.")
     var safeAreaBottomOffset: CGFloat { get set }
 }
-

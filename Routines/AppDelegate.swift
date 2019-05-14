@@ -97,15 +97,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
 
-    func application(_: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         printDebug("\(#function) - Start")
 
         // Override point for customization after application launch.
 
-        UIApplication.shared.registerForRemoteNotifications()
-
-        // Make sure data is up to date from iCloud
-//        AppDelegate.syncEngine?.pull()
+        application.registerForRemoteNotifications()
 
         // If launchOptions contains the appropriate launch options key, a Home screen quick action
         // is responsible for launching the app. Store the action for processing once the app has
@@ -801,115 +798,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // still in memory when the Home screen quick action was used. Again, store it for processing.
         shortcutItemToProcess = shortcutItem
     }
-
-//    static func setBadgeNumber() -> Int {
-//        var badgeCount = Int()
-//        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                // Get all the items in or under the current segment.
-//                let items = realm.objects(Items.self) // .filter("segment <= %@", segment)
-//                // Get what should the the furthest future trigger date
-//                if let lastFutureDate = items.last?.completeUntil {
-//                    badgeCount = items.filter("dateModified <= %@ AND isDeleted = \(false)", lastFutureDate).count
-//                }
-//            }
-//        }
-//        // print("setBadgeNumber found \(badgeCount) items")
-//        return badgeCount
-//    }
-
-//    //Doesn't work. Create notification seems to just time out
-//    open func setBadgeNumber() -> Int {
-//        var badge = 0
-//        let semaphore = DispatchSemaphore(value: 0)
-//        let center = UNUserNotificationCenter.current()
-//        center.getPendingNotificationRequests { (requests) in
-//            badge = requests.count
-//            semaphore.signal()
-//        }
-//        semaphore.wait()
-//        // print("Setting notification badge to: \(badge)")
-//        return badge
-//    }
-
-//    static func updateAppBadgeCount() {
-//        if Options.getBadgeOption() {
-//            // print("updating app badge number")
-//            DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
-//                autoreleasepool {
-//                    let realm = try! Realm()
-//                    let items = realm.objects(Items.self).filter("dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", Date(), Date().endOfDay)
-//                    var badgeCount = 0
-//                    items.forEach { item in
-//                        if item.firstTriggerDate(segment: item.segment) < Date() {
-//                            badgeCount += 1
-//                        }
-//                    }
-//                    DispatchQueue.main.async {
-//                        autoreleasepool {
-//                            UIApplication.shared.applicationIconBadgeNumber = badgeCount
-//                        }
-//                    }
-//                }
-//            }
-//        } else {
-//            UIApplication.shared.applicationIconBadgeNumber = 0
-//        }
-//    }
-
-    // MARK: - Conversion functions
-
-//    func getTime(timePeriod: Int, timeOption: Date?) -> Date {
-//        var time: Date
-//        let defaultTimeStrings = ["07:00", "12:00", "17:00", "21:00 PM"]
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.timeStyle = .short
-//
-//        if let setTime = timeOption {
-//            time = setTime
-//        } else {
-//            time = dateFormatter.date(from: defaultTimeStrings[timePeriod])!
-//        }
-//
-//        return time
-//    }
-//
-//    func getHour(date: Date?) -> Int {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "HH"
-//        let hour = dateFormatter.string(from: date!)
-//        return Int(hour)!
-//    }
-//
-//    func getMinute(date: Date?) -> Int {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "mm"
-//        let minutes = dateFormatter.string(from: date!)
-//        return Int(minutes)!
-//    }
-//
-//    func getCurrentSegmentFromTime() -> Int {
-//        let afternoon = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 1), minute: getOptionMinute(segment: 1), second: 0, of: Date())
-//        let evening = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 2), minute: getOptionMinute(segment: 2), second: 0, of: Date())
-//        let night = Calendar.autoupdatingCurrent.date(bySettingHour: getOptionHour(segment: 3), minute: getOptionMinute(segment: 3), second: 0, of: Date())
-//
-//        var currentSegment = 0
-//
-//        switch Date() {
-//        case _ where Date() < afternoon!:
-//            currentSegment = 0
-//        case _ where Date() < evening!:
-//            currentSegment = 1
-//        case _ where Date() < night!:
-//            currentSegment = 2
-//        case _ where Date() > night!:
-//            currentSegment = 3
-//        default:
-//            currentSegment = 0
-//        }
-//        return currentSegment
-//    }
 
     func getItemSegment(id: String) -> Int {
         var identifier: String {

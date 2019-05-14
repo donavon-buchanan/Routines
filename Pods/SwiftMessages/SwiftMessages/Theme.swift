@@ -18,7 +18,6 @@ public enum Theme {
 
 /// The Icon enum provides type-safe access to the included icons.
 public enum Icon: String {
-    
     case error = "errorIcon"
     case warning = "warningIcon"
     case success = "successIcon"
@@ -31,7 +30,7 @@ public enum Icon: String {
     case warningSubtle = "warningIconSubtle"
     case successSubtle = "successIconSubtle"
     case infoSubtle = "infoIconSubtle"
-    
+
     /// Returns the associated image.
     public var image: UIImage {
         return UIImage(named: rawValue, in: Bundle.sm_frameworkBundle(), compatibleWith: nil)!.withRenderingMode(.alwaysTemplate)
@@ -40,12 +39,11 @@ public enum Icon: String {
 
 /// The IconStyle enum specifies the different variations of the included icons.
 public enum IconStyle {
-    
     case `default`
     case light
     case subtle
     case none
-    
+
     /// Returns the image for the given theme
     public func image(theme: Theme) -> UIImage? {
         switch (theme, self) {

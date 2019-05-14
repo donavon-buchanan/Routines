@@ -13,8 +13,7 @@ extension Bundle {
         let bundle = Bundle(for: MessageView.self)
         if let path = bundle.path(forResource: "SwiftMessages", ofType: "bundle") {
             return Bundle(path: path)!
-        }
-        else {
+        } else {
             return bundle
         }
     }

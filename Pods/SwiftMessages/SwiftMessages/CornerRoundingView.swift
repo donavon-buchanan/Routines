@@ -11,7 +11,6 @@ import UIKit
 /// A background view that messages can use for rounding all or a subset of corners with squircles
 /// (the smoother method of rounding corners that you see on app icons).
 open class CornerRoundingView: UIView {
-
     /// Specifies the corner radius to use.
     @IBInspectable
     open var cornerRadius: CGFloat = 0 {
@@ -36,12 +35,12 @@ open class CornerRoundingView: UIView {
         }
     }
 
-    override public init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         sharedInit()
     }
 
-    required public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         sharedInit()
     }
@@ -52,7 +51,7 @@ open class CornerRoundingView: UIView {
 
     private let shapeLayer = CAShapeLayer()
 
-    override open func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
         updateMaskPath()
     }

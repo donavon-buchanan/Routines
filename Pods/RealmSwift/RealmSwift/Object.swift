@@ -82,7 +82,7 @@ open class Object: RLMObjectBase, ThreadConfined, RealmCollectionValue {
 
      - see: `Realm().add(_:)`
      */
-    public override required init() {
+    public required override init() {
         super.init()
     }
 
@@ -105,7 +105,6 @@ open class Object: RLMObjectBase, ThreadConfined, RealmCollectionValue {
         super.init(value: value, schema: .partialPrivateShared())
     }
 
-
     // MARK: Properties
 
     /// The Realm which manages the object, or `nil` if the object is unmanaged.
@@ -125,7 +124,7 @@ open class Object: RLMObjectBase, ThreadConfined, RealmCollectionValue {
     ///
     /// An object can no longer be accessed if the object has been deleted from the Realm that manages it, or if
     /// `invalidate()` is called on that Realm.
-    public override final var isInvalidated: Bool { return super.isInvalidated }
+    public final override var isInvalidated: Bool { return super.isInvalidated }
 
     /// A human-readable description of the object.
     open override var description: String { return super.description }
@@ -135,10 +134,9 @@ open class Object: RLMObjectBase, ThreadConfined, RealmCollectionValue {
      It is not considered part of the public API.
      :nodoc:
      */
-    public override final class func objectUtilClass(_ isSwift: Bool) -> AnyClass {
+    public final override class func objectUtilClass(_: Bool) -> AnyClass {
         return ObjectUtil.self
     }
-
 
     // MARK: Object Customization
 
@@ -227,7 +225,7 @@ open class Object: RLMObjectBase, ThreadConfined, RealmCollectionValue {
      - returns: A token which must be held for as long as you want updates to be delivered.
      */
     public func observe(_ block: @escaping (ObjectChange) -> Void) -> NotificationToken {
-        return RLMObjectAddNotificationBlock(self, { names, oldValues, newValues, error in
+        return RLMObjectAddNotificationBlock(self) { names, oldValues, newValues, error in
             if let error = error {
                 block(.error(error as NSError))
                 return
@@ -237,10 +235,10 @@ open class Object: RLMObjectBase, ThreadConfined, RealmCollectionValue {
                 return
             }
 
-            block(.change((0..<newValues.count).map { i in
+            block(.change((0 ..< newValues.count).map { i in
                 PropertyChange(name: names[i], oldValue: oldValues?[i], newValue: newValues[i])
             }))
-        })
+        }
     }
 
     // MARK: Dynamic list
@@ -264,6 +262,7 @@ open class Object: RLMObjectBase, ThreadConfined, RealmCollectionValue {
     }
 
     // MARK: Comparison
+
     /**
      Returns whether two Realm objects are the same.
 
@@ -288,18 +287,18 @@ open class Object: RLMObjectBase, ThreadConfined, RealmCollectionValue {
     // FIXME: None of these functions should be exposed in the public interface.
 
     /**
-    WARNING: This is an internal initializer not intended for public use.
-    :nodoc:
-    */
-    public override required init(realm: RLMRealm, schema: RLMObjectSchema) {
+     WARNING: This is an internal initializer not intended for public use.
+     :nodoc:
+     */
+    public required override init(realm: RLMRealm, schema: RLMObjectSchema) {
         super.init(realm: realm, schema: schema)
     }
 
     /**
-    WARNING: This is an internal initializer not intended for public use.
-    :nodoc:
-    */
-    public override required init(value: Any, schema: RLMSchema) {
+     WARNING: This is an internal initializer not intended for public use.
+     :nodoc:
+     */
+    public required override init(value: Any, schema: RLMSchema) {
         super.init(value: value, schema: schema)
     }
 }
@@ -310,7 +309,7 @@ open class Object: RLMObjectBase, ThreadConfined, RealmCollectionValue {
 public struct PropertyChange {
     /**
      The name of the property which changed.
-    */
+     */
     public let name: String
 
     /**
@@ -323,13 +322,13 @@ public struct PropertyChange {
      had before the changes. This means that `previousValue` may be a deleted
      object, and you will need to check `isInvalidated` before accessing any
      of its properties.
-    */
+     */
     public let oldValue: Any?
 
     /**
      The value of the property after the change occurred. This is not supplied
      for `List` properties and will always be nil.
-    */
+     */
     public let newValue: Any?
 }
 
@@ -413,7 +412,7 @@ public class ObjectUtil: NSObject {
         return nil
     }
 
-    @objc private class func linkingObjectsPropertiesForClass(_ type: AnyClass) -> NSDictionary? {
+    @objc private class func linkingObjectsPropertiesForClass(_: AnyClass) -> NSDictionary? {
         // Not used for Swift. getLinkingObjectsProperties(_:) is used instead.
         return nil
     }
@@ -467,20 +466,20 @@ public class ObjectUtil: NSObject {
 
     // Build optional property metadata for a given property.
     // swiftlint:disable:next cyclomatic_complexity
-    private static func getOptionalPropertyMetadata(for child: Mirror.Child, at index: Int) -> RLMSwiftPropertyMetadata? {
+    private static func getOptionalPropertyMetadata(for child: Mirror.Child, at _: Int) -> RLMSwiftPropertyMetadata? {
         guard let name = child.label else {
             return nil
         }
         let mirror = Mirror(reflecting: child.value)
         let type = mirror.subjectType
         let code: PropertyType
-        if type is Optional<String>.Type || type is Optional<NSString>.Type {
+        if type is String?.Type || type is NSString?.Type {
             code = .string
-        } else if type is Optional<Date>.Type {
+        } else if type is Date?.Type {
             code = .date
-        } else if type is Optional<Data>.Type {
+        } else if type is Data?.Type {
             code = .data
-        } else if type is Optional<Object>.Type {
+        } else if type is Object?.Type {
             code = .object
         } else if type is RealmOptional<Int>.Type ||
             type is RealmOptional<Int8>.Type ||
@@ -534,7 +533,7 @@ private func forceCastToInferred<T, V>(_ x: T) -> V {
 }
 
 extension Object: AssistedObjectiveCBridgeable {
-    static func bridging(from objectiveCValue: Any, with metadata: Any?) -> Self {
+    static func bridging(from objectiveCValue: Any, with _: Any?) -> Self {
         return forceCastToInferred(objectiveCValue)
     }
 
@@ -548,15 +547,15 @@ extension Object: AssistedObjectiveCBridgeable {
 extension Object {
     /// :nodoc:
     @available(*, unavailable, renamed: "observe()")
-    public func addNotificationBlock(_ block: @escaping (ObjectChange) -> Void) -> NotificationToken {
+    public func addNotificationBlock(_: @escaping (ObjectChange) -> Void) -> NotificationToken {
         fatalError()
     }
 
-#if os(OSX)
-#else
-    /// :nodoc:
-    @available(*, unavailable, renamed: "isSameObject(as:)") public func isEqual(to object: Any?) -> Bool {
-        fatalError()
-    }
-#endif
+    #if os(OSX)
+    #else
+        /// :nodoc:
+        @available(*, unavailable, renamed: "isSameObject(as:)") public func isEqual(to _: Any?) -> Bool {
+            fatalError()
+        }
+    #endif
 }

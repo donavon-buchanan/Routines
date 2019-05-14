@@ -5,10 +5,10 @@
 //  Created by Fu Yuan on 7/01/18.
 //
 
-import Foundation
-import RealmSwift
-import Realm
 import CloudKit
+import Foundation
+import Realm
+import RealmSwift
 
 /// If you want to store and sync big data automatically, then using CreamAsset might be a good choice.
 /// According to Apple https://developer.apple.com/documentation/cloudkit/ckasset :
@@ -20,14 +20,14 @@ import CloudKit
 public class CreamAsset: Object {
     @objc dynamic var uniqueFileName = ""
     @objc dynamic var data: Data?
-    override public static func ignoredProperties() -> [String] {
+    public override static func ignoredProperties() -> [String] {
         return ["data", "filePath"]
     }
 
     private convenience init(objectID: String, propName: String, data: Data, shouldOverwrite: Bool = true) {
         self.init()
         self.data = data
-        self.uniqueFileName = "\(objectID)_\(propName)"
+        uniqueFileName = "\(objectID)_\(propName)"
         save(data: data, to: uniqueFileName, shouldOverwrite: shouldOverwrite)
     }
 
@@ -51,7 +51,7 @@ public class CreamAsset: Object {
         let url = CreamAsset.creamAssetDefaultURL().appendingPathComponent(path)
 
         guard shouldOverwrite || !FileManager.default.fileExists(atPath: url.path) else { return }
-        
+
         do {
             try data.write(to: url)
         } catch {
@@ -60,9 +60,7 @@ public class CreamAsset: Object {
     }
 
     var asset: CKAsset {
-        get {
-            return CKAsset(fileURL: filePath)
-        }
+        return CKAsset(fileURL: filePath)
     }
 
     /// Parses a CKRecord and CKAsset back into a CreamAsset
@@ -73,7 +71,7 @@ public class CreamAsset: Object {
     ///   - asset: The CKAsset where we will pull the URL for creating the asset
     /// - Returns: A CreamAsset if it was successful
     static func parse(from propName: String, record: CKRecord, asset: CKAsset) -> CreamAsset? {
-        return CreamAsset(objectID: record.recordID.recordName, propName: propName, url: asset.fileURL)
+        return CreamAsset(objectID: record.recordID.recordName, propName: propName, url: asset.fileURL!)
     }
 
     /// Creates a new CreamAsset for the given object with Data
@@ -90,7 +88,7 @@ public class CreamAsset: Object {
                           data: data,
                           shouldOverwrite: shouldOverwrite)
     }
-    
+
     /// Creates a new CreamAsset for the given object id with Data
     ///
     /// - Parameters:
@@ -114,7 +112,6 @@ public class CreamAsset: Object {
     ///   - url: The URL of the file to store. Any path extension on the file (e.g. "mov") will be maintained
     /// - Returns: A CreamAsset if it was successful
     public static func create(object: CKRecordConvertible, propName: String, url: URL) -> CreamAsset? {
-
         return CreamAsset(objectID: object.recordID.recordName,
                           propName: propName,
                           url: url)
@@ -130,9 +127,7 @@ extension CreamAsset {
         if !FileManager.default.fileExists(atPath: commonAssetPath.path) {
             do {
                 try FileManager.default.createDirectory(atPath: commonAssetPath.path, withIntermediateDirectories: false, attributes: nil)
-            } catch {
-
-            }
+            } catch {}
         }
         return commonAssetPath
     }
@@ -141,9 +136,7 @@ extension CreamAsset {
     public static func creamAssetFilesPaths() -> [String] {
         do {
             return try FileManager.default.contentsOfDirectory(atPath: CreamAsset.creamAssetDefaultURL().path)
-        } catch {
-
-        }
+        } catch {}
         return [String]()
     }
 
@@ -154,9 +147,7 @@ extension CreamAsset {
             do {
                 print("deleteCacheFiles.removeItem:", absolutePath)
                 try FileManager.default.removeItem(atPath: absolutePath)
-            } catch {
-
-            }
+            } catch {}
         }
     }
 
@@ -165,5 +156,4 @@ extension CreamAsset {
         let needToDeleteCacheFiles = creamAssetFilesPaths().filter { $0.contains(id) }
         excecuteDeletions(in: needToDeleteCacheFiles)
     }
-
 }

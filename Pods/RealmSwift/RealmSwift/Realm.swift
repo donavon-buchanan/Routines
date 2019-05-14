@@ -38,7 +38,6 @@ import Realm.Private
  run all of its blocks on the same thread.
  */
 public final class Realm {
-
     // MARK: Properties
 
     /// The `Schema` used by the Realm.
@@ -149,11 +148,11 @@ public final class Realm {
      - throws: An `NSError` if the transaction could not be completed successfully.
                If `block` throws, the function throws the propagated `ErrorType` instead.
      */
-    public func write(_ block: (() throws -> Void)) throws {
+    public func write(_ block: () throws -> Void) throws {
         beginWrite()
         do {
             try block()
-        } catch let error {
+        } catch {
             if isInWriteTransaction { cancelWrite() }
             throw error
         }
@@ -281,7 +280,7 @@ public final class Realm {
                          key), and update it. Otherwise, the object will be added.
      */
     public func add(_ object: Object, update: Bool = false) {
-        if update && object.objectSchema.primaryKeyProperty == nil {
+        if update, object.objectSchema.primaryKeyProperty == nil {
             throwRealmException("'\(object.objectSchema.className)' does not have a primary key and can not be updated")
         }
         RLMAddObjectToRealm(object, rlmRealm, update)
@@ -341,7 +340,7 @@ public final class Realm {
     @discardableResult
     public func create<T: Object>(_ type: T.Type, value: Any = [:], update: Bool = false) -> T {
         let typeName = (type as Object.Type).className()
-        if update && schema[typeName]?.primaryKeyProperty == nil {
+        if update, schema[typeName]?.primaryKeyProperty == nil {
             throwRealmException("'\(typeName)' does not have a primary key and can not be updated")
         }
         return unsafeDowncast(RLMCreateObjectInRealmWithValue(rlmRealm, typeName, value, update), to: T.self)
@@ -388,7 +387,7 @@ public final class Realm {
      */
     @discardableResult
     public func dynamicCreate(_ typeName: String, value: Any = [:], update: Bool = false) -> DynamicObject {
-        if update && schema[typeName]?.primaryKeyProperty == nil {
+        if update, schema[typeName]?.primaryKeyProperty == nil {
             throwRealmException("'\(typeName)' does not have a primary key and can not be updated")
         }
         return noWarnUnsafeBitCast(RLMCreateObjectInRealmWithValue(rlmRealm, typeName, value, update),
@@ -508,7 +507,7 @@ public final class Realm {
     public func object<Element: Object, KeyType>(ofType type: Element.Type, forPrimaryKey key: KeyType) -> Element? {
         return unsafeBitCast(RLMGetObject(rlmRealm, (type as Object.Type).className(),
                                           dynamicBridgeCast(fromSwift: key)) as! RLMObjectBase?,
-                             to: Optional<Element>.self)
+                             to: Element?.self)
     }
 
     /**
@@ -534,7 +533,7 @@ public final class Realm {
      :nodoc:
      */
     public func dynamicObject(ofType typeName: String, forPrimaryKey key: Any) -> DynamicObject? {
-        return unsafeBitCast(RLMGetObject(rlmRealm, typeName, key) as! RLMObjectBase?, to: Optional<DynamicObject>.self)
+        return unsafeBitCast(RLMGetObject(rlmRealm, typeName, key) as! RLMObjectBase?, to: DynamicObject?.self)
     }
 
     // MARK: Notifications

@@ -8,48 +8,46 @@
 
 import UIKit
 
-open class WindowViewController: UIViewController
-{
+open class WindowViewController: UIViewController {
     fileprivate var window: UIWindow?
-    
+
     let windowLevel: UIWindow.Level
     let config: SwiftMessages.Config
-    
-    override open var shouldAutorotate: Bool {
+
+    open override var shouldAutorotate: Bool {
         return config.shouldAutorotate
     }
-    
-    public init(windowLevel: UIWindow.Level?, config: SwiftMessages.Config)
-    {
+
+    public init(windowLevel: UIWindow.Level?, config: SwiftMessages.Config) {
         self.windowLevel = windowLevel ?? UIWindow.Level.normal
         self.config = config
         let window = PassthroughWindow(frame: UIScreen.main.bounds)
         self.window = window
         super.init(nibName: nil, bundle: nil)
-        self.view = PassthroughView()
+        view = PassthroughView()
         window.rootViewController = self
         window.windowLevel = windowLevel ?? UIWindow.Level.normal
     }
-    
+
     func install(becomeKey: Bool) {
         guard let window = window else { return }
         if becomeKey {
-            window.makeKeyAndVisible()            
+            window.makeKeyAndVisible()
         } else {
             window.isHidden = false
         }
     }
-    
+
     func uninstall() {
         window?.isHidden = true
         window = nil
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
+
+    public required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override open var preferredStatusBarStyle: UIStatusBarStyle {
+
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
         return config.preferredStatusBarStyle ?? super.preferredStatusBarStyle
     }
 }

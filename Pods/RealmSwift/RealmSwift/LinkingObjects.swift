@@ -48,6 +48,7 @@ public class LinkingObjectsBase: NSObject, NSFastEnumeration {
     }
 
     // MARK: Fast Enumeration
+
     public func countByEnumerating(with state: UnsafeMutablePointer<NSFastEnumerationState>,
                                    objects buffer: AutoreleasingUnsafeMutablePointer<AnyObject?>,
                                    count len: Int) -> Int {
@@ -99,7 +100,7 @@ public final class LinkingObjects<Element: Object>: LinkingObjectsBase {
      - parameter type:         The type of the object owning the property the linking objects should refer to.
      - parameter propertyName: The property name of the property the linking objects should refer to.
      */
-    public init(fromType type: Element.Type, property propertyName: String) {
+    public init(fromType _: Element.Type, property propertyName: String) {
         let className = (Element.self as Object.Type).className()
         super.init(fromClassName: className, property: propertyName)
     }
@@ -109,7 +110,7 @@ public final class LinkingObjects<Element: Object>: LinkingObjectsBase {
         if realm == nil {
             var this = self
             return withUnsafePointer(to: &this) {
-                return "LinkingObjects<\(objectClassName)> <\($0)> (\n\n)"
+                "LinkingObjects<\(objectClassName)> <\($0)> (\n\n)"
             }
         }
         return RLMDescriptionWithMaxDepth("LinkingObjects", rlmResults, RLMDescriptionMaxDepth)
@@ -158,10 +159,10 @@ public final class LinkingObjects<Element: Object>: LinkingObjectsBase {
     }
 
     /// Returns the first object in the linking objects, or `nil` if the linking objects are empty.
-    public var first: Element? { return unsafeBitCast(rlmResults.firstObject(), to: Optional<Element>.self) }
+    public var first: Element? { return unsafeBitCast(rlmResults.firstObject(), to: Element?.self) }
 
     /// Returns the last object in the linking objects, or `nil` if the linking objects are empty.
-    public var last: Element? { return unsafeBitCast(rlmResults.lastObject(), to: Optional<Element>.self) }
+    public var last: Element? { return unsafeBitCast(rlmResults.lastObject(), to: Element?.self) }
 
     // MARK: KVC
 
@@ -248,7 +249,7 @@ public final class LinkingObjects<Element: Object>: LinkingObjectsBase {
      */
     public func sorted<S: Sequence>(by sortDescriptors: S) -> Results<Element>
         where S.Iterator.Element == SortDescriptor {
-            return Results(rlmResults.sortedResults(using: sortDescriptors.map { $0.rlmSortDescriptorValue }))
+        return Results(rlmResults.sortedResults(using: sortDescriptors.map { $0.rlmSortDescriptorValue }))
     }
 
     // MARK: Aggregate Operations
@@ -384,20 +385,20 @@ extension LinkingObjects: RealmCollection {
     public var endIndex: Int { return count }
 
     public func index(after: Int) -> Int {
-      return after + 1
+        return after + 1
     }
 
     public func index(before: Int) -> Int {
-      return before - 1
+        return before - 1
     }
 
     /// :nodoc:
     public func _observe(_ block: @escaping (RealmCollectionChange<AnyRealmCollection<Element>>) -> Void) ->
         NotificationToken {
-            let anyCollection = AnyRealmCollection(self)
-            return rlmResults.addNotificationBlock { _, change, error in
-                block(RealmCollectionChange.fromObjc(value: anyCollection, change: change, error: error))
-            }
+        let anyCollection = AnyRealmCollection(self)
+        return rlmResults.addNotificationBlock { _, change, error in
+            block(RealmCollectionChange.fromObjc(value: anyCollection, change: change, error: error))
+        }
     }
 }
 
@@ -409,7 +410,7 @@ extension LinkingObjects: AssistedObjectiveCBridgeable {
 
         let swiftValue = LinkingObjects(fromType: Element.self, property: metadata.propertyName)
         switch (objectiveCValue, metadata) {
-        case (let object as RLMObjectBase, .uncached(let property)):
+        case let (object as RLMObjectBase, .uncached(property)):
             swiftValue.object = RLMWeakObjectHandle(object: object)
             swiftValue.property = property
         case (let results as RLMResults<AnyObject>, .cached):
@@ -437,8 +438,8 @@ internal enum LinkingObjectsBridgingMetadata {
 
     fileprivate var propertyName: String {
         switch self {
-        case .uncached(let property):   return property.name
-        case .cached(let propertyName): return propertyName
+        case let .uncached(property): return property.name
+        case let .cached(propertyName): return propertyName
         }
     }
 }
