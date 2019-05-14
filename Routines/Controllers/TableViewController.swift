@@ -24,7 +24,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             UIKeyCommand(input: "n", modifierFlags: .command, action: #selector(addNewTask), discoverabilityTitle: "Add New Task"),
             UIKeyCommand(input: "o", modifierFlags: .alternate, action: #selector(openSettingsKeyCommand), discoverabilityTitle: "Open Settings"),
             UIKeyCommand(input: "e", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(editKeyCommand), discoverabilityTitle: "Edit Current Tasks"),
-            UIKeyCommand(input: "a", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(showAllKeyCommand), discoverabilityTitle: "Show Entire Day")
+            UIKeyCommand(input: "a", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(showAllKeyCommand), discoverabilityTitle: "Show Entire Day"),
         ]
     }
 
@@ -132,6 +132,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     // Footer view
     let footerView = UIView()
 
+    fileprivate func fetchIAPInfo() {
+        // prefetch prices
+        if !RoutinesPlus.getPurchasedStatus() {
+            getAllProductInfo(productIDs: [RegisteredPurchase.lifetime.rawValue, RegisteredPurchase.monthly.rawValue, RegisteredPurchase.yearly.rawValue])
+        }
+    }
+
     override func viewDidLoad() {
         // print("Running viewDidLoad")
         super.viewDidLoad()
@@ -166,11 +173,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             debugPrint("Routines Plus Product: \(RoutinesPlus.getPurchasedProduct())")
         }
 
-        // prefetch prices
-        if !RoutinesPlus.getPurchasedStatus() {
-            getAllProductInfo(productIDs: [RegisteredPurchase.lifetime.rawValue, RegisteredPurchase.monthly.rawValue, RegisteredPurchase.yearly.rawValue])
-        }
-
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
     }
@@ -198,6 +200,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         // print("viewDidAppear")
         TableViewController.setAppearance(segment: segment)
         loadItems()
+
+        fetchIAPInfo()
     }
 
     func setTimeInTitle(timeString _: String) {
