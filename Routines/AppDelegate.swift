@@ -100,6 +100,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         printDebug("\(#function) - Start")
 
+        application.setMinimumBackgroundFetchInterval(0)
+
         // Override point for customization after application launch.
 
         application.registerForRemoteNotifications()
@@ -467,7 +469,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
             AppDelegate.syncEngine = SyncEngine(objects: [
                 SyncObject<Items>(),
-                SyncObject<Options>()
+                SyncObject<Options>(),
             ], databaseScope: .private)
         } else {
             printDebug("Disabling cloud syncEngine")
@@ -859,7 +861,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 NSAttributedString.Key.foregroundColor: UIColor(rgba: hexString),
                 // NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
 
-                NSAttributedString.Key.shadow: shadow
+                NSAttributedString.Key.shadow: shadow,
             ]
         }
 
