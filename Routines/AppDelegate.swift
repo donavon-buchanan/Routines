@@ -105,7 +105,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UIApplication.shared.registerForRemoteNotifications()
 
         // Make sure data is up to date from iCloud
-        AppDelegate.syncEngine?.pull()
+//        AppDelegate.syncEngine?.pull()
 
         // If launchOptions contains the appropriate launch options key, a Home screen quick action
         // is responsible for launching the app. Store the action for processing once the app has
@@ -170,7 +170,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         AppDelegate.afterSyncTimer.stopTimer()
         AppDelegate.automaticDarkModeTimer.stopTimer()
 
-        AppDelegate.syncEngine?.pushAll()
+//        AppDelegate.syncEngine?.pushAll()
 
         printDebug("\(#function) - End")
     }
