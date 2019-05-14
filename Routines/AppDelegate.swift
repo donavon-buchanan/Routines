@@ -138,18 +138,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
 
-    func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         let dict = userInfo as! [String: NSObject]
         let notification = CKNotification(fromRemoteNotificationDictionary: dict)
 
         if let subscriptionID = notification?.subscriptionID, IceCreamSubscription.allIDs.contains(subscriptionID) {
             NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
         }
-        completionHandler(.newData)
+        switch application.applicationState {
+        case .active:
+            completionHandler(.newData)
+        case .background:
+            completionHandler(.newData)
+        case .inactive:
+            completionHandler(.newData)
+        }
 
         printDebug("Received push notification")
 
-        AppDelegate.afterSyncTimer.startTimer()
+        // AppDelegate.afterSyncTimer.startTimer()
     }
 
     func applicationWillResignActive(_: UIApplication) {
@@ -180,6 +187,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         AppDelegate.refreshNotifications()
         // itemCleanup()
         AppDelegate.removeOldNotifications()
+
+        observeItems()
+
         printDebug("\(#function) - End")
     }
 
@@ -198,6 +208,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug("\(#function) - Start")
         // AppDelegate.removeOldNotifications()
         // Sync with iCloud
+        observeItems()
 
         printDebug("\(#function) - End")
     }
@@ -523,7 +534,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
             AppDelegate.syncEngine = SyncEngine(objects: [
                 SyncObject<Items>(),
-                SyncObject<Options>(),
+                SyncObject<Options>()
             ], databaseScope: .private)
         } else {
             printDebug("Disabling cloud syncEngine")
@@ -533,17 +544,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     // MARK: - Update after Notifications
 
-    var notificationToken: NotificationToken?
+    var itemsToken: NotificationToken?
+    var items: Results<Items>?
 
-    @objc func observeItems() {
-        printDebug(#function)
+    func observeItems() {
         // Observe Results Notifications
-        // TODO: This seems like a stupid way to do this
-        let realm = try! Realm()
-        let items = realm.objects(Items.self)
+        guard itemsToken == nil else { return }
+        printDebug(#function + "Setting token and observing items")
 
-        notificationToken = items.observe { _ in
-            AppDelegate.refreshAndUpdate()
+        let realm = try! Realm()
+        items = realm.objects(Items.self)
+
+        itemsToken = items?.observe { change in
+            switch change {
+            case .initial:
+                printDebug("Initial load. Observing items")
+            case .update:
+                printDebug("Items list updated in \(#function)")
+                AppDelegate.refreshAndUpdate()
+            case let .error(error):
+                printDebug("Error with items observation: \(error)")
+            }
         }
     }
 
@@ -557,7 +578,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     deinit {
         printDebug("\(#function) called. Tokens invalidated")
-        // notificationToken?.invalidate()
+        itemsToken?.invalidate()
     }
 
     // MARK: - Notification Categories and Actions
@@ -1007,7 +1028,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 NSAttributedString.Key.foregroundColor: UIColor(rgba: hexString),
                 // NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
 
-                NSAttributedString.Key.shadow: shadow,
+                NSAttributedString.Key.shadow: shadow
             ]
         }
 

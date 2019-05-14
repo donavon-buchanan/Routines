@@ -34,7 +34,7 @@ class RoutinesUITests: XCTestCase {
     func testGenerateScreenshots() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        
+
         let app = XCUIApplication()
         snapshot("Morning-Light")
         let tabBarsQuery = app.tabBars
@@ -43,14 +43,14 @@ class RoutinesUITests: XCTestCase {
         snapshot("Afternoon-Light")
         let button = app.navigationBars["Afternoon"].children(matching: .button).element(boundBy: 2)
         button.tap()
-        
+
         let tablesQuery = app.tables
         let askJenniferWhereSheDLikeToHaveDinnerStaticText = tablesQuery/*@START_MENU_TOKEN@*/.staticTexts["Ask Jennifer where she’d like to have dinner"]/*[[".cells.staticTexts[\"Ask Jennifer where she’d like to have dinner\"]",".staticTexts[\"Ask Jennifer where she’d like to have dinner\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
         askJenniferWhereSheDLikeToHaveDinnerStaticText.swipeLeft()
         snapshot("AllDay-Light")
         let button2 = app.navigationBars["All Day"].children(matching: .button).element(boundBy: 2)
         button2.tap()
-        
+
         let eveningButton = tabBarsQuery.buttons["Evening"]
         eveningButton.tap()
         snapshot("Evening-Light")
