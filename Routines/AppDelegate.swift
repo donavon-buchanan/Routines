@@ -239,11 +239,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     let id = notification.identifier
                     let realm = try! Realm()
                     let item = realm.object(ofType: Items.self, forPrimaryKey: id)
-                    //First test nil for items that don't exist
+                    // First test nil for items that don't exist
                     if item == nil {
                         orphanNotifications.append(id)
                     } else if let item = item {
-                        //Next test if item is valid, but marked for deletion
+                        // Next test if item is valid, but marked for deletion
                         if item.isDeleted {
                             orphanNotifications.append(id)
                         }
