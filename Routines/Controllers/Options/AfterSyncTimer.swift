@@ -26,6 +26,9 @@ class AfterSyncTimer {
 
     @objc func doRefresh() {
         printDebug(#function)
-        AppDelegate.refreshAndUpdate()
+        AppDelegate.refreshNotifications()
+        AppDelegate.updateBadgeFromPush()
+
+        stopTimer()
     }
 }

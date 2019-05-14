@@ -19,7 +19,7 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
 
-    static let afterSyncTimer = AfterSyncTimer()
+    lazy var afterSyncTimer = AfterSyncTimer()
 
     static let automaticDarkModeTimer = AutomaticDarkModeTimer()
     static func setAutomaticDarkModeTimer() {
@@ -147,26 +147,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         switch application.applicationState {
         case .active:
-            AppDelegate.afterSyncTimer.startTimer()
+            afterSyncTimer.startTimer()
             completionHandler(.newData)
         case .background:
-            backgroundRefresh()
+//            backgroundRefresh()
+            backgroundSyncTimer()
             completionHandler(.newData)
         case .inactive:
-            backgroundRefresh()
+//            backgroundRefresh()
+            backgroundSyncTimer()
             completionHandler(.newData)
         @unknown default:
+            backgroundSyncTimer()
             completionHandler(.newData)
         }
 
         printDebug("Received push notification")
     }
 
+    func backgroundSyncTimer() {
+        DispatchQueue.global().async {
+            autoreleasepool {
+                self.afterSyncTimer.startTimer()
+            }
+        }
+    }
+
     func applicationWillResignActive(_: UIApplication) {
         printDebug("\(#function) - Start")
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        AppDelegate.afterSyncTimer.stopTimer()
+        afterSyncTimer.stopTimer()
         AppDelegate.automaticDarkModeTimer.stopTimer()
 
 //        AppDelegate.syncEngine?.pushAll()
@@ -496,19 +507,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 printDebug("Initial load. Observing items")
             case .update:
                 printDebug("Items list updated in \(#function)")
-                AppDelegate.refreshAndUpdate()
+                self.refreshAndUpdate()
             case let .error(error):
                 printDebug("Error with items observation: \(error)")
             }
         }
     }
 
-    @objc static func refreshAndUpdate() {
+    func refreshAndUpdate() {
         printDebug(#function)
         AppDelegate.refreshNotifications()
         AppDelegate.updateBadgeFromPush()
-
-        AppDelegate.afterSyncTimer.stopTimer()
     }
 
     @objc func backgroundRefresh() {
@@ -608,7 +617,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
-    private static func updateBadgeFromPush() {
+    static func updateBadgeFromPush() {
         printDebug(#function)
         printDebug("updating badge from remote push")
         let center = UNUserNotificationCenter.current()
