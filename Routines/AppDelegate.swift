@@ -178,8 +178,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug("\(#function) - Start")
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        AppDelegate.removeOldNotifications()
-        AppDelegate.refreshNotifications()
+
+//        AppDelegate.refreshNotifications()
 
         observeItems()
 
@@ -199,7 +199,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillEnterForeground(_: UIApplication) {
         printDebug("\(#function) - Start")
-        // AppDelegate.removeOldNotifications()
+
         // Sync with iCloud
         observeItems()
 
@@ -221,16 +221,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             shortcutItemToProcess = nil
         }
 
-        // realmSync()
-
-//        //If presentedVC is nil, that means that Settings or Add were not called, so load the proper tab
-//        if self.window?.rootViewController?.presentedViewController == nil {
-//            restoreSelectedTab(tab: getCurrentSegmentFromTime())
-//        }
-        // TableViewController().refreshItems()
-
-        // itemCleanup()
-        // updateAppBadgeCount()
+        AppDelegate.removeOldNotifications()
 
         removeOrphanedNotifications()
 
@@ -239,24 +230,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func removeOrphanedNotifications() {
-        printDebug("\(#function) - Start")
         DispatchQueue.main.async {
-            autoreleasepool {
-                let center = UNUserNotificationCenter.current()
-                var orphanNotifications: [String] = []
-                center.getPendingNotificationRequests(completionHandler: { pendingNotifications in
-                    pendingNotifications.forEach { notification in
-                        let id = notification.identifier
-                        let realm = try! Realm()
-                        if realm.object(ofType: Items.self, forPrimaryKey: id) == nil {
+            printDebug("\(#function) - Start")
+            let center = UNUserNotificationCenter.current()
+            var orphanNotifications: [String] = []
+            center.getPendingNotificationRequests(completionHandler: { pendingNotifications in
+                pendingNotifications.forEach { notification in
+                    let id = notification.identifier
+                    let realm = try! Realm()
+                    let item = realm.object(ofType: Items.self, forPrimaryKey: id)
+                    //First test nil for items that don't exist
+                    if item == nil {
+                        orphanNotifications.append(id)
+                    } else if let item = item {
+                        //Next test if item is valid, but marked for deletion
+                        if item.isDeleted {
                             orphanNotifications.append(id)
                         }
                     }
-                })
-                center.removePendingNotificationRequests(withIdentifiers: orphanNotifications)
-            }
+                }
+            })
+            center.removePendingNotificationRequests(withIdentifiers: orphanNotifications)
+            printDebug("\(#function) - End")
         }
-        printDebug("\(#function) - End")
     }
 
     func applicationWillTerminate(_: UIApplication) {
@@ -494,9 +490,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             switch change {
             case .initial:
                 printDebug("Initial load. Observing items")
+                self.afterSyncTimer.startTimer()
             case .update:
                 printDebug("Items list updated in \(#function)")
-                self.refreshAndUpdate()
+                self.backgroundRefresh()
             case let .error(error):
                 printDebug("Error with items observation: \(error)")
             }
