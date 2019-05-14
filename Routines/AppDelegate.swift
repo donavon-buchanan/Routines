@@ -150,27 +150,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             afterSyncTimer.startTimer()
             completionHandler(.newData)
         case .background:
-//            backgroundRefresh()
-            backgroundSyncTimer()
+            backgroundRefresh()
             completionHandler(.newData)
         case .inactive:
-//            backgroundRefresh()
-            backgroundSyncTimer()
+            backgroundRefresh()
             completionHandler(.newData)
         @unknown default:
-            backgroundSyncTimer()
             completionHandler(.newData)
         }
 
         printDebug("Received push notification")
-    }
-
-    func backgroundSyncTimer() {
-        DispatchQueue.global().async {
-            autoreleasepool {
-                self.afterSyncTimer.startTimer()
-            }
-        }
     }
 
     func applicationWillResignActive(_: UIApplication) {
@@ -521,9 +510,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     @objc func backgroundRefresh() {
-        printDebug(#function)
-        AppDelegate.refreshNotifications()
-        AppDelegate.updateBadgeFromPush()
+        DispatchQueue.main.async {
+            autoreleasepool {
+                printDebug(#function)
+                self.refreshAndUpdate()
+            }
+        }
     }
 
     deinit {
