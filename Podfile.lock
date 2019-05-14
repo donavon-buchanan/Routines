@@ -1,11 +1,11 @@
 PODS:
-  - IceCream (1.9.1):
+  - IceCream (1.9.2):
     - RealmSwift
-  - Realm (3.14.2):
-    - Realm/Headers (= 3.14.2)
-  - Realm/Headers (3.14.2)
-  - RealmSwift (3.14.2):
-    - Realm (= 3.14.2)
+  - Realm (3.15.0):
+    - Realm/Headers (= 3.15.0)
+  - Realm/Headers (3.15.0)
+  - RealmSwift (3.15.0):
+    - Realm (= 3.15.0)
   - SimulatorStatusMagic (2.4.1)
   - SwiftMessages (6.0.2):
     - SwiftMessages/App (= 6.0.2)
@@ -32,9 +32,9 @@ SPEC REPOS:
     - SwiftyStoreKit
 
 SPEC CHECKSUMS:
-  IceCream: d33bee1ab1c7789afc838e34a439bbc60dd6eb00
-  Realm: 179c6706e3a49dbfe112e572fd3c03d3169bea35
-  RealmSwift: 1797f272fb51c555b764fada32e82159a2c65247
+  IceCream: a4dc38bf35f34b02fc8a1f9028267cb220982542
+  Realm: 9b834e1be6062f544805252c812348872dc5d4ed
+  RealmSwift: 8a41886f8ab6efef9eb8df97de2f2bb911561a79
   SimulatorStatusMagic: 28d4a9d1a500ac7cea0b2b5a43c1c6ddb40ba56c
   SwiftMessages: 8b3cc68dba2f1c91aac1a74c90b10287aac35371
   SwiftTheme: a381f983da92153908b7a9eeb961b18b6d94d614
