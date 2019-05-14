@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AADC3CCA4C474F4CCD0FEBA482ED1FE7"
+               BlueprintIdentifier = "582CF7DD6B16DB7F6507D18B2955A423"
                BuildableName = "Pods_Routines.framework"
                BlueprintName = "Pods-Routines"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
@@ -46,7 +46,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F85DA34B22084C9800A6716C"
+               BlueprintIdentifier = "F8A9B09722842BA70043E43A"
                BuildableName = "RoutinesUITests.xctest"
                BlueprintName = "RoutinesUITests"
                ReferencedContainer = "container:Routines.xcodeproj">

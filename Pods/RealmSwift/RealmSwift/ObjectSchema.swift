@@ -27,7 +27,6 @@ import Realm
  Object schemas map to tables in the core database.
  */
 public struct ObjectSchema: CustomStringConvertible {
-
     // MARK: Properties
 
     internal let rlmObjectSchema: RLMObjectSchema

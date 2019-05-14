@@ -53,12 +53,10 @@ import UIKit
  */
 
 open class SwiftMessagesSegue: UIStoryboardSegue {
-
     /**
      Specifies one of the pre-defined layouts, mirroring a subset of `MessageView.Layout`.
      */
     public enum Layout {
-
         /// The standard message view layout on top.
         case topMessage
 
@@ -86,19 +84,18 @@ open class SwiftMessagesSegue: UIStoryboardSegue {
      containing message view.
      */
     public enum Containment {
-
         /**
          The view controller's view is installed for edge-to-edge display, extending into the safe areas
          to the device edges. This is done by calling `messageView.installContentView(:insets:)`
          See that method's documentation for additional details.
-        */
+         */
         case content
 
         /**
          The view controller's view is installed for card-style layouts, inset from the margins
          and avoiding safe areas. This is done by calling `messageView.installBackgroundView(:insets:)`.
          See that method's documentation for details.
-        */
+         */
         case background
 
         /**
@@ -117,7 +114,7 @@ open class SwiftMessagesSegue: UIStoryboardSegue {
 
     /// The dim mode to use. See the SwiftMessages.DimMode for details.
     public var dimMode: SwiftMessages.DimMode {
-        get { return messenger.defaultConfig.dimMode}
+        get { return messenger.defaultConfig.dimMode }
         set { messenger.defaultConfig.dimMode = newValue }
     }
 
@@ -149,7 +146,7 @@ open class SwiftMessagesSegue: UIStoryboardSegue {
      The view controller's view is embedded in `containerView` before being installed into
      `messageView`. This view provides configurable squircle (round) corners (see the parent
      class `CornerRoundingView`).
-    */
+     */
     public var containerView = ViewControllerContainerView()
 
     /**
@@ -159,21 +156,21 @@ open class SwiftMessagesSegue: UIStoryboardSegue {
     public var containment: Containment = .content
 
     private var messenger = SwiftMessages()
-    private var selfRetainer: SwiftMessagesSegue? = nil
-    private lazy var hider = { return TransitioningDismisser(segue: self) }()
+    private var selfRetainer: SwiftMessagesSegue?
+    private lazy var hider = { TransitioningDismisser(segue: self) }()
 
     private lazy var presenter = {
-        return Presenter(config: messenger.defaultConfig, view: messageView, delegate: messenger)
+        Presenter(config: messenger.defaultConfig, view: messageView, delegate: messenger)
     }()
 
-    override open func perform() {
+    open override func perform() {
         selfRetainer = self
         destination.modalPresentationStyle = .custom
         destination.transitioningDelegate = self
         source.present(destination, animated: true, completion: nil)
     }
 
-    override public init(identifier: String?, source: UIViewController, destination: UIViewController) {
+    public override init(identifier: String?, source: UIViewController, destination: UIViewController) {
         super.init(identifier: identifier, source: source, destination: destination)
         dimMode = .gray(interactive: true)
         messenger.defaultConfig.duration = .forever
@@ -247,7 +244,7 @@ extension SwiftMessagesSegue {
 }
 
 extension SwiftMessagesSegue: UIViewControllerTransitioningDelegate {
-    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forPresented _: UIViewController, presenting _: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         let shower = TransitioningPresenter(segue: self)
         messenger.defaultConfig.eventListeners.append { [unowned self] in
             switch $0 {
@@ -268,14 +265,13 @@ extension SwiftMessagesSegue: UIViewControllerTransitioningDelegate {
         return shower
     }
 
-    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forDismissed _: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return hider
     }
 }
 
 extension SwiftMessagesSegue {
     private class TransitioningPresenter: NSObject, UIViewControllerAnimatedTransitioning {
-
         fileprivate private(set) var completeTransition: ((Bool) -> Void)?
         private weak var segue: SwiftMessagesSegue?
 
@@ -283,7 +279,7 @@ extension SwiftMessagesSegue {
             self.segue = segue
         }
 
-        func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
             return segue?.presenter.animator.showDuration ?? 0.5
         }
 
@@ -322,7 +318,6 @@ extension SwiftMessagesSegue {
 
 extension SwiftMessagesSegue {
     private class TransitioningDismisser: NSObject, UIViewControllerAnimatedTransitioning {
-
         fileprivate private(set) var completeTransition: ((Bool) -> Void)?
         private weak var segue: SwiftMessagesSegue?
 
@@ -330,7 +325,7 @@ extension SwiftMessagesSegue {
             self.segue = segue
         }
 
-        func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
             return segue?.presenter.animator.hideDuration ?? 0.5
         }
 

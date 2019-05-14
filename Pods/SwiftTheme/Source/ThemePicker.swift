@@ -9,17 +9,15 @@
 import Foundation
 
 @objc public class ThemePicker: NSObject, NSCopying {
-    
     public typealias ValueType = () -> Any?
-    
+
     public var value: ValueType
-    
-    required public init(v: @escaping ValueType) {
+
+    public required init(v: @escaping ValueType) {
         value = v
     }
-    
-    public func copy(with zone: NSZone?) -> Any {
+
+    public func copy(with _: NSZone?) -> Any {
         return type(of: self).init(v: value)
     }
-    
 }

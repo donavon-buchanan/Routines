@@ -11,22 +11,21 @@ import Foundation
 public let ThemeUpdateNotification = "ThemeUpdateNotification"
 
 public enum ThemePath {
-    
     case mainBundle
     case sandbox(Foundation.URL)
-    
+
     public var URL: Foundation.URL? {
         switch self {
-        case .mainBundle        : return nil
-        case .sandbox(let path) : return path
+        case .mainBundle: return nil
+        case let .sandbox(path): return path
         }
     }
-    
+
     public func plistPath(name: String) -> String? {
         switch self {
         case .mainBundle:
             return Bundle.main.path(forResource: name, ofType: "plist")
-        case .sandbox(let path):
+        case let .sandbox(path):
             let name = name.hasSuffix(".plist") ? name : name + ".plist"
             let url = path.appendingPathComponent(name)
             return url.path
@@ -35,25 +34,22 @@ public enum ThemePath {
 }
 
 @objc public final class ThemeManager: NSObject {
-    
     @objc public static var animationDuration = 0.3
-    
+
     @objc public fileprivate(set) static var currentTheme: NSDictionary?
     @objc public fileprivate(set) static var currentThemeIndex: Int = 0
-    
-    public fileprivate(set) static var currentThemePath: ThemePath?
 
+    public fileprivate(set) static var currentThemePath: ThemePath?
 }
 
 public extension ThemeManager {
-    
     @objc class func setTheme(index: Int) {
         currentThemeIndex = index
         NotificationCenter.default.post(name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
     }
-    
+
     class func setTheme(plistName: String, path: ThemePath) {
-        guard let plistPath = path.plistPath(name: plistName)         else {
+        guard let plistPath = path.plistPath(name: plistName) else {
             print("SwiftTheme WARNING: Can't find plist '\(plistName)' at: \(path)")
             return
         }
@@ -61,13 +57,12 @@ public extension ThemeManager {
             print("SwiftTheme WARNING: Can't read plist '\(plistName)' at: \(plistPath)")
             return
         }
-        self.setTheme(dict: plistDict, path: path)
+        setTheme(dict: plistDict, path: path)
     }
-    
+
     class func setTheme(dict: NSDictionary, path: ThemePath) {
         currentTheme = dict
         currentThemePath = path
         NotificationCenter.default.post(name: Notification.Name(rawValue: ThemeUpdateNotification), object: nil)
     }
-    
 }

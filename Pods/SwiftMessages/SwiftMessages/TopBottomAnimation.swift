@@ -9,7 +9,6 @@
 import UIKit
 
 public class TopBottomAnimation: NSObject, Animator {
-
     public enum Style {
         case top
         case bottom
@@ -21,11 +20,11 @@ public class TopBottomAnimation: NSObject, Animator {
 
     open var springDamping: CGFloat = 0.8
 
-    open var closeSpeedThreshold: CGFloat = 750.0;
+    open var closeSpeedThreshold: CGFloat = 750.0
 
-    open var closePercentThreshold: CGFloat = 0.33;
+    open var closePercentThreshold: CGFloat = 0.33
 
-    open var closeAbsoluteThreshold: CGFloat = 75.0;
+    open var closeAbsoluteThreshold: CGFloat = 75.0
 
     weak var messageView: UIView?
     weak var containerView: UIView?
@@ -59,17 +58,17 @@ public class TopBottomAnimation: NSObject, Animator {
             }
         }, completion: { completed in
             #if SWIFTMESSAGES_APP_EXTENSIONS
-            completion(completed)
+                completion(completed)
             #else
-            // Fix #131 by always completing if application isn't active.
-            completion(completed || UIApplication.shared.applicationState != .active)
+                // Fix #131 by always completing if application isn't active.
+                completion(completed || UIApplication.shared.applicationState != .active)
             #endif
         })
     }
 
-    public var showDuration: TimeInterval? { return 0.4  }
+    public var showDuration: TimeInterval? { return 0.4 }
 
-    public var hideDuration: TimeInterval? { return 0.2  }
+    public var hideDuration: TimeInterval? { return 0.2 }
 
     func install(context: AnimationContext) {
         let view = context.messageView
@@ -153,9 +152,9 @@ public class TopBottomAnimation: NSObject, Animator {
         }, completion: { completed in
             // Fix #131 by always completing if application isn't active.
             #if SWIFTMESSAGES_APP_EXTENSIONS
-            completion(completed)
+                completion(completed)
             #else
-            completion(completed || UIApplication.shared.applicationState != .active)
+                completion(completed || UIApplication.shared.applicationState != .active)
             #endif
         })
     }
@@ -195,11 +194,11 @@ public class TopBottomAnimation: NSObject, Animator {
                         rubberBanding = background.frame.maxY < view.bounds.height
                     }
                 }
-                if !rubberBanding && translationAmount < 0 { return }
+                if !rubberBanding, translationAmount < 0 { return }
                 closing = true
                 delegate?.panStarted(animator: self)
             }
-            if !rubberBanding && translationAmount < 0 { translationAmount = 0 }
+            if !rubberBanding, translationAmount < 0 { translationAmount = 0 }
             switch style {
             case .top:
                 view.transform = CGAffineTransform(translationX: 0, y: -translationAmount)
@@ -218,7 +217,7 @@ public class TopBottomAnimation: NSObject, Animator {
                 closeSpeed = 0.0
                 closePercent = 0.0
                 panTranslationY = 0.0
-                showAnimation(completion: { (completed) in
+                showAnimation(completion: { _ in
                     self.delegate?.panEnded(animator: self)
                 })
             }

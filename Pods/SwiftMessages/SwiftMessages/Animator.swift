@@ -10,7 +10,7 @@ import UIKit
 
 public typealias AnimationCompletion = (_ completed: Bool) -> Void
 
-public protocol AnimationDelegate: class {
+public protocol AnimationDelegate: AnyObject {
     func hide(animator: Animator)
     func panStarted(animator: Animator)
     func panEnded(animator: Animator)
@@ -44,7 +44,6 @@ public struct SafeZoneConflicts: OptionSet {
 }
 
 public class AnimationContext {
-
     public let messageView: UIView
     public let containerView: UIView
     public let safeZoneConflicts: SafeZoneConflicts
@@ -58,8 +57,7 @@ public class AnimationContext {
     }
 }
 
-public protocol Animator: class {
-
+public protocol Animator: AnyObject {
     /// Adopting classes should declare as `weak`.
     var delegate: AnimationDelegate? { get set }
 
@@ -80,4 +78,3 @@ public extension Animator {
     var showDuration: TimeInterval? { return nil }
     var hideDuration: TimeInterval? { return nil }
 }
-

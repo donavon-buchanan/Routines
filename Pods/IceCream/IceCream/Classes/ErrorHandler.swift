@@ -5,16 +5,15 @@
 //  Created by @randycarney on 12/12/17.
 //
 
-import Foundation
 import CloudKit
+import Foundation
 
 /// This struct helps you handle all the CKErrors and has been updated to the current Apple documentation(12/15/2017):
 /// https://developer.apple.com/documentation/cloudkit/ckerror.code
 
 struct ErrorHandler {
-    
     static let shared = ErrorHandler()
-    
+
     /// We could classify all the result that CKOperation returns into the following five CKOperationResultTypes
     enum CKOperationResultType {
         case success
@@ -23,7 +22,7 @@ struct ErrorHandler {
         case recoverableError(reason: CKOperationFailReason, message: String)
         case fail(reason: CKOperationFailReason, message: String)
     }
-    
+
     /// The reason of CloudKit failure could be classified into following 8 cases
     enum CKOperationFailReason {
         case changeTokenExpired
@@ -35,23 +34,22 @@ struct ErrorHandler {
         case unhandledErrorCode
         case unknown
     }
-    
+
     func resultType(with error: Error?) -> CKOperationResultType {
         guard error != nil else { return .success }
-        
+
         guard let e = error as? CKError else {
             return .fail(reason: .unknown, message: "The error returned is not a CKError")
         }
-        
+
         let message = returnErrorMessage(for: e.code)
-        
+
         switch e.code {
-            
         // SHOULD RETRY
         case .serviceUnavailable,
              .requestRateLimited,
              .zoneBusy:
-            
+
             // If there is a retry delay specified in the error, then use that.
             let userInfo = e.userInfo
             if let retry = userInfo[CKErrorRetryAfterKey] as? Double {
@@ -60,7 +58,7 @@ struct ErrorHandler {
             } else {
                 return .fail(reason: .unknown, message: message)
             }
-            
+
         // RECOVERABLE ERROR
         case .networkUnavailable,
              .networkFailure:
@@ -78,12 +76,12 @@ struct ErrorHandler {
                 print("ErrorHandler.partialFailure for \(dictionary.count) items; CKPartialErrorsByItemIDKey: \(dictionary)")
             }
             return .recoverableError(reason: .partialFailure, message: message)
-            
+
         // SHOULD CHUNK IT UP
         case .limitExceeded:
             print("ErrorHandler.Chunk: \(message)")
             return .chunk
-            
+
         // SHARE DATABASE RELATED
         case .alreadyShared,
              .participantMayNeedVerification,
@@ -91,33 +89,29 @@ struct ErrorHandler {
              .tooManyParticipants:
             print("ErrorHandler.Fail: \(message)")
             return .fail(reason: .shareRelated, message: message)
-        
+
         // quota exceeded is sort of a special case where the user has to take action(like spare more room in iCloud) before retry
         case .quotaExceeded:
             print("ErrorHandler.Fail: \(message)")
             return .fail(reason: .quotaExceeded, message: message)
-            
+
         // FAIL IS THE FINAL, WE REALLY CAN'T DO MORE
         default:
             print("ErrorHandler.Fail: \(message)")
             return .fail(reason: .unknown, message: message)
-
         }
-        
     }
-    
-    func retryOperationIfPossible(retryAfter: Double, block: @escaping () -> ()) {
-        
+
+    func retryOperationIfPossible(retryAfter: Double, block: @escaping () -> Void) {
         let delayTime = DispatchTime.now() + retryAfter
-        DispatchQueue.main.asyncAfter(deadline: delayTime, execute: {
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
             block()
-        })
-        
+        }
     }
-    
+
     private func returnErrorMessage(for code: CKError.Code) -> String {
         var returnMessage = ""
-        
+
         switch code {
         case .alreadyShared:
             returnMessage = "Already Shared: a record or share cannot be saved because doing so would cause the same hierarchy of records to exist in multiple shares."
@@ -188,10 +182,9 @@ struct ErrorHandler {
         default:
             returnMessage = "Unhandled Error."
         }
-        
+
         return returnMessage + "CKError.Code: \(code.rawValue)"
     }
-    
 }
 
 extension Array where Element: CKRecord {
@@ -199,18 +192,17 @@ extension Array where Element: CKRecord {
     /// For example, we have some dogs(You can test it in the playground):
     ///
     /*  var dogs: [Dog] = []
-        for i in 0...22 {
-        var dog = Dog(age: i, name: "Dog \(i)")
-            dogs.append(dog)
-        }
-        let chunkedDogs = dogs.chunkItUp(by: 5)
-    */
-    
+     for i in 0...22 {
+     var dog = Dog(age: i, name: "Dog \(i)")
+         dogs.append(dog)
+     }
+     let chunkedDogs = dogs.chunkItUp(by: 5)
+     */
+
     func chunkItUp(by chunkSize: Int) -> [[Element]] {
-        return stride(from: 0, to: count, by: chunkSize).map({ (startIndex) -> [Element] in
+        return stride(from: 0, to: count, by: chunkSize).map { (startIndex) -> [Element] in
             let endIndex = (startIndex.advanced(by: chunkSize) > count) ? count : (startIndex + chunkSize)
-            return Array(self[startIndex..<endIndex])
-        })
+            return Array(self[startIndex ..< endIndex])
+        }
     }
 }
-

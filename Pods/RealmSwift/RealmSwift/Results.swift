@@ -49,6 +49,7 @@ public protocol AddableType {
     /// :nodoc:
     init()
 }
+
 extension NSNumber: AddableType {}
 extension Double: AddableType {}
 extension Float: AddableType {}
@@ -79,7 +80,6 @@ extension Int64: AddableType {}
  Results instances cannot be directly instantiated.
  */
 public final class Results<Element: RealmCollectionValue>: NSObject, NSFastEnumeration {
-
     internal let rlmResults: RLMResults<AnyObject>
 
     /// A human-readable description of the objects represented by the results.
@@ -252,7 +252,7 @@ public final class Results<Element: RealmCollectionValue>: NSObject, NSFastEnume
      */
     public func sorted<S: Sequence>(by sortDescriptors: S) -> Results<Element>
         where S.Iterator.Element == SortDescriptor {
-            return Results<Element>(rlmResults.sortedResults(using: sortDescriptors.map { $0.rlmSortDescriptorValue }))
+        return Results<Element>(rlmResults.sortedResults(using: sortDescriptors.map { $0.rlmSortDescriptorValue }))
     }
 
     /**
@@ -262,7 +262,7 @@ public final class Results<Element: RealmCollectionValue>: NSObject, NSFastEnume
      */
     public func distinct<S: Sequence>(by keyPaths: S) -> Results<Element>
         where S.Iterator.Element == String {
-            return Results<Element>(rlmResults.distinctResults(usingKeyPaths: Array(keyPaths)))
+        return Results<Element>(rlmResults.distinctResults(usingKeyPaths: Array(keyPaths)))
     }
 
     // MARK: Aggregate Operations
@@ -410,7 +410,7 @@ extension Results: RealmCollection {
 // MARK: AssistedObjectiveCBridgeable
 
 extension Results: AssistedObjectiveCBridgeable {
-    static func bridging(from objectiveCValue: Any, with metadata: Any?) -> Results {
+    static func bridging(from objectiveCValue: Any, with _: Any?) -> Results {
         return Results(objectiveCValue as! RLMResults)
     }
 

@@ -6,26 +6,25 @@
 //
 
 #if os(macOS)
-import Cocoa
+    import Cocoa
 #else
-import UIKit
+    import UIKit
 #endif
 
 import CloudKit
 
 final class PublicDatabaseManager: DatabaseManager {
-    
     let container: CKContainer
     let database: CKDatabase
-    
+
     let syncObjects: [Syncable]
-    
+
     init(objects: [Syncable], container: CKContainer) {
-        self.syncObjects = objects
+        syncObjects = objects
         self.container = container
-        self.database = container.publicCloudDatabase
+        database = container.publicCloudDatabase
     }
-    
+
     func fetchChangesInDatabase(_ callback: (() -> Void)?) {
         syncObjects.forEach { [weak self] syncObject in
             let predicate = NSPredicate(value: true)
@@ -34,27 +33,25 @@ final class PublicDatabaseManager: DatabaseManager {
             self?.excuteQueryOperation(queryOperation: queryOperation, on: syncObject, callback: callback)
         }
     }
-    
-    func createCustomZonesIfAllowed() {
-        
-    }
-    
+
+    func createCustomZonesIfAllowed() {}
+
     func createDatabaseSubscriptionIfHaveNot() {
         syncObjects.forEach { createSubscriptionInPublicDatabase(on: $0) }
     }
-    
+
     func startObservingTermination() {
         #if os(iOS) || os(tvOS)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.cleanUp), name: UIApplication.willTerminateNotification, object: nil)
-        
+
+            NotificationCenter.default.addObserver(self, selector: #selector(cleanUp), name: UIApplication.willTerminateNotification, object: nil)
+
         #elseif os(macOS)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.cleanUp), name: NSApplication.willTerminateNotification, object: nil)
-        
+
+            NotificationCenter.default.addObserver(self, selector: #selector(cleanUp), name: NSApplication.willTerminateNotification, object: nil)
+
         #endif
     }
-    
+
     func registerLocalDatabase() {
         syncObjects.forEach { object in
             DispatchQueue.main.async {
@@ -62,13 +59,14 @@ final class PublicDatabaseManager: DatabaseManager {
             }
         }
     }
-    
+
     // MARK: - Private Methods
-    private func excuteQueryOperation(queryOperation: CKQueryOperation,on syncObject: Syncable, callback: (() -> Void)? = nil) {
+
+    private func excuteQueryOperation(queryOperation: CKQueryOperation, on syncObject: Syncable, callback: (() -> Void)? = nil) {
         queryOperation.recordFetchedBlock = { record in
             syncObject.add(record: record)
         }
-        
+
         queryOperation.queryCompletionBlock = { [weak self] cursor, error in
             guard let self = self else { return }
             if let cursor = cursor {
@@ -89,29 +87,28 @@ final class PublicDatabaseManager: DatabaseManager {
                 break
             }
         }
-        
+
         database.add(queryOperation)
     }
-    
+
     private func createSubscriptionInPublicDatabase(on syncObject: Syncable) {
         #if os(iOS) || os(tvOS) || os(macOS)
-        let predict = NSPredicate(value: true)
-        let subscription = CKQuerySubscription(recordType: syncObject.recordType, predicate: predict, subscriptionID: IceCreamSubscription.cloudKitPublicDatabaseSubscriptionID.id, options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordUpdate, CKQuerySubscription.Options.firesOnRecordDeletion])
-        
-        let notificationInfo = CKSubscription.NotificationInfo()
-        notificationInfo.shouldSendContentAvailable = true // Silent Push
-        
-        subscription.notificationInfo = notificationInfo
-        
-        let createOp = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
-        createOp.modifySubscriptionsCompletionBlock = { _, _, _ in
-            
-        }
-        createOp.qualityOfService = .utility
-        database.add(createOp)
+            let predict = NSPredicate(value: true)
+            let subscription = CKQuerySubscription(recordType: syncObject.recordType, predicate: predict, subscriptionID: IceCreamSubscription.cloudKitPublicDatabaseSubscriptionID.id, options: [CKQuerySubscription.Options.firesOnRecordCreation, CKQuerySubscription.Options.firesOnRecordUpdate, CKQuerySubscription.Options.firesOnRecordDeletion])
+
+            let notificationInfo = CKSubscription.NotificationInfo()
+            notificationInfo.shouldSendContentAvailable = true // Silent Push
+
+            subscription.notificationInfo = notificationInfo
+
+            let createOp = CKModifySubscriptionsOperation(subscriptionsToSave: [subscription], subscriptionIDsToDelete: [])
+            createOp.modifySubscriptionsCompletionBlock = { _, _, _ in
+            }
+            createOp.qualityOfService = .utility
+            database.add(createOp)
         #endif
     }
-    
+
     @objc func cleanUp() {
         for syncObject in syncObjects {
             syncObject.cleanUp()

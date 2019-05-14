@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIEdgeInsets {
-    public static func +(left: UIEdgeInsets, right: UIEdgeInsets) -> UIEdgeInsets {
+    public static func + (left: UIEdgeInsets, right: UIEdgeInsets) -> UIEdgeInsets {
         let topSum = left.top + right.top
         let leftSum = left.left + right.left
         let bottomSum = left.bottom + right.bottom

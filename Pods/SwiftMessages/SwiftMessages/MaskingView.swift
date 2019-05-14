@@ -8,9 +8,7 @@
 
 import UIKit
 
-
 class MaskingView: PassthroughView {
-
     var accessibleElements: [NSObject] = []
 
     weak var backgroundView: UIView? {
@@ -36,7 +34,7 @@ class MaskingView: PassthroughView {
 
     override func index(ofAccessibilityElement element: Any) -> Int {
         guard let object = element as? NSObject else { return 0 }
-        return accessibleElements.index(of: object) ?? 0
+        return accessibleElements.firstIndex(of: object) ?? 0
     }
 
     init() {
