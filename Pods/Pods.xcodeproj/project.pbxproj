@@ -354,6 +354,7 @@
 		F5FB261774C1F53E5809E74061C144D8 /* ThemePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40A433F561A7AA90F6D2DDB8812F8F5B /* ThemePicker.swift */; settings = {COMPILER_FLAGS = "-w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		F645EBC0274D580C9F5FA035CE7EF008 /* errorIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 247CE330E5EC1D15916F7C0F578B31E6 /* errorIcon@2x.png */; };
 		F698AFEA2B9DA49E42E64212DDDB5BF0 /* sync_config.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB961CB53433224604676348171F07B2 /* sync_config.cpp */; settings = {COMPILER_FLAGS = "-DREALM_HAVE_CONFIG -DREALM_COCOA_VERSION='@\"3.15.0\"' -D__ASSERTMACROS__ -DREALM_ENABLE_SYNC -w -Xanalyzer -analyzer-disable-all-checks"; }; };
+		F8643772228B5D99006AFE3E /* BackgroundWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8643771228B5D99006AFE3E /* BackgroundWorker.swift */; };
 		F8866E3387A1568BF3E398974C714EAB /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8019A81665A82EF9FCFF72D2A3DB490 /* Realm.framework */; };
 		F9158ACA98395221F462CBC48EACB9F8 /* Pods-Routines-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = AD242F8BEB5D3EF2FC4503CCE718CC1F /* Pods-Routines-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F91E31ED979A9C4469F1954CAF4CF652 /* RLMPlatform.h in Copy . Public Headers */ = {isa = PBXBuildFile; fileRef = 96213C04C2658FF6D1D69C6A1652AF46 /* RLMPlatform.h */; };
@@ -836,6 +837,7 @@
 		F62339A027B1F872353731261B466D55 /* SDStatusBarOverriderPost8_3.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDStatusBarOverriderPost8_3.m; path = SDStatusBarManager/SDStatusBarOverriderPost8_3.m; sourceTree = "<group>"; };
 		F6A4767943DEC66D04019726146C1D9B /* RLMSyncCredentials.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RLMSyncCredentials.m; path = Realm/RLMSyncCredentials.m; sourceTree = "<group>"; };
 		F7392B83FA414DFF32A0BB7A221DDAE1 /* RealmSwift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RealmSwift-prefix.pch"; sourceTree = "<group>"; };
+		F8643771228B5D99006AFE3E /* BackgroundWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundWorker.swift; path = IceCream/Classes/BackgroundWorker.swift; sourceTree = "<group>"; };
 		F8C7444FC7670F9D56AFC9385D011FED /* warningIconLight@3x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "warningIconLight@3x.png"; path = "SwiftMessages/Resources/warningIconLight@3x.png"; sourceTree = "<group>"; };
 		F8F0E23FB7FC0E6984D66E5A3AB899E5 /* warningIcon.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = warningIcon.png; path = SwiftMessages/Resources/warningIcon.png; sourceTree = "<group>"; };
 		F9207B3024ADDC9FFCB8697B8F63DC9D /* Identifiable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Identifiable.swift; path = SwiftMessages/Identifiable.swift; sourceTree = "<group>"; };
@@ -1068,6 +1070,7 @@
 		48F8BDC973A7A2E000A02BACAE2229B8 /* IceCream */ = {
 			isa = PBXGroup;
 			children = (
+				F8643771228B5D99006AFE3E /* BackgroundWorker.swift */,
 				E88D8C60FB4F93875A8DE70D984BB816 /* CKRecordConvertible.swift */,
 				A3CBB2D0B6FC2B193910C9F46BCDA69D /* CKRecordRecoverable.swift */,
 				E6CD40AD1D1C1F543FBFACE200A93B0C /* CreamAsset.swift */,
@@ -1789,23 +1792,15 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0930;
-				LastUpgradeCheck = 1020;
-				TargetAttributes = {
-					8DDA717526CF0A019BA8E91C0722A224 = {
-						LastSwiftMigration = 1020;
-					};
-					8ECBD0653034B81D7C3C74E0F01FBD2E = {
-						LastSwiftMigration = 1020;
-					};
-				};
+				LastUpgradeCheck = 0930;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 8.0";
-			developmentRegion = en;
+			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
-				Base,
 			);
 			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
 			productRefGroup = C13CEC4417AF873443048DF8BCB59DF1 /* Products */;
@@ -1969,6 +1964,7 @@
 				A4C8D74FEFC7343EAFEBE1AA68AD3759 /* ErrorHandler.swift in Sources */,
 				DDB7203A81EEC5B32E6541C8000C0C99 /* IceCream-dummy.m in Sources */,
 				9303BAFC21646F8EDB768BA804AB0D61 /* Manifest.swift in Sources */,
+				F8643772228B5D99006AFE3E /* BackgroundWorker.swift in Sources */,
 				6B567D977441C49A8CE8C05B02839DC3 /* Notification+Name.swift in Sources */,
 				A1352BC64CEACA9E480DD7DCE779B3A2 /* PrivateDatabaseManager.swift in Sources */,
 				DE17747E3912D1DDD16C27787981C397 /* PublicDatabaseManager.swift in Sources */,
@@ -2259,6 +2255,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DADE9B9D05EDC8EF26C3F7CC7F28E023 /* RealmSwift.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2290,6 +2287,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 61615072D608DEBB2037CAB574DAF838 /* SwiftMessages.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2310,7 +2308,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -2322,6 +2320,7 @@
 			baseConfigurationReference = 16E978662F8C9C4ED547DF06068C25E2 /* Pods-Routines.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2355,6 +2354,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D479333C30B709505407C6FFC8F94B5D /* SwiftyStoreKit.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2386,6 +2386,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D348E189C278071F20C724156FF0B268 /* IceCream.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2408,7 +2409,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2420,6 +2421,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE11A0F5E64ABE22BEFF55FCA96C1673 /* SimulatorStatusMagic.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2451,6 +2453,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 78B8F4A986DBF0C9A8DBE086282C7DF3 /* SwiftTheme.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2482,7 +2485,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -2542,6 +2544,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 78B8F4A986DBF0C9A8DBE086282C7DF3 /* SwiftTheme.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2574,6 +2577,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 452B6490DE9F4579B1C336A1CD4C3396 /* Realm.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2606,7 +2610,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -2672,6 +2675,7 @@
 			baseConfigurationReference = BE0C0C58ED8D92ED46EA9C77AB87F331 /* Pods-Routines.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2706,6 +2710,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DADE9B9D05EDC8EF26C3F7CC7F28E023 /* RealmSwift.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2738,6 +2743,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FE11A0F5E64ABE22BEFF55FCA96C1673 /* SimulatorStatusMagic.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2786,6 +2792,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 61615072D608DEBB2037CAB574DAF838 /* SwiftMessages.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2806,7 +2813,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2818,6 +2825,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D348E189C278071F20C724156FF0B268 /* IceCream.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -2840,7 +2848,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -2851,6 +2859,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 452B6490DE9F4579B1C336A1CD4C3396 /* Realm.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -2882,6 +2891,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D479333C30B709505407C6FFC8F94B5D /* SwiftyStoreKit.xcconfig */;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
