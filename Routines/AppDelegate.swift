@@ -493,7 +493,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 self.afterSyncTimer.startTimer()
             case .update:
                 printDebug("Items list updated in \(#function)")
-                self.backgroundRefresh()
+                self.refreshAndUpdate()
             case let .error(error):
                 printDebug("Error with items observation: \(error)")
             }
@@ -507,12 +507,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     @objc func backgroundRefresh() {
-        DispatchQueue.main.async {
-            autoreleasepool {
-                printDebug(#function)
-                self.refreshAndUpdate()
-            }
-        }
+        printDebug(#function)
+        self.refreshAndUpdate()
     }
 
     deinit {
