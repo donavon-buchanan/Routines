@@ -69,6 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    }
 //
     static func refreshNotifications() {
+        printDebug(#function)
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         // Items.requestNotificationPermission()
         let realm = try! Realm()
@@ -147,46 +148,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         switch application.applicationState {
         case .active:
+            AppDelegate.afterSyncTimer.startTimer()
             completionHandler(.newData)
         case .background:
+            backgroundRefresh()
             completionHandler(.newData)
         case .inactive:
+            backgroundRefresh()
+            completionHandler(.newData)
+        @unknown default:
             completionHandler(.newData)
         }
 
         printDebug("Received push notification")
-
-        // AppDelegate.afterSyncTimer.startTimer()
     }
 
     func applicationWillResignActive(_: UIApplication) {
         printDebug("\(#function) - Start")
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        // AppDelegate.updateAppBadgeCount()
-        // setSelectedIndex()
-        // itemCleanup()
-        printDebug("\(#function) - End")
-//        syncFail()
-    }
+        AppDelegate.afterSyncTimer.stopTimer()
+        AppDelegate.automaticDarkModeTimer.stopTimer()
 
-//    private func syncFail() {
-//        // Prevent user from returning to a broken app
-//        AppDelegate.syncEngine?.pull()
-//        AppDelegate.syncEngine = nil
-//        let realm = try! Realm()
-//        guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) == nil else { return }
-//        AppDelegate.checkOptions()
-//        UserDefaults.standard.set(false, forKey: "hasRun")
-//    }
+        AppDelegate.syncEngine?.pushAll()
+
+        printDebug("\(#function) - End")
+    }
 
     func applicationDidEnterBackground(_: UIApplication) {
         printDebug("\(#function) - Start")
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        AppDelegate.refreshNotifications()
-        // itemCleanup()
         AppDelegate.removeOldNotifications()
+        AppDelegate.refreshNotifications()
 
         observeItems()
 
@@ -394,46 +388,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
             migrationBlock: { migration, oldSchemaVersion in
-                // print("oldSchemaVersion: \(oldSchemaVersion)")
-//                if oldSchemaVersion < 2 {
-//                    // print("Migration block running")
-//                    DispatchQueue(label: self.realmDispatchQueueLabel).sync {
-//                        autoreleasepool {
-//                            let realm = try! Realm()
-//                            let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-//
-//                            do {
-//                                try realm.write {
-//                                    if let morningTime = options?.morningStartTime {
-//                                        options?.morningHour = self.getHour(date: morningTime)
-//                                        options?.morningMinute = self.getMinute(date: morningTime)
-//                                    }
-//                                    if let afternoonTime = options?.afternoonStartTime {
-//                                        options?.afternoonHour = self.getHour(date: afternoonTime)
-//                                        options?.afternoonMinute = self.getMinute(date: afternoonTime)
-//                                    }
-//                                    if let eveningTime = options?.eveningStartTime {
-//                                        options?.eveningHour = self.getHour(date: eveningTime)
-//                                        options?.eveningMinute = self.getMinute(date: eveningTime)
-//                                    }
-//                                    if let nightTime = options?.nightStartTime {
-//                                        options?.nightHour = self.getHour(date: nightTime)
-//                                        options?.nightMinute = self.getMinute(date: nightTime)
-//                                    }
-//                                }
-//                            } catch {
-//                                // print("Error with migration")
-//                            }
-//                        }
-//                    }
-//                }
-
-//                if oldSchemaVersion < 10 {
-//                    migration.enumerateObjects(ofType: Options.className()) { newObject, oldObject in
-//                        print("oldObject: " + String(describing: oldObject))
-//                        print("newObject: " + String(describing: newObject))
-//                    }
-//                }
 
                 if oldSchemaVersion < 15 {
                     migration.enumerateObjects(ofType: Options.className()) { oldObject, newObject in
@@ -509,24 +463,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         item.snooze()
     }
 
-//    fileprivate static func nullifyOptions() {
-//        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                guard let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) else { return }
-//                do {
-//                    try realm.write {
-//                        realm.delete(options)
-//                    }
-//                } catch {
-//                    #if DEBUG
-//                        print("\(#function): Error: \(error)")
-//                    #endif
-//                }
-//            }
-//        }
-//    }
-
     static func setSync() {
         printDebug(#function)
         if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getCloudSync() {
@@ -574,6 +510,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         AppDelegate.updateBadgeFromPush()
 
         AppDelegate.afterSyncTimer.stopTimer()
+    }
+
+    @objc func backgroundRefresh() {
+        printDebug(#function)
+        AppDelegate.refreshNotifications()
+        AppDelegate.updateBadgeFromPush()
     }
 
     deinit {
@@ -668,6 +610,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     private static func updateBadgeFromPush() {
+        printDebug(#function)
         printDebug("updating badge from remote push")
         let center = UNUserNotificationCenter.current()
         var remoteBadge = 0
