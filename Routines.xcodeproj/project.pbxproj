@@ -387,8 +387,8 @@
 				F8B831B12155CBB000DAF60E /* Frameworks */,
 				F8B831B22155CBB000DAF60E /* Resources */,
 				F888607E2182757300FDF808 /* Increment Build */,
-				F890109921F9A85A00ED2002 /* SwiftLint */,
 				F890109821F9A5FB00ED2002 /* SwiftFormat */,
+				F890109921F9A85A00ED2002 /* SwiftLint */,
 				6FD6D21211FCD8153EBB4F9C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -650,7 +650,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#if which swiftlint >/dev/null; then\n#swiftlint autocorrect\n#else\n#echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n#fi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\nswiftlint autocorrect\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
