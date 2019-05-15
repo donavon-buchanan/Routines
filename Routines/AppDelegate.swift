@@ -129,7 +129,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             afterSyncTimer.startTimer()
             completionHandler(.newData)
         default:
-            // refreshAndUpdate()
+            // Still have to do this because changes in time don't cause an update to the list of items
+            AppDelegate.refreshAndUpdate()
             completionHandler(.newData)
         }
 
@@ -199,7 +200,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug("\(#function) - End")
     }
 
-    func removeOrphanedNotifications() {
+    static func removeOrphanedNotifications() {
         DispatchQueue.main.async {
             printDebug("\(#function) - Start")
             let center = UNUserNotificationCenter.current()
@@ -419,16 +420,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if application.applicationState == .active {
                 self.afterSyncTimer.startTimer()
             } else {
-                self.refreshAndUpdate()
+                AppDelegate.refreshAndUpdate()
             }
         }
     }
 
-    func refreshAndUpdate() {
+    static func refreshAndUpdate() {
         printDebug(#function)
         AppDelegate.refreshNotifications()
         AppDelegate.updateBadgeFromPush()
-        removeOrphanedNotifications()
+        AppDelegate.removeOrphanedNotifications()
     }
 
 //    @objc func backgroundRefresh() {
