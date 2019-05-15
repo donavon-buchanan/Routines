@@ -10,11 +10,6 @@ import Foundation
 import RealmSwift
 import SwiftTheme
 
-// Get the default Realm
-// private let realm = try! Realm()
-//
-// private let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-
 enum Themes: Int {
     case morningLight = 0
     case afternoonLight = 1

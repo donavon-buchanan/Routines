@@ -23,8 +23,6 @@ import RealmSwift
     dynamic var routinesPlusPurchased: Bool = false
     dynamic var purchasedProduct: String = ""
 
-    // dynamic var cloudSync: Bool = false
-
     static func getCloudSync() -> Bool {
         #if targetEnvironment(simulator)
             return true

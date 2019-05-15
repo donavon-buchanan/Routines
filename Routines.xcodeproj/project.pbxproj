@@ -18,11 +18,9 @@
 		F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TableViewController.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
 		F8352C53227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8352C52227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift */; };
-		F843324B21F4680200086BFF /* CheckableTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F843324A21F4680200086BFF /* CheckableTableViewCell.swift */; };
 		F85213B5218F5EE600291CFE /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85213B4218F5EE600291CFE /* NavigationViewController.swift */; };
 		F85D2A8A227036CF009CE6CE /* RoutinesPlusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85D2A89227036CF009CE6CE /* RoutinesPlusViewController.swift */; };
 		F85D2A8C22703892009CE6CE /* iAPSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85D2A8B22703892009CE6CE /* iAPSegue.swift */; };
-		F86AFEB821AFD1B4004DC7F2 /* UITabBarControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86AFEB721AFD1B4004DC7F2 /* UITabBarControllerExtension.swift */; };
 		F87D49EF2269AA1700845E0D /* AppSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87D49EE2269AA1700845E0D /* AppSecrets.swift */; };
 		F896D96F22802E5B0005C899 /* AutomaticDarkModeTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F896D96E22802E5B0005C899 /* AutomaticDarkModeTimer.swift */; };
 		F8A8B2E2228356F9005C9E56 /* AfterSyncTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A8B2E1228356F9005C9E56 /* AfterSyncTimer.swift */; };
@@ -142,11 +140,9 @@
 		F816DB332155CFBA009C6907 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TableViewController.swift; sourceTree = "<group>"; };
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
 		F8352C52227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticDarkModeTableViewController.swift; sourceTree = "<group>"; };
-		F843324A21F4680200086BFF /* CheckableTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckableTableViewCell.swift; sourceTree = "<group>"; };
 		F85213B4218F5EE600291CFE /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
 		F85D2A89227036CF009CE6CE /* RoutinesPlusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinesPlusViewController.swift; sourceTree = "<group>"; };
 		F85D2A8B22703892009CE6CE /* iAPSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iAPSegue.swift; sourceTree = "<group>"; };
-		F86AFEB721AFD1B4004DC7F2 /* UITabBarControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITabBarControllerExtension.swift; sourceTree = "<group>"; };
 		F87D49EE2269AA1700845E0D /* AppSecrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSecrets.swift; sourceTree = "<group>"; };
 		F896D96E22802E5B0005C899 /* AutomaticDarkModeTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticDarkModeTimer.swift; sourceTree = "<group>"; };
 		F8A761F022580AB400FB9654 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS5.2.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -244,7 +240,6 @@
 			isa = PBXGroup;
 			children = (
 				F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */,
-				F86AFEB721AFD1B4004DC7F2 /* UITabBarControllerExtension.swift */,
 				F81194FA2267F875002E8E7A /* SKProductPriceExtension.swift */,
 				F87D49EE2269AA1700845E0D /* AppSecrets.swift */,
 				F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */,
@@ -315,7 +310,6 @@
 				F82770D221585D3000420C50 /* AddTableViewController.swift */,
 				F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */,
 				F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */,
-				F843324A21F4680200086BFF /* CheckableTableViewCell.swift */,
 				F85D2A89227036CF009CE6CE /* RoutinesPlusViewController.swift */,
 				F85D2A8B22703892009CE6CE /* iAPSegue.swift */,
 				F8B5B7D42286C0ED0024FC2B /* SwiftMessagesAlertsController.swift */,
@@ -655,7 +649,6 @@
 				F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */,
 				F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */,
 				F85D2A8C22703892009CE6CE /* iAPSegue.swift in Sources */,
-				F86AFEB821AFD1B4004DC7F2 /* UITabBarControllerExtension.swift in Sources */,
 				F87D49EF2269AA1700845E0D /* AppSecrets.swift in Sources */,
 				F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */,
 				F8E031862269C410002C2E32 /* AppStrings.swift in Sources */,
@@ -675,7 +668,6 @@
 				F8CE29C622714E9A00CD9BAE /* UIColorExtensions.swift in Sources */,
 				F8CBBA5721A9058D00A4FFFD /* TaskTableViewCell.swift in Sources */,
 				F807D3CF2160964E00FF36D9 /* OptionsTableViewController.swift in Sources */,
-				F843324B21F4680200086BFF /* CheckableTableViewCell.swift in Sources */,
 				F8D5DB532269BCAD005857F2 /* ViewControllerExtension.swift in Sources */,
 				F8B30789219C13B500437AAA /* GlobalPicker.swift in Sources */,
 				F8ACD4642269F89100E136E9 /* IAPHandler.swift in Sources */,

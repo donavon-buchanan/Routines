@@ -76,30 +76,6 @@ import UserNotifications
         addNewNotification()
     }
 
-//    func completeItem(completeUntil: Date) {
-//        if !repeats {
-//            softDelete()
-//        } else {
-//            #if DEBUG
-//                print("marking completed until: \(completeUntil)")
-//            #endif
-//            DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
-//                autoreleasepool {
-//                    let realm = try! Realm()
-//                    do {
-//                        try realm.write {
-//                            self.completeUntil = completeUntil
-//                            self.dateModified = Date()
-//                        }
-//                    } catch {
-//                        // print("failed to save completeUntil")
-//                        fatalError("Error completing item: \(error)")
-//                    }
-//                }
-//            }
-//        }
-//    }
-
     func completeItem() {
         if !repeats {
             softDelete()
@@ -187,25 +163,21 @@ import UserNotifications
 
     // Remove notifications for Item
     func removeNotification(uuidStrings: [String]) {
-        // print("Removing Notifications")
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
-        // center.removeDeliveredNotifications(withIdentifiers: uuidStrings)
     }
 
     func removeNotification() {
         printDebug("Removing notification for id: \(uuidString)")
         let uuidStrings: [String] = ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3", uuidString]
-        // print("Removing Notifications")
+
         let center = UNUserNotificationCenter.current()
         center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
-        // center.removeDeliveredNotifications(withIdentifiers: uuidStrings)
     }
 
     func snooze() {
         removeNotification()
 
-        // print("running deleteItem")
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -215,12 +187,11 @@ import UserNotifications
                         self.segment = snoozeTo()
                     }
                 } catch {
-                    // print("failed to snooze item")
+                    printDebug("failed to snooze item")
                 }
             }
             // Little bit redundant. But this hasn't proven to be the most reliable system.
             addNewNotification()
-            // print("snooze completed successfully")
         }
         printDebug("Snoozing to \(segment). Original segment was \(originalSegment)")
         AppDelegate.refreshNotifications()
@@ -274,7 +245,6 @@ import UserNotifications
     }
 
     func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-        // print("createNotification running")
         let content = UNMutableNotificationContent()
         content.title = title
         content.sound = UNNotificationSound.default
@@ -302,7 +272,6 @@ import UserNotifications
         dateComponents.calendar = Calendar.autoupdatingCurrent
         // Keep notifications from occurring too early for tasks created for tomorrow
         if firstDate > Date() {
-            // print("Notification set to tomorrow")
             dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
         }
         dateComponents.timeZone = TimeZone.autoupdatingCurrent
@@ -346,25 +315,6 @@ import UserNotifications
         return segment
     }
 
-//    static func updateAppBadgeCount() {
-//        if Options.getBadgeOption() {
-//            // print("updating app badge number")
-//            DispatchQueue(label: realmDispatchQueueLabel).sync {
-//                autoreleasepool {
-//                    let realm = try! Realm()
-//                    let badgeCount = realm.objects(Items.self).filter("dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", Date(), Date()).count
-//                    DispatchQueue.main.async {
-//                        autoreleasepool {
-//                            UIApplication.shared.applicationIconBadgeNumber = badgeCount
-//                        }
-//                    }
-//                }
-//            }
-//        } else {
-//            UIApplication.shared.applicationIconBadgeNumber = 0
-//        }
-//    }
-
     func setDailyRepeat(_ bool: Bool) {
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -374,7 +324,7 @@ import UserNotifications
                         self.repeats = bool
                     }
                 } catch {
-                    // print("failed to update daily repeat bool")
+                    printDebug("failed to update daily repeat bool")
                 }
             }
         }
@@ -389,16 +339,14 @@ import UserNotifications
         segmentTime.second = 0
         // TODO: This might cause problems
         if Date() > segmentTime.date! {
-            // print("Setting item date for tomorrow")
             dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: tomorrow)
         } else {
-            // print("Setting item date for today")
             dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: Date())
         }
         dateComponents.hour = Options.getOptionHour(segment: segment)
         dateComponents.minute = Options.getOptionMinute(segment: segment)
         dateComponents.second = 0
-        // print("Setting first trigger date for: \(dateComponents)")
+
         return dateComponents.date!
     }
 

@@ -80,9 +80,7 @@ class RoutinesPlusViewController: UIViewController {
     }
 
     var lifetimePrice = ""
-//    var lifetimeSubtext: String {
-//        return ""
-//    }
+
     var twelveMonthPrice: String {
         let priceString = yearlyPrice.dropFirst()
         let priceDouble = Double(priceString)
@@ -125,11 +123,9 @@ class RoutinesPlusViewController: UIViewController {
     }
 
     func setUpUI() {
-//        let shadowColor = UIColor(rgba: "#645be7", defaultColor: .white)
-
         routinesLabelPlusSymbol.theme_textColor = GlobalPicker.barTextColor
         routinesPlusLabel.theme_textColor = GlobalPicker.barTextColor
-//        routinesLabelPlusSymbol.layer.shadowColor = shadowColor.cgColor
+
         routinesLabelPlusSymbol.layer.theme_shadowColor = GlobalPicker.shadowColor
         routinesLabelPlusSymbol.layer.shadowRadius = 7
         routinesLabelPlusSymbol.layer.shadowOpacity = 1

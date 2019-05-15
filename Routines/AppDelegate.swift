@@ -9,7 +9,6 @@
 import CloudKit
 import IceCream
 import RealmSwift
-// import StoreKit
 import SwiftTheme
 import SwiftyStoreKit
 import UIKit
@@ -30,7 +29,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
-//    let center = UNUserNotificationCenter.current()
     var shortcutItemToProcess: UIApplicationShortcutItem?
 
     static var syncEngine: SyncEngine?
@@ -46,32 +44,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
-    // static let iapObserver = StoreObserver()
-
-//    private func itemCleanup() {
-//        let realm = try! Realm()
-//        let oldItems = realm.objects(Items.self).filter("isDeleted = \(true)")
-//        oldItems.forEach { item in
-//            removeDeletedNotifications(id: item.uuidString)
-//            item.deleteItem()
-//        }
-//    }
-
-//    func removeDeletedNotifications(id: String) {
-//        // print("Clearing delivered notifications for deleted items")
-//        let center = UNUserNotificationCenter.current()
-//        center.removeDeliveredNotifications(withIdentifiers: ["\(id)0", "\(id)1", "\(id)2", "\(id)3", id])
-//    }
-//
-//    func removeObsoleteNotifications(id: String) {
-//        let center = UNUserNotificationCenter.current()
-//        center.removePendingNotificationRequests(withIdentifiers: ["\(id)0", "\(id)1", "\(id)2", "\(id)3", id])
-//    }
-//
     static func refreshNotifications() {
         printDebug(#function)
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-        // Items.requestNotificationPermission()
+
         let realm = try! Realm()
         let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
         items.forEach { item in
@@ -169,8 +145,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         afterSyncTimer.stopTimer()
         AppDelegate.automaticDarkModeTimer.stopTimer()
 
-//        AppDelegate.syncEngine?.pushAll()
-
         printDebug("\(#function) - End")
     }
 
@@ -178,8 +152,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug("\(#function) - Start")
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-
-//        AppDelegate.refreshNotifications()
 
         observeItems()
 
@@ -264,14 +236,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug("\(#function) - End")
     }
 
-//    func application(_: UIApplication, shouldSaveApplicationState _: NSCoder) -> Bool {
-//        return true
-//    }
-//
-//    func application(_: UIApplication, shouldRestoreApplicationState _: NSCoder) -> Bool {
-//        return true
-//    }
-
     open func restoreSelectedTab(tab: Int?) {
         let rootVC = window?.rootViewController as! TabBarViewController
         if let selectedTab = tab {
@@ -294,32 +258,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return selectedIndex
     }
 
-//    func setSelectedIndex() {
-//        let rootVC = window?.rootViewController as! TabBarViewController
-//        let selectedIndex = rootVC.selectedIndex
-//        DispatchQueue(label: realmDispatchQueueLabel).async {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//                    do {
-//                        try realm.write {
-//                            options.selectedIndex = selectedIndex
-//                        }
-//                    } catch {
-//                        // print("Error saving selected tab")
-//                    }
-//                }
-//            }
-//        }
-//    }
-
     // MARK: - Options Realm
-
-    // var timeArray: [DateComponents?] = []
-//    //Options Properties
-    // let realm = try! Realm()
-
-    // let realmDispatchQueueLabel: String = "background"
 
     static func checkOptions() {
         DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
@@ -366,15 +305,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func migrateRealm() {
-//        let configCheck = Realm.Configuration()
-//        do {
-//            // let fileUrlIs = try schemaVersionAtURL(configCheck.fileURL!)
-//            // print("schema version \(fileUrlIs)")
-//        } catch {
-//            // print(error)
-//        }
-
-        // print("performing realm migration")
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
@@ -508,7 +438,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     @objc func backgroundRefresh() {
         printDebug(#function)
-        self.refreshAndUpdate()
+        refreshAndUpdate()
     }
 
     deinit {
@@ -613,148 +543,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UIApplication.shared.applicationIconBadgeNumber = remoteBadge
     }
 
-//    func removeAllNotificationsForItem(uuidString: String) {
-//        DispatchQueue(label: realmDispatchQueueLabel).async {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) {
-//
-//                }
-//            }
-//        }
-//    }
-
-//    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-//        // print("running scheduleNewNotification")
-//        let notificationCenter = UNUserNotificationCenter.current()
-//
-//        notificationCenter.getNotificationSettings { settings in
-//            // DO not schedule notifications if not authorized
-//            guard settings.authorizationStatus == .authorized else {
-//                // self.requestNotificationPermission()
-//                // print("Authorization status has changed to unauthorized for notifications")
-//                return
-//            }
-//
-//            DispatchQueue(label: self.realmDispatchQueueLabel).sync {
-//                autoreleasepool {
-//                    let realm = try! Realm()
-//                    let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-//                    switch segment {
-//                    case 1:
-//                        if (options?.afternoonNotificationsOn)! {
-//                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-//                        } else {
-//                            // print("Afternoon Notifications toggled off. Aborting")
-//                            return
-//                        }
-//                    case 2:
-//                        if (options?.eveningNotificationsOn)! {
-//                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-//                        } else {
-//                            // print("Afternoon Notifications toggled off. Aborting")
-//                            return
-//                        }
-//                    case 3:
-//                        if (options?.nightNotificationsOn)! {
-//                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-//                        } else {
-//                            // print("Afternoon Notifications toggled off. Aborting")
-//                            return
-//                        }
-//                    default:
-//                        if (options?.morningNotificationsOn)! {
-//                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-//                        } else {
-//                            // print("Afternoon Notifications toggled off. Aborting")
-//                            return
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    func createBasicNotification(title: String, notes: String?) {
-//        let content = UNMutableNotificationContent()
-//        content.title = title
-//        content.sound = UNNotificationSound.default
-//
-//        if let notesText = notes {
-//            content.body = notesText
-//        }
-//
-//        // let trigger = UNNotificationTrigger()
-//
-//        // Create the request
-//        let request = UNNotificationRequest(identifier: "test", content: content, trigger: nil)
-//
-//        // Schedule the request with the system
-//        let notificationCenter = UNUserNotificationCenter.current()
-//        notificationCenter.add(request) { error in
-//            if error != nil {
-//                // TODO: handle notification errors
-//                // print(String(describing: error))
-//            } else {
-//                // print("Notification created successfully")
-//            }
-//        }
-//    }
-//
-//    func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-//        // print("createNotification running")
-//        let content = UNMutableNotificationContent()
-//        content.title = title
-//        content.sound = UNNotificationSound.default
-//        content.threadIdentifier = String(getItemSegment(id: uuidString))
-//
-//        content.badge = NSNumber(integerLiteral: AppDelegate.setBadgeNumber())
-//
-//        if let notesText = notes {
-//            content.body = notesText
-//        }
-//
-//        // Assign the category (and the associated actions).
-//        switch segment {
-//        case 1:
-//            content.categoryIdentifier = "afternoon"
-//        case 2:
-//            content.categoryIdentifier = "evening"
-//        case 3:
-//            content.categoryIdentifier = "night"
-//        default:
-//            content.categoryIdentifier = "morning"
-//        }
-//
-//        var dateComponents = DateComponents()
-//        dateComponents.calendar = Calendar.autoupdatingCurrent
-//        // Keep notifications from occurring too early for tasks created for tomorrow
-//        if firstDate > Date() {
-//            // print("Notification set to tomorrow")
-//            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
-//        }
-//        dateComponents.timeZone = TimeZone.autoupdatingCurrent
-//
-//        dateComponents.hour = Options.getOptionHour(segment: segment)
-//        dateComponents.minute = Options.getOptionMinute(segment: segment)
-//
-//        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-//
-//        // Create the request
-//        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-//
-//        // Schedule the request with the system
-//        let notificationCenter = UNUserNotificationCenter.current()
-//        notificationCenter.add(request) { error in
-//            if error != nil {
-//                // TODO: handle notification errors
-//                // print(String(describing: error))
-//            } else {
-//                // print("Notification created successfully")
-//            }
-//        }
-//    }
-
     // Notification Settings Screen
     fileprivate func goToSettings() {
         // print("Opening settings")
@@ -764,7 +552,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Set the selected index so you know what child will be on screen
         let index = getSelectedTab()
         rootVC.selectedIndex = index
-        // This is kind of a cheat, but it works
+
         let navVC = rootVC.children[index] as! NavigationViewController
         navVC.pushViewController(optionsViewController, animated: true)
         TableViewController.setAppearance(segment: index)
@@ -778,7 +566,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Set the selected index so you know what child will be on screen
         let index = getSelectedTab()
         rootVC.selectedIndex = index
-        // This is kind of a cheat, but it works
+
         let navVC = rootVC.children[index] as! NavigationViewController
         navVC.pushViewController(addViewController, animated: true)
         addViewController.editingSegment = index
@@ -877,17 +665,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         switchUI.theme_tintColor = GlobalPicker.switchTintColor
         switchUI.theme_backgroundColor = GlobalPicker.cellBackground
     }
-
-//    func getSelectedTab() -> Int {
-//        var selectedIndex = 0
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//                    selectedIndex = options.selectedIndex
-//                }
-//            }
-//        }
-//        return selectedIndex
-//    }
 }

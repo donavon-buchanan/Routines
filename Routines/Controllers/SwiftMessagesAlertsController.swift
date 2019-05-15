@@ -20,9 +20,6 @@ class SwiftMessagesAlertsController: UIView {
         SwiftMessages.defaultConfig.dimMode = .blur(style: .dark, alpha: 1, interactive: false)
         SwiftMessages.defaultConfig.dimModeAccessibilityLabel = "Please Wait"
 
-        // Theme message elements with the warning style.
-        // view.configureTheme(.info)
-
         // Add a drop shadow.
         view.configureDropShadow()
         view.button?.isHidden = true
