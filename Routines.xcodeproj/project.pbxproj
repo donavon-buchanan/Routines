@@ -776,7 +776,7 @@
 			buildSettings = {
 				APP_BUNDLE_ID = app.donavon.routines.beta;
 				APP_DISPLAY_NAME = "Routines Beta";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Beta";
 				CODE_SIGN_ENTITLEMENTS = Routines/Routines.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
