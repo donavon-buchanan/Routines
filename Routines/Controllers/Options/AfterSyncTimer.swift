@@ -12,9 +12,11 @@ class AfterSyncTimer {
     var timer: Timer?
 
     func startTimer() {
-        guard timer == nil else { return }
-        printDebug("afterSyncTimer started")
-        timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(doRefresh), userInfo: nil, repeats: false)
+        DispatchQueue.main.async {
+            guard self.timer == nil else { return }
+            printDebug("afterSyncTimer started")
+            self.timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.doRefresh), userInfo: nil, repeats: false)
+        }
     }
 
     func stopTimer() {
@@ -26,8 +28,7 @@ class AfterSyncTimer {
 
     @objc func doRefresh() {
         printDebug(#function)
-        AppDelegate.refreshNotifications()
-        AppDelegate.updateBadgeFromPush()
+        AppDelegate.refreshAndUpdate()
 
         stopTimer()
     }
