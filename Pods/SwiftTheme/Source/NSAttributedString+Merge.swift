@@ -18,7 +18,7 @@ extension NSAttributedString {
         let newString = NSMutableAttributedString(attributedString: attrStr)
         let range = NSMakeRange(0, attrStr.length)
         newString.enumerateAttributes(in: range, options: []) {
-            currentAttributes, range, _ in
+            (currentAttributes, range, _) in
             let mergedAttributes = currentAttributes.merge(with: newAttributes)
             newString.setAttributes(mergedAttributes, range: range)
         }
@@ -31,7 +31,7 @@ extension NSAttributedString {
 // dictionary.
 private extension Dictionary {
     func merge(with dict: Dictionary) -> Dictionary {
-        return dict.reduce(into: self) { result, pair in
+        return dict.reduce(into: self) { (result, pair) in
             let (key, value) = pair
             result[key] = value
         }

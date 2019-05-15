@@ -21,11 +21,11 @@ import Realm
 import Realm.Private
 
 #if !swift(>=4.1)
-    fileprivate extension Sequence {
-        func compactMap<T>(_ fn: (Self.Iterator.Element) throws -> T?) rethrows -> [T] {
-            return try flatMap(fn)
-        }
+fileprivate extension Sequence {
+    func compactMap<T>(_ fn: (Self.Iterator.Element) throws -> T?) rethrows -> [T] {
+        return try flatMap(fn)
     }
+}
 #endif
 
 extension Realm {
@@ -40,6 +40,7 @@ extension Realm {
      rather than creating a new value each time you open a Realm.
      */
     public struct Configuration {
+
         // MARK: Default Configuration
 
         /**
@@ -80,7 +81,7 @@ extension Realm {
                                             Return `true ` to indicate that an attempt to compact the file should be made.
                                             The compaction will be skipped if another process is accessing it.
          - parameter objectTypes:        The subset of `Object` subclasses persisted in the Realm.
-         */
+        */
         public init(fileURL: URL? = URL(fileURLWithPath: RLMRealmPathForFile("default.realm"), isDirectory: false),
                     inMemoryIdentifier: String? = nil,
                     syncConfiguration: SyncConfiguration? = nil,
@@ -91,20 +92,20 @@ extension Realm {
                     deleteRealmIfMigrationNeeded: Bool = false,
                     shouldCompactOnLaunch: ((Int, Int) -> Bool)? = nil,
                     objectTypes: [Object.Type]? = nil) {
-            self.fileURL = fileURL
-            if let inMemoryIdentifier = inMemoryIdentifier {
-                self.inMemoryIdentifier = inMemoryIdentifier
-            }
-            if let syncConfiguration = syncConfiguration {
-                self.syncConfiguration = syncConfiguration
-            }
-            self.encryptionKey = encryptionKey
-            self.readOnly = readOnly
-            self.schemaVersion = schemaVersion
-            self.migrationBlock = migrationBlock
-            self.deleteRealmIfMigrationNeeded = deleteRealmIfMigrationNeeded
-            self.shouldCompactOnLaunch = shouldCompactOnLaunch
-            self.objectTypes = objectTypes
+                self.fileURL = fileURL
+                if let inMemoryIdentifier = inMemoryIdentifier {
+                    self.inMemoryIdentifier = inMemoryIdentifier
+                }
+                if let syncConfiguration = syncConfiguration {
+                    self.syncConfiguration = syncConfiguration
+                }
+                self.encryptionKey = encryptionKey
+                self.readOnly = readOnly
+                self.schemaVersion = schemaVersion
+                self.migrationBlock = migrationBlock
+                self.deleteRealmIfMigrationNeeded = deleteRealmIfMigrationNeeded
+                self.shouldCompactOnLaunch = shouldCompactOnLaunch
+                self.objectTypes = objectTypes
         }
 
         // MARK: Configuration Properties
@@ -199,10 +200,10 @@ extension Realm {
         /// The classes managed by the Realm.
         public var objectTypes: [Object.Type]? {
             set {
-                customSchema = newValue.map { RLMSchema(objectClasses: $0) }
+                self.customSchema = newValue.map { RLMSchema(objectClasses: $0) }
             }
             get {
-                return customSchema.map { $0.objectSchema.compactMap { $0.objectClass as? Object.Type } }
+                return self.customSchema.map { $0.objectSchema.compactMap { $0.objectClass as? Object.Type } }
             }
         }
 
@@ -225,18 +226,18 @@ extension Realm {
             } else {
                 fatalError("A Realm Configuration must specify a path or an in-memory identifier.")
             }
-            configuration.encryptionKey = encryptionKey
-            configuration.readOnly = readOnly
-            configuration.schemaVersion = schemaVersion
-            configuration.migrationBlock = migrationBlock.map { accessorMigrationBlock($0) }
-            configuration.deleteRealmIfMigrationNeeded = deleteRealmIfMigrationNeeded
+            configuration.encryptionKey = self.encryptionKey
+            configuration.readOnly = self.readOnly
+            configuration.schemaVersion = self.schemaVersion
+            configuration.migrationBlock = self.migrationBlock.map { accessorMigrationBlock($0) }
+            configuration.deleteRealmIfMigrationNeeded = self.deleteRealmIfMigrationNeeded
             if let shouldCompactOnLaunch = self.shouldCompactOnLaunch {
                 configuration.shouldCompactOnLaunch = ObjectiveCSupport.convert(object: shouldCompactOnLaunch)
             } else {
                 configuration.shouldCompactOnLaunch = nil
             }
-            configuration.setCustomSchemaWithoutCopying(customSchema)
-            configuration.disableFormatUpgrade = disableFormatUpgrade
+            configuration.setCustomSchemaWithoutCopying(self.customSchema)
+            configuration.disableFormatUpgrade = self.disableFormatUpgrade
             return configuration
         }
 
@@ -253,7 +254,7 @@ extension Realm {
             configuration.readOnly = rlmConfiguration.readOnly
             configuration.schemaVersion = rlmConfiguration.schemaVersion
             configuration.migrationBlock = rlmConfiguration.migrationBlock.map { rlmMigration in
-                { migration, schemaVersion in
+                return { migration, schemaVersion in
                     rlmMigration(migration.rlmMigration, schemaVersion)
                 }
             }

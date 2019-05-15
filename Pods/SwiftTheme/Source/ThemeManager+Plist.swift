@@ -9,10 +9,11 @@
 import UIKit
 
 @objc extension ThemeManager {
+    
     public class func value(for keyPath: String) -> Any? {
         return currentTheme?.value(forKeyPath: keyPath)
     }
-
+    
     public class func string(for keyPath: String) -> String? {
         guard let string = currentTheme?.value(forKeyPath: keyPath) as? String else {
             print("SwiftTheme WARNING: Not found string key path: \(keyPath)")
@@ -20,7 +21,7 @@ import UIKit
         }
         return string
     }
-
+    
     public class func number(for keyPath: String) -> NSNumber? {
         guard let number = currentTheme?.value(forKeyPath: keyPath) as? NSNumber else {
             print("SwiftTheme WARNING: Not found number key path: \(keyPath)")
@@ -28,7 +29,7 @@ import UIKit
         }
         return number
     }
-
+    
     public class func dictionary(for keyPath: String) -> NSDictionary? {
         guard let dict = currentTheme?.value(forKeyPath: keyPath) as? NSDictionary else {
             print("SwiftTheme WARNING: Not found dictionary key path: \(keyPath)")
@@ -36,7 +37,7 @@ import UIKit
         }
         return dict
     }
-
+    
     public class func color(for keyPath: String) -> UIColor? {
         guard let rgba = string(for: keyPath) else { return nil }
         guard let color = try? UIColor(rgba_throws: rgba) else {
@@ -45,7 +46,7 @@ import UIKit
         }
         return color
     }
-
+    
     public class func image(for keyPath: String) -> UIImage? {
         guard let imageName = string(for: keyPath) else { return nil }
         if let filePath = currentThemePath?.URL?.appendingPathComponent(imageName).path {
@@ -62,4 +63,5 @@ import UIKit
             return image
         }
     }
+    
 }

@@ -38,16 +38,19 @@ struct RestorePurchases {
 }
 
 class RestorePurchasesController: TransactionController {
+
     public var restorePurchases: RestorePurchases?
 
     private var restoredPurchases: [TransactionResult] = []
 
     func processTransaction(_ transaction: SKPaymentTransaction, atomically: Bool, on paymentQueue: PaymentQueue) -> Purchase? {
+
         let transactionState = transaction.transactionState
 
         if transactionState == .restored {
-            let transactionProductIdentifier = transaction.payment.productIdentifier
 
+            let transactionProductIdentifier = transaction.payment.productIdentifier
+            
             let purchase = Purchase(productId: transactionProductIdentifier, quantity: transaction.payment.quantity, transaction: transaction, originalTransaction: transaction.original, needsFinishTransaction: !atomically)
             if atomically {
                 paymentQueue.finishTransaction(transaction)
@@ -58,6 +61,7 @@ class RestorePurchasesController: TransactionController {
     }
 
     func processTransactions(_ transactions: [SKPaymentTransaction], on paymentQueue: PaymentQueue) -> [SKPaymentTransaction] {
+
         guard let restorePurchases = restorePurchases else {
             return transactions
         }
@@ -75,6 +79,7 @@ class RestorePurchasesController: TransactionController {
     }
 
     func restoreCompletedTransactionsFailed(withError error: Error) {
+
         guard let restorePurchases = restorePurchases else {
             print("Callback already called. Returning")
             return
@@ -85,9 +90,11 @@ class RestorePurchasesController: TransactionController {
         // Reset state after error received
         restoredPurchases = []
         self.restorePurchases = nil
+
     }
 
     func restoreCompletedTransactionsFinished() {
+
         guard let restorePurchases = restorePurchases else {
             print("Callback already called. Returning")
             return

@@ -9,31 +9,33 @@
 import Foundation
 
 @objc extension ThemeManager {
+    
     /**
-     extension for Objective-C, Use setTheme(plistName: String, path: ThemePath) in Swift
+        extension for Objective-C, Use setTheme(plistName: String, path: ThemePath) in Swift
      */
     public class func setThemeWithPlistInMainBundle(_ plistName: String) {
         setTheme(plistName: plistName, path: .mainBundle)
     }
-
+    
     /**
-     extension for Objective-C, Use setTheme(plistName: String, path: ThemePath) in Swift
+        extension for Objective-C, Use setTheme(plistName: String, path: ThemePath) in Swift
      */
     public class func setThemeWithPlistInSandbox(_ plistName: String, path: URL) {
         setTheme(plistName: plistName, path: .sandbox(path))
     }
-
+    
     /**
-     extension for Objective-C, Use setTheme(dict: NSDictionary, path: ThemePath) in Swift
+        extension for Objective-C, Use setTheme(dict: NSDictionary, path: ThemePath) in Swift
      */
     public class func setThemeWithDictInMainBundle(_ dict: NSDictionary) {
         setTheme(dict: dict, path: .mainBundle)
     }
-
+    
     /**
-     extension for Objective-C, Use setTheme(dict: NSDictionary, path: ThemePath) in Swift
+        extension for Objective-C, Use setTheme(dict: NSDictionary, path: ThemePath) in Swift
      */
     public class func setThemeWithDictInSandbox(_ dict: NSDictionary, path: URL) {
         setTheme(dict: dict, path: .sandbox(path))
     }
+    
 }

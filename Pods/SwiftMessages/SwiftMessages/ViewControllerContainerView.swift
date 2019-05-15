@@ -13,6 +13,7 @@ import UIKit
 /// `preferredContentSize.height` property. (SwiftMessages does not currently
 /// consider the value of `preferredContentSize.width`, but this may change in the future).
 open class ViewControllerContainerView: CornerRoundingView {
+
     open internal(set) weak var viewController: UIViewController?
 
     open override var intrinsicContentSize: CGSize {
@@ -26,9 +27,9 @@ open class ViewControllerContainerView: CornerRoundingView {
     open override func addSubview(_ view: UIView) {
         view.translatesAutoresizingMaskIntoConstraints = false
         super.addSubview(view)
-        view.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        view.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        view.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        view.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        view.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        view.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        view.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        view.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
     }
 }

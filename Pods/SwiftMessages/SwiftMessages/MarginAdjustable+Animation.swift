@@ -9,7 +9,8 @@
 import UIKit
 
 public extension MarginAdjustable where Self: UIView {
-    func defaultMarginAdjustment(context: AnimationContext) -> UIEdgeInsets {
+
+    public func defaultMarginAdjustment(context: AnimationContext) -> UIEdgeInsets {
         // Best effort to determine if we should use the new or deprecated margin adjustments.
         if layoutMarginAdditions != .zero
             || (safeAreaTopOffset == 0 && safeAreaBottomOffset == 0 && statusBarOffset == 0) {
@@ -20,9 +21,9 @@ public extension MarginAdjustable where Self: UIView {
                 safeAreaInsets = self.safeAreaInsets
             } else {
                 #if SWIFTMESSAGES_APP_EXTENSIONS
-                    let application: UIApplication? = nil
+                let application: UIApplication? = nil
                 #else
-                    let application: UIApplication? = UIApplication.shared
+                let application: UIApplication? = UIApplication.shared
                 #endif
                 if !context.safeZoneConflicts.isDisjoint(with: [.statusBar]),
                     let app = application,
@@ -54,15 +55,15 @@ public extension MarginAdjustable where Self: UIView {
         }
     }
 
-    private func topAdjustment(context: AnimationContext) -> CGFloat {
+    private func topAdjustment(context: AnimationContext) -> CGFloat {        
         var top: CGFloat = 0
         if !context.safeZoneConflicts.isDisjoint(with: [.sensorNotch, .statusBar]) {
             #if SWIFTMESSAGES_APP_EXTENSIONS
-                let application: UIApplication? = nil
+            let application: UIApplication? = nil
             #else
-                let application: UIApplication? = UIApplication.shared
+            let application: UIApplication? = UIApplication.shared
             #endif
-            if #available(iOS 11, *), safeAreaInsets.top > 0 {
+            if #available(iOS 11, *), safeAreaInsets.top > 0  {
                 do {
                     // To accommodate future safe areas, using a linear formula based on
                     // two data points:
@@ -86,7 +87,7 @@ public extension MarginAdjustable where Self: UIView {
     private func bottomAdjustment(context: AnimationContext) -> CGFloat {
         var bottom: CGFloat = 0
         if !context.safeZoneConflicts.isDisjoint(with: [.homeIndicator]) {
-            if #available(iOS 11, *), safeAreaInsets.bottom > 0 {
+            if #available(iOS 11, *), safeAreaInsets.bottom > 0  {
                 do {
                     // This adjustment was added to fix a layout issue with iPhone X in
                     // landscape mode. Using a linear formula based on two data points to help
