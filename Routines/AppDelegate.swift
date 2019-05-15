@@ -146,6 +146,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         AppDelegate.syncEngine?.pushAll()
 
+        // Redundant. But necessary for now.
+        AppDelegate.refreshAndUpdate()
+
         printDebug("\(#function) - End")
     }
 
