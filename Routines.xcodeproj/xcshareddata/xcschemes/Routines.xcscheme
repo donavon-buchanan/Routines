@@ -8,13 +8,13 @@
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "YES"
+            buildForRunning = "NO"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "582CF7DD6B16DB7F6507D18B2955A423"
+               BlueprintIdentifier = "9C81032D053FC70DF0C67E8E49B9A552"
                BuildableName = "Pods_Routines.framework"
                BlueprintName = "Pods-Routines"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
@@ -22,7 +22,7 @@
          </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "YES"
+            buildForRunning = "NO"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
             buildForAnalyzing = "YES">
@@ -75,16 +75,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F8B831B32155CBB000DAF60E"
-            BuildableName = "Routines.app"
-            BlueprintName = "Routines"
-            ReferencedContainer = "container:Routines.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

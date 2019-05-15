@@ -76,7 +76,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         printDebug("\(#function) - Start")
 
-        application.setMinimumBackgroundFetchInterval(0)
+        application.setMinimumBackgroundFetchInterval(270)
 
         // Override point for customization after application launch.
 
@@ -107,11 +107,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
 
-        AppDelegate.setSync()
-
         observeItems()
         printDebug("\(#function) - End")
         return true
+    }
+
+    func application(_: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        AppDelegate.syncEngine?.pull()
+        completionHandler(.newData)
     }
 
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
@@ -125,13 +128,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         case .active:
             afterSyncTimer.startTimer()
             completionHandler(.newData)
-        case .background:
-            backgroundRefresh()
-            completionHandler(.newData)
-        case .inactive:
-            backgroundRefresh()
-            completionHandler(.newData)
-        @unknown default:
+        default:
+            // refreshAndUpdate()
             completionHandler(.newData)
         }
 
@@ -144,6 +142,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         afterSyncTimer.stopTimer()
         AppDelegate.automaticDarkModeTimer.stopTimer()
+
+        AppDelegate.syncEngine?.pushAll()
 
         printDebug("\(#function) - End")
     }
@@ -181,7 +181,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationDidBecomeActive(_: UIApplication) {
         printDebug("\(#function) - Start")
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        // restoreSelectedTab(tab: nil)
+        AppDelegate.setSync()
 
         if let shortcutItem = shortcutItemToProcess {
             if shortcutItem.type == "AddAction" {
@@ -194,8 +194,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         AppDelegate.removeOldNotifications()
-
-        removeOrphanedNotifications()
 
         AppDelegate.setAutomaticDarkModeTimer()
         printDebug("\(#function) - End")
@@ -414,18 +412,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug(#function + "Setting token and observing items")
 
         let realm = try! Realm()
+        let application = UIApplication.shared
         items = realm.objects(Items.self)
 
-        itemsToken = items?.observe { change in
-            switch change {
-            case .initial:
-                printDebug("Initial load. Observing items")
+        itemsToken = items?.observe { _ in
+            if application.applicationState == .active {
                 self.afterSyncTimer.startTimer()
-            case .update:
-                printDebug("Items list updated in \(#function)")
+            } else {
                 self.refreshAndUpdate()
-            case let .error(error):
-                printDebug("Error with items observation: \(error)")
             }
         }
     }
@@ -434,12 +428,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug(#function)
         AppDelegate.refreshNotifications()
         AppDelegate.updateBadgeFromPush()
+        removeOrphanedNotifications()
     }
 
-    @objc func backgroundRefresh() {
-        printDebug(#function)
-        refreshAndUpdate()
-    }
+//    @objc func backgroundRefresh() {
+//        printDebug(#function)
+//        refreshAndUpdate()
+//    }
 
     deinit {
         printDebug("\(#function) called. Tokens invalidated")
