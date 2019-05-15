@@ -210,55 +210,6 @@ class OptionsTableViewController: UITableViewController {
         }
     }
 
-    // MARK: - Options Realm
-
-//    func updateNotificationOptions(segment: Int, isOn: Bool) {
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-//                switch segment {
-//                case 1:
-//                    do {
-//                        try realm.write {
-//                            // print("updateNotificationOptions saving")
-//                            options?.afternoonNotificationsOn = isOn
-//                        }
-//                    } catch {
-//                        // print("updateNotificationOptions failed")
-//                    }
-//                case 2:
-//                    do {
-//                        try realm.write {
-//                            // print("updateNotificationOptions saving")
-//                            options?.eveningNotificationsOn = isOn
-//                        }
-//                    } catch {
-//                        // print("updateNotificationOptions failed")
-//                    }
-//                case 3:
-//                    do {
-//                        try realm.write {
-//                            // print("updateNotificationOptions saving")
-//                            options?.nightNotificationsOn = isOn
-//                        }
-//                    } catch {
-//                        // print("updateNotificationOptions failed")
-//                    }
-//                default:
-//                    do {
-//                        try realm.write {
-//                            // print("updateNotificationOptions saving")
-//                            options?.morningNotificationsOn = isOn
-//                        }
-//                    } catch {
-//                        // print("updateNotificationOptions failed")
-//                    }
-//                }
-//            }
-//        }
-//    }
-
     func setUpUI(animated: Bool) {
         morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: animated)
         afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: animated)
@@ -299,7 +250,6 @@ class OptionsTableViewController: UITableViewController {
     }
 
     func refreshUI() {
-        // TODO: Refactor this. Just bad
         setUpUI(animated: true)
     }
 

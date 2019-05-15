@@ -71,14 +71,6 @@ import RealmSwift
         }
     }
 
-//    static func darkModeOff() {
-//        Options.setDarkMode(false)
-//    }
-//
-//    static func darkModeOn() {
-//        Options.setDarkMode(true)
-//    }
-
     dynamic var autoDarkMode: Bool = false
     dynamic var autoDarkModeStartHour: Int = 19
     dynamic var autoDarkModeStartMinute: Int = 0
@@ -351,7 +343,7 @@ import RealmSwift
         default:
             currentSegment = 3
         }
-        // print("getCurrentSegmentFromTime: \(currentSegment)")
+
         return currentSegment
     }
 

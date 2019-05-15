@@ -11,7 +11,6 @@
 import RealmSwift
 import UIKit
 import UserNotifications
-// import UserNotificationsUI
 
 class CustomTimesTableViewController: UITableViewController {
     @IBOutlet var morningDatePicker: UIDatePicker!
@@ -56,7 +55,7 @@ class CustomTimesTableViewController: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // loadOptions()
+
         setUpUI(animated: false)
     }
 
@@ -104,28 +103,6 @@ class CustomTimesTableViewController: UITableViewController {
         setUpUI(animated: true)
     }
 
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        return 4
-//    }
-//
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        var numberOfRows: Int
-//        switch section {
-//        case 0:
-//            numberOfRows = 1
-//        case 1:
-//            numberOfRows = 1
-//        case 2:
-//            numberOfRows = 1
-//        case 3:
-//            numberOfRows = 1
-//        default:
-//            numberOfRows = 1
-//        }
-//
-//        return numberOfRows
-//    }
-
     // Save all times
     func saveAllTimes() {
         let datePickerArray: [UIDatePicker] = [morningDatePicker, afternoonDatePicker, eveningDatePicker, nightDatePicker]
@@ -134,52 +111,6 @@ class CustomTimesTableViewController: UITableViewController {
         updateSavedTimes(segment: 2, hour: getHour(date: datePickerArray[2].date), minute: getMinute(date: datePickerArray[2].date))
         updateSavedTimes(segment: 3, hour: getHour(date: datePickerArray[3].date), minute: getMinute(date: datePickerArray[3].date))
     }
-
-    // Set default min times
-//    func setDefaultMinTimes() {
-//        let datePickerArray: [UIDatePicker] = [morningDatePicker, afternoonDatePicker, eveningDatePicker, nightDatePicker]
-//        let pickerCount = datePickerArray.count
-//        for picker in 0..<pickerCount {
-//            let midnight = DateFormatter().date(from: "12:00 AM")
-//            switch picker {
-//            case 0:
-//                datePickerArray[0].minimumDate = midnight
-//            case 1:
-//                let minDate = datePickerArray[0].date.addingTimeInterval(3600)
-//                datePickerArray[1].minimumDate = minDate
-//            case 2:
-//                let minDate = datePickerArray[1].date.addingTimeInterval(3600)
-//                datePickerArray[2].minimumDate = minDate
-//            case 3:
-//                let minDate = datePickerArray[2].date.addingTimeInterval(3600)
-//                datePickerArray[3].minimumDate = minDate
-//            default:
-//                break
-//            }
-//        }
-//        //keep saved times updated with what's shown in UI
-//        updateSavedTimes(segment: 0, time: datePickerArray[0].date)
-//        updateSavedTimes(segment: 1, time: datePickerArray[1].date)
-//        updateSavedTimes(segment: 2, time: datePickerArray[2].date)
-//        updateSavedTimes(segment: 3, time: datePickerArray[3].date)
-//
-//        setDefaultMaxTimes()
-//    }
-
-//    func setDefaultMaxTimes() {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.timeStyle = .short
-//        morningDatePicker.maximumDate = dateFormatter.date(from: "8:45 PM")
-//        afternoonDatePicker.maximumDate = dateFormatter.date(from: "9:45 PM")
-//        eveningDatePicker.maximumDate = dateFormatter.date(from: "10:45 PM")
-//        nightDatePicker.maximumDate = dateFormatter.date(from: "11:45 PM")
-//
-//    }
-//
-//    func setMinMaxTimes() {
-//        setDefaultMinTimes()
-//        //setDefaultMaxTimes()
-//    }
 
     // MARK: - Options Realm
 
@@ -255,234 +186,6 @@ class CustomTimesTableViewController: UITableViewController {
         }
         return date
     }
-
-    // MARK: - Adjust Notifications
-
-//    func scheduleAutoSnoozeNotifications(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-//        // This is where you need to test if a segment is > current segment
-//        let dayOfFirstDate = Calendar.autoupdatingCurrent.dateComponents([.day], from: firstDate)
-//        // print("dayOfFirstDate: \(dayOfFirstDate)")
-//        let today = Calendar.autoupdatingCurrent.dateComponents([.day], from: Date())
-//        // print("today: \(today)")
-//        if segment > 0, dayOfFirstDate == today {
-//            if getSegmentNotificationOption(segment: 0) {
-//                scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate.startOfNextDay)
-//                // print("morning uuid: " + "\(uuidString)0")
-//            }
-//        } else {
-//            if getSegmentNotificationOption(segment: 0) {
-//                scheduleNewNotification(title: title, notes: notes, segment: 0, uuidString: "\(uuidString)0", firstDate: firstDate)
-//                // print("morning uuid: " + "\(uuidString)0")
-//            }
-//        }
-//        if segment > 1, dayOfFirstDate == today {
-//            if getSegmentNotificationOption(segment: 1) {
-//                scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate.startOfNextDay)
-//                // print("afternoon uuid: " + "\(uuidString)1")
-//            }
-//        } else {
-//            if getSegmentNotificationOption(segment: 1) {
-//                scheduleNewNotification(title: title, notes: notes, segment: 1, uuidString: "\(uuidString)1", firstDate: firstDate)
-//                // print("afternoon uuid: " + "\(uuidString)1")
-//            }
-//        }
-//        if segment > 2, dayOfFirstDate == today {
-//            if getSegmentNotificationOption(segment: 2) {
-//                scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate.startOfNextDay)
-//                // print("evening uuid: " + "\(uuidString)2")
-//            }
-//        } else {
-//            if getSegmentNotificationOption(segment: 2) {
-//                scheduleNewNotification(title: title, notes: notes, segment: 2, uuidString: "\(uuidString)2", firstDate: firstDate)
-//                // print("evening uuid: " + "\(uuidString)2")
-//            }
-//        }
-//        if getSegmentNotificationOption(segment: 3) {
-//            scheduleNewNotification(title: title, notes: notes, segment: 3, uuidString: "\(uuidString)3", firstDate: firstDate)
-//            // print("night uuid: " + "\(uuidString)3")
-//        }
-//    }
-//
-//    func getSegmentNotificationOption(segment: Int) -> Bool {
-//        var isOn = true
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-//                switch segment {
-//                case 1:
-//                    if let on = options?.afternoonNotificationsOn {
-//                        isOn = on
-//                    }
-//                case 2:
-//                    if let on = options?.eveningNotificationsOn {
-//                        isOn = on
-//                    }
-//                case 3:
-//                    if let on = options?.nightNotificationsOn {
-//                        isOn = on
-//                    }
-//                default:
-//                    if let on = options?.morningNotificationsOn {
-//                        isOn = on
-//                    }
-//                }
-//            }
-//        }
-//        return isOn
-//    }
-//
-//    // This is the one to run when setting up a brand new notification
-//    func scheduleNewNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-//        // print("running scheduleNewNotification")
-//        let notificationCenter = UNUserNotificationCenter.current()
-//
-//        notificationCenter.getNotificationSettings { settings in
-//            // DO not schedule notifications if not authorized
-//            guard settings.authorizationStatus == .authorized else {
-//                // self.requestNotificationPermission()
-//                // print("Authorization status has changed to unauthorized for notifications")
-//                return
-//            }
-//
-//            DispatchQueue(label: self.realmDispatchQueueLabel).sync {
-//                autoreleasepool {
-//                    let realm = try! Realm()
-//                    let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-//                    switch segment {
-//                    case 1:
-//                        if (options?.afternoonNotificationsOn)! {
-//                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-//                        } else {
-//                            // print("Afternoon Notifications toggled off. Aborting")
-//                            return
-//                        }
-//                    case 2:
-//                        if (options?.eveningNotificationsOn)! {
-//                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-//                        } else {
-//                            // print("Afternoon Notifications toggled off. Aborting")
-//                            return
-//                        }
-//                    case 3:
-//                        if (options?.nightNotificationsOn)! {
-//                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-//                        } else {
-//                            // print("Afternoon Notifications toggled off. Aborting")
-//                            return
-//                        }
-//                    default:
-//                        if (options?.morningNotificationsOn)! {
-//                            self.createNotification(title: title, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-//                        } else {
-//                            // print("Afternoon Notifications toggled off. Aborting")
-//                            return
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
-//        // print("createNotification running")
-//        let content = UNMutableNotificationContent()
-//        content.title = title
-//        content.sound = UNNotificationSound.default
-//        content.threadIdentifier = String(AppDelegate().getItemSegment(id: uuidString))
-//
-//        content.badge = NSNumber(integerLiteral: AppDelegate().setBadgeNumber())
-//
-//        if let notesText = notes {
-//            content.body = notesText
-//        }
-//
-//        // Assign the category (and the associated actions).
-//        switch segment {
-//        case 1:
-//            content.categoryIdentifier = "afternoon"
-//        case 2:
-//            content.categoryIdentifier = "evening"
-//        case 3:
-//            content.categoryIdentifier = "night"
-//        default:
-//            content.categoryIdentifier = "morning"
-//        }
-//
-//        var dateComponents = DateComponents()
-//        dateComponents.calendar = Calendar.autoupdatingCurrent
-//        // Keep notifications from occurring too early for tasks created for tomorrow
-//        if firstDate > Date() {
-//            // print("Notification set to tomorrow")
-//            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
-//        }
-//        dateComponents.timeZone = TimeZone.autoupdatingCurrent
-//
-//        dateComponents.hour = getOptionHour(segment: segment)
-//        dateComponents.minute = getOptionMinute(segment: segment)
-//
-//        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-//
-//        // Create the request
-//        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-//
-//        // Schedule the request with the system
-//        let notificationCenter = UNUserNotificationCenter.current()
-//        notificationCenter.add(request) { error in
-//            if error != nil {
-//                // TODO: handle notification errors
-//                // print(String(describing: error))
-//            } else {
-//                // print("Notification created successfully")
-//            }
-//        }
-//    }
-//
-//    public func removeNotification(uuidString: [String]) {
-//        // print("Removing Notifications")
-//        let center = UNUserNotificationCenter.current()
-//        center.removePendingNotificationRequests(withIdentifiers: uuidString)
-//    }
-//
-//    func removeNotificationsForSegment(segment _: Int) {
-    ////        DispatchQueue(label: realmDispatchQueueLabel).async {
-    ////            autoreleasepool {
-    ////                let realm = try! Realm()
-    ////                let items = realm.objects(Items.self).filter("segment = \(segment)")
-    ////                items.forEach({ (item) in
-    ////                    self.removeNotification(uuidString: [item.uuidString, item.afternoonUUID, item.eveningUUID, item.nightUUID])
-    ////                })
-    ////            }
-    ////        }
-//        let center = UNUserNotificationCenter.current()
-//        center.removeAllPendingNotificationRequests()
-//    }
-//
-//    func enableNotificationsForSegment(segment: Int) {
-//        DispatchQueue(label: realmDispatchQueueLabel).async {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let items = realm.objects(Items.self) // .filter("segment = \(segment)")
-//                items.forEach { item in
-//                    if self.getAutoSnoozeStatus() {
-//                        self.scheduleAutoSnoozeNotifications(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString, firstDate: item.dateModified)
-//                    } else {
-//                        if self.getSegmentNotificationOption(segment: segment) {
-//                            self.scheduleNewNotification(title: item.title!, notes: item.notes, segment: item.segment, uuidString: item.uuidString, firstDate: item.dateModified)
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    func addOrRemoveNotifications(isOn: Bool, segment: Int) {
-//        if isOn {
-//            enableNotificationsForSegment(segment: segment)
-//        } else {
-//            removeNotificationsForSegment(segment: segment)
-//        }
-//    }
 
     // MARK: - Conversion functions
 
@@ -629,20 +332,6 @@ class CustomTimesTableViewController: UITableViewController {
         }
         return enabled
     }
-
-    // Smart Snooze
-//    func getAutoSnoozeStatus() -> Bool {
-//        var snooze = false
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
-//                    snooze = options.smartSnooze
-//                }
-//            }
-//        }
-//        return snooze
-//    }
 
     func getSelectedTab() -> Int {
         var selectedIndex = 0

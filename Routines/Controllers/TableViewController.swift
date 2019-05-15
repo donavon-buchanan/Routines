@@ -140,7 +140,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     override func viewDidLoad() {
-        // print("Running viewDidLoad")
         super.viewDidLoad()
         observeOptions()
 
@@ -162,7 +161,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         Options.setSelectedIndex(index: tabBarController!.selectedIndex)
 
         title = setNavTitle()
-        // loadItems()
+
         if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getPurchasedProduct() != "", RoutinesPlus.getPurchasedProduct() != RegisteredPurchase.lifetime.rawValue, Date() >= RoutinesPlus.getExpiryDate() {
             debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
             debugPrint("Routines Plus Product: \(RoutinesPlus.getPurchasedProduct())")
@@ -178,43 +177,28 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     @objc func appBecameActive() {
-        // removeDeliveredNotifications()
         loadItems()
         updateBadge()
-        // AppDelegate.removeOldNotifications()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // print("View Will Appear")
-        // removeDeliveredNotifications()
     }
 
     override func viewWillDisappear(_: Bool) {
         printDebug("\(#function)")
-        // removeColorBarViewFromCells()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // print("viewDidAppear")
+
         TableViewController.setAppearance(segment: segment)
         loadItems()
 
         fetchIAPInfo()
     }
 
-    func setTimeInTitle(timeString _: String) {
-//        timeLabel.text = timeString
-//        timeLabel.theme_textColor = GlobalPicker.barTextColor
-//        navigationItem.titleView = timeLabel
-//
-//        // need to re-layout title since it can be changed
-//        navigationItem.titleView?.setNeedsUpdateConstraints()
-    }
-
     func setNavTitle() -> String {
-        // print("Setting table title")
         switch segment {
         case 1:
             return "Afternoon"
@@ -230,21 +214,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func tabBarController(_ tabBarController: UITabBarController, didSelect _: UIViewController) {
         Options.setSelectedIndex(index: tabBarController.selectedIndex)
     }
-
-//
-//    func getSelectedTab() -> Int {
-//        var index = Int()
-//
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//                    index = options.selectedIndex
-//                }
-//            }
-//        }
-//        return index
-//    }
 
     // MARK: - Table view data source
 
@@ -309,37 +278,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         return cell
     }
 
-//    func addColorBarsViewToCells() {
-//        var barView = UIView()
-//        barView.tag = 2
-//
-//        tableView.indexPathsForVisibleRows?.forEach { indexPath in
-//            if let cell = self.tableView.cellForRow(at: indexPath) {
-//                var barView = UIView()
-//                barView.tag = 2
-//
-//                var segmentColor: UIColor {
-//                    switch self.items?[indexPath.row].segment {
-//                    case 0:
-//                        return UIColor(rgba: "#f47645", defaultColor: .red)
-//                    case 1:
-//                        return UIColor(rgba: "#26baee", defaultColor: .red)
-//                    case 2:
-//                        return UIColor(rgba: "#62a388", defaultColor: .red)
-//                    case 3:
-//                        return UIColor(rgba: "#645be7", defaultColor: .red)
-//                    default:
-//                        return .clear
-//                    }
-//                }
-//
-//                barView.frame = CGRect(x: 0, y: 0, width: 6, height: cell.frame.height)
-//                barView.backgroundColor = segmentColor
-//                cell.contentView.addSubview(barView)
-//            }
-//        }
-//    }
-
     override func tableView(_: UITableView, canEditRowAt _: IndexPath) -> Bool {
         return true
     }
@@ -401,56 +339,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         return actions
     }
 
-//    @available(iOS 11.0, *)
-//    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        let ignoreAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completion) in
-//            self.snoozeItem(indexPath: indexPath)
-//            self.tableView.deleteRows(at: [indexPath], with: .right)
-//            completion(true)
-//        }
-//        ignoreAction.backgroundColor = .orange
-//        let anchorImageView = UIImageView()
-//        anchorImageView.image = UIImage(imageLiteralResourceName: "snoozeStrike").withRenderingMode(.alwaysTemplate)
-//        anchorImageView.theme_tintColor = GlobalPicker.cellTextColors
-//        ignoreAction.image = anchorImageView.image
-//        let backgroundColorView = UIView()
-//        backgroundColorView.theme_backgroundColor = GlobalPicker.barTextColor
-//        ignoreAction.backgroundColor = backgroundColorView.backgroundColor
-//        let actions = UISwipeActionsConfiguration(actions: [ignoreAction])
-//        return actions
-//    }
-
-//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        if (editingStyle == .delete) {
-//            softDeleteAtIndex(at: indexPath)
-//            self.tableView.deleteRows(at: [indexPath], with: .left)
-//        }
-//    }
-
-//    override func tableView(_: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        if let notes = items?[indexPath.row].notes {
-//            if notes.count > 0 {
-//                return UITableView.automaticDimension
-//            } else {
-//                return 80
-//            }
-//        } else {
-//            return 80
-//        }
-//    }
-
-//    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-//        DispatchQueue(label: realmDispatchQueueLabel).async {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//
-//                try! realm.write {
-//
-//                }
-//            }
-//        }
-//    }
-
     override func shouldPerformSegue(withIdentifier identifier: String, sender _: Any?) -> Bool {
         if identifier == "editSegue" {
             if tableView.isEditing {
@@ -463,10 +351,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         }
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt _: IndexPath) {
-        // print("Selected index paths: \(String(describing: tableView.indexPathsForSelectedRows))")
-    }
-
     @objc func showClearAlert() {
         showAlert(title: "Are you sure?", body: "This will mark all the tasks shown as completed. Repeating tasks will still appear again tomorrow.")
     }
@@ -475,7 +359,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         items?.forEach { item in
             // TODO: Might be better to just grab a whole filtered list and then delete from there
             item.completeItem()
-            // updateBadge()
         }
         endEdit()
         resetTableView()
@@ -526,12 +409,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         updateBadge()
     }
 
-//    //Delay func
-//    func delay(_ delay:Double, closure:@escaping ()->()) {
-//        DispatchQueue.main.asyncAfter(
-//            deadline: DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
-//    }
-
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -557,7 +434,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             // set segment based on current tab
             guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
             destination.editingSegment = selectedTab
-            // destination.segue = segue
+
             resetTableView()
         }
 
@@ -568,7 +445,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             // pass in current item
             if let indexPath = tableView.indexPathForSelectedRow {
                 destination.item = items?[indexPath.row]
-                // destination.segue = segue
             }
         }
 
@@ -578,18 +454,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     // MARK: - Model Manipulation Methods
-
-//    func loadData() -> Results<Items> {
-//        return realm.objects(Items.self)
-//    }
-
-    // Filter items to relevant segment and return those items
-//    func loadItems(segment: Int) -> Results<Items> {
-//        guard let filteredItems = items?.filter("segment = \(segment)") else { fatalError() }
-//        // print("loadItems run")
-//        //self.tableView.reloadData()
-//        return filteredItems
-//    }
 
     // Override empty delete func from super
     func softDeleteAtIndex(at indexPath: IndexPath) {
@@ -615,27 +479,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         guard let item = items?[indexPath.row] else { return }
         item.moveToNextSegment()
     }
-
-//    func setItemToIgnore(indexPath: IndexPath, ignore: Bool) {
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                do {
-//                    try! realm.write {
-//                        if let item = self.items?[indexPath.row] {
-//                            item.disableAutoSnooze = ignore
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        OptionsTableViewController().refreshNotifications()
-//    }
-
-    // TODO: Animated reload would be nice
-//    func reloadTableView() {
-//        //tableView.reloadData()
-//    }
 
     // Set background graphic
     func setViewBackgroundGraphic(enabled: Bool) {
@@ -689,34 +532,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // MARK: - Manage Notifications
 
-//    let center = UNUserNotificationCenter.current()
-//
-//    func removeNotification(uuidString: [String]) {
-//        // print("Removing Notifications")
-//        let center = UNUserNotificationCenter.current()
-//        center.removePendingNotificationRequests(withIdentifiers: uuidString)
-//    }
-//
-//    func removeDeliveredNotifications() {
-//        let center = UNUserNotificationCenter.current()
-//        center.getDeliveredNotifications { notifications in
-//            for notification in notifications {
-//                // TODO: If repeats, remove and then add again
-//                // Get the ID and then get the properties of the specific object
-//                // Need to get all the same notification functions used in other views to be able to create
-//                center.removeDeliveredNotifications(withIdentifiers: [notification.request.identifier])
-//            }
-//        }
-//    }
-
-    // Notification Settings Screen
-//    func userNotificationCenter(_ center: UNUserNotificationCenter, openSettingsFor notification: UNNotification?) {
-//        // print("Opening settings")
-//        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//        let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsView") as! OptionsTableViewController
-//        self.navigationController?.pushViewController(optionsViewController, animated: true)
-//    }
-
     // MARK: - Realm
 
     var items: Results<Items>?
@@ -760,11 +575,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         }
     }
 
-//    private func deleteItem(item: Items) {
-//        item.softDelete() // item.deleteItem()
-//        updateBadge()
-//    }
-//
     var notificationToken: NotificationToken?
 
     func realmSync() {
@@ -815,8 +625,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             switch changes {
             case .initial:
                 printDebug("Initial load for Options. But don't do anything yet")
-            //                TableViewController.setAppearance(segment: self.tabBarController?.selectedIndex ?? 0)
-            //                AppDelegate.setAutomaticDarkModeTimer()
+
             case .update:
                 guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else { return }
                 DispatchQueue.main.async {
@@ -862,79 +671,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             }
         }
     }
-
-//    public func getDarkModeStatus() -> Bool {
-//        var darkMode = false
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                do {
-//                    let realm = try! Realm()
-//                    if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//                        darkMode = options.darkMode
-//                    }
-//                }
-//            }
-//        }
-//        return darkMode
-//    }
-
-//    func getOptionHour(segment: Int) -> Int {
-//        var hour = Int()
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//                    switch segment {
-//                    case 1:
-//                        hour = options.afternoonHour
-//                    case 2:
-//                        hour = options.eveningHour
-//                    case 3:
-//                        hour = options.nightHour
-//                    default:
-//                        hour = options.morningHour
-//                    }
-//                }
-//            }
-//        }
-//        return hour
-//    }
-
-//    func getOptionMinute(segment: Int) -> Int {
-//        var minute = Int()
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey)
-//                switch segment {
-//                case 1:
-//                    minute = (options?.afternoonMinute)!
-//                case 2:
-//                    minute = (options?.eveningMinute)!
-//                case 3:
-//                    minute = (options?.nightMinute)!
-//                default:
-//                    minute = (options?.morningMinute)!
-//                }
-//            }
-//        }
-//
-//        return minute
-//    }
-
-    // MARK: - Banners
-
-//    func showBanner(title: String?) {
-//        SwiftMessages.defaultConfig.presentationContext = .window(windowLevel: .normal)
-//        SwiftMessages.pauseBetweenMessages = 0
-//        SwiftMessages.hideAll()
-//        SwiftMessages.show { () -> UIView in
-//            let banner = MessageView.viewFromNib(layout: .statusLine)
-//            banner.configureTheme(.success)
-//            banner.configureContent(title: "", body: title ?? "Task Snoozed")
-//            return banner
-//        }
-//    }
 
     func deleteAlert(_ indexPath: IndexPath) -> Bool {
         var completion = false
@@ -1005,7 +741,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         alert.titleLabel?.textColor = .black
         alert.bodyLabel?.textColor = .black
 
-        // alert.button?.backgroundColor = .red
         alert.button?.setTitleColor(.white, for: .normal)
         alert.button?.setTitle("Do it!", for: .normal)
         alert.button?.addTarget(self, action: #selector(clearAll), for: .touchUpInside)
