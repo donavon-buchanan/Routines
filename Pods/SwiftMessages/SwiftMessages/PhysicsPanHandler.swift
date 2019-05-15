@@ -9,6 +9,7 @@
 import UIKit
 
 open class PhysicsPanHandler {
+
     public var hideDelay: TimeInterval = 0.2
 
     public struct MotionSnapshot {
@@ -17,6 +18,7 @@ open class PhysicsPanHandler {
     }
 
     public final class State {
+
         weak var messageView: UIView?
         weak var containerView: UIView?
         var dynamicAnimator: UIDynamicAnimator
@@ -32,7 +34,6 @@ open class PhysicsPanHandler {
                 }
             }
         }
-
         var snapshots: [MotionSnapshot] = []
 
         public init(messageView: UIView, containerView: UIView) {
@@ -73,7 +74,7 @@ open class PhysicsPanHandler {
             guard let last = snapshots.last else { return 0 }
             for previous in snapshots.reversed() {
                 // Ignore snapshots where the angle or time hasn't changed to avoid degenerate cases.
-                if previous.angle != last.angle, previous.time != last.time {
+                if previous.angle != last.angle && previous.time != last.time {
                     return (last.angle - previous.angle) / CGFloat(last.time - previous.time)
                 }
             }
@@ -84,8 +85,8 @@ open class PhysicsPanHandler {
     weak var animator: Animator?
     weak var messageView: UIView?
     weak var containerView: UIView?
-    public private(set) var state: State?
-    public private(set) var isOffScreen = false
+    private(set) public var state: State?
+    private(set) public var isOffScreen = false
     private var restingCenter: CGPoint?
 
     public init() {}
@@ -142,7 +143,7 @@ open class PhysicsPanHandler {
             let speed = sqrt(pow(velocity.x, 2) + pow(velocity.y, 2))
             // The multiplier on angular velocity was determined by hand-tuning
             let energy = sqrt(pow(speed, 2) + pow(angularVelocity * 75, 2))
-            if energy > 200, speed > 600 {
+            if energy > 200 && speed > 600 {
                 // Limit the speed and angular velocity to reasonable values
                 let speedScale = speed > 0 ? min(1, 1800 / speed) : 1
                 let escapeVelocity = CGPoint(x: velocity.x * speedScale, y: velocity.y * speedScale)

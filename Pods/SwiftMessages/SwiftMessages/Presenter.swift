@@ -13,33 +13,34 @@ protocol PresenterDelegate: AnimationDelegate {
 }
 
 class Presenter: NSObject {
+
     enum PresentationContext {
         case viewController(_: Weak<UIViewController>)
         case view(_: Weak<UIView>)
-
+        
         func viewControllerValue() -> UIViewController? {
             switch self {
-            case let .viewController(weak):
+            case .viewController(let weak):
                 return weak.value
             case .view:
                 return nil
             }
         }
-
+        
         func viewValue() -> UIView? {
             switch self {
-            case let .viewController(weak):
+            case .viewController(let weak):
                 return weak.value?.view
-            case let .view(weak):
+            case .view(let weak):
                 return weak.value
             }
         }
     }
-
+    
     var config: SwiftMessages.Config
     let view: UIView
     weak var delegate: PresenterDelegate?
-    lazy var maskingView: MaskingView = { MaskingView() }()
+    lazy var maskingView: MaskingView = { return MaskingView() }()
     var presentationContext = PresentationContext.viewController(Weak<UIViewController>(value: nil))
     let animator: Animator
 
@@ -47,7 +48,7 @@ class Presenter: NSObject {
         self.config = config
         self.view = view
         self.delegate = delegate
-        animator = Presenter.animator(forPresentationStyle: config.presentationStyle, delegate: delegate)
+        self.animator = Presenter.animator(forPresentationStyle: config.presentationStyle, delegate: delegate)
         if let identifiable = view as? Identifiable {
             id = identifiable.id
         } else {
@@ -65,20 +66,20 @@ class Presenter: NSObject {
             return TopBottomAnimation(style: .bottom, delegate: delegate)
         case .center:
             return PhysicsAnimation(delegate: delegate)
-        case let .custom(animator):
+        case .custom(let animator):
             animator.delegate = delegate
             return animator
         }
     }
 
     var id: String
-
+    
     var pauseDuration: TimeInterval? {
         let duration: TimeInterval?
-        switch config.duration {
+        switch self.config.duration {
         case .automatic:
             duration = 2
-        case let .seconds(seconds):
+        case .seconds(let seconds):
             duration = seconds
         case .forever, .indefinite:
             duration = nil
@@ -88,17 +89,17 @@ class Presenter: NSObject {
 
     var showDate: Date?
 
-    private var interactivelyHidden = false
+    private var interactivelyHidden = false;
 
     var delayShow: TimeInterval? {
-        if case let .indefinite(opts) = config.duration { return opts.delay }
+        if case .indefinite(let opts) = config.duration { return opts.delay }
         return nil
     }
 
     /// Returns the required delay for hiding based on time shown
     var delayHide: TimeInterval? {
         if interactivelyHidden { return 0 }
-        if case let .indefinite(opts) = config.duration, let showDate = showDate {
+        if case .indefinite(let opts) = config.duration, let showDate = showDate {
             let timeIntervalShown = -showDate.timeIntervalSinceNow
             return max(0, opts.minimum - timeIntervalShown)
         }
@@ -112,8 +113,8 @@ class Presenter: NSObject {
     func show(completion: @escaping AnimationCompletion) throws {
         try presentationContext = getPresentationContext()
         install()
-        config.eventListeners.forEach { $0(.willShow) }
-        showAnimation { completed in
+        self.config.eventListeners.forEach { $0(.willShow) }
+        showAnimation() { completed in
             completion(completed)
             if completed {
                 if self.config.dimMode.modal {
@@ -127,8 +128,9 @@ class Presenter: NSObject {
     }
 
     private func showAnimation(completion: @escaping AnimationCompletion) {
+
         func dim(_ color: UIColor) {
-            maskingView.backgroundColor = UIColor.clear
+            self.maskingView.backgroundColor = UIColor.clear
             UIView.animate(withDuration: 0.2, animations: {
                 self.maskingView.backgroundColor = color
             })
@@ -144,7 +146,7 @@ class Presenter: NSObject {
         }
 
         let context = animationContext()
-        animator.show(context: context) { completed in
+        animator.show(context: context) { (completed) in
             completion(completed)
         }
         switch config.dimMode {
@@ -175,9 +177,9 @@ class Presenter: NSObject {
 
     func hide(completion: @escaping AnimationCompletion) {
         isHiding = true
-        config.eventListeners.forEach { $0(.willHide) }
+        self.config.eventListeners.forEach { $0(.willHide) }
         let context = animationContext()
-        animator.hide(context: context) { _ in
+        animator.hide(context: context) { (completed) in
             if let viewController = self.presentationContext.viewControllerValue() as? WindowViewController {
                 viewController.uninstall()
             }
@@ -194,11 +196,11 @@ class Presenter: NSObject {
 
         func unblur() {
             guard let view = maskingView.backgroundView as? UIVisualEffectView else { return }
-            UIView.animate(withDuration: 0.2, delay: 0, options: .beginFromCurrentState, animations: {
+            UIView.animate(withDuration: 0.2, delay: 0, options: .beginFromCurrentState, animations: { 
                 view.effect = nil
             }, completion: nil)
         }
-
+        
         switch config.dimMode {
         case .none:
             break
@@ -223,8 +225,8 @@ class Presenter: NSObject {
             }
             return UIWindow.Level.normal
         }()
-        // TODO: `underNavigationBar` and `underTabBar` should look up the presentation context's hierarchy
-        // TODO: for cases where both should be true (probably not an issue for typical height messages, though).
+        // TODO `underNavigationBar` and `underTabBar` should look up the presentation context's hierarchy
+        // TODO for cases where both should be true (probably not an issue for typical height messages, though).
         let underNavigationBar: Bool = {
             if let vc = presentationContext.viewControllerValue() as? UINavigationController { return vc.sm_isVisible(view: vc.navigationBar) }
             return false
@@ -235,7 +237,7 @@ class Presenter: NSObject {
         }()
         if #available(iOS 11, *) {
             if windowLevel > UIWindow.Level.normal {
-                // TODO: seeing `maskingView.safeAreaInsets.top` value of 20 on
+                // TODO seeing `maskingView.safeAreaInsets.top` value of 20 on
                 // iPhone 8 with status bar window level. This seems like an iOS bug since
                 // the message view's window is above the status bar. Applying a special rule
                 // to allow the animator to revove this amount from the layout margins if needed.
@@ -264,19 +266,20 @@ class Presenter: NSObject {
             return conflicts
         } else {
             #if SWIFTMESSAGES_APP_EXTENSIONS
-                return []
+            return []
             #else
-                if UIApplication.shared.isStatusBarHidden { return [] }
-                if (windowLevel > UIWindow.Level.normal) || underNavigationBar { return [] }
-                let statusBarFrame = UIApplication.shared.statusBarFrame
-                let statusBarWindowFrame = window.convert(statusBarFrame, from: nil)
-                let statusBarViewFrame = maskingView.convert(statusBarWindowFrame, from: nil)
-                return statusBarViewFrame.intersects(maskingView.bounds) ? SafeZoneConflicts.statusBar : []
+            if UIApplication.shared.isStatusBarHidden { return [] }
+            if (windowLevel > UIWindow.Level.normal) || underNavigationBar { return [] }
+            let statusBarFrame = UIApplication.shared.statusBarFrame
+            let statusBarWindowFrame = window.convert(statusBarFrame, from: nil)
+            let statusBarViewFrame = maskingView.convert(statusBarWindowFrame, from: nil)
+            return statusBarViewFrame.intersects(maskingView.bounds) ? SafeZoneConflicts.statusBar : []
             #endif
         }
     }
 
     private func getPresentationContext() throws -> PresentationContext {
+
         func newWindowViewController(_ windowLevel: UIWindow.Level) -> UIViewController {
             let viewController = WindowViewController.newInstance(windowLevel: windowLevel, config: config)
             return viewController
@@ -285,22 +288,22 @@ class Presenter: NSObject {
         switch config.presentationContext {
         case .automatic:
             #if SWIFTMESSAGES_APP_EXTENSIONS
-                throw SwiftMessagesError.noRootViewController
+            throw SwiftMessagesError.noRootViewController
             #else
-                if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
-                    let viewController = rootViewController.sm_selectPresentationContextTopDown(config)
-                    return .viewController(Weak(value: viewController))
-                } else {
-                    throw SwiftMessagesError.noRootViewController
-                }
+            if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
+                let viewController = rootViewController.sm_selectPresentationContextTopDown(config)
+                return .viewController(Weak(value: viewController))
+            } else {
+                throw SwiftMessagesError.noRootViewController
+            }
             #endif
-        case let .window(level):
+        case .window(let level):
             let viewController = newWindowViewController(level)
             return .viewController(Weak(value: viewController))
-        case let .viewController(viewController):
+        case .viewController(let viewController):
             let viewController = viewController.sm_selectPresentationContextBottomUp(config)
             return .viewController(Weak(value: viewController))
-        case let .view(view):
+        case .view(let view):
             return .view(Weak(value: view))
         }
     }
@@ -310,6 +313,7 @@ class Presenter: NSObject {
      */
 
     func install() {
+
         func topLayoutConstraint(view: UIView, containerView: UIView, viewController: UIViewController?) -> NSLayoutConstraint {
             if case .top = config.presentationStyle, let nav = viewController as? UINavigationController, nav.sm_isVisible(view: nav.navigationBar) {
                 return NSLayoutConstraint(item: view, attribute: .top, relatedBy: .equal, toItem: nav.navigationBar, attribute: .bottom, multiplier: 1.00, constant: 0.0)
@@ -352,7 +356,7 @@ class Presenter: NSObject {
             } else {
                 // There's no action to take, but the presence of
                 // a tap handler prevents interaction with underlying views.
-                maskingView.tappedHander = {}
+                maskingView.tappedHander = { }
             }
         }
 
@@ -410,3 +414,5 @@ class Presenter: NSObject {
         }
     }
 }
+
+

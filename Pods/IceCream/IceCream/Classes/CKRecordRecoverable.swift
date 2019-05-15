@@ -8,14 +8,16 @@
 import CloudKit
 import RealmSwift
 
-public protocol CKRecordRecoverable {}
+public protocol CKRecordRecoverable {
+    
+}
 
 extension CKRecordRecoverable where Self: Object {
     static func parseFromRecord(record: CKRecord, realm: Realm) -> Self? {
         let o = Self()
         for prop in o.objectSchema.properties {
             var recordValue: Any?
-
+            
             if prop.isArray {
                 switch prop.type {
                 case .int:
@@ -54,7 +56,7 @@ extension CKRecordRecoverable where Self: Object {
                 o.setValue(recordValue, forKey: prop.name)
                 continue
             }
-
+            
             switch prop.type {
             case .int:
                 recordValue = record.value(forKey: prop.name) as? Int
@@ -86,7 +88,7 @@ extension CKRecordRecoverable where Self: Object {
         }
         return o
     }
-
+    
     /// The primaryKey in Realm could be type of Int or String. However the `recordName` is a String type, we need to make a check.
     /// The reversed process happens in `recordID` property in `CKRecordConvertible` protocol.
     ///

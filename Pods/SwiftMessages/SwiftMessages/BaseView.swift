@@ -15,6 +15,7 @@ import UIKit
  and a configurable tap handler. Message views do not need to inherit from `BaseVew`.
  */
 open class BaseView: UIView, BackgroundViewable, MarginAdjustable {
+
     /*
      MARK: - IB outlets
      */
@@ -23,7 +24,7 @@ open class BaseView: UIView, BackgroundViewable, MarginAdjustable {
      Fulfills the `BackgroundViewable` protocol and is the target for
      the optional `tapHandler` block. Defaults to `self`.
      */
-    @IBOutlet open var backgroundView: UIView! {
+    @IBOutlet open weak var backgroundView: UIView! {
         didSet {
             if let old = oldValue {
                 old.removeGestureRecognizer(tapRecognizer)
@@ -203,15 +204,15 @@ open class BaseView: UIView, BackgroundViewable, MarginAdjustable {
     @IBInspectable open var collapseLayoutMarginAdditions: Bool = true
 
     @IBInspectable open var bounceAnimationOffset: CGFloat = 5
-
+     
     /// Deprecated
     @objc open var statusBarOffset: CGFloat = 0
+    
+    /// Deprecated
+    @objc  open var safeAreaTopOffset: CGFloat = 0
 
     /// Deprecated
-    @objc open var safeAreaTopOffset: CGFloat = 0
-
-    /// Deprecated
-    @objc open var safeAreaBottomOffset: CGFloat = 0
+    @objc  open var safeAreaBottomOffset: CGFloat = 0
 
     /*
      MARK: - Setting the height
@@ -255,7 +256,7 @@ open class BaseView: UIView, BackgroundViewable, MarginAdjustable {
      Note that this height is not guaranteed depending on anyt Auto Layout
      constraints used within the message view.
      */
-    @available(*, deprecated: 4.2.0, message: "Use `backgroundHeight` instead to specify preferred height of the visible region of the message.")
+    @available(*, deprecated:4.2.0, message:"Use `backgroundHeight` instead to specify preferred height of the visible region of the message.")
     open var preferredHeight: CGFloat? {
         didSet {
             setNeedsLayout()
@@ -267,7 +268,6 @@ open class BaseView: UIView, BackgroundViewable, MarginAdjustable {
 private protocol InternalPreferredHeight {
     var preferredHeight: CGFloat? { get }
 }
-
 extension BaseView: InternalPreferredHeight {}
 
 /*
@@ -275,6 +275,7 @@ extension BaseView: InternalPreferredHeight {}
  */
 
 extension BaseView {
+
     /// A convenience function to configure a default drop shadow effect.
     /// The shadow is to this view's layer instead of that of the background view
     /// because the background view may be masked. So, when modifying the drop shadow,
@@ -319,8 +320,7 @@ extension BaseView {
             layer.shadowPath = shadowPath
         } else {
             // Update the layer's `shadowPath` without animation
-            layer.shadowPath = shadowPath
-        }
+            layer.shadowPath = shadowPath        }
     }
 
     open override func layoutSubviews() {
@@ -328,3 +328,4 @@ extension BaseView {
         updateShadowPath()
     }
 }
+    

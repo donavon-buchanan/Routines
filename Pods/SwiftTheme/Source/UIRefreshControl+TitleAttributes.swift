@@ -13,6 +13,6 @@ extension UIRefreshControl {
         guard let title = self.attributedTitle else { return }
         let newString = NSAttributedString(attributedString: title,
                                            merging: newAttributes)
-        attributedTitle = newString
+        self.attributedTitle = newString
     }
 }

@@ -9,6 +9,7 @@
 import UIKit
 
 public class PhysicsAnimation: NSObject, Animator {
+
     public enum Placement {
         case top
         case center
@@ -59,9 +60,9 @@ public class PhysicsAnimation: NSObject, Animator {
         CATransaction.commit()
     }
 
-    public var showDuration: TimeInterval? { return 0.5 }
+    public var showDuration: TimeInterval? { return 0.5  }
 
-    public var hideDuration: TimeInterval? { return 0.15 }
+    public var hideDuration: TimeInterval? { return 0.15  }
 
     func install(context: AnimationContext) {
         let view = context.messageView
@@ -120,3 +121,5 @@ public class PhysicsAnimation: NSObject, Animator {
         panHandler.configure(context: context, animator: self)
     }
 }
+
+

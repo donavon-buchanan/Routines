@@ -24,7 +24,7 @@ import RealmSwift
     dynamic var purchasedProduct: String = ""
 
     static func getCloudSync() -> Bool {
-        #if targetEnvironment(simulator)
+        #if targetEnvironment(simulator) || DEBUG
             return true
         #else
             return UserDefaults.standard.bool(forKey: cloudSyncKey)
@@ -55,7 +55,7 @@ import RealmSwift
                 status = routinesPlus?.routinesPlusPurchased ?? false
             }
         }
-        #if targetEnvironment(simulator)
+        #if targetEnvironment(simulator) || DEBUG
             return true
         #else
             return status
@@ -97,7 +97,7 @@ import RealmSwift
     static func getPurchasedProduct() -> String {
         let realm = try! Realm()
         let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
-        #if targetEnvironment(simulator)
+        #if targetEnvironment(simulator) || DEBUG
             return ""
         #else
             return routinesPlus?.purchasedProduct ?? ""

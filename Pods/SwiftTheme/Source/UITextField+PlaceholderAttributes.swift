@@ -13,6 +13,6 @@ extension UITextField {
         guard let placeholder = self.attributedPlaceholder else { return }
         let newString = NSAttributedString(attributedString: placeholder,
                                            merging: newAttributes)
-        attributedPlaceholder = newString
+        self.attributedPlaceholder = newString
     }
 }

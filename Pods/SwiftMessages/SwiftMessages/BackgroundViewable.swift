@@ -15,7 +15,7 @@ import UIKit
  property defines the message view's visible region, allowing for card-style views
  where the message view background is transparent and the background view is inset
  from by some amount. See CardView.nib, for example.
-
+ 
  This protocol is optional. Message views that don't implement `BackgroundViewable`
  will have the pan-to-hide gesture installed in the message view itself.
  */

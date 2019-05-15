@@ -26,10 +26,11 @@
 import StoreKit
 
 public extension SKProduct {
+
     var localizedPrice: String? {
         return priceFormatter(locale: priceLocale).string(from: price)
     }
-
+    
     private func priceFormatter(locale: Locale) -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.locale = locale

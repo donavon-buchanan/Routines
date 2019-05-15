@@ -36,9 +36,11 @@ struct CompleteTransactions {
 }
 
 class CompleteTransactionsController: TransactionController {
+
     var completeTransactions: CompleteTransactions?
 
     func processTransactions(_ transactions: [SKPaymentTransaction], on paymentQueue: PaymentQueue) -> [SKPaymentTransaction] {
+
         guard let completeTransactions = completeTransactions else {
             print("SwiftyStoreKit.completeTransactions() should be called once when the app launches.")
             return transactions
@@ -48,9 +50,11 @@ class CompleteTransactionsController: TransactionController {
         var purchases: [Purchase] = []
 
         for transaction in transactions {
+
             let transactionState = transaction.transactionState
 
             if transactionState != .purchasing {
+
                 let willFinishTransaction = completeTransactions.atomically || transactionState == .failed
                 let purchase = Purchase(productId: transaction.payment.productIdentifier, quantity: transaction.payment.quantity, transaction: transaction, originalTransaction: transaction.original, needsFinishTransaction: !willFinishTransaction)
 

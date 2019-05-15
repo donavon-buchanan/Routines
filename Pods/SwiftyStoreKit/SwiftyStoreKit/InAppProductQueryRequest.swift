@@ -26,20 +26,21 @@ import StoreKit
 
 typealias InAppProductRequestCallback = (RetrieveResults) -> Void
 
-protocol InAppProductRequest: AnyObject {
+protocol InAppProductRequest: class {
     func start()
     func cancel()
 }
 
 class InAppProductQueryRequest: NSObject, InAppProductRequest, SKProductsRequestDelegate {
+
     private let callback: InAppProductRequestCallback
     private let request: SKProductsRequest
 
     deinit {
         request.delegate = nil
     }
-
     init(productIds: Set<String>, callback: @escaping InAppProductRequestCallback) {
+
         self.callback = callback
         request = SKProductsRequest(productIdentifiers: productIds)
         super.init()
@@ -49,26 +50,27 @@ class InAppProductQueryRequest: NSObject, InAppProductRequest, SKProductsRequest
     func start() {
         request.start()
     }
-
     func cancel() {
         request.cancel()
     }
 
     // MARK: SKProductsRequestDelegate
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
 
-    func productsRequest(_: SKProductsRequest, didReceive response: SKProductsResponse) {
         let retrievedProducts = Set<SKProduct>(response.products)
         let invalidProductIDs = Set<String>(response.invalidProductIdentifiers)
         performCallback(RetrieveResults(retrievedProducts: retrievedProducts,
-                                        invalidProductIDs: invalidProductIDs, error: nil))
+            invalidProductIDs: invalidProductIDs, error: nil))
     }
 
-    func requestDidFinish(_: SKRequest) {}
+    func requestDidFinish(_ request: SKRequest) {
 
-    func request(_: SKRequest, didFailWithError error: Error) {
+    }
+
+    func request(_ request: SKRequest, didFailWithError error: Error) {
         performCallback(RetrieveResults(retrievedProducts: Set<SKProduct>(), invalidProductIDs: Set<String>(), error: error))
     }
-
+    
     private func performCallback(_ results: RetrieveResults) {
         DispatchQueue.main.async {
             self.callback(results)

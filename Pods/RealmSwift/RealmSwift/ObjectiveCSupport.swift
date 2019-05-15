@@ -29,6 +29,7 @@ import Realm
  :nodoc:
  **/
 public final class ObjectiveCSupport {
+
     /// Convert a `Results` to a `RLMResults`.
     public static func convert<T>(object: Results<T>) -> RLMResults<AnyObject> {
         return object.rlmResults
@@ -142,14 +143,14 @@ public final class ObjectiveCSupport {
     /// Convert a `RLMShouldCompactOnLaunchBlock` to a Realm Swift compact block.
     public static func convert(object: @escaping RLMShouldCompactOnLaunchBlock) -> (Int, Int) -> Bool {
         return { totalBytes, usedBytes in
-            object(UInt(totalBytes), UInt(usedBytes))
+            return object(UInt(totalBytes), UInt(usedBytes))
         }
     }
 
     /// Convert a Realm Swift compact block to a `RLMShouldCompactOnLaunchBlock`.
     public static func convert(object: @escaping (Int, Int) -> Bool) -> RLMShouldCompactOnLaunchBlock {
         return { totalBytes, usedBytes in
-            object(Int(totalBytes), Int(usedBytes))
+            return object(Int(totalBytes), Int(usedBytes))
         }
     }
 
