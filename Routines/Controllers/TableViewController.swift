@@ -81,7 +81,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         let offset = hidden ? frame.size.height : -frame.size.height
         let duration: TimeInterval = (animated ? 0.3 : 0.0)
         tabBar.isHidden = false
-        setViewBackgroundGraphic(enabled: !hidden)
+//        setViewBackgroundGraphic(enabled: !hidden)
         extendedLayoutIncludesOpaqueBars = hidden
 
         UIView.animate(withDuration: duration, animations: {
@@ -155,7 +155,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         tableView.tableFooterView = footerView
         tableView.theme_backgroundColor = GlobalPicker.backgroundColor
 
-        setViewBackgroundGraphic(enabled: true)
+//        setViewBackgroundGraphic(enabled: true)
 
         // Double check to save selected tab and avoid infrequent bug
         Options.setSelectedIndex(index: tabBarController!.selectedIndex)
@@ -481,23 +481,23 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     // Set background graphic
-    func setViewBackgroundGraphic(enabled: Bool) {
-        if enabled {
-            let backgroundImageView = UIImageView()
-            let backgroundImage = UIImage(imageLiteralResourceName: "inlay")
-
-            backgroundImageView.image = backgroundImage
-            backgroundImageView.contentMode = .scaleAspectFit
-
-            tableView.backgroundView = backgroundImageView
-//            view.setNeedsDisplay()
-//            view.layoutIfNeeded()
-            UIView.transition(with: view, duration: 0.35, options: .transitionCrossDissolve, animations: nil)
-        } else {
-            tableView.backgroundView = UIView()
-            UIView.transition(with: view, duration: 0.0, options: .transitionCrossDissolve, animations: nil)
-        }
-    }
+//    func setViewBackgroundGraphic(enabled: Bool) {
+//        if enabled {
+//            let backgroundImageView = UIImageView()
+//            let backgroundImage = UIImage(imageLiteralResourceName: "inlay")
+//
+//            backgroundImageView.image = backgroundImage
+//            backgroundImageView.contentMode = .scaleAspectFit
+//
+//            tableView.backgroundView = backgroundImageView
+    ////            view.setNeedsDisplay()
+    ////            view.layoutIfNeeded()
+//            UIView.transition(with: view, duration: 0.35, options: .transitionCrossDissolve, animations: nil)
+//        } else {
+//            tableView.backgroundView = UIView()
+//            UIView.transition(with: view, duration: 0.0, options: .transitionCrossDissolve, animations: nil)
+//        }
+//    }
 
     // Update tab bar badge counts
     func updateBadge() {
