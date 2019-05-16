@@ -640,10 +640,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let navigationBar = UINavigationBar.appearance()
         navigationBar.theme_barStyle = GlobalPicker.barStyle
         navigationBar.theme_tintColor = GlobalPicker.barTextColor
-        navigationBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
-        navigationBar.isTranslucent = false
-        navigationBar.theme_backgroundColor = GlobalPicker.backgroundColor
         navigationBar.shadowImage = UIImage()
+        // isTranslucent false seems to cause a layout bug
 
         let shadow = NSShadow()
         shadow.shadowOffset = CGSize(width: 0, height: 0)
