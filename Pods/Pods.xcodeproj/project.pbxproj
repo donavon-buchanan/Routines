@@ -351,7 +351,6 @@
 		F7EFE78291C63592B703FFCCA015F292 /* RLMRealm.h in Headers */ = {isa = PBXBuildFile; fileRef = 5079CE78E27091D0EECADFE82245A633 /* RLMRealm.h */; };
 		F86920B15294F922443A2A614FE30110 /* RLMConstants.h in Copy . Public Headers */ = {isa = PBXBuildFile; fileRef = 73E9FD73270A24D8E7DF6FFBF92A2FEE /* RLMConstants.h */; };
 		F88628CEC04FB69509A3AD1AA595BE9B /* warningIconLight.png in Resources */ = {isa = PBXBuildFile; fileRef = EDE4C13058F13EE71EE29B04DEEE288B /* warningIconLight.png */; };
-		F8BC907E228D202B00DB0047 /* BackgroundWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BC907D228D202A00DB0047 /* BackgroundWorker.swift */; };
 		F95E9049FD4BB1C537CCBDC70D410AC6 /* successIconSubtle.png in Resources */ = {isa = PBXBuildFile; fileRef = BF2443BF41780EFBBCBEE906959FF333 /* successIconSubtle.png */; };
 		F977E11B29F6365960E24B6EE6A1412C /* infoIconLight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D9125BE976C33C46EA66BC91F9383691 /* infoIconLight@2x.png */; };
 		FC2A6171197BD519082BF6136ACD1BEF /* Realm.h in Copy . Public Headers */ = {isa = PBXBuildFile; fileRef = 4ED65AB9C6E481B3CE2AD6BF347FD039 /* Realm.h */; };
@@ -838,7 +837,6 @@
 		F62339A027B1F872353731261B466D55 /* SDStatusBarOverriderPost8_3.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDStatusBarOverriderPost8_3.m; path = SDStatusBarManager/SDStatusBarOverriderPost8_3.m; sourceTree = "<group>"; };
 		F6A4767943DEC66D04019726146C1D9B /* RLMSyncCredentials.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RLMSyncCredentials.m; path = Realm/RLMSyncCredentials.m; sourceTree = "<group>"; };
 		F7392B83FA414DFF32A0BB7A221DDAE1 /* RealmSwift-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RealmSwift-prefix.pch"; sourceTree = "<group>"; };
-		F8BC907D228D202A00DB0047 /* BackgroundWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BackgroundWorker.swift; path = IceCream/Classes/BackgroundWorker.swift; sourceTree = "<group>"; };
 		F8C7444FC7670F9D56AFC9385D011FED /* warningIconLight@3x.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "warningIconLight@3x.png"; path = "SwiftMessages/Resources/warningIconLight@3x.png"; sourceTree = "<group>"; };
 		F8F0E23FB7FC0E6984D66E5A3AB899E5 /* warningIcon.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = warningIcon.png; path = SwiftMessages/Resources/warningIcon.png; sourceTree = "<group>"; };
 		F9207B3024ADDC9FFCB8697B8F63DC9D /* Identifiable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Identifiable.swift; path = SwiftMessages/Identifiable.swift; sourceTree = "<group>"; };
@@ -1079,7 +1077,6 @@
 		48F8BDC973A7A2E000A02BACAE2229B8 /* IceCream */ = {
 			isa = PBXGroup;
 			children = (
-				F8BC907D228D202A00DB0047 /* BackgroundWorker.swift */,
 				E88D8C60FB4F93875A8DE70D984BB816 /* CKRecordConvertible.swift */,
 				A3CBB2D0B6FC2B193910C9F46BCDA69D /* CKRecordRecoverable.swift */,
 				E6CD40AD1D1C1F543FBFACE200A93B0C /* CreamAsset.swift */,
@@ -2102,7 +2099,6 @@
 				DD59DE3049241B5A67E4C9DF16C3104B /* ErrorHandler.swift in Sources */,
 				452331D5A06988BF579FB91352541C08 /* IceCream-dummy.m in Sources */,
 				74FC8805A769A0D24763C6A454299002 /* Manifest.swift in Sources */,
-				F8BC907E228D202B00DB0047 /* BackgroundWorker.swift in Sources */,
 				DD2AE6F16164C6A3495DDDB7CD192460 /* Notification+Name.swift in Sources */,
 				186829323FA19F95454E7D0F104D45D1 /* PrivateDatabaseManager.swift in Sources */,
 				F2D939478E3A597C2CF9666D587749B6 /* PublicDatabaseManager.swift in Sources */,
