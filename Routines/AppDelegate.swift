@@ -665,6 +665,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         cell.theme_backgroundColor = GlobalPicker.barTintColor
         cell.theme_tintColor = GlobalPicker.barTextColor
 
+        // TableView
+        let tableViewUI = UITableView.appearance()
+        tableViewUI.theme_separatorColor = GlobalPicker.cellSeparator
+
         // switches
         let switchUI = UISwitch.appearance()
         switchUI.theme_onTintColor = GlobalPicker.switchTintColor
