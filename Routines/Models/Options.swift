@@ -37,7 +37,7 @@ import RealmSwift
 
     // MARK: Dark Mode
 
-    dynamic var darkMode: Bool = true
+    dynamic var darkMode: Bool = false
 
     static func getDarkModeStatus() -> Bool {
         var darkMode = false

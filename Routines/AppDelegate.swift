@@ -618,21 +618,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // MARK: - Themes
 
     func setUpTheme() {
+        window?.theme_backgroundColor = GlobalPicker.backgroundColor
+
         // tab bar
         let tabBar = UITabBar.appearance()
         tabBar.theme_tintColor = GlobalPicker.barTextColor
         tabBar.theme_barStyle = GlobalPicker.barStyle
         tabBar.theme_barTintColor = GlobalPicker.tabBarTintColor
+        tabBar.backgroundImage = UIImage()
+        tabBar.theme_backgroundColor = GlobalPicker.backgroundColor
+        tabBar.shadowImage = UIImage()
 
         // Themes.restoreLastTheme()
 
         // status bar
 
-        UIApplication.shared.theme_setStatusBarStyle([.default, .default, .default, .lightContent, .lightContent, .lightContent, .lightContent, .lightContent, .lightContent], animated: true)
+        UIApplication.shared.theme_setStatusBarStyle([.default, .default, .default, .default, .lightContent, .lightContent, .lightContent, .lightContent, .lightContent], animated: true)
 
         // navigation bar
 
         let navigationBar = UINavigationBar.appearance()
+        navigationBar.theme_barStyle = GlobalPicker.barStyle
+        navigationBar.theme_tintColor = GlobalPicker.barTextColor
+        navigationBar.setBackgroundImage(UIImage(), for: .any, barMetrics: .default)
+        navigationBar.isTranslucent = false
+        navigationBar.theme_backgroundColor = GlobalPicker.backgroundColor
+        navigationBar.shadowImage = UIImage()
 
         let shadow = NSShadow()
         shadow.shadowOffset = CGSize(width: 0, height: 0)
@@ -646,10 +657,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             ]
         }
 
-        window?.theme_backgroundColor = GlobalPicker.backgroundColor
-        navigationBar.theme_barStyle = GlobalPicker.barStyle
-        navigationBar.theme_tintColor = GlobalPicker.barTextColor
-        // navigationBar.theme_barTintColor = GlobalPicker.barTintColor
         navigationBar.theme_titleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
         navigationBar.theme_largeTitleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
 
