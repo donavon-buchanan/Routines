@@ -421,6 +421,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     static func setSync() {
         printDebug(#function)
         if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getCloudSync() {
+            // Setting this each time was causing the list of items to trigger a change in observation tokens
+            // Only needs to be set if it isn't already
+            guard AppDelegate.syncEngine == nil else { return }
             printDebug("Enabling cloud syncEngine")
 
             AppDelegate.syncEngine = SyncEngine(objects: [
