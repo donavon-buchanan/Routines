@@ -187,6 +187,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Check automatic dark mode before the view is shown
+        Options.automaticDarkModeCheck()
+        TableViewController.setAppearance(segment: segment)
     }
 
     override func viewWillDisappear(_: Bool) {
@@ -196,7 +199,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        TableViewController.setAppearance(segment: segment)
 //        loadItems()
 
         fetchIAPInfo()
