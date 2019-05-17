@@ -15,7 +15,7 @@
             <objects>
                 <viewController id="VDl-Zp-rGc" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kI1-rZ-mWf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="672"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="eIY-wE-vhf"/>
@@ -49,7 +49,7 @@
         <scene sceneID="MaC-Iz-71E">
             <objects>
                 <tabBarController id="lsp-WH-zrr" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="nuC-8l-780">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" backgroundImage="clear-pixel" shadowImage="clear-pixel" id="nuC-8l-780">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -131,7 +131,7 @@
             <objects>
                 <navigationController id="8jr-ix-HvO" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="morning" selectedImage="morning-selected" id="4QB-5x-kNF"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="BP9-ZD-4WK">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" shadowImage="clear-pixel" largeTitles="YES" id="BP9-ZD-4WK">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -147,6 +147,7 @@
     <resources>
         <image name="afternoon" width="23" height="23"/>
         <image name="afternoon-selected" width="23" height="23"/>
+        <image name="clear-pixel" width="1" height="1"/>
         <image name="evening" width="23" height="23"/>
         <image name="evening-selected" width="23" height="23"/>
         <image name="gear-white" width="26" height="26"/>
