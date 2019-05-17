@@ -315,6 +315,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
             migrationBlock: { migration, oldSchemaVersion in
+                printDebug("oldSchemaVersion: \(oldSchemaVersion)")
+                if oldSchemaVersion < 9 {
+                    migration.enumerateObjects(ofType: Options.className()) { oldObject, newObject in
+                        let morningStartTime = oldObject!["morningStartTime"] as! Date
+                        let afternoonStartTime = oldObject!["afternoonStartTime"] as! Date
+                        let eveningStartTime = oldObject!["eveningStartTime"] as! Date
+                        let nightStartTime = oldObject!["nightStartTime"] as! Date
+
+                        newObject!["morningHour"] = Options.getHour(date: morningStartTime)
+                        newObject!["morningMinute"] = Options.getMinute(date: morningStartTime)
+
+                        newObject!["afternoonHour"] = Options.getHour(date: afternoonStartTime)
+                        newObject!["afternoonMinute"] = Options.getMinute(date: afternoonStartTime)
+
+                        newObject!["eveningHour"] = Options.getHour(date: eveningStartTime)
+                        newObject!["eveningMinute"] = Options.getMinute(date: eveningStartTime)
+
+                        newObject!["nightHour"] = Options.getHour(date: nightStartTime)
+                        newObject!["nightMinute"] = Options.getMinute(date: nightStartTime)
+                    }
+                }
+
+//                if oldSchemaVersion < 10 {
+//                    migration.enumerateObjects(ofType: Options.className()) { newObject, oldObject in
+//                        print("oldObject: " + String(describing: oldObject))
+//                        print("newObject: " + String(describing: newObject))
+//                    }
+//                }
 
                 if oldSchemaVersion < 15 {
                     migration.enumerateObjects(ofType: Options.className()) { oldObject, newObject in
