@@ -551,8 +551,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
             }
         }
-        //For now it has to be like this
-        //Otherwise, items get potentially loaded into cells they should or that don't exist and crash
+        // For now it has to be like this
+        // Otherwise, items get potentially loaded into cells they should or that don't exist and crash
         observeItems()
     }
 
@@ -565,8 +565,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 self.items = realm.objects(Items.self).filter("isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
             }
         }
-        //For now it has to be like this
-        //Otherwise, items get potentially loaded into cells they should or that don't exist and crash
+        // For now it has to be like this
+        // Otherwise, items get potentially loaded into cells they should or that don't exist and crash
         observeItems()
     }
 
