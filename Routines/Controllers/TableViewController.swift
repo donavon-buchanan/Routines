@@ -59,7 +59,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     fileprivate func revealAllTasks() {
         if linesBarButtonSelected {
             linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
-            loadItemsForSegment(segment: segment)
+            // Already being called from resetTableView
+            // loadItemsForSegment(segment: segment)
             resetTableView()
         } else {
             title = AppStrings.allDay
@@ -174,11 +175,14 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
+
+        loadItemsForSegment(segment: segment)
+        observeItems()
     }
 
     @objc func appBecameActive() {
-        loadItems()
-        updateBadge()
+//        loadItems()
+//        updateBadge()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -193,7 +197,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         super.viewDidAppear(animated)
 
         TableViewController.setAppearance(segment: segment)
-        loadItems()
+//        loadItems()
 
         fetchIAPInfo()
     }
@@ -406,7 +410,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             changeTabBar(hidden: false, animated: true)
         }
 
-        updateBadge()
+//        updateBadge()
     }
 
     // MARK: - Navigation
@@ -459,14 +463,14 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func softDeleteAtIndex(at indexPath: IndexPath) {
         if let item = items?[indexPath.row] {
             item.softDelete()
-            updateBadge()
+//            updateBadge()
         }
     }
 
     func completeItemAtIndex(at indexPath: IndexPath) {
         if let item = items?[indexPath.row] {
             item.completeItem()
-            updateBadge()
+//            updateBadge()
         }
     }
 
@@ -500,35 +504,36 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //    }
 
     // Update tab bar badge counts
-    func updateBadge() {
-        DispatchQueue.main.async {
-            autoreleasepool {
-                if let tabs = self.tabBarController?.tabBar.items {
-                    for tab in 0 ..< tabs.count {
-                        let count = self.getCountForTab(tab)
-                        // print("Count for tab \(tab) is \(count)")
-                        if count > 0 {
-                            tabs[tab].badgeValue = "\(count)"
-                        } else {
-                            tabs[tab].badgeValue = nil
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    func updateBadge() {
+//        DispatchQueue.main.async {
+//            autoreleasepool {
+//                if let tabs = self.tabBarController?.tabBar.items {
+//                    for tab in 0 ..< tabs.count {
+//                        let count = self.getCountForTab(tab)
+//                        // print("Count for tab \(tab) is \(count)")
+//                        if count > 0 {
+//                            tabs[tab].badgeValue = "\(count)"
+//                        } else {
+//                            tabs[tab].badgeValue = nil
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
 
-    func getCountForTab(_ tab: Int) -> Int {
-        let realm = try! Realm()
-        let items = realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", tab, Date(), Date().endOfDay)
-        var badgeCount = 0
-        items.forEach { item in
-            if item.firstTriggerDate(segment: item.segment) < Date() {
-                badgeCount += 1
-            }
-        }
-        return badgeCount
-    }
+    // Don't need this if we're not doing a badge for the tabs
+//    func getCountForTab(_ tab: Int) -> Int {
+//        let realm = try! Realm()
+//        let items = realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", tab, Date(), Date().endOfDay)
+//        var badgeCount = 0
+//        items.forEach { item in
+//            if item.firstTriggerDate(segment: item.segment) < Date() {
+//                badgeCount += 1
+//            }
+//        }
+//        return badgeCount
+//    }
 
     // MARK: - Manage Notifications
 
@@ -539,24 +544,20 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     var segment = Int()
 
     func loadItemsForSegment(segment: Int) {
-        #if DEBUG
-            print("loading items for segment \(segment)")
-            print("end of today is: \(Date().endOfDay)")
-        #endif
+        printDebug("loading items for segment \(segment)")
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
             }
         }
-        realmSync()
+        //For now it has to be like this
+        //Otherwise, items get potentially loaded into cells they should or that don't exist and crash
+        observeItems()
     }
 
     func loadAllItems() {
-        #if DEBUG
-            print("loading all items")
-            print("end of today is: \(Date().endOfDay)")
-        #endif
+        printDebug("loading all items")
         // Sort by segment to put in order of the day
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -564,20 +565,25 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
                 self.items = realm.objects(Items.self).filter("isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
             }
         }
-        realmSync()
+        //For now it has to be like this
+        //Otherwise, items get potentially loaded into cells they should or that don't exist and crash
+        observeItems()
     }
 
-    func loadItems() {
-        if linesBarButtonSelected {
-            loadAllItems()
-        } else {
-            loadItemsForSegment(segment: segment)
-        }
-    }
+    // This *should* call the appropriate load based on if the user wants to see All Day or not
+    // Maybe some other time when we let the user default to an all day view? ... Probably should just use a dedicated view in that case
+//    func loadItems() {
+//        if linesBarButtonSelected {
+//            loadAllItems()
+//        } else {
+//            loadItemsForSegment(segment: segment)
+//        }
+//    }
 
     var notificationToken: NotificationToken?
 
-    func realmSync() {
+    // This only needs to be called once when the view is first loaded
+    func observeItems() {
         // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
         // Observe Results Notifications
         notificationToken = items?.observe { [weak self] (changes: RealmCollectionChange) in
