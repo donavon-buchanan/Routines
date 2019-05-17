@@ -344,7 +344,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //                    }
 //                }
 
-                if oldSchemaVersion < 15 {
+                if oldSchemaVersion > 9, oldSchemaVersion < 15 {
                     migration.enumerateObjects(ofType: Options.className()) { oldObject, newObject in
                         print("oldObject: " + String(describing: oldObject))
                         print("newObject: " + String(describing: newObject))
@@ -361,7 +361,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
 
-                if oldSchemaVersion < 18 {
+                if oldSchemaVersion > 15, oldSchemaVersion < 18 {
                     migration.enumerateObjects(ofType: Items.className()) { oldObject, newObject in
                         print("oldObject: " + String(describing: oldObject))
                         print("newObject: " + String(describing: newObject))
@@ -370,7 +370,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
 
-                if oldSchemaVersion < 21 {
+                if oldSchemaVersion > 18, oldSchemaVersion < 21 {
                     // migrate the Options split to RoutinesPlus
 
                     migration.enumerateObjects(ofType: Options.className()) { oldObject, newObject in
