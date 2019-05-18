@@ -15,7 +15,7 @@
 		F81194F72267D8E0002E8E7A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F81194F62267D8E0002E8E7A /* StoreKit.framework */; };
 		F81194FB2267F875002E8E7A /* SKProductPriceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81194FA2267F875002E8E7A /* SKProductPriceExtension.swift */; };
 		F814CF5A2192A8E000E3C0F5 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F814CF592192A8E000E3C0F5 /* TabBarViewController.swift */; };
-		F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TableViewController.swift */; };
+		F816DB342155CFBA009C6907 /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TaskTableViewController.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
 		F8352C53227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8352C52227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift */; };
 		F85213B5218F5EE600291CFE /* NavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85213B4218F5EE600291CFE /* NavigationViewController.swift */; };
@@ -139,7 +139,7 @@
 		F81194F62267D8E0002E8E7A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F81194FA2267F875002E8E7A /* SKProductPriceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKProductPriceExtension.swift; sourceTree = "<group>"; };
 		F814CF592192A8E000E3C0F5 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
-		F816DB332155CFBA009C6907 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TableViewController.swift; sourceTree = "<group>"; };
+		F816DB332155CFBA009C6907 /* TaskTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TaskTableViewController.swift; sourceTree = "<group>"; };
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
 		F8352C52227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticDarkModeTableViewController.swift; sourceTree = "<group>"; };
 		F85213B4218F5EE600291CFE /* NavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewController.swift; sourceTree = "<group>"; };
@@ -310,7 +310,7 @@
 				F807D3D22160A06600FF36D9 /* Options */,
 				F814CF592192A8E000E3C0F5 /* TabBarViewController.swift */,
 				F85213B4218F5EE600291CFE /* NavigationViewController.swift */,
-				F816DB332155CFBA009C6907 /* TableViewController.swift */,
+				F816DB332155CFBA009C6907 /* TaskTableViewController.swift */,
 				F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */,
 				F82770D221585D3000420C50 /* AddTableViewController.swift */,
 				F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */,
@@ -666,7 +666,7 @@
 				F8C3EC98228D673F0027AFEB /* UIImageExtension.swift in Sources */,
 				F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */,
 				F8CCE20D2288E17E00BAAFEC /* RoutinesPlus.swift in Sources */,
-				F816DB342155CFBA009C6907 /* TableViewController.swift in Sources */,
+				F816DB342155CFBA009C6907 /* TaskTableViewController.swift in Sources */,
 				F85D2A8A227036CF009CE6CE /* RoutinesPlusViewController.swift in Sources */,
 				F8352C53227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift in Sources */,
 				F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */,

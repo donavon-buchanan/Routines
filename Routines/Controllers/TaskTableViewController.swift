@@ -1,5 +1,5 @@
 //
-//  TableViewController.swift
+//  TaskTableViewController.swift
 //  Routines
 //
 //  Created by Donavon Buchanan on 9/21/18.
@@ -11,7 +11,7 @@ import SwiftMessages
 import UIKit
 import UserNotifications
 
-class TableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
+class TaskTableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
     @IBAction func unwindToTableViewController(segue _: UIStoryboardSegue) {}
     @IBOutlet var settingsBarButtonItem: UIBarButtonItem!
     @IBOutlet var addbarButtonItem: UIBarButtonItem!
@@ -23,7 +23,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
             UIKeyCommand(input: "n", modifierFlags: .command, action: #selector(addNewTask), discoverabilityTitle: "Add New Task"),
             UIKeyCommand(input: "o", modifierFlags: .alternate, action: #selector(openSettingsKeyCommand), discoverabilityTitle: "Open Settings"),
-            UIKeyCommand(input: "e", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(editKeyCommand), discoverabilityTitle: "Edit Current Tasks"),
+            UIKeyCommand(input: "e", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(editKeyCommand), discoverabilityTitle: "Edit List"),
             UIKeyCommand(input: "a", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(showAllKeyCommand), discoverabilityTitle: "Show Entire Day"),
         ]
     }
@@ -82,7 +82,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         let offset = hidden ? frame.size.height : -frame.size.height
         let duration: TimeInterval = (animated ? 0.3 : 0.0)
         tabBar.isHidden = false
-//        setViewBackgroundGraphic(enabled: !hidden)
+        //        setViewBackgroundGraphic(enabled: !hidden)
         extendedLayoutIncludesOpaqueBars = hidden
 
         UIView.animate(withDuration: duration, animations: {
@@ -142,6 +142,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        segment = Options.getSelectedIndex()
+
         observeOptions()
 
         tableView.allowsMultipleSelectionDuringEditing = true
@@ -150,18 +153,17 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         tabBarController?.delegate = self
         navigationController?.delegate = self
-        segment = tabBarController?.selectedIndex ?? 0
 
         footerView.backgroundColor = .clear
         tableView.tableFooterView = footerView
         tableView.theme_backgroundColor = GlobalPicker.backgroundColor
 
-//        setViewBackgroundGraphic(enabled: true)
+        //        setViewBackgroundGraphic(enabled: true)
 
         // Double check to save selected tab and avoid infrequent bug
-//        Options.setSelectedIndex(index: tabBarController!.selectedIndex)
+        //        Options.setSelectedIndex(index: tabBarController!.selectedIndex)
 
-        title = returnTitle(forSegment: tabBarController?.selectedIndex ?? 0)
+        //title = returnTitle(forSegment: tabBarController?.selectedIndex ?? 0)
 
         if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getPurchasedProduct() != "", RoutinesPlus.getPurchasedProduct() != RegisteredPurchase.lifetime.rawValue, Date() >= RoutinesPlus.getExpiryDate() {
             debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
@@ -177,6 +179,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         tableView.rowHeight = UITableView.automaticDimension
 
         loadItemsForSegment(segment: segment)
+        setAppearance(forSegment: segment)
         observeItems()
     }
 
@@ -200,31 +203,29 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             self.loadItems()
             self.observeItems()
             self.observeOptions()
-            self.title = self.returnTitle(forSegment: self.tabBarController?.selectedIndex ?? 0)
-//            self.setTabBarTitles()
+            // self.title = self.returnTitle(forSegment: self.tabBarController?.selectedIndex ?? 0)
+            //            self.setTabBarTitles()
         }
     }
 
     @objc func appBecameActive() {
-//        loadItems()
-//        updateBadge()
+        //        loadItems()
+        //        updateBadge()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewWillAppear(_: Bool) {
+        title = returnTitle(forSegment: segment)
+
         // Check automatic dark mode before the view is shown
         Options.automaticDarkModeCheck()
-        setAppearance(forSegment: segment)
     }
 
     override func viewWillDisappear(_: Bool) {
         printDebug("\(#function)")
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-//        loadItems()
+    override func viewDidAppear(_: Bool) {
+        //        loadItems()
 
         fetchIAPInfo()
     }
@@ -244,15 +245,15 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         return title.localizedCapitalized
     }
 
-//
-//    func setTabBarTitles() {
-//        if let tabBarItems = self.tabBarController?.tabBar.items {
-//            let items = tabBarItems.enumerated().map { ($0, $1) }
-//            items.forEach { index, item in
-//                item.title = returnTitle(forSegment: index)
-//            }
-//        }
-//    }
+    //
+    //    func setTabBarTitles() {
+    //        if let tabBarItems = self.tabBarController?.tabBar.items {
+    //            let items = tabBarItems.enumerated().map { ($0, $1) }
+    //            items.forEach { index, item in
+    //                item.title = returnTitle(forSegment: index)
+    //            }
+    //        }
+    //    }
 
     func tabBarController(_ tabBarController: UITabBarController, didSelect _: UIViewController) {
         Options.setSelectedIndex(index: tabBarController.selectedIndex)
@@ -449,7 +450,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             changeTabBar(hidden: false, animated: true)
         }
 
-//        updateBadge()
+        //        updateBadge()
     }
 
     // MARK: - Navigation
@@ -502,14 +503,14 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func softDeleteAtIndex(at indexPath: IndexPath) {
         if let item = items?[indexPath.row] {
             item.softDelete()
-//            updateBadge()
+            //            updateBadge()
         }
     }
 
     func completeItemAtIndex(at indexPath: IndexPath) {
         if let item = items?[indexPath.row] {
             item.completeItem()
-//            updateBadge()
+            //            updateBadge()
         }
     }
 
@@ -524,55 +525,55 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     // Set background graphic
-//    func setViewBackgroundGraphic(enabled: Bool) {
-//        if enabled {
-//            let backgroundImageView = UIImageView()
-//            let backgroundImage = UIImage(imageLiteralResourceName: "inlay")
-//
-//            backgroundImageView.image = backgroundImage
-//            backgroundImageView.contentMode = .scaleAspectFit
-//
-//            tableView.backgroundView = backgroundImageView
+    //    func setViewBackgroundGraphic(enabled: Bool) {
+    //        if enabled {
+    //            let backgroundImageView = UIImageView()
+    //            let backgroundImage = UIImage(imageLiteralResourceName: "inlay")
+    //
+    //            backgroundImageView.image = backgroundImage
+    //            backgroundImageView.contentMode = .scaleAspectFit
+    //
+    //            tableView.backgroundView = backgroundImageView
     ////            view.setNeedsDisplay()
     ////            view.layoutIfNeeded()
-//            UIView.transition(with: view, duration: 0.35, options: .transitionCrossDissolve, animations: nil)
-//        } else {
-//            tableView.backgroundView = UIView()
-//            UIView.transition(with: view, duration: 0.0, options: .transitionCrossDissolve, animations: nil)
-//        }
-//    }
+    //            UIView.transition(with: view, duration: 0.35, options: .transitionCrossDissolve, animations: nil)
+    //        } else {
+    //            tableView.backgroundView = UIView()
+    //            UIView.transition(with: view, duration: 0.0, options: .transitionCrossDissolve, animations: nil)
+    //        }
+    //    }
 
     // Update tab bar badge counts
-//    func updateBadge() {
-//        DispatchQueue.main.async {
-//            autoreleasepool {
-//                if let tabs = self.tabBarController?.tabBar.items {
-//                    for tab in 0 ..< tabs.count {
-//                        let count = self.getCountForTab(tab)
-//                        // print("Count for tab \(tab) is \(count)")
-//                        if count > 0 {
-//                            tabs[tab].badgeValue = "\(count)"
-//                        } else {
-//                            tabs[tab].badgeValue = nil
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+    //    func updateBadge() {
+    //        DispatchQueue.main.async {
+    //            autoreleasepool {
+    //                if let tabs = self.tabBarController?.tabBar.items {
+    //                    for tab in 0 ..< tabs.count {
+    //                        let count = self.getCountForTab(tab)
+    //                        // print("Count for tab \(tab) is \(count)")
+    //                        if count > 0 {
+    //                            tabs[tab].badgeValue = "\(count)"
+    //                        } else {
+    //                            tabs[tab].badgeValue = nil
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
 
     // Don't need this if we're not doing a badge for the tabs
-//    func getCountForTab(_ tab: Int) -> Int {
-//        let realm = try! Realm()
-//        let items = realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", tab, Date(), Date().endOfDay)
-//        var badgeCount = 0
-//        items.forEach { item in
-//            if item.firstTriggerDate(segment: item.segment) < Date() {
-//                badgeCount += 1
-//            }
-//        }
-//        return badgeCount
-//    }
+    //    func getCountForTab(_ tab: Int) -> Int {
+    //        let realm = try! Realm()
+    //        let items = realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", tab, Date(), Date().endOfDay)
+    //        var badgeCount = 0
+    //        items.forEach { item in
+    //            if item.firstTriggerDate(segment: item.segment) < Date() {
+    //                badgeCount += 1
+    //            }
+    //        }
+    //        return badgeCount
+    //    }
 
     // MARK: - Manage Notifications
 
@@ -686,36 +687,36 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // MARK: - Themeing
 
-//    static func setAppearance(segment: Int) {
-//        printDebug("Dark mode is: \(Options.getDarkModeStatus())")
-//        if Options.getDarkModeStatus() {
-//            switch segment {
-//            case 0:
-//                Themes.switchTo(theme: .morningDark)
-//            case 1:
-//                Themes.switchTo(theme: .afternoonDark)
-//            case 2:
-//                Themes.switchTo(theme: .eveningDark)
-//            case 3:
-//                Themes.switchTo(theme: .nightDark)
-//            default:
-//                Themes.switchTo(theme: .monochromeDark)
-//            }
-//        } else {
-//            switch segment {
-//            case 0:
-//                Themes.switchTo(theme: .morningLight)
-//            case 1:
-//                Themes.switchTo(theme: .afternoonLight)
-//            case 2:
-//                Themes.switchTo(theme: .eveningLight)
-//            case 3:
-//                Themes.switchTo(theme: .nightLight)
-//            default:
-//                Themes.switchTo(theme: .monochromeDark)
-//            }
-//        }
-//    }
+    //    static func setAppearance(segment: Int) {
+    //        printDebug("Dark mode is: \(Options.getDarkModeStatus())")
+    //        if Options.getDarkModeStatus() {
+    //            switch segment {
+    //            case 0:
+    //                Themes.switchTo(theme: .morningDark)
+    //            case 1:
+    //                Themes.switchTo(theme: .afternoonDark)
+    //            case 2:
+    //                Themes.switchTo(theme: .eveningDark)
+    //            case 3:
+    //                Themes.switchTo(theme: .nightDark)
+    //            default:
+    //                Themes.switchTo(theme: .monochromeDark)
+    //            }
+    //        } else {
+    //            switch segment {
+    //            case 0:
+    //                Themes.switchTo(theme: .morningLight)
+    //            case 1:
+    //                Themes.switchTo(theme: .afternoonLight)
+    //            case 2:
+    //                Themes.switchTo(theme: .eveningLight)
+    //            case 3:
+    //                Themes.switchTo(theme: .nightLight)
+    //            default:
+    //                Themes.switchTo(theme: .monochromeDark)
+    //            }
+    //        }
+    //    }
 
     func deleteAlert(_ indexPath: IndexPath) -> Bool {
         var completion = false

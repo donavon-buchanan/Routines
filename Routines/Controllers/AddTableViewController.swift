@@ -174,14 +174,20 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         setAppearance(forSegment: item?.segment ?? 0)
     }
 
+    override func viewWillAppear(_: Bool) {
+        DispatchQueue.main.async {
+            autoreleasepool {
+                self.setUpUI()
+            }
+        }
+    }
+
     override func viewDidAppear(_: Bool) {
         // UI doesn't know to scroll up if this is called too soon
         DispatchQueue.main.async {
             autoreleasepool {
                 do {
                     self.taskTextField.becomeFirstResponder()
-
-                    self.setUpUI()
                 }
             }
         }
@@ -255,32 +261,32 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     // MARK: Theme
 
-//    public func setAppearance(segment: Int) {
-//        // print("Setting theme")
-//        if Options.getDarkModeStatus() {
-//            switch segment {
-//            case 1:
-//                Themes.switchTo(theme: .afternoonDark)
-//            case 2:
-//                Themes.switchTo(theme: .eveningDark)
-//            case 3:
-//                Themes.switchTo(theme: .nightDark)
-//            default:
-//                Themes.switchTo(theme: .morningDark)
-//            }
-//        } else {
-//            switch segment {
-//            case 1:
-//                Themes.switchTo(theme: .afternoonLight)
-//            case 2:
-//                Themes.switchTo(theme: .eveningLight)
-//            case 3:
-//                Themes.switchTo(theme: .nightLight)
-//            default:
-//                Themes.switchTo(theme: .morningLight)
-//            }
-//        }
-//    }
+    //    public func setAppearance(segment: Int) {
+    //        // print("Setting theme")
+    //        if Options.getDarkModeStatus() {
+    //            switch segment {
+    //            case 1:
+    //                Themes.switchTo(theme: .afternoonDark)
+    //            case 2:
+    //                Themes.switchTo(theme: .eveningDark)
+    //            case 3:
+    //                Themes.switchTo(theme: .nightDark)
+    //            default:
+    //                Themes.switchTo(theme: .morningDark)
+    //            }
+    //        } else {
+    //            switch segment {
+    //            case 1:
+    //                Themes.switchTo(theme: .afternoonLight)
+    //            case 2:
+    //                Themes.switchTo(theme: .eveningLight)
+    //            case 3:
+    //                Themes.switchTo(theme: .nightLight)
+    //            default:
+    //                Themes.switchTo(theme: .morningLight)
+    //            }
+    //        }
+    //    }
 
     // MARK: - Banners
 
