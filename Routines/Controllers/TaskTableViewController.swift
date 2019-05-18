@@ -173,6 +173,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
+
+        setUpUI()
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
@@ -184,12 +186,14 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
-        segment = Int(coder.decodeInt64(forKey: "segment"))
+        // TODO: .... I will have to use separate views and even separate classes
+        segment = coder.decodeInteger(forKey: "segment")
+        debugPrint("decoded segment is \(segment)")
         super.decodeRestorableState(with: coder)
     }
 
     override func applicationFinishedRestoringState() {
-        setUpUI()
+        // setUpUI()
     }
 
     @objc func appBecameActive() {
@@ -198,6 +202,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     func setUpUI() {
+        debugPrint(#function)
+        printDebug("selected index of tab in \(#function) is \(String(describing: tabBarController?.selectedIndex))")
         segment = tabBarController?.selectedIndex ?? 0
         loadItems()
         observeItems()
@@ -209,8 +215,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     override func viewWillAppear(_: Bool) {
-        setUpUI()
-
         // Check automatic dark mode before the view is shown
         Options.automaticDarkModeCheck()
     }
