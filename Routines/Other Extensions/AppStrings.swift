@@ -63,6 +63,9 @@ struct AppStrings {
     // MARK: - User Interface
 
     static let allDay = "All Day"
+    enum timePeriod: String {
+        case morning, afternoon, evening, night
+    }
 
     // MARK: - Notification Alerts
 

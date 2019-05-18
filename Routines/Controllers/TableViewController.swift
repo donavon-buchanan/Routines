@@ -63,7 +63,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             // loadItemsForSegment(segment: segment)
             resetTableView()
         } else {
-            title = AppStrings.allDay
+            title = AppStrings.allDay.localizedCapitalized
             linesBarButtonSelected = true
             linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button-filled")
             loadAllItems()
@@ -159,9 +159,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        setViewBackgroundGraphic(enabled: true)
 
         // Double check to save selected tab and avoid infrequent bug
-        Options.setSelectedIndex(index: tabBarController!.selectedIndex)
+//        Options.setSelectedIndex(index: tabBarController!.selectedIndex)
 
-        title = returnTitle(forSegment: segment)
+        title = returnTitle(forSegment: tabBarController?.selectedIndex ?? 0)
 
         if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getPurchasedProduct() != "", RoutinesPlus.getPurchasedProduct() != RegisteredPurchase.lifetime.rawValue, Date() >= RoutinesPlus.getExpiryDate() {
             debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
@@ -200,8 +200,8 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             self.loadItems()
             self.observeItems()
             self.observeOptions()
-            self.title = self.returnTitle(forSegment: self.segment)
-            self.setTabBarTitles()
+            self.title = self.returnTitle(forSegment: self.tabBarController?.selectedIndex ?? 0)
+//            self.setTabBarTitles()
         }
     }
 
@@ -230,26 +230,29 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     }
 
     func returnTitle(forSegment segment: Int) -> String {
+        var title = ""
         switch segment {
+        case 0:
+            title = AppStrings.timePeriod.morning.rawValue
         case 1:
-            return "Afternoon"
+            title = AppStrings.timePeriod.afternoon.rawValue
         case 2:
-            return "Evening"
-        case 3:
-            return "Night"
+            title = AppStrings.timePeriod.evening.rawValue
         default:
-            return "Morning"
+            title = AppStrings.timePeriod.night.rawValue
         }
+        return title.localizedCapitalized
     }
 
-    func setTabBarTitles() {
-        if let tabBarItems = self.tabBarController?.tabBar.items {
-            let items = tabBarItems.enumerated().map { ($0, $1) }
-            items.forEach { index, item in
-                item.title = returnTitle(forSegment: index)
-            }
-        }
-    }
+//
+//    func setTabBarTitles() {
+//        if let tabBarItems = self.tabBarController?.tabBar.items {
+//            let items = tabBarItems.enumerated().map { ($0, $1) }
+//            items.forEach { index, item in
+//                item.title = returnTitle(forSegment: index)
+//            }
+//        }
+//    }
 
     func tabBarController(_ tabBarController: UITabBarController, didSelect _: UIViewController) {
         Options.setSelectedIndex(index: tabBarController.selectedIndex)
