@@ -238,6 +238,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug("\(#function) - End")
     }
 
+    func application(_: UIApplication, shouldSaveApplicationState _: NSCoder) -> Bool {
+        return true
+    }
+
+    func application(_: UIApplication, shouldRestoreApplicationState _: NSCoder) -> Bool {
+        return true
+    }
+
     open func restoreSelectedTab(tab: Int?) {
         let rootVC = window?.rootViewController as! TabBarViewController
         if let selectedTab = tab {
@@ -585,7 +593,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         let navVC = rootVC.children[index] as! NavigationViewController
         navVC.pushViewController(optionsViewController, animated: true)
-        TableViewController.setAppearance(segment: index)
+        // TableViewController.setAppearance(segment: index)
     }
 
     fileprivate func goToAdd() {
@@ -600,7 +608,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let navVC = rootVC.children[index] as! NavigationViewController
         navVC.pushViewController(addViewController, animated: true)
         addViewController.editingSegment = index
-        TableViewController.setAppearance(segment: index)
+        // TableViewController.setAppearance(segment: index)
     }
 
     func userNotificationCenter(_: UNUserNotificationCenter, openSettingsFor _: UNNotification?) {

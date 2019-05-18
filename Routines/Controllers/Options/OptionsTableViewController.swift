@@ -86,7 +86,7 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var darkModeSwtich: UISwitch!
     @IBAction func darkModeSwitchToggled(_ sender: UISwitch) {
         Options.setDarkMode(sender.isOn)
-        setAppearance(tab: Options.getSelectedIndex())
+        setAppearance(forSegment: Options.getSelectedIndex())
     }
 
     // MARK: Task Priorities
@@ -160,7 +160,7 @@ class OptionsTableViewController: UITableViewController {
             if darkModeSwtich.isEnabled {
                 darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
                 Options.setDarkMode(darkModeSwtich.isOn)
-                setAppearance(tab: Options.getSelectedIndex())
+                setAppearance(forSegment: Options.getSelectedIndex())
                 haptic.impactOccurred()
             }
         case 3:
@@ -253,31 +253,31 @@ class OptionsTableViewController: UITableViewController {
         setUpUI(animated: true)
     }
 
-    func setAppearance(tab: Int) {
-        if Options.getDarkModeStatus() {
-            switch tab {
-            case 1:
-                Themes.switchTo(theme: .afternoonDark)
-            case 2:
-                Themes.switchTo(theme: .eveningDark)
-            case 3:
-                Themes.switchTo(theme: .nightDark)
-            default:
-                Themes.switchTo(theme: .morningDark)
-            }
-        } else {
-            switch tab {
-            case 1:
-                Themes.switchTo(theme: .afternoonLight)
-            case 2:
-                Themes.switchTo(theme: .eveningLight)
-            case 3:
-                Themes.switchTo(theme: .nightLight)
-            default:
-                Themes.switchTo(theme: .morningLight)
-            }
-        }
-    }
+//    func setAppearance(tab: Int) {
+//        if Options.getDarkModeStatus() {
+//            switch tab {
+//            case 1:
+//                Themes.switchTo(theme: .afternoonDark)
+//            case 2:
+//                Themes.switchTo(theme: .eveningDark)
+//            case 3:
+//                Themes.switchTo(theme: .nightDark)
+//            default:
+//                Themes.switchTo(theme: .morningDark)
+//            }
+//        } else {
+//            switch tab {
+//            case 1:
+//                Themes.switchTo(theme: .afternoonLight)
+//            case 2:
+//                Themes.switchTo(theme: .eveningLight)
+//            case 3:
+//                Themes.switchTo(theme: .nightLight)
+//            default:
+//                Themes.switchTo(theme: .morningLight)
+//            }
+//        }
+//    }
 
     // MARK: - Options
 

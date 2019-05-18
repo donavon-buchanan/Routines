@@ -56,7 +56,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     @IBOutlet var repeatDailyLabel: UILabel!
 
     @IBAction func segmentSelected(_ sender: UISegmentedControl) {
-        setAppearance(segment: sender.selectedSegmentIndex)
+        setAppearance(forSegment: sender.selectedSegmentIndex)
     }
 
     var item: Items?
@@ -64,9 +64,22 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     var editingSegment: Int?
 
     fileprivate func setUpUI() {
+        // If item is loaded, fill in values for editing
         if item != nil {
-            setAppearance(segment: item!.segment)
+            setAppearance(forSegment: item!.segment)
+
+            taskTextField.text = item?.title
+            segmentSelection.selectedSegmentIndex = item?.segment ?? 0
+            notesTextView.text = item?.notes
+            repeatDailySwitch.setOn(item!.repeats, animated: false)
+            priorityNumberLabel.text = "\(item?.priority ?? 0)"
+            prioritySlider.value = Float(item?.priority ?? 0)
+
+            title = "Editing Task"
+        } else {
+            title = "Adding New Task"
         }
+
         repeatDailySwitch.layer.cornerRadius = 15
         repeatDailySwitch.layer.masksToBounds = true
 
@@ -104,20 +117,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             self.navigationItem.largeTitleDisplayMode = .never
         }
 
-        // If item is loaded, fill in values for editing
-        if item != nil {
-            taskTextField.text = item?.title
-            segmentSelection.selectedSegmentIndex = item?.segment ?? 0
-            notesTextView.text = item?.notes
-            repeatDailySwitch.setOn(item!.repeats, animated: false)
-            priorityNumberLabel.text = "\(item?.priority ?? 0)"
-            prioritySlider.value = Float(item?.priority ?? 0)
-
-            title = "Editing Task"
-        } else {
-            title = "Adding New Task"
-        }
-
         // load in segment from add segue
         if let currentSegmentSelection = editingSegment {
             segmentSelection.selectedSegmentIndex = currentSegmentSelection
@@ -151,6 +150,28 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         notesTextView.theme_keyboardAppearance = GlobalPicker.keyboardStyle
         notesTextView.theme_textColor = GlobalPicker.cellTextColors
         notesTextView.theme_backgroundColor = GlobalPicker.textInputBackground
+    }
+
+    override func encodeRestorableState(with coder: NSCoder) {
+        // 1
+        if let item = item {
+            coder.encode(item.uuidString, forKey: "itemId")
+        }
+
+        // 2
+        super.encodeRestorableState(with: coder)
+    }
+
+    override func decodeRestorableState(with coder: NSCoder) {
+        let itemId = coder.decodeObject(forKey: "itemId") as! String
+        let realm = try! Realm()
+        item = realm.object(ofType: Items.self, forPrimaryKey: itemId)
+        setUpUI()
+        super.decodeRestorableState(with: coder)
+    }
+
+    override func applicationFinishedRestoringState() {
+        setAppearance(forSegment: item?.segment ?? 0)
     }
 
     override func viewDidAppear(_: Bool) {
@@ -234,32 +255,32 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     // MARK: Theme
 
-    public func setAppearance(segment: Int) {
-        // print("Setting theme")
-        if Options.getDarkModeStatus() {
-            switch segment {
-            case 1:
-                Themes.switchTo(theme: .afternoonDark)
-            case 2:
-                Themes.switchTo(theme: .eveningDark)
-            case 3:
-                Themes.switchTo(theme: .nightDark)
-            default:
-                Themes.switchTo(theme: .morningDark)
-            }
-        } else {
-            switch segment {
-            case 1:
-                Themes.switchTo(theme: .afternoonLight)
-            case 2:
-                Themes.switchTo(theme: .eveningLight)
-            case 3:
-                Themes.switchTo(theme: .nightLight)
-            default:
-                Themes.switchTo(theme: .morningLight)
-            }
-        }
-    }
+//    public func setAppearance(segment: Int) {
+//        // print("Setting theme")
+//        if Options.getDarkModeStatus() {
+//            switch segment {
+//            case 1:
+//                Themes.switchTo(theme: .afternoonDark)
+//            case 2:
+//                Themes.switchTo(theme: .eveningDark)
+//            case 3:
+//                Themes.switchTo(theme: .nightDark)
+//            default:
+//                Themes.switchTo(theme: .morningDark)
+//            }
+//        } else {
+//            switch segment {
+//            case 1:
+//                Themes.switchTo(theme: .afternoonLight)
+//            case 2:
+//                Themes.switchTo(theme: .eveningLight)
+//            case 3:
+//                Themes.switchTo(theme: .nightLight)
+//            default:
+//                Themes.switchTo(theme: .morningLight)
+//            }
+//        }
+//    }
 
     // MARK: - Banners
 
