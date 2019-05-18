@@ -161,7 +161,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         // Double check to save selected tab and avoid infrequent bug
         Options.setSelectedIndex(index: tabBarController!.selectedIndex)
 
-        title = setNavTitle()
+        title = returnTitle(forSegment: segment)
 
         if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getPurchasedProduct() != "", RoutinesPlus.getPurchasedProduct() != RegisteredPurchase.lifetime.rawValue, Date() >= RoutinesPlus.getExpiryDate() {
             debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
@@ -180,10 +180,29 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         observeItems()
     }
 
+    override func encodeRestorableState(with coder: NSCoder) {
+        // 1
+        coder.encode(segment, forKey: "segment")
+
+        // 2
+        super.encodeRestorableState(with: coder)
+    }
+
+    override func decodeRestorableState(with coder: NSCoder) {
+        segment = Int(coder.decodeInt64(forKey: "segment"))
+        super.decodeRestorableState(with: coder)
+    }
+
     override func applicationFinishedRestoringState() {
-        setAppearance(forSegment: segment)
-        loadItems()
-        observeItems()
+        // TODO: This should all be part of UI set up!!!
+        DispatchQueue.main.async {
+            self.setAppearance(forSegment: self.segment)
+            self.loadItems()
+            self.observeItems()
+            self.observeOptions()
+            self.title = self.returnTitle(forSegment: self.segment)
+            self.setTabBarTitles()
+        }
     }
 
     @objc func appBecameActive() {
@@ -210,7 +229,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         fetchIAPInfo()
     }
 
-    func setNavTitle() -> String {
+    func returnTitle(forSegment segment: Int) -> String {
         switch segment {
         case 1:
             return "Afternoon"
@@ -220,6 +239,15 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             return "Night"
         default:
             return "Morning"
+        }
+    }
+
+    func setTabBarTitles() {
+        if let tabBarItems = self.tabBarController?.tabBar.items {
+            let items = tabBarItems.enumerated().map { ($0, $1) }
+            items.forEach { index, item in
+                item.title = returnTitle(forSegment: index)
+            }
         }
     }
 
@@ -427,7 +455,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
     func resetTableView() {
         // Reset the view just before segue
         if linesBarButtonSelected {
-            title = setNavTitle()
+            title = returnTitle(forSegment: segment)
             DispatchQueue.main.async {
                 autoreleasepool {
                     self.linesBarButtonSelected = false
