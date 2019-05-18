@@ -585,7 +585,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     fileprivate func goToSettings() {
         // print("Opening settings")
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsView") as! OptionsTableViewController
+        let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsViewController") as! OptionsTableViewController
         let rootVC = window?.rootViewController as! TabBarViewController
         // Set the selected index so you know what child will be on screen
         let index = getSelectedTab()
@@ -593,13 +593,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         let navVC = rootVC.children[index] as! NavigationViewController
         navVC.pushViewController(optionsViewController, animated: true)
-        // TableViewController.setAppearance(segment: index)
+        // TaskTableViewController.setAppearance(segment: index)
     }
 
     fileprivate func goToAdd() {
         // print("Opening Add view")
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let addViewController = storyBoard.instantiateViewController(withIdentifier: "addView") as! AddTableViewController
+        let addViewController = storyBoard.instantiateViewController(withIdentifier: "addEditViewController") as! AddTableViewController
         let rootVC = window?.rootViewController as! TabBarViewController
         // Set the selected index so you know what child will be on screen
         let index = getSelectedTab()
@@ -608,7 +608,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let navVC = rootVC.children[index] as! NavigationViewController
         navVC.pushViewController(addViewController, animated: true)
         addViewController.editingSegment = index
-        // TableViewController.setAppearance(segment: index)
+        // TaskTableViewController.setAppearance(segment: index)
     }
 
     func userNotificationCenter(_: UNUserNotificationCenter, openSettingsFor _: UNNotification?) {

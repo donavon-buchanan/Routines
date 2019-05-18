@@ -1,5 +1,5 @@
 //
-//  TableViewController.swift
+//  TaskTableViewController.swift
 //  Routines
 //
 //  Created by Donavon Buchanan on 9/21/18.
@@ -11,7 +11,7 @@ import SwiftMessages
 import UIKit
 import UserNotifications
 
-class TableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
+class TaskTableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
     @IBAction func unwindToTableViewController(segue _: UIStoryboardSegue) {}
     @IBOutlet var settingsBarButtonItem: UIBarButtonItem!
     @IBOutlet var addbarButtonItem: UIBarButtonItem!
@@ -23,7 +23,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
             UIKeyCommand(input: "n", modifierFlags: .command, action: #selector(addNewTask), discoverabilityTitle: "Add New Task"),
             UIKeyCommand(input: "o", modifierFlags: .alternate, action: #selector(openSettingsKeyCommand), discoverabilityTitle: "Open Settings"),
-            UIKeyCommand(input: "e", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(editKeyCommand), discoverabilityTitle: "Edit Current Tasks"),
+            UIKeyCommand(input: "e", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(editKeyCommand), discoverabilityTitle: "Edit List"),
             UIKeyCommand(input: "a", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(showAllKeyCommand), discoverabilityTitle: "Show Entire Day"),
         ]
     }
@@ -142,6 +142,9 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        segment = tabBarController?.selectedIndex ?? 0
+
         observeOptions()
 
         tableView.allowsMultipleSelectionDuringEditing = true
@@ -150,7 +153,6 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
         tabBarController?.delegate = self
         navigationController?.delegate = self
-        segment = tabBarController?.selectedIndex ?? 0
 
         footerView.backgroundColor = .clear
         tableView.tableFooterView = footerView
@@ -161,7 +163,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         // Double check to save selected tab and avoid infrequent bug
 //        Options.setSelectedIndex(index: tabBarController!.selectedIndex)
 
-        title = returnTitle(forSegment: tabBarController?.selectedIndex ?? 0)
+        //title = returnTitle(forSegment: tabBarController?.selectedIndex ?? 0)
 
         if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getPurchasedProduct() != "", RoutinesPlus.getPurchasedProduct() != RegisteredPurchase.lifetime.rawValue, Date() >= RoutinesPlus.getExpiryDate() {
             debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
@@ -177,6 +179,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         tableView.rowHeight = UITableView.automaticDimension
 
         loadItemsForSegment(segment: segment)
+        setAppearance(forSegment: segment)
         observeItems()
     }
 
@@ -210,20 +213,18 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 //        updateBadge()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewWillAppear(_: Bool) {
+        title = returnTitle(forSegment: segment)
+
         // Check automatic dark mode before the view is shown
         Options.automaticDarkModeCheck()
-        setAppearance(forSegment: segment)
     }
 
     override func viewWillDisappear(_: Bool) {
         printDebug("\(#function)")
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
+    override func viewDidAppear(_: Bool) {
 //        loadItems()
 
         fetchIAPInfo()

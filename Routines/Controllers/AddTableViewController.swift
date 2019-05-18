@@ -174,14 +174,20 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         setAppearance(forSegment: item?.segment ?? 0)
     }
 
+    override func viewWillAppear(_: Bool) {
+        DispatchQueue.main.async {
+            autoreleasepool {
+                self.setUpUI()
+            }
+        }
+    }
+
     override func viewDidAppear(_: Bool) {
         // UI doesn't know to scroll up if this is called too soon
         DispatchQueue.main.async {
             autoreleasepool {
                 do {
                     self.taskTextField.becomeFirstResponder()
-
-                    self.setUpUI()
                 }
             }
         }
