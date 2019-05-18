@@ -180,6 +180,12 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         observeItems()
     }
 
+    override func applicationFinishedRestoringState() {
+        setAppearance(forSegment: segment)
+        loadItems()
+        observeItems()
+    }
+
     @objc func appBecameActive() {
 //        loadItems()
 //        updateBadge()
@@ -189,7 +195,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
         super.viewWillAppear(animated)
         // Check automatic dark mode before the view is shown
         Options.automaticDarkModeCheck()
-        TableViewController.setAppearance(segment: segment)
+        setAppearance(forSegment: segment)
     }
 
     override func viewWillDisappear(_: Bool) {
@@ -574,13 +580,13 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // This *should* call the appropriate load based on if the user wants to see All Day or not
     // Maybe some other time when we let the user default to an all day view? ... Probably should just use a dedicated view in that case
-//    func loadItems() {
-//        if linesBarButtonSelected {
-//            loadAllItems()
-//        } else {
-//            loadItemsForSegment(segment: segment)
-//        }
-//    }
+    func loadItems() {
+        if linesBarButtonSelected {
+            loadAllItems()
+        } else {
+            loadItemsForSegment(segment: segment)
+        }
+    }
 
     var notificationToken: NotificationToken?
 
@@ -637,7 +643,7 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
             case .update:
                 guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else { return }
                 DispatchQueue.main.async {
-                    TableViewController.setAppearance(segment: self.tabBarController?.selectedIndex ?? 0)
+                    self.setAppearance(forSegment: self.tabBarController?.selectedIndex ?? 0)
                     AppDelegate.setAutomaticDarkModeTimer()
                 }
             case let .error(error):
@@ -649,36 +655,36 @@ class TableViewController: UITableViewController, UINavigationControllerDelegate
 
     // MARK: - Themeing
 
-    static func setAppearance(segment: Int) {
-        printDebug("Dark mode is: \(Options.getDarkModeStatus())")
-        if Options.getDarkModeStatus() {
-            switch segment {
-            case 0:
-                Themes.switchTo(theme: .morningDark)
-            case 1:
-                Themes.switchTo(theme: .afternoonDark)
-            case 2:
-                Themes.switchTo(theme: .eveningDark)
-            case 3:
-                Themes.switchTo(theme: .nightDark)
-            default:
-                Themes.switchTo(theme: .monochromeDark)
-            }
-        } else {
-            switch segment {
-            case 0:
-                Themes.switchTo(theme: .morningLight)
-            case 1:
-                Themes.switchTo(theme: .afternoonLight)
-            case 2:
-                Themes.switchTo(theme: .eveningLight)
-            case 3:
-                Themes.switchTo(theme: .nightLight)
-            default:
-                Themes.switchTo(theme: .monochromeDark)
-            }
-        }
-    }
+//    static func setAppearance(segment: Int) {
+//        printDebug("Dark mode is: \(Options.getDarkModeStatus())")
+//        if Options.getDarkModeStatus() {
+//            switch segment {
+//            case 0:
+//                Themes.switchTo(theme: .morningDark)
+//            case 1:
+//                Themes.switchTo(theme: .afternoonDark)
+//            case 2:
+//                Themes.switchTo(theme: .eveningDark)
+//            case 3:
+//                Themes.switchTo(theme: .nightDark)
+//            default:
+//                Themes.switchTo(theme: .monochromeDark)
+//            }
+//        } else {
+//            switch segment {
+//            case 0:
+//                Themes.switchTo(theme: .morningLight)
+//            case 1:
+//                Themes.switchTo(theme: .afternoonLight)
+//            case 2:
+//                Themes.switchTo(theme: .eveningLight)
+//            case 3:
+//                Themes.switchTo(theme: .nightLight)
+//            default:
+//                Themes.switchTo(theme: .monochromeDark)
+//            }
+//        }
+//    }
 
     func deleteAlert(_ indexPath: IndexPath) -> Bool {
         var completion = false

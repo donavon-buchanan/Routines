@@ -12,6 +12,35 @@ import UIKit
 import UserNotifications
 
 extension UIViewController {
+    // MARK: - Appearance
+
+    func setAppearance(forSegment segment: Int) {
+        // print("Setting theme")
+        if Options.getDarkModeStatus() {
+            switch segment {
+            case 1:
+                Themes.switchTo(theme: .afternoonDark)
+            case 2:
+                Themes.switchTo(theme: .eveningDark)
+            case 3:
+                Themes.switchTo(theme: .nightDark)
+            default:
+                Themes.switchTo(theme: .morningDark)
+            }
+        } else {
+            switch segment {
+            case 1:
+                Themes.switchTo(theme: .afternoonLight)
+            case 2:
+                Themes.switchTo(theme: .eveningLight)
+            case 3:
+                Themes.switchTo(theme: .nightLight)
+            default:
+                Themes.switchTo(theme: .morningLight)
+            }
+        }
+    }
+
     // MARK: - Notifications
 
     func checkNotificationPermission() {
