@@ -119,6 +119,10 @@ class OptionsTableViewController: UITableViewController {
         observeRoutinesPlus()
     }
 
+    override func applicationFinishedRestoringState() {
+        setAppearance(forSegment: Options.getSelectedIndex())
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // setUpUI(animated: false)
