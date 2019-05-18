@@ -143,10 +143,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        segment = Options.getSelectedIndex()
-
-        observeOptions()
-
         tableView.allowsMultipleSelectionDuringEditing = true
 
         NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -177,10 +173,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
-
-        loadItemsForSegment(segment: segment)
-        setAppearance(forSegment: segment)
-        observeItems()
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
@@ -197,15 +189,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     override func applicationFinishedRestoringState() {
-        // TODO: This should all be part of UI set up!!!
-        DispatchQueue.main.async {
-            self.setAppearance(forSegment: self.segment)
-            self.loadItems()
-            self.observeItems()
-            self.observeOptions()
-            // self.title = self.returnTitle(forSegment: self.tabBarController?.selectedIndex ?? 0)
-            //            self.setTabBarTitles()
-        }
+        setUpUI()
     }
 
     @objc func appBecameActive() {
@@ -213,8 +197,19 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         //        updateBadge()
     }
 
-    override func viewWillAppear(_: Bool) {
+    func setUpUI() {
+        segment = tabBarController?.selectedIndex ?? 0
+        loadItems()
+        observeItems()
+        observeOptions()
         title = returnTitle(forSegment: segment)
+        DispatchQueue.main.async {
+            self.setAppearance(forSegment: self.segment)
+        }
+    }
+
+    override func viewWillAppear(_: Bool) {
+        setUpUI()
 
         // Check automatic dark mode before the view is shown
         Options.automaticDarkModeCheck()
@@ -225,8 +220,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     override func viewDidAppear(_: Bool) {
-        //        loadItems()
-
         fetchIAPInfo()
     }
 
