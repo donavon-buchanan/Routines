@@ -141,13 +141,26 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     override func viewDidLoad() {
+        debugPrint(#function + " start")
         super.viewDidLoad()
 
-        segment = navigationController?.tabBarController?.selectedIndex ?? 0
-
+        // TODO: This won't be necessary with proper restore
+        // But we're going to leave it for now because I'm tired of breaking things. It's convoluted and redudant, but it's working
+        if let tabBarController = tabBarController {
+            if tabBarController.selectedIndex < 4 {
+                printDebug("tabBarController index < 4, setting to \(tabBarController.selectedIndex)")
+                if segment == nil {
+                    segment = tabBarController.selectedIndex
+                }
+            }
+        } else {
+            printDebug("tabBarController is nil. Setting segment to 0")
+            if segment == nil {
+                segment = 0
+            }
+        }
+        printDebug("If this shit's loading at all during restoring, print this")
         tableView.allowsMultipleSelectionDuringEditing = true
-
-        NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil)
 
         tabBarController?.delegate = self
         navigationController?.delegate = self
@@ -163,6 +176,72 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         //title = returnTitle(forSegment: tabBarController?.selectedIndex ?? 0)
 
+        tableView.estimatedRowHeight = 115
+        tableView.rowHeight = UITableView.automaticDimension
+
+        printDebug(#function + " end")
+    }
+
+//    override func encodeRestorableState(with coder: NSCoder) {
+//        // 1
+//        if let segment = segment {
+//            coder.encode(segment, forKey: "segment")
+//        }
+//
+//        // 2
+//        super.encodeRestorableState(with: coder)
+//    }
+//
+//    override func decodeRestorableState(with coder: NSCoder) {
+//        if segment == nil {
+//            segment = coder.decodeInteger(forKey: "segment")
+//        }
+//
+//        super.decodeRestorableState(with: coder)
+//    }
+
+    override func applicationFinishedRestoringState() {
+        /*
+         Because multiple views use this class, I needed a way to set the "segment" property independently
+          This function is called in order of the tab heirarchy. Since that's known,
+          we can just iterate through and get the first child view of each tab's navigation controller
+          because we also know that first child view will always be the table view controller for this class.
+          Once we have that, we set the segment to match the index of the enumeration of controllers.
+          It's a little bit of a hack, yes. But the app heirachy is static enough that it works. It's not ideal,
+          but imo, it's a lot better than creating a bunch of nearly identical views and classes with inheritance complications
+         */
+        if let controllers = self.tabBarController?.viewControllers {
+            let navigationControllers = controllers.enumerated().map { ($0, $1) }
+            navigationControllers.forEach { index, navigationViewController in
+                let tableViewController = navigationViewController.children[0] as! TaskTableViewController
+                tableViewController.segment = index
+            }
+        }
+    }
+
+    override func viewWillAppear(_: Bool) {
+        debugPrint(#function + " start")
+        // segment = tabBarController?.selectedIndex
+
+        loadItemsForSegment(segment: segment!)
+        setAppearance(forSegment: segment!)
+        observeOptions()
+        observeItems()
+
+        title = returnTitle(forSegment: segment!)
+
+        // Check automatic dark mode before the view is shown
+        Options.automaticDarkModeCheck()
+        debugPrint(#function + " end")
+    }
+
+    override func viewWillDisappear(_: Bool) {
+        printDebug("\(#function)")
+    }
+
+    override func viewDidAppear(_: Bool) {
+        debugPrint(#function + " start")
+
         if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getPurchasedProduct() != "", RoutinesPlus.getPurchasedProduct() != RegisteredPurchase.lifetime.rawValue, Date() >= RoutinesPlus.getExpiryDate() {
             debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
             debugPrint("Routines Plus Product: \(RoutinesPlus.getPurchasedProduct())")
@@ -173,71 +252,23 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             debugPrint("Routines Plus Product: \(RoutinesPlus.getPurchasedProduct())")
         }
 
-        tableView.estimatedRowHeight = 115
-        tableView.rowHeight = UITableView.automaticDimension
-
-        loadItems()
-        observeItems()
-        observeOptions()
-        title = returnTitle(forSegment: segment ?? 0)
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        // 1
-        coder.encode(segment, forKey: "segment")
-        // 2
-        super.encodeRestorableState(with: coder)
-    }
-
-    override func decodeRestorableState(with coder: NSCoder) {
-        guard segment == nil else { return }
-        setUpUI()
-        super.decodeRestorableState(with: coder)
-    }
-
-    override func applicationFinishedRestoringState() {
-        printDebug(#function)
-        // setUpUI()
-    }
-
-    @objc func appBecameActive() {
-        //        loadItems()
-        //        updateBadge()
-    }
-
-    func setUpUI() {
-        debugPrint(#function)
-        printDebug("selected index of tab in \(#function) is \(String(describing: tabBarController?.selectedIndex))")
-        setAppearance(forSegment: segment ?? 0)
-    }
-
-    override func viewWillAppear(_: Bool) {
-        setUpUI()
-        // Check automatic dark mode before the view is shown
-        Options.automaticDarkModeCheck()
-    }
-
-    override func viewWillDisappear(_: Bool) {
-        printDebug("\(#function)")
-    }
-
-    override func viewDidAppear(_: Bool) {
         fetchIAPInfo()
+
+        debugPrint(#function + " end")
     }
 
     func returnTitle(forSegment segment: Int) -> String {
-        var title = ""
+        printDebug(#function + " segment: \(segment)")
         switch segment {
         case 0:
-            title = AppStrings.timePeriod.morning.rawValue
+            return AppStrings.timePeriod.morning.rawValue.localizedCapitalized
         case 1:
-            title = AppStrings.timePeriod.afternoon.rawValue
+            return AppStrings.timePeriod.afternoon.rawValue.localizedCapitalized
         case 2:
-            title = AppStrings.timePeriod.evening.rawValue
+            return AppStrings.timePeriod.evening.rawValue.localizedCapitalized
         default:
-            title = AppStrings.timePeriod.night.rawValue
+            return AppStrings.timePeriod.night.rawValue.localizedCapitalized
         }
-        return title.localizedCapitalized
     }
 
     //
@@ -607,13 +638,13 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     // This *should* call the appropriate load based on if the user wants to see All Day or not
     // Maybe some other time when we let the user default to an all day view? ... Probably should just use a dedicated view in that case
-    func loadItems() {
-        if linesBarButtonSelected {
-            loadAllItems()
-        } else {
-            loadItemsForSegment(segment: segment ?? 0)
-        }
-    }
+//    func loadItems() {
+//        if linesBarButtonSelected {
+//            loadAllItems()
+//        } else {
+//            loadItemsForSegment(segment: segment ?? 0)
+//        }
+//    }
 
     var notificationToken: NotificationToken?
 
@@ -661,16 +692,18 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     func observeOptions() {
         let realm = try! Realm()
         let optionsList = realm.objects(Options.self)
-        optionsToken = optionsList.observe { [weak self] (changes: RealmCollectionChange) in
-            guard let self = self else { return }
+        optionsToken = optionsList.observe { (changes: RealmCollectionChange) in
+            // guard let self = self else { return }
             switch changes {
             case .initial:
                 printDebug("Initial load for Options. But don't do anything yet")
 
             case .update:
                 guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else { return }
-                self.setAppearance(forSegment: self.tabBarController?.selectedIndex ?? 0)
-                AppDelegate.setAutomaticDarkModeTimer()
+                DispatchQueue.main.async {
+                    // self.setAppearance(forSegment: self.tabBarController?.selectedIndex ?? 0)
+                    AppDelegate.setAutomaticDarkModeTimer()
+                }
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
                 fatalError("\(error)")
