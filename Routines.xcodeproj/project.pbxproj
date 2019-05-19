@@ -162,7 +162,6 @@
 		F8B831B72155CBB000DAF60E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8B831BC2155CBB000DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F8B831C12155CBB100DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		F8B831C32155CBB100DAF60E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F8B831CC2155CBE300DAF60E /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
 		F8C3EC97228D673F0027AFEB /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
@@ -297,7 +296,6 @@
 				F8B831CA2155CBC700DAF60E /* Views */,
 				F84681FC21868C2A00BE3E19 /* Other Extensions */,
 				F8B831C02155CBB100DAF60E /* LaunchScreen.storyboard */,
-				F8B831C32155CBB100DAF60E /* Info.plist */,
 				F8F3270D215C8509004AC619 /* Media.xcassets */,
 				F8D5DB482269AC59005857F2 /* NetworkActivityIndicatorManager.swift */,
 			);
