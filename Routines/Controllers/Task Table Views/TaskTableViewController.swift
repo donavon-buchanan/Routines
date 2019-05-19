@@ -12,6 +12,11 @@ import UIKit
 import UserNotifications
 
 class TaskTableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
+    
+    /*
+    This is overriden in child view controllers. But since it's called here
+    we need it as a placeholder for now.
+     */
     var segment: Int {
         return 0
     }
