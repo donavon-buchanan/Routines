@@ -193,7 +193,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         // So this is to ensure that the UI refreshes
         Options.automaticDarkModeCheck()
         if let segment = self.segment {
-            setAppearance(forSegment: segment)
+            TaskTableViewController.setAppearance(forSegment: segment)
         }
     }
 
@@ -220,7 +220,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         debugPrint(#function + " start")
 
         loadItemsForSegment(segment: segment!)
-        setAppearance(forSegment: segment!)
+        TaskTableViewController.setAppearance(forSegment: segment!)
 
         title = returnTitle(forSegment: segment!)
         debugPrint(#function + " end")
@@ -690,7 +690,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                         if change.oldValue as? Bool != change.newValue as? Bool {
                             DispatchQueue.main.async {
                                 let currentIndex = ThemeManager.currentThemeIndex
-                                self.setAppearance(forSegment: currentIndex)
+                                TaskTableViewController.setAppearance(forSegment: currentIndex)
                             }
                         }
                     }
@@ -707,36 +707,33 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     // MARK: - Themeing
 
-    //    static func setAppearance(segment: Int) {
-    //        printDebug("Dark mode is: \(Options.getDarkModeStatus())")
-    //        if Options.getDarkModeStatus() {
-    //            switch segment {
-    //            case 0:
-    //                Themes.switchTo(theme: .morningDark)
-    //            case 1:
-    //                Themes.switchTo(theme: .afternoonDark)
-    //            case 2:
-    //                Themes.switchTo(theme: .eveningDark)
-    //            case 3:
-    //                Themes.switchTo(theme: .nightDark)
-    //            default:
-    //                Themes.switchTo(theme: .monochromeDark)
-    //            }
-    //        } else {
-    //            switch segment {
-    //            case 0:
-    //                Themes.switchTo(theme: .morningLight)
-    //            case 1:
-    //                Themes.switchTo(theme: .afternoonLight)
-    //            case 2:
-    //                Themes.switchTo(theme: .eveningLight)
-    //            case 3:
-    //                Themes.switchTo(theme: .nightLight)
-    //            default:
-    //                Themes.switchTo(theme: .monochromeDark)
-    //            }
-    //        }
-    //    }
+    static func setAppearance(forSegment segment: Int, function: String = #function) {
+        debugPrint("Setting theme for segment: \(segment)")
+        debugPrint("Called from: \(function)")
+        if Options.getDarkModeStatus() {
+            switch segment {
+            case 1:
+                Themes.switchTo(theme: .afternoonDark)
+            case 2:
+                Themes.switchTo(theme: .eveningDark)
+            case 3:
+                Themes.switchTo(theme: .nightDark)
+            default:
+                Themes.switchTo(theme: .morningDark)
+            }
+        } else {
+            switch segment {
+            case 1:
+                Themes.switchTo(theme: .afternoonLight)
+            case 2:
+                Themes.switchTo(theme: .eveningLight)
+            case 3:
+                Themes.switchTo(theme: .nightLight)
+            default:
+                Themes.switchTo(theme: .morningLight)
+            }
+        }
+    }
 
     func deleteAlert(_ indexPath: IndexPath) -> Bool {
         var completion = false

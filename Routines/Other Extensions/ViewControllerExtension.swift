@@ -18,36 +18,6 @@ extension UIViewController {
         return "\(file):\(line) : \(function)"
     }
 
-    // TODO: I'm decently certain now that a ton of headache with restoration and just tab switching was caused by moving this to a UIViewController extension
-    // Put it back. You can make it static if you need to call from elsewhere
-    func setAppearance(forSegment segment: Int, function: String = #function) {
-        debugPrint("Setting theme for segment: \(segment)")
-        debugPrint("Called from: \(function)")
-        if Options.getDarkModeStatus() {
-            switch segment {
-            case 1:
-                Themes.switchTo(theme: .afternoonDark)
-            case 2:
-                Themes.switchTo(theme: .eveningDark)
-            case 3:
-                Themes.switchTo(theme: .nightDark)
-            default:
-                Themes.switchTo(theme: .morningDark)
-            }
-        } else {
-            switch segment {
-            case 1:
-                Themes.switchTo(theme: .afternoonLight)
-            case 2:
-                Themes.switchTo(theme: .eveningLight)
-            case 3:
-                Themes.switchTo(theme: .nightLight)
-            default:
-                Themes.switchTo(theme: .morningLight)
-            }
-        }
-    }
-
     // MARK: - Notifications
 
     func checkNotificationPermission() {
