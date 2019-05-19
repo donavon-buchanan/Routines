@@ -143,6 +143,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        segment = navigationController?.tabBarController?.selectedIndex ?? 0
+
         tableView.allowsMultipleSelectionDuringEditing = true
 
         NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -174,25 +176,27 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
 
-        setUpUI()
+        loadItems()
+        observeItems()
+        observeOptions()
+        title = returnTitle(forSegment: segment ?? 0)
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
         // 1
         coder.encode(segment, forKey: "segment")
-
         // 2
         super.encodeRestorableState(with: coder)
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
-        // TODO: .... I will have to use separate views and even separate classes
-        segment = coder.decodeInteger(forKey: "segment")
-        debugPrint("decoded segment is \(segment)")
+        guard segment == nil else { return }
+        setUpUI()
         super.decodeRestorableState(with: coder)
     }
 
     override func applicationFinishedRestoringState() {
+        printDebug(#function)
         // setUpUI()
     }
 
@@ -204,17 +208,11 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     func setUpUI() {
         debugPrint(#function)
         printDebug("selected index of tab in \(#function) is \(String(describing: tabBarController?.selectedIndex))")
-        segment = tabBarController?.selectedIndex ?? 0
-        loadItems()
-        observeItems()
-        observeOptions()
-        title = returnTitle(forSegment: segment)
-        DispatchQueue.main.async {
-            self.setAppearance(forSegment: self.segment)
-        }
+        setAppearance(forSegment: segment ?? 0)
     }
 
     override func viewWillAppear(_: Bool) {
+        setUpUI()
         // Check automatic dark mode before the view is shown
         Options.automaticDarkModeCheck()
     }
@@ -456,12 +454,12 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     func resetTableView() {
         // Reset the view just before segue
         if linesBarButtonSelected {
-            title = returnTitle(forSegment: segment)
+            title = returnTitle(forSegment: segment ?? 0)
             DispatchQueue.main.async {
                 autoreleasepool {
                     self.linesBarButtonSelected = false
                     self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
-                    self.loadItemsForSegment(segment: self.segment)
+                    self.loadItemsForSegment(segment: self.segment ?? 0)
                     self.changeTabBar(hidden: false, animated: true)
                 }
             }
@@ -578,7 +576,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     var items: Results<Items>?
 
-    var segment = Int()
+    var segment: Int?
 
     func loadItemsForSegment(segment: Int) {
         printDebug("loading items for segment \(segment)")
@@ -613,7 +611,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         if linesBarButtonSelected {
             loadAllItems()
         } else {
-            loadItemsForSegment(segment: segment)
+            loadItemsForSegment(segment: segment ?? 0)
         }
     }
 
@@ -671,10 +669,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
             case .update:
                 guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else { return }
-                DispatchQueue.main.async {
-                    self.setAppearance(forSegment: self.tabBarController?.selectedIndex ?? 0)
-                    AppDelegate.setAutomaticDarkModeTimer()
-                }
+                self.setAppearance(forSegment: self.tabBarController?.selectedIndex ?? 0)
+                AppDelegate.setAutomaticDarkModeTimer()
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
                 fatalError("\(error)")
