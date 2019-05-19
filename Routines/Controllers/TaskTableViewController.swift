@@ -202,14 +202,14 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     override func applicationFinishedRestoringState() {
         /*
-        Because multiple views use this class, I needed a way to set the "segment" property independently
-         This function is called in order of the tab heirarchy. Since that's known,
-         we can just iterate through and get the first child view of each tab's navigation controller
-         because we also know that first child view will always be the table view controller for this class.
-         Once we have that, we set the segment to match the index of the enumeration of controllers.
-         It's a little bit of a hack, yes. But the app heirachy is static enough that it works. It's not ideal,
-         but imo, it's a lot better than creating a bunch of nearly identical views and classes with inheritance complications
-        */
+         Because multiple views use this class, I needed a way to set the "segment" property independently
+          This function is called in order of the tab heirarchy. Since that's known,
+          we can just iterate through and get the first child view of each tab's navigation controller
+          because we also know that first child view will always be the table view controller for this class.
+          Once we have that, we set the segment to match the index of the enumeration of controllers.
+          It's a little bit of a hack, yes. But the app heirachy is static enough that it works. It's not ideal,
+          but imo, it's a lot better than creating a bunch of nearly identical views and classes with inheritance complications
+         */
         if let controllers = self.tabBarController?.viewControllers {
             let navigationControllers = controllers.enumerated().map { ($0, $1) }
             navigationControllers.forEach { index, navigationViewController in
