@@ -8,6 +8,7 @@
 
 import RealmSwift
 import SwiftMessages
+import SwiftTheme
 import UIKit
 import UserNotifications
 
@@ -144,6 +145,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         debugPrint(#function + " start")
         super.viewDidLoad()
 
+        NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil)
+
         // TODO: This won't be necessary with proper restore
         // But we're going to leave it for now because I'm tired of breaking things. It's convoluted and redudant, but it's working
         if let tabBarController = tabBarController {
@@ -179,26 +182,20 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
 
+        observeOptions()
+        observeItems()
+
         printDebug(#function + " end")
     }
 
-//    override func encodeRestorableState(with coder: NSCoder) {
-//        // 1
-//        if let segment = segment {
-//            coder.encode(segment, forKey: "segment")
-//        }
-//
-//        // 2
-//        super.encodeRestorableState(with: coder)
-//    }
-//
-//    override func decodeRestorableState(with coder: NSCoder) {
-//        if segment == nil {
-//            segment = coder.decodeInteger(forKey: "segment")
-//        }
-//
-//        super.decodeRestorableState(with: coder)
-//    }
+    @objc func appBecameActive() {
+        // View loading funcs aren't always called when the app transitions from background to active
+        // So this is to ensure that the UI refreshes
+        Options.automaticDarkModeCheck()
+        if let segment = self.segment {
+            setAppearance(forSegment: segment)
+        }
+    }
 
     override func applicationFinishedRestoringState() {
         /*
@@ -221,17 +218,11 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     override func viewWillAppear(_: Bool) {
         debugPrint(#function + " start")
-        // segment = tabBarController?.selectedIndex
 
         loadItemsForSegment(segment: segment!)
         setAppearance(forSegment: segment!)
-        observeOptions()
-        observeItems()
 
         title = returnTitle(forSegment: segment!)
-
-        // Check automatic dark mode before the view is shown
-        Options.automaticDarkModeCheck()
         debugPrint(#function + " end")
     }
 
@@ -688,25 +679,28 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     var debugOptionsToken: NotificationToken?
     var optionsToken: NotificationToken?
 
-    // Need to observe all options even though there will really only be one object because sometimes that object may need to be deleted
     func observeOptions() {
         let realm = try! Realm()
-        let optionsList = realm.objects(Options.self)
-        optionsToken = optionsList.observe { (changes: RealmCollectionChange) in
-            // guard let self = self else { return }
+        let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+        optionsToken = options?.observe { changes in
             switch changes {
-            case .initial:
-                printDebug("Initial load for Options. But don't do anything yet")
-
-            case .update:
-                guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else { return }
-                DispatchQueue.main.async {
-                    // self.setAppearance(forSegment: self.tabBarController?.selectedIndex ?? 0)
-                    AppDelegate.setAutomaticDarkModeTimer()
+            case let .change(propertyChanged):
+                propertyChanged.forEach { change in
+                    if change.name == "darkMode" {
+                        if change.oldValue as? Bool != change.newValue as? Bool {
+                            DispatchQueue.main.async {
+                                let currentIndex = ThemeManager.currentThemeIndex
+                                self.setAppearance(forSegment: currentIndex)
+                            }
+                        }
+                    }
                 }
+                AppDelegate.setAutomaticDarkModeTimer()
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
                 fatalError("\(error)")
+            case .deleted:
+                break
             }
         }
     }

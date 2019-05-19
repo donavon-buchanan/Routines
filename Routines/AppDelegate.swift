@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     lazy var afterSyncTimer = AfterSyncTimer()
 
     static let automaticDarkModeTimer = AutomaticDarkModeTimer()
+
     static func setAutomaticDarkModeTimer() {
         if Options.getAutomaticDarkModeStatus() {
             automaticDarkModeTimer.startTimer()
@@ -69,6 +70,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Theme
         setUpTheme()
+
+        Options.automaticDarkModeCheck()
+
         printDebug("\(#function) - End")
         return true
     }
