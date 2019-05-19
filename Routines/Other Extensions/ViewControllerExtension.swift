@@ -14,8 +14,15 @@ import UserNotifications
 extension UIViewController {
     // MARK: - Appearance
 
-    func setAppearance(forSegment segment: Int) {
-        // print("Setting theme")
+    func debug(file: String = #file, line: Int = #line, function: String = #function) -> String {
+        return "\(file):\(line) : \(function)"
+    }
+
+    // TODO: I'm decently certain now that a ton of headache with restoration and just tab switching was caused by moving this to a UIViewController extension
+    // Put it back. You can make it static if you need to call from elsewhere
+    func setAppearance(forSegment segment: Int, function: String = #function) {
+        debugPrint("Setting theme for segment: \(segment)")
+        debugPrint("Called from: \(function)")
         if Options.getDarkModeStatus() {
             switch segment {
             case 1:
