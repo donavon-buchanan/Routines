@@ -44,6 +44,10 @@
 		F8D5DB532269BCAD005857F2 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */; };
 		F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */; };
 		F8E031862269C410002C2E32 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E031852269C410002C2E32 /* AppStrings.swift */; };
+		F8E8F44C2291283600F495B9 /* MorningTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8F44B2291283600F495B9 /* MorningTableViewController.swift */; };
+		F8E8F44E2291284F00F495B9 /* AfternoonTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8F44D2291284F00F495B9 /* AfternoonTableViewController.swift */; };
+		F8E8F4502291285700F495B9 /* EveningTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8F44F2291285700F495B9 /* EveningTableViewController.swift */; };
+		F8E8F4522291286200F495B9 /* NightTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E8F4512291286200F495B9 /* NightTableViewController.swift */; };
 		F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */; };
 		F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */; };
 		F8F3270E215C8509004AC619 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8F3270D215C8509004AC619 /* Media.xcassets */; };
@@ -173,6 +177,10 @@
 		F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTableViewController.swift; sourceTree = "<group>"; };
 		F8E031852269C410002C2E32 /* AppStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStrings.swift; sourceTree = "<group>"; };
+		F8E8F44B2291283600F495B9 /* MorningTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorningTableViewController.swift; sourceTree = "<group>"; };
+		F8E8F44D2291284F00F495B9 /* AfternoonTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfternoonTableViewController.swift; sourceTree = "<group>"; };
+		F8E8F44F2291285700F495B9 /* EveningTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EveningTableViewController.swift; sourceTree = "<group>"; };
+		F8E8F4512291286200F495B9 /* NightTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightTableViewController.swift; sourceTree = "<group>"; };
 		F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTableViewController.swift; sourceTree = "<group>"; };
 		F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTableViewCell.swift; sourceTree = "<group>"; };
 		F8F3270D215C8509004AC619 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -310,7 +318,7 @@
 				F807D3D22160A06600FF36D9 /* Options */,
 				F814CF592192A8E000E3C0F5 /* TabBarViewController.swift */,
 				F85213B4218F5EE600291CFE /* NavigationViewController.swift */,
-				F816DB332155CFBA009C6907 /* TaskTableViewController.swift */,
+				F8E8F44A2291280700F495B9 /* Task Table Views */,
 				F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */,
 				F82770D221585D3000420C50 /* AddTableViewController.swift */,
 				F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */,
@@ -338,6 +346,18 @@
 				F8CCE20C2288E17E00BAAFEC /* RoutinesPlus.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		F8E8F44A2291280700F495B9 /* Task Table Views */ = {
+			isa = PBXGroup;
+			children = (
+				F816DB332155CFBA009C6907 /* TaskTableViewController.swift */,
+				F8E8F44B2291283600F495B9 /* MorningTableViewController.swift */,
+				F8E8F44D2291284F00F495B9 /* AfternoonTableViewController.swift */,
+				F8E8F44F2291285700F495B9 /* EveningTableViewController.swift */,
+				F8E8F4512291286200F495B9 /* NightTableViewController.swift */,
+			);
+			path = "Task Table Views";
 			sourceTree = "<group>";
 		};
 		F8FF259222085A180063295F /* Products */ = {
@@ -650,8 +670,10 @@
 			files = (
 				F8B5B7D52286C0ED0024FC2B /* SwiftMessagesAlertsController.swift in Sources */,
 				F8B831CD2155CBE300DAF60E /* Items.swift in Sources */,
+				F8E8F4502291285700F495B9 /* EveningTableViewController.swift in Sources */,
 				F85213B5218F5EE600291CFE /* NavigationViewController.swift in Sources */,
 				F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */,
+				F8E8F44E2291284F00F495B9 /* AfternoonTableViewController.swift in Sources */,
 				F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */,
 				F85D2A8C22703892009CE6CE /* iAPSegue.swift in Sources */,
 				F87D49EF2269AA1700845E0D /* AppSecrets.swift in Sources */,
@@ -664,10 +686,12 @@
 				F896D96F22802E5B0005C899 /* AutomaticDarkModeTimer.swift in Sources */,
 				F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */,
 				F8C3EC98228D673F0027AFEB /* UIImageExtension.swift in Sources */,
+				F8E8F4522291286200F495B9 /* NightTableViewController.swift in Sources */,
 				F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */,
 				F8CCE20D2288E17E00BAAFEC /* RoutinesPlus.swift in Sources */,
 				F816DB342155CFBA009C6907 /* TaskTableViewController.swift in Sources */,
 				F85D2A8A227036CF009CE6CE /* RoutinesPlusViewController.swift in Sources */,
+				F8E8F44C2291283600F495B9 /* MorningTableViewController.swift in Sources */,
 				F8352C53227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift in Sources */,
 				F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */,
 				F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */,

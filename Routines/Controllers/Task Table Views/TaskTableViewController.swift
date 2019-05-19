@@ -12,6 +12,10 @@ import UIKit
 import UserNotifications
 
 class TaskTableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
+    var segment: Int {
+        return 0
+    }
+
     @IBAction func unwindToTableViewController(segue _: UIStoryboardSegue) {}
     @IBOutlet var settingsBarButtonItem: UIBarButtonItem!
     @IBOutlet var addbarButtonItem: UIBarButtonItem!
@@ -143,13 +147,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        segment = tabBarController?.selectedIndex ?? 0
-
-        observeOptions()
-
         tableView.allowsMultipleSelectionDuringEditing = true
-
-        NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil)
 
         tabBarController?.delegate = self
         navigationController?.delegate = self
@@ -157,13 +155,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         footerView.backgroundColor = .clear
         tableView.tableFooterView = footerView
         tableView.theme_backgroundColor = GlobalPicker.backgroundColor
-
-//        setViewBackgroundGraphic(enabled: true)
-
-        // Double check to save selected tab and avoid infrequent bug
-//        Options.setSelectedIndex(index: tabBarController!.selectedIndex)
-
-        //title = returnTitle(forSegment: tabBarController?.selectedIndex ?? 0)
 
         if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getPurchasedProduct() != "", RoutinesPlus.getPurchasedProduct() != RegisteredPurchase.lifetime.rawValue, Date() >= RoutinesPlus.getExpiryDate() {
             debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
@@ -178,55 +169,28 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
 
-        loadItemsForSegment(segment: segment)
-        setAppearance(forSegment: segment)
-        observeItems()
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        // 1
-        coder.encode(segment, forKey: "segment")
-
-        // 2
-        super.encodeRestorableState(with: coder)
-    }
-
-    override func decodeRestorableState(with coder: NSCoder) {
-        segment = Int(coder.decodeInt64(forKey: "segment"))
-        super.decodeRestorableState(with: coder)
+        setUpUI()
     }
 
     override func applicationFinishedRestoringState() {
-        // TODO: This should all be part of UI set up!!!
-        DispatchQueue.main.async {
-            self.setAppearance(forSegment: self.segment)
-            self.loadItems()
-            self.observeItems()
-            self.observeOptions()
-            self.title = self.returnTitle(forSegment: self.tabBarController?.selectedIndex ?? 0)
-//            self.setTabBarTitles()
-        }
+        //I'm not sure why yet, but state restoration iterates through all the task views and calling this method is the only thing that prevents an ugly white flash for now. I hate everything about how this is set up.
+        setAppearance(forSegment: segment)
+        printDebug("Restoring state for task table view: \(segment)")
     }
 
-    @objc func appBecameActive() {
-//        loadItems()
-//        updateBadge()
+    func setUpUI() {
+        loadItems()
+        observeItems()
+        observeOptions()
+        title = returnTitle(forSegment: segment)
     }
 
     override func viewWillAppear(_: Bool) {
-        title = returnTitle(forSegment: segment)
-
-        // Check automatic dark mode before the view is shown
         Options.automaticDarkModeCheck()
-    }
-
-    override func viewWillDisappear(_: Bool) {
-        printDebug("\(#function)")
+        setAppearance(forSegment: segment)
     }
 
     override func viewDidAppear(_: Bool) {
-//        loadItems()
-
         fetchIAPInfo()
     }
 
@@ -243,20 +207,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             title = AppStrings.timePeriod.night.rawValue
         }
         return title.localizedCapitalized
-    }
-
-//
-//    func setTabBarTitles() {
-//        if let tabBarItems = self.tabBarController?.tabBar.items {
-//            let items = tabBarItems.enumerated().map { ($0, $1) }
-//            items.forEach { index, item in
-//                item.title = returnTitle(forSegment: index)
-//            }
-//        }
-//    }
-
-    func tabBarController(_ tabBarController: UITabBarController, didSelect _: UIViewController) {
-        Options.setSelectedIndex(index: tabBarController.selectedIndex)
     }
 
     // MARK: - Table view data source
@@ -464,7 +414,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 autoreleasepool {
                     self.linesBarButtonSelected = false
                     self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
-                    self.loadItemsForSegment(segment: self.segment)
+                    self.loadItemsForSegment(self.segment)
                     self.changeTabBar(hidden: false, animated: true)
                 }
             }
@@ -475,9 +425,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         if segue.identifier == "addSegue" {
             let navVC = segue.destination as! UINavigationController
             let destination = navVC.topViewController as! AddTableViewController
-            // set segment based on current tab
-            guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
-            destination.editingSegment = selectedTab
+
+            destination.editingSegment = segment
 
             resetTableView()
         }
@@ -581,9 +530,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     var items: Results<Items>?
 
-    var segment = Int()
-
-    func loadItemsForSegment(segment: Int) {
+    func loadItemsForSegment(_ segment: Int) {
         printDebug("loading items for segment \(segment)")
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -616,7 +563,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         if linesBarButtonSelected {
             loadAllItems()
         } else {
-            loadItemsForSegment(segment: segment)
+            loadItemsForSegment(segment)
         }
     }
 
@@ -675,7 +622,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             case .update:
                 guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else { return }
                 DispatchQueue.main.async {
-                    self.setAppearance(forSegment: self.tabBarController?.selectedIndex ?? 0)
+                    self.setAppearance(forSegment: self.segment)
                     AppDelegate.setAutomaticDarkModeTimer()
                 }
             case let .error(error):
