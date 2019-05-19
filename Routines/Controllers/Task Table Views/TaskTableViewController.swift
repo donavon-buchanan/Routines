@@ -12,10 +12,9 @@ import UIKit
 import UserNotifications
 
 class TaskTableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
-    
     /*
-    This is overriden in child view controllers. But since it's called here
-    we need it as a placeholder for now.
+     This is overriden in child view controllers. But since it's called here
+     we need it as a placeholder for now.
      */
     var segment: Int {
         return 0
@@ -173,14 +172,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
-
-        setUpUI()
-    }
-
-    override func applicationFinishedRestoringState() {
-        //I'm not sure why yet, but state restoration iterates through all the task views and calling this method is the only thing that prevents an ugly white flash for now. I hate everything about how this is set up.
-        setAppearance(forSegment: segment)
-        printDebug("Restoring state for task table view: \(segment)")
     }
 
     func setUpUI() {
@@ -192,7 +183,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     override func viewWillAppear(_: Bool) {
         Options.automaticDarkModeCheck()
-        setAppearance(forSegment: segment)
     }
 
     override func viewDidAppear(_: Bool) {
