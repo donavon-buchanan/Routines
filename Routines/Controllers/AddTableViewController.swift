@@ -56,7 +56,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     @IBOutlet var repeatDailyLabel: UILabel!
 
     @IBAction func segmentSelected(_ sender: UISegmentedControl) {
-        setAppearance(forSegment: sender.selectedSegmentIndex)
+        TaskTableViewController.setAppearance(forSegment: sender.selectedSegmentIndex)
     }
 
     var item: Items?
@@ -66,7 +66,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     fileprivate func setUpUI() {
         // If item is loaded, fill in values for editing
         if item != nil {
-            setAppearance(forSegment: item!.segment)
+            TaskTableViewController.setAppearance(forSegment: item!.segment)
 
             taskTextField.text = item?.title
             segmentSelection.selectedSegmentIndex = item?.segment ?? 0
@@ -171,7 +171,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     override func applicationFinishedRestoringState() {
-        setAppearance(forSegment: item?.segment ?? 0)
+        TaskTableViewController.setAppearance(forSegment: item?.segment ?? 0)
     }
 
     override func viewWillAppear(_: Bool) {

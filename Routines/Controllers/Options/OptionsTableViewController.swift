@@ -86,7 +86,7 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var darkModeSwtich: UISwitch!
     @IBAction func darkModeSwitchToggled(_ sender: UISwitch) {
         Options.setDarkMode(sender.isOn)
-        setAppearance(forSegment: Options.getSelectedIndex())
+        // setAppearance(forSegment: Options.getSelectedIndex())
     }
 
     // MARK: Task Priorities
@@ -120,7 +120,7 @@ class OptionsTableViewController: UITableViewController {
     }
 
     override func applicationFinishedRestoringState() {
-        setAppearance(forSegment: Options.getSelectedIndex())
+        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -164,7 +164,7 @@ class OptionsTableViewController: UITableViewController {
             if darkModeSwtich.isEnabled {
                 darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
                 Options.setDarkMode(darkModeSwtich.isOn)
-                setAppearance(forSegment: Options.getSelectedIndex())
+                TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
                 haptic.impactOccurred()
             }
         case 3:
