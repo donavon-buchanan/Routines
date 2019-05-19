@@ -1358,7 +1358,7 @@
         <!--Morning-->
         <scene sceneID="eiy-SR-jk8">
             <objects>
-                <navigationController storyboardIdentifier="morningNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zPf-jp-bgP" customClass="NavigationViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="morningNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zPf-jp-bgP" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Morning" image="morning" selectedImage="morning-selected" id="Omx-Dn-6ft" userLabel="Morning"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="iL4-EF-AiN">
@@ -1380,7 +1380,7 @@
         <!--Afternoon-->
         <scene sceneID="2hT-c9-pO0">
             <objects>
-                <navigationController storyboardIdentifier="afternoonNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="75h-0Z-9GG" customClass="NavigationViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="afternoonNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="75h-0Z-9GG" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="1" title="Afternoon" image="afternoon" selectedImage="afternoon-selected" id="Hmc-YY-uNO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="yy0-pO-f6x">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
@@ -1397,7 +1397,7 @@
         <!--Night-->
         <scene sceneID="YAI-nr-2dH">
             <objects>
-                <navigationController storyboardIdentifier="nightNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pvj-3G-5c5" customClass="NavigationViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="nightNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pvj-3G-5c5" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="3" title="Night" image="night" selectedImage="night-selected" id="KEp-MF-h3Q"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="kHc-p0-Fbk">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
@@ -1417,7 +1417,7 @@
         <!--Evening-->
         <scene sceneID="RJx-Gx-IwY">
             <objects>
-                <navigationController storyboardIdentifier="eveningNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Pir-IO-sd4" customClass="NavigationViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="eveningNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Pir-IO-sd4" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="2" title="Evening" image="evening" selectedImage="evening-selected" id="Z95-2D-Mr2"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="zzb-sU-kjl">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
@@ -2702,10 +2702,10 @@
             </objects>
             <point key="canvasLocation" x="2655.46875" y="922.85156249999989"/>
         </scene>
-        <!--Tab Bar View Controller-->
+        <!--Tab Bar Controller-->
         <scene sceneID="1yi-uT-aw5">
             <objects>
-                <tabBarController storyboardIdentifier="tabBarController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DVA-mq-Xs7" customClass="TabBarViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="tabBarController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DVA-mq-Xs7" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="Izc-4f-V3H">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -2774,6 +2774,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="axw-H5-5nW"/>
-        <segue reference="AXD-IN-9f2"/>
+        <segue reference="8ln-Up-acB"/>
     </inferredMetricsTieBreakers>
 </document>
