@@ -247,7 +247,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     open func restoreSelectedTab(tab: Int?) {
-        let rootVC = window?.rootViewController as! TabBarViewController
+        let rootVC = window?.rootViewController as! UITabBarController
         if let selectedTab = tab {
             rootVC.selectedIndex = selectedTab
         } else {
@@ -586,12 +586,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // print("Opening settings")
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsViewController") as! OptionsTableViewController
-        let rootVC = window?.rootViewController as! TabBarViewController
+        let rootVC = window?.rootViewController as! UITabBarController
         // Set the selected index so you know what child will be on screen
         let index = getSelectedTab()
         rootVC.selectedIndex = index
 
-        let navVC = rootVC.children[index] as! NavigationViewController
+        let navVC = rootVC.children[index] as! UINavigationController
         navVC.pushViewController(optionsViewController, animated: true)
         // TableViewController.setAppearance(segment: index)
     }
@@ -600,12 +600,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // print("Opening Add view")
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let addViewController = storyBoard.instantiateViewController(withIdentifier: "addEditViewController") as! AddTableViewController
-        let rootVC = window?.rootViewController as! TabBarViewController
+        let rootVC = window?.rootViewController as! UITabBarController
         // Set the selected index so you know what child will be on screen
         let index = getSelectedTab()
         rootVC.selectedIndex = index
 
-        let navVC = rootVC.children[index] as! NavigationViewController
+        let navVC = rootVC.children[index] as! UINavigationController
         navVC.pushViewController(addViewController, animated: true)
         addViewController.editingSegment = index
         // TableViewController.setAppearance(segment: index)
