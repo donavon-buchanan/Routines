@@ -45,25 +45,25 @@ enum Themes: Int {
 
     // MARK: Save & Restore
 
-    static func restoreLastTheme() {
-        switchTo(theme: Themes(rawValue: Options.getThemeIndex())!)
-    }
+//    static func restoreLastTheme() {
+//        switchTo(theme: Themes(rawValue: Options.getThemeIndex())!)
+//    }
 
     // TODO: Get rid of this
-    static func saveLastTheme() {
-        let realmDispatchQueueLabel: String = "background"
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                do {
-                    try realm.write {
-                        options?.themeIndex = ThemeManager.currentThemeIndex
-                    }
-                } catch {
-                    // print("failed to save theme index")
-                }
-            }
-        }
-    }
+//    static func saveLastTheme() {
+//        let realmDispatchQueueLabel: String = "background"
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//                do {
+//                    try realm.write {
+//                        options?.themeIndex = ThemeManager.currentThemeIndex
+//                    }
+//                } catch {
+//                    // print("failed to save theme index")
+//                }
+//            }
+//        }
+//    }
 }
