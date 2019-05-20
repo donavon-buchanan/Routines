@@ -431,11 +431,7 @@ import RealmSwift
 //    }
 
     static func setSelectedIndex(index: Int) {
-        DispatchQueue.main.sync {
-            autoreleasepool {
-                UserDefaults.standard.set(index, forKey: AppStrings.selectedIndex)
-            }
-        }
+        UserDefaults.standard.set(index, forKey: AppStrings.selectedIndex)
     }
 
     static func getSelectedIndex() -> Int {
