@@ -16,7 +16,7 @@ class AutomaticDarkModeTableViewController: UITableViewController {
     @IBOutlet var automaticDarkModeSwitch: UISwitch!
     @IBAction func automaticDarkModeSwitchAction(_ sender: UISwitch) {
         Options.setAutomaticDarkModeStatus(sender.isOn)
-//        Options.automaticDarkModeCheck()
+
         perform(#selector(refreshUI), with: nil, afterDelay: 0.1)
     }
 
