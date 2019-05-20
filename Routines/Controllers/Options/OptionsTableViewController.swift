@@ -326,6 +326,7 @@ class OptionsTableViewController: UITableViewController {
                     return
                 }
                 self.refreshUI()
+                TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
                 guard self.pleaseWaitAlert != nil else { return }
                 self.perform(#selector(self.dismissWaitAlert), with: nil, afterDelay: 1)
             case let .error(error):
