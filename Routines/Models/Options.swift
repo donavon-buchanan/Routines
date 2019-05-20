@@ -80,8 +80,8 @@ import RealmSwift
     dynamic var autoDarkModeEndHour: Int = 7
     dynamic var autoDarkModeEndMinute: Int = 0
 
-    static func automaticDarkModeCheck() {
-        printDebug(#function + "")
+    static func automaticDarkModeCheck(function: String = #function) {
+        printDebug(#function + " called from: " + function)
         if Options.getAutomaticDarkModeStatus() {
             guard let startTime = Options.getAutomaticDarkModeStartTime() else { return }
             guard let endTime = Options.getAutomaticDarkModeEndTime() else { return }
@@ -120,7 +120,8 @@ import RealmSwift
         return Options.getDateFromComponents(hour: options.autoDarkModeEndHour, minute: options.autoDarkModeEndMinute)
     }
 
-    static func setAutomaticDarkModeStatus(_ isOn: Bool) {
+    static func setAutomaticDarkModeStatus(_ isOn: Bool, function: String = #function) {
+        printDebug(#function + " called from: " + function)
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -139,7 +140,8 @@ import RealmSwift
         }
     }
 
-    static func setAutomaticDarkModeStartTime(hour: Int, minute: Int) {
+    static func setAutomaticDarkModeStartTime(hour: Int, minute: Int, function: String = #function) {
+        printDebug(#function + " called from: " + function)
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -156,7 +158,8 @@ import RealmSwift
         }
     }
 
-    static func setAutomaticDarkModeEndTime(hour: Int, minute: Int) {
+    static func setAutomaticDarkModeEndTime(hour: Int, minute: Int, function: String = #function) {
+        printDebug(#function + " called from: " + function)
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
