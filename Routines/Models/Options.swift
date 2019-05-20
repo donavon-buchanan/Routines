@@ -400,34 +400,46 @@ import RealmSwift
         return timeString
     }
 
+//    static func setSelectedIndex(index: Int) {
+//        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+//                    do {
+//                        try realm.write {
+//                            options.selectedIndex = index
+//                        }
+//                    } catch {
+//                        fatalError("\(#function): failed to save index")
+//                    }
+//                }
+//            }
+//        }
+//    }
+//
+//    static func getSelectedIndex() -> Int {
+//        var index = 0
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+//                    index = options.selectedIndex
+//                }
+//            }
+//        }
+//        return index
+//    }
+
     static func setSelectedIndex(index: Int) {
-        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
+        DispatchQueue.main.sync {
             autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    do {
-                        try realm.write {
-                            options.selectedIndex = index
-                        }
-                    } catch {
-                        fatalError("\(#function): failed to save index")
-                    }
-                }
+                UserDefaults.standard.set(index, forKey: AppStrings.selectedIndex)
             }
         }
     }
 
     static func getSelectedIndex() -> Int {
-        var index = 0
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    index = options.selectedIndex
-                }
-            }
-        }
-        return index
+        return UserDefaults.standard.integer(forKey: AppStrings.selectedIndex)
     }
 }
 
