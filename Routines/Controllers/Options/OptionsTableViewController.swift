@@ -164,7 +164,8 @@ class OptionsTableViewController: UITableViewController {
             if darkModeSwtich.isEnabled {
                 darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
                 Options.setDarkMode(darkModeSwtich.isOn)
-                TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
+                // Shouldn't be necessary with the observation token
+                // TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
                 haptic.impactOccurred()
             }
         case 3:

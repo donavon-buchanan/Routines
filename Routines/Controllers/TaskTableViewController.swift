@@ -182,19 +182,19 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
 
-        observeOptions()
-        observeItems()
-
         printDebug(#function + " end")
     }
 
     @objc func appBecameActive() {
+        debugPrint(#function + " start")
+        observeOptions()
+        observeItems()
         // View loading funcs aren't always called when the app transitions from background to active
         // So this is to ensure that the UI refreshes
         Options.automaticDarkModeCheck()
-        if let segment = self.segment {
-            TaskTableViewController.setAppearance(forSegment: segment)
-        }
+        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
+
+        printDebug(#function + " end")
     }
 
     override func applicationFinishedRestoringState() {
@@ -214,6 +214,10 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 tableViewController.segment = index
             }
         }
+        // Avoids flashing screen glitch
+        // TODO: Restoration is loading all the views at once
+        printDebug("View loaded? - \(isViewLoaded)")
+        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
     }
 
     override func viewWillAppear(_: Bool) {
@@ -689,8 +693,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                     if change.name == "darkMode" {
                         if change.oldValue as? Bool != change.newValue as? Bool {
                             DispatchQueue.main.async {
-                                let currentIndex = ThemeManager.currentThemeIndex
-                                TaskTableViewController.setAppearance(forSegment: currentIndex)
+                                TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
                             }
                         }
                     }
