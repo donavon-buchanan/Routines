@@ -147,8 +147,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil)
 
-        // TODO: This won't be necessary with proper restore
-        // But we're going to leave it for now because I'm tired of breaking things. It's convoluted and redudant, but it's working
+        // This convoluted mess is needed because the tab bar controller returns some inane int value during restoration because viewDidLoad is called for all four tabs at once.
         if let tabBarController = tabBarController {
             if tabBarController.selectedIndex < 4 {
                 printDebug("tabBarController index < 4, setting to \(tabBarController.selectedIndex)")
@@ -162,7 +161,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 segment = 0
             }
         }
-        printDebug("If this shit's loading at all during restoring, print this")
         tableView.allowsMultipleSelectionDuringEditing = true
 
         tabBarController?.delegate = self
@@ -181,7 +179,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
-
         printDebug(#function + " end")
     }
 
