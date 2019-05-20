@@ -255,7 +255,9 @@ class OptionsTableViewController: UITableViewController {
     }
 
     func refreshUI() {
-        setUpUI(animated: true)
+        DispatchQueue.main.async {
+            self.setUpUI(animated: true)
+        }
     }
 
 //    func setAppearance(tab: Int) {

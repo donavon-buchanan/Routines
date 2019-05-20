@@ -69,6 +69,9 @@ import RealmSwift
                 }
             }
         }
+        DispatchQueue.main.async {
+            TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
+        }
     }
 
     dynamic var autoDarkMode: Bool = false
@@ -130,6 +133,9 @@ import RealmSwift
                     printDebug("\(#function): Error: \(error)")
                 }
             }
+        }
+        DispatchQueue.main.async {
+            Options.automaticDarkModeCheck()
         }
     }
 
