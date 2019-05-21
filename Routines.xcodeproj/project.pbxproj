@@ -14,6 +14,7 @@
 		F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3D02160A05600FF36D9 /* CustomTimesTableViewController.swift */; };
 		F81194F72267D8E0002E8E7A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F81194F62267D8E0002E8E7A /* StoreKit.framework */; };
 		F81194FB2267F875002E8E7A /* SKProductPriceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81194FA2267F875002E8E7A /* SKProductPriceExtension.swift */; };
+		F81224C8229417E400AEED90 /* SimulatorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81224C7229417E400AEED90 /* SimulatorData.swift */; };
 		F816DB342155CFBA009C6907 /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TaskTableViewController.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
 		F8352C53227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8352C52227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift */; };
@@ -136,6 +137,7 @@
 		F807D3D02160A05600FF36D9 /* CustomTimesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTimesTableViewController.swift; sourceTree = "<group>"; };
 		F81194F62267D8E0002E8E7A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		F81194FA2267F875002E8E7A /* SKProductPriceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKProductPriceExtension.swift; sourceTree = "<group>"; };
+		F81224C7229417E400AEED90 /* SimulatorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorData.swift; sourceTree = "<group>"; };
 		F816DB332155CFBA009C6907 /* TaskTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TaskTableViewController.swift; sourceTree = "<group>"; };
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
 		F8352C52227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticDarkModeTableViewController.swift; sourceTree = "<group>"; };
@@ -247,6 +249,7 @@
 				F8ACD4632269F89100E136E9 /* IAPHandler.swift */,
 				F8CE29C522714E9A00CD9BAE /* UIColorExtensions.swift */,
 				F8C3EC97228D673F0027AFEB /* UIImageExtension.swift */,
+				F81224C7229417E400AEED90 /* SimulatorData.swift */,
 			);
 			path = "Other Extensions";
 			sourceTree = "<group>";
@@ -652,6 +655,7 @@
 				F8E031862269C410002C2E32 /* AppStrings.swift in Sources */,
 				F8D5DB492269AC59005857F2 /* NetworkActivityIndicatorManager.swift in Sources */,
 				F81194FB2267F875002E8E7A /* SKProductPriceExtension.swift in Sources */,
+				F81224C8229417E400AEED90 /* SimulatorData.swift in Sources */,
 				F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */,
 				F896D96F22802E5B0005C899 /* AutomaticDarkModeTimer.swift in Sources */,
 				F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */,

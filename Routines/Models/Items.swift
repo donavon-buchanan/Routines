@@ -29,6 +29,15 @@ import UserNotifications
     // For syncing
     dynamic var isDeleted: Bool = false
 
+    required convenience init(title: String, segment: Int, repeats: Bool, notes: String?) {
+        self.init()
+        self.title = title
+        self.segment = segment
+        originalSegment = segment
+        self.repeats = repeats
+        self.notes = notes
+    }
+
     // Notification identifier
     dynamic var uuidString: String = UUID().uuidString
     override static func primaryKey() -> String? {
