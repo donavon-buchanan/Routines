@@ -1,0 +1,18 @@
+# safelist
+branches:
+  only:
+  - master
+
+before_install:
+  - pod repo update
+  - pod install
+install:
+  - bundle install
+script:
+  - fastlane screenshots
+language: swift
+os: osx
+osx_image: xcode10.2
+xcode_project: Routines.xcodeproj
+xcode_scheme: RoutinesUITests
+xcode_destination: platform=iOS Simulator,OS=12.1,name=iPhone X
