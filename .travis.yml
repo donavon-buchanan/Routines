@@ -10,7 +10,7 @@ install:
   - brew update
   - brew install ccache
   - export PATH="/usr/local/opt/ccache/libexec:$PATH"
-  cache:
+cache:
     - bundler
     - cocoapods
 script:
