@@ -2,12 +2,19 @@
 branches:
   only:
   - master
-
 before_install:
   - pod repo update
   - pod install
 install:
   - bundle install
+  - brew update
+  - brew install ccache
+  - export PATH="/usr/local/opt/ccache/libexec:$PATH"
+  cache:
+    - bundler
+    - cocoapods
+        directories:
+       - /home/travis/.rvm/
 script:
   - fastlane screenshots
 language: swift
