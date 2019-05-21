@@ -112,6 +112,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         observeItems()
+
+        #if targetEnvironment(simulator)
+            loadDefaultData()
+        #endif
+
         printDebug("\(#function) - End")
         return true
     }
