@@ -13,6 +13,9 @@ import SwiftTheme
 import SwiftyStoreKit
 import UIKit
 import UserNotifications
+#if targetEnvironment(simulator)
+    import SimulatorStatusMagic
+#endif
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -79,6 +82,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         printDebug("\(#function) - Start")
+
+        #if targetEnvironment(simulator)
+            SDStatusBarManager.sharedInstance()?.enableOverrides()
+        #endif
 
         application.setMinimumBackgroundFetchInterval(270)
 
