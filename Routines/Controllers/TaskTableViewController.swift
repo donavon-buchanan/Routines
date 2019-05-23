@@ -362,6 +362,20 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     @available(iOS 11.0, *)
     override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let itemSegment = items?[indexPath.row].segment
+        var nextColor: UIColor {
+            switch itemSegment {
+            case 1:
+                return UIColor(rgba: "#62a388", defaultColor: .blue)
+            case 2:
+                return UIColor(rgba: "#645be7", defaultColor: .blue)
+            case 3:
+                return UIColor(rgba: "#f47645", defaultColor: .blue)
+            default:
+                return UIColor(rgba: "#26baee", defaultColor: .blue)
+            }
+        }
+
         let completeAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
             self.completeItemAtIndex(at: indexPath)
             completion(true)
@@ -387,7 +401,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         completeAction.backgroundColor = UIColor(red: 0.30, green: 0.43, blue: 1.00, alpha: 1.00)
         snoozeAction.backgroundColor = .orange
         snoozeAction.image = UIImage(imageLiteralResourceName: "snooze")
-        nextSectionAction.backgroundColor = UIColor(rgba: "#26baee", defaultColor: .blue)
+        nextSectionAction.backgroundColor = nextColor
         nextSectionAction.image = UIImage(imageLiteralResourceName: "arrow-right")
         let actions = UISwipeActionsConfiguration(actions: [completeAction, snoozeAction, nextSectionAction])
         return actions
