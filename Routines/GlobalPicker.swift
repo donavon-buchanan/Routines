@@ -10,6 +10,13 @@ import SwiftTheme
 
 enum GlobalPicker {
     // TODO: Just set static colors and then fill in below
+    static let morningColorString = "#f47645"
+    static let afternoonColorString = "#26baee"
+    static let eveningColorString = "#62a388"
+    static let nightColorString = "#645be7"
+
+    static let primaryColor = UIColor(red: 0.30, green: 0.43, blue: 1.00, alpha: 1.00)
+    static let snoozeColor = UIColor(red: 1.00, green: 0.73, blue: 0.00, alpha: 1.00)
 
     static let backgroundColor: ThemeColorPicker = ["#fff", "#fff", "#fff", "#fff", "#000", "#000", "#000", "#000", "#000"]
     static let barTintColor: ThemeColorPicker = ["#fff", "#fff", "#fff", "#fff", "#000", "#000", "#000", "#000", "#000"]

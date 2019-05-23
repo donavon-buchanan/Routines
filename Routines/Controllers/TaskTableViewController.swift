@@ -383,8 +383,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         }
         // TODO: Image is not centered
         completeAction.image = UIImage(imageLiteralResourceName: "checkmark")
-        completeAction.backgroundColor = UIColor(red: 0.30, green: 0.43, blue: 1.00, alpha: 1.00)
-        snoozeAction.backgroundColor = .orange
+        completeAction.backgroundColor = GlobalPicker.primaryColor
+        snoozeAction.backgroundColor = GlobalPicker.snoozeColor
         snoozeAction.image = UIImage(imageLiteralResourceName: "snooze")
         nextSectionAction.backgroundColor = nextColor
         nextSectionAction.image = UIImage(imageLiteralResourceName: "arrow-right")
