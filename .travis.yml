@@ -10,6 +10,7 @@ install:
   - brew update
   - brew install ccache
   - export PATH="/usr/local/opt/ccache/libexec:$PATH"
+  - touch /Users/travis/build/donavon-buchanan/Routines/Routines/Other/AppSecrets.swift
 cache:
     - bundler
     - cocoapods
