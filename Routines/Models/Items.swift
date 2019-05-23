@@ -171,10 +171,10 @@ import UserNotifications
     }
 
     // Remove notifications for Item
-    func removeNotification(uuidStrings: [String]) {
-        let center = UNUserNotificationCenter.current()
-        center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
-    }
+//    func removeNotification(uuidStrings: [String]) {
+//        let center = UNUserNotificationCenter.current()
+//        center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
+//    }
 
     func removeNotification() {
         printDebug("Removing notification for id: \(uuidString)")

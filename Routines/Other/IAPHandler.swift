@@ -11,6 +11,17 @@ import SwiftyStoreKit
 import UIKit
 
 extension UIViewController {
+    #if targetEnvironment(simulator) || DEBUG
+        var sharedSecret: String {
+            return ""
+        }
+
+    #else
+        var sharedSecret: String {
+            return AppSecrets.sharedSecret
+        }
+    #endif
+
     func getInfo(purchase: RegisteredPurchase) {
         NetworkActivityIndicatorManager.networkOperationStarted()
         SwiftyStoreKit.retrieveProductsInfo([purchase.rawValue]) { result in

@@ -246,6 +246,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         fetchIAPInfo()
 
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+
         debugPrint(#function + " end")
     }
 

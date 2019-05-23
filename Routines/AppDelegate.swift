@@ -50,7 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     static func refreshNotifications() {
         printDebug(#function)
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
 
         let realm = try! Realm()
         let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
@@ -267,22 +266,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let selectedTab = tab {
             rootVC.selectedIndex = selectedTab
         } else {
-            rootVC.selectedIndex = getSelectedTab()
+            rootVC.selectedIndex = Options.getSelectedIndex()
         }
     }
 
-    func getSelectedTab() -> Int {
-        var selectedIndex = 0
-        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    selectedIndex = options.selectedIndex
-                }
-            }
-        }
-        return selectedIndex
-    }
+//    func getSelectedTab() -> Int {
+//        var selectedIndex = 0
+//        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+//                    selectedIndex = options.selectedIndex
+//                }
+//            }
+//        }
+//        return selectedIndex
+//    }
 
     // MARK: - Options Realm
 
@@ -604,9 +603,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsViewController") as! OptionsTableViewController
         let rootVC = window?.rootViewController as! UITabBarController
         // Set the selected index so you know what child will be on screen
-        let index = getSelectedTab()
+        let index = Options.getSelectedIndex()
         rootVC.selectedIndex = index
-
+        printDebug(#function + " segment \(index)")
         let navVC = rootVC.children[index] as! UINavigationController
         navVC.pushViewController(optionsViewController, animated: true)
         // TableViewController.setAppearance(segment: index)
@@ -618,9 +617,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let addViewController = storyBoard.instantiateViewController(withIdentifier: "addEditViewController") as! AddTableViewController
         let rootVC = window?.rootViewController as! UITabBarController
         // Set the selected index so you know what child will be on screen
-        let index = getSelectedTab()
+        let index = Options.getSelectedIndex()
         rootVC.selectedIndex = index
-
+        printDebug(#function + " segment \(index)")
         let navVC = rootVC.children[index] as! UINavigationController
         navVC.pushViewController(addViewController, animated: true)
         addViewController.editingSegment = index

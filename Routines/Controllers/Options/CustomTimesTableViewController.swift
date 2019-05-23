@@ -333,29 +333,29 @@ class CustomTimesTableViewController: UITableViewController {
         return enabled
     }
 
-    func getSelectedTab() -> Int {
-        var selectedIndex = 0
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    selectedIndex = options.selectedIndex
-                }
-            }
-        }
-        return selectedIndex
-    }
-
-    func getDarkModeStatus() -> Bool {
-        var darkMode = false
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    darkMode = options.darkMode
-                }
-            }
-        }
-        return darkMode
-    }
+//    func getSelectedTab() -> Int {
+//        var selectedIndex = 0
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+//                    selectedIndex = options.selectedIndex
+//                }
+//            }
+//        }
+//        return selectedIndex
+//    }
+//
+//    func getDarkModeStatus() -> Bool {
+//        var darkMode = false
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+//                    darkMode = options.darkMode
+//                }
+//            }
+//        }
+//        return darkMode
+//    }
 }
