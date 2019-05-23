@@ -346,21 +346,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         return true
     }
 
-    override func tableView(_: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let completeAction = UITableViewRowAction(style: .destructive, title: "Complete") { _, indexPath in
-            self.completeItemAtIndex(at: indexPath)
-        }
-
-        let snoozeAction = UITableViewRowAction(style: .default, title: "Snooze") { _, indexPath in
-            self.snoozeItem(indexPath: indexPath)
-        }
-
-        completeAction.backgroundColor = UIColor(red: 0.38, green: 0.70, blue: 0.22, alpha: 1.00)
-        snoozeAction.backgroundColor = UIColor.orange
-        return [completeAction, snoozeAction]
-    }
-
-    @available(iOS 11.0, *)
     override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let itemSegment = items?[indexPath.row].segment
         var nextColor: UIColor {
@@ -407,7 +392,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         return actions
     }
 
-    @available(iOS 11.0, *)
     override func tableView(_: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
             completion(self.deleteAlert(indexPath))

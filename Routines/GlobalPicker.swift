@@ -9,6 +9,8 @@
 import SwiftTheme
 
 enum GlobalPicker {
+    // TODO: Just set static colors and then fill in below
+
     static let backgroundColor: ThemeColorPicker = ["#fff", "#fff", "#fff", "#fff", "#000", "#000", "#000", "#000", "#000"]
     static let barTintColor: ThemeColorPicker = ["#fff", "#fff", "#fff", "#fff", "#000", "#000", "#000", "#000", "#000"]
     static let tabBarTintColor: ThemeColorPicker = ["#fff", "#fff", "#fff", "#fff", "#000", "#000", "#000", "#000", "#000"]

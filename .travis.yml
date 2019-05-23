@@ -13,8 +13,9 @@ install:
 cache:
     - bundler
     - cocoapods
-script:
-  - fastlane screenshots
+# I don't think it's necessary for travis to do screenshots right now
+#script:
+#  - fastlane screenshots
 language: swift
 os: osx
 osx_image: xcode10.2
