@@ -1,18 +1,24 @@
-# safelist
 branches:
   only:
   - master
 before_install:
-  - pod install --repo-update
+- pod install --repo-update
 install:
-  - bundle install
-  - touch /Users/travis/build/donavon-buchanan/Routines/Routines/Other/AppSecrets.swift
-# I don't think it's necessary for travis to do screenshots right now
-#script:
-#  - fastlane screenshots
+- bundle install
+- touch /Users/travis/build/donavon-buchanan/Routines/Routines/Other/AppSecrets.swift
 language: swift
 os: osx
 osx_image: xcode10.2
 xcode_project: Routines.xcodeproj
 xcode_scheme: RoutinesUITests
 xcode_destination: platform=iOS Simulator,OS=12.2,name=iPhone X
+script:
+- fastlane screenshots
+deploy:
+  provider: s3
+  bucket: routines.donavon.app
+  skip_cleanup: true
+  region: us-east-1
+  local_dir: screenshots
+dd:
+  secure: SB9h2kYk5isnbcndBqpg++PM1Sb7eJnureOZDVScRwjVfYTIa+WyzLdH7APA6GhAticbGaJ1khHTHKgc+ij00nNLamEn7tsGt/jvT4t966RQV+8LFWumQCYcOKh2M+XmsW0uG8CZ6RuEQFhcvAvHYNzVr7Dr0ELFshX8+tFH9IU1fSa9IGlakv3P17I10a17yPtPz4KSKvqQCu6Sxh5rjoTCNuKftvMYNpRzkTneScEqeWusNVLdvdaTkPACgY6+qsmxkQhFoWT5DOVHrKdqkARgwMmqQrNE7p7azuPKcq0i2NilV0ugNfUhGHn1k4xadqGyvC+zda+T8wRMialUTSSwgIQMB9cGz6MzHrDfYycDut1O3hlwh4nLE1Jmbg+4h+rBqsHottwgX6n8Xf3qPSG8CUqm97g0VGKWQy/iJ1mIk59eZvfw5V0Ncxd6CkCPEVgcxzdnx/Fb1macR30GLGKA8/r2mkFe3AM7os+QOZZ5i/w3dhfK7Biwnxxl5zxJYLhvfvCOPd5/nF0tShlwCgUdXvysIANPbtoKdLlTUG85FK1E8Nv0mVSPPgkSaPPopylPUNf4mQdfBMGTNaoqY5BWwIHHAHorlFkUl2VdIoFDmynK4ZLYhlKJbrTDARKbHfsm7+gH+9X0Xb/n3qxLhw8cX0KKoHGj8NBm42xAfFA=
