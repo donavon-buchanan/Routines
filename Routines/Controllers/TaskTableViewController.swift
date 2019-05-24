@@ -291,10 +291,14 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TaskTableViewCell
-        let segment = items?[indexPath.row].segment
-        let cellTitle: String = (items?[indexPath.row].title)!
+
+        // Realm occasionally throws an error here. Use guard to return early if the item no-longer exist.
+        guard let item = items?[indexPath.row] else { return cell }
+
+        let segment = item.segment
+        let cellTitle: String = item.title!
         var cellSubtitle: String? {
-            if let subtitle = self.items?[indexPath.row].notes {
+            if let subtitle = item.notes {
                 if subtitle.count > 0 {
                     return subtitle
                 } else {
@@ -305,7 +309,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             }
         }
         var repeatLabel: String {
-            if (items?[indexPath.row].repeats)! {
+            if item.repeats {
                 return "Repeats Daily"
             } else {
                 return ""
