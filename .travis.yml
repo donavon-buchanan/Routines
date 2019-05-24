@@ -15,4 +15,4 @@ os: osx
 osx_image: xcode10.2
 xcode_project: Routines.xcodeproj
 xcode_scheme: RoutinesUITests
-xcode_destination: platform=iOS Simulator,OS=12.1,name=iPhone X
+xcode_destination: platform=iOS Simulator,OS=12.2,name=iPhone X
