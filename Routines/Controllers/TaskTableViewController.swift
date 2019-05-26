@@ -305,13 +305,37 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     override func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var firstSectionCount: Int {
+            if let incompleteItems = self.incompleteItems {
+                if incompleteItems.count > 0 {
+                    return incompleteItems.count
+                } else {
+                    return 1
+                }
+            } else {
+                return 1
+            }
+        }
+
+        var secondSectionCount: Int {
+            if let completedItems = self.completedItems {
+                if completedItems.count > 0 {
+                    return completedItems.count
+                } else {
+                    return 1
+                }
+            } else {
+                return 1
+            }
+        }
+
         switch section {
         case 0:
-            return incompleteItems?.count ?? 0
+            return firstSectionCount
         case 1:
-            return completedItems?.count ?? 0
+            return secondSectionCount
         default:
-            return 0
+            return 1
         }
     }
 
@@ -319,6 +343,65 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TaskTableViewCell
 
         let allItems = [incompleteItems, completedItems]
+
+        var todayTimePeriodString: String {
+            if linesBarButtonSelected {
+                return "for the day"
+            } else {
+                switch self.segment {
+                case 0:
+                    return "this morning"
+                case 1:
+                    return "this afternoon"
+                case 2:
+                    return "this evening"
+                case 3:
+                    return "tonight"
+                default:
+                    return ""
+                }
+            }
+        }
+
+        var tomorrowTimePeriodString: String {
+            if linesBarButtonSelected {
+                return "for tomorrow"
+            } else {
+                switch self.segment {
+                case 0:
+                    return "tomorrow morning"
+                case 1:
+                    return "tomorrow afternoon"
+                case 2:
+                    return "tomorrow evening"
+                case 3:
+                    return "tomorrow night"
+                default:
+                    return ""
+                }
+            }
+        }
+
+        if indexPath.section == 0 {
+            if incompleteItems?.isEmpty ?? false {
+                cell.cellTitleLabel.text = "No nore tasks \(todayTimePeriodString)"
+                cell.cellSubtitleLabel.text = nil
+                cell.repeatLabel.text = nil
+                cell.cellTitleLabel.textColor = .lightText
+                cell.accessoryType = .none
+                return cell
+            }
+        } else if indexPath.section == 1 {
+            if completedItems?.isEmpty ?? false {
+                cell.cellTitleLabel.text = "No tasks \(tomorrowTimePeriodString)"
+                cell.cellSubtitleLabel.text = nil
+                cell.repeatLabel.text = nil
+                cell.cellTitleLabel.textColor = .lightText
+                cell.accessoryType = .none
+                return cell
+            }
+        }
+
         // Realm occasionally throws an error here. Use guard to return early if the item no-longer exist.
         guard let item = allItems[indexPath.section]?[indexPath.row] else { return cell }
 
@@ -448,10 +531,30 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     override func shouldPerformSegue(withIdentifier identifier: String, sender _: Any?) -> Bool {
         if identifier == "editSegue" {
+            guard let indexPath = tableView.indexPathForSelectedRow else { return false }
+
             if tableView.isEditing {
                 return false
             } else {
-                return true
+                switch indexPath.section {
+                case 0:
+                    if incompleteItems?.isEmpty ?? false {
+                        tableView.deselectRow(at: indexPath, animated: true)
+                        return false
+                    } else {
+                        return true
+                    }
+                case 1:
+                    if completedItems?.isEmpty ?? false {
+                        tableView.deselectRow(at: indexPath, animated: true)
+                        return false
+                    } else {
+                        return true
+                    }
+                default:
+                    tableView.deselectRow(at: indexPath, animated: true)
+                    return false
+                }
             }
         } else {
             return true
@@ -543,6 +646,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
+        guard let indexPath = tableView.indexPathForSelectedRow else { return }
+
         if segue.identifier == "addSegue" {
             let navVC = segue.destination as! UINavigationController
             let destination = navVC.topViewController as! AddTableViewController
@@ -558,14 +663,19 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             let destination = navVC.topViewController as! AddTableViewController
 
             // pass in current item
-            if let indexPath = tableView.indexPathForSelectedRow {
-                destination.item = incompleteItems?[indexPath.row]
+            switch indexPath.section {
+            case 0:
+                guard let item = incompleteItems?[indexPath.row] else { return }
+                destination.item = item
+            case 1:
+                guard let item = completedItems?[indexPath.row] else { return }
+                destination.item = item
+            default:
+                return
             }
         }
 
-        if let indexPath = tableView.indexPathForSelectedRow {
-            tableView.deselectRow(at: indexPath, animated: false)
-        }
+        tableView.deselectRow(at: indexPath, animated: false)
     }
 
     // MARK: - Model Manipulation Methods
