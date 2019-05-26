@@ -29,13 +29,17 @@ import UserNotifications
     // For syncing
     dynamic var isDeleted: Bool = false
 
-    required convenience init(title: String, segment: Int, repeats: Bool, notes: String?) {
+    required convenience init(title: String, segment: Int, priority _: Int, repeats: Bool, notes: String?) {
         self.init()
         self.title = title
         self.segment = segment
         originalSegment = segment
         self.repeats = repeats
         self.notes = notes
+        // If the time period has already passed for today, set it as complete so it shows in the upcoming section
+        if segment < Options.getCurrentSegmentFromTime() {
+            completeUntil = Date().startOfNextDay
+        }
     }
 
     // Notification identifier
@@ -95,7 +99,7 @@ import UserNotifications
                     let realm = try! Realm()
                     do {
                         try realm.write {
-                            self.segment = originalSegment
+                            self.segment = self.originalSegment
                             self.completeUntil = Date().startOfNextDay
                             self.dateModified = Date()
                         }
@@ -107,6 +111,42 @@ import UserNotifications
             }
         }
         AppDelegate.refreshNotifications()
+    }
+
+    static func batchComplete(itemArray: [Items]) {
+        var itemsToComplete: [Items] = []
+        var itemsToSoftDelete: [Items] = []
+        printDebug(#function)
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                itemArray.forEach { item in
+                    if item.repeats {
+                        itemsToComplete.append(item)
+                    } else {
+                        itemsToSoftDelete.append(item)
+                    }
+                }
+
+                /* It would make sense to make use of the batch delete func
+                 But we need to keep this all in the same write commit block
+                 */
+                let realm = try! Realm()
+                do {
+                    realm.beginWrite()
+                    itemsToSoftDelete.forEach { item in
+                        item.isDeleted = true
+                    }
+                    itemsToComplete.forEach { item in
+                        item.segment = item.originalSegment
+                        item.completeUntil = Date().startOfNextDay
+                        item.dateModified = Date()
+                    }
+                    try realm.commitWrite()
+                } catch {
+                    fatalError("\(#function) failed with error: \(error)")
+                }
+            }
+        }
     }
 
     // MARK: - iCloud Sync
@@ -127,6 +167,24 @@ import UserNotifications
                 }
             }
             // print("softDelete completed")
+        }
+    }
+
+    static func batchSoftDelete(itemArray: [Items]) {
+        printDebug(#function)
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                do {
+                    realm.beginWrite()
+                    itemArray.forEach { item in
+                        item.isDeleted = true
+                    }
+                    try realm.commitWrite()
+                } catch {
+                    fatalError("\(#function) failed with error: \(error)")
+                }
+            }
         }
     }
 

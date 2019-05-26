@@ -168,7 +168,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         footerView.backgroundColor = .clear
         tableView.tableFooterView = footerView
-        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+        //tableView.theme_backgroundColor = GlobalPicker.backgroundColor
 
         //        setViewBackgroundGraphic(enabled: true)
 
@@ -179,6 +179,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
+
         printDebug(#function + " end")
     }
 
@@ -309,10 +310,14 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             }
         }
         var repeatLabel: String {
-            if item.repeats {
-                return "Repeats Daily"
+            if item.completeUntil < Date().endOfDay {
+                if item.repeats {
+                    return "Repeats Daily"
+                } else {
+                    return ""
+                }
             } else {
-                return ""
+                return "Repeats Tomorrow"
             }
         }
 
@@ -342,6 +347,12 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         cell.cellTitleLabel?.text = cellTitle
         cell.cellSubtitleLabel?.text = cellSubtitle
+
+        if item.completeUntil > Date().endOfDay {
+            cell.cellTitleLabel.textColor = .lightGray
+            cell.cellSubtitleLabel.textColor = .lightGray
+            cell.repeatLabel.textColor = .lightGray
+        }
 
         return cell
     }
@@ -378,6 +389,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             }
         }
         let nextSectionAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
+            printDebug("\(#function) - indexPath: \(String(describing: indexPath))")
             self.moveItemToNext(indexPath: indexPath)
             if !self.linesBarButtonSelected {
                 completion(true)
@@ -385,14 +397,22 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 completion(false)
             }
         }
-        // TODO: Image is not centered
+
         completeAction.image = UIImage(imageLiteralResourceName: "checkmark")
         completeAction.backgroundColor = GlobalPicker.primaryColor
         snoozeAction.backgroundColor = GlobalPicker.snoozeColor
         snoozeAction.image = UIImage(imageLiteralResourceName: "snooze")
         nextSectionAction.backgroundColor = nextColor
         nextSectionAction.image = UIImage(imageLiteralResourceName: "arrow-right")
-        let actions = UISwipeActionsConfiguration(actions: [completeAction, snoozeAction, nextSectionAction])
+
+        var arrayOfActions: [UIContextualAction] = []
+        if item.completeUntil < Date().endOfDay {
+            arrayOfActions = [completeAction, snoozeAction, nextSectionAction]
+        } else {
+            arrayOfActions = [nextSectionAction]
+        }
+
+        let actions = UISwipeActionsConfiguration(actions: arrayOfActions)
         return actions
     }
 
@@ -422,10 +442,14 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     @objc private func clearAll() {
-        items?.forEach { item in
-            // TODO: Might be better to just grab a whole filtered list and then delete from there
-            item.completeItem()
+        var itemAray: [Items] = []
+
+        if let incompleteItems = incompleteItems {
+            itemAray.append(contentsOf: incompleteItems)
         }
+
+        Items.batchComplete(itemArray: itemAray)
+
         endEdit()
         resetTableView()
         changeTabBar(hidden: false, animated: true)
@@ -434,7 +458,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     // TODO: Do this for completing items too
     @objc func deleteSelectedRows() {
         var itemCount: Int {
-            if let items = self.items {
+            if let items = self.incompleteItems, let completedItems = self.completedItems {
+                return items.count + completedItems.count
+            } else if let items = self.incompleteItems {
                 return items.count
             } else {
                 return 0
@@ -448,25 +474,35 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             }
         }
 
+        var itemsToDelete: [Items] = []
+
         if selectedCount != 0 {
             if let indexPaths = self.tableView.indexPathsForSelectedRows {
                 var itemArray: [Items] = []
                 indexPaths.forEach { indexPath in
                     // The index paths are static during enumeration, but the item indexes are not
                     // Add them to an array first, delete only what's in the array, and then update the table UI
-                    if let itemAtIndex = self.items?[indexPath.row] {
+                    if let itemAtIndex = self.incompleteItems?[indexPath.row] {
                         itemArray.append(itemAtIndex)
+                    }
+                    if let completedItemAtIndex = self.completedItems?[indexPath.row] {
+                        itemArray.append(completedItemAtIndex)
                     }
                 }
 
                 itemArray.forEach { item in
-                    item.softDelete()
+                    itemsToDelete.append(item)
                 }
+                Items.batchSoftDelete(itemArray: itemsToDelete)
             }
         } else if selectedCount == 0, itemCount != 0 {
-            items?.forEach { item in
-                item.softDelete()
+            incompleteItems?.forEach { item in
+                itemsToDelete.append(item)
             }
+            completedItems?.forEach { item in
+                itemsToDelete.append(item)
+            }
+            Items.batchSoftDelete(itemArray: itemsToDelete)
             endEdit()
             resetTableView()
             changeTabBar(hidden: false, animated: true)
@@ -532,7 +568,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     func completeItemAtIndex(at indexPath: IndexPath) {
         if let item = items?[indexPath.row] {
             item.completeItem()
-            //            updateBadge()
         }
     }
 
@@ -676,12 +711,11 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     deinit {
         printDebug("\(#function) called. Tokens invalidated")
         notificationToken?.invalidate()
-        debugOptionsToken?.invalidate()
         optionsToken?.invalidate()
     }
 
     // var options: Options = Options()
-    var debugOptionsToken: NotificationToken?
+    // var debugOptionsToken: NotificationToken?
     var optionsToken: NotificationToken?
 
     func observeOptions() {
