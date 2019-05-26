@@ -720,6 +720,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // TableView
         let tableViewUI = UITableView.appearance()
         tableViewUI.theme_separatorColor = GlobalPicker.cellSeparator
+        tableViewUI.theme_backgroundColor = GlobalPicker.cellBackground
 
         // switches
         let switchUI = UISwitch.appearance()

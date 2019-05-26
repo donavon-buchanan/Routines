@@ -168,7 +168,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         footerView.backgroundColor = .clear
         tableView.tableFooterView = footerView
-        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+        //tableView.theme_backgroundColor = GlobalPicker.backgroundColor
 
         //        setViewBackgroundGraphic(enabled: true)
 
@@ -293,15 +293,29 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         return 2
     }
 
-    override func tableView(_: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 0:
-            return "Today"
-        case 1:
-            return "Upcoming"
-        default:
-            return nil
+//    override func tableView(_: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        switch section {
+//        case 0:
+//            return "Today"
+//        case 1:
+//            return "Upcoming"
+//        default:
+//            return nil
+//        }
+//    }
+
+    override func tableView(_: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 1 {
+            return 64
+        } else {
+            return 0
         }
+    }
+
+    override func tableView(_: UITableView, viewForHeaderInSection _: Int) -> UIView? {
+        let view = UIView()
+        view.theme_backgroundColor = GlobalPicker.backgroundColor
+        return view
     }
 
     override func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -419,10 +433,14 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             }
         }
         var repeatLabel: String {
-            if item.repeats {
-                return "Repeats Daily"
+            if item.completeUntil < Date().endOfDay {
+                if item.repeats {
+                    return "Repeats Daily"
+                } else {
+                    return ""
+                }
             } else {
-                return ""
+                return "Repeats Tomorrow"
             }
         }
 
