@@ -310,10 +310,10 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 if incompleteItems.count > 0 {
                     return incompleteItems.count
                 } else {
-                    return 1
+                    return 0
                 }
             } else {
-                return 1
+                return 0
             }
         }
 
@@ -322,10 +322,10 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 if completedItems.count > 0 {
                     return completedItems.count
                 } else {
-                    return 1
+                    return 0
                 }
             } else {
-                return 1
+                return 0
             }
         }
 
@@ -335,7 +335,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         case 1:
             return secondSectionCount
         default:
-            return 1
+            return 0
         }
     }
 
@@ -344,63 +344,63 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         let allItems = [incompleteItems, completedItems]
 
-        var todayTimePeriodString: String {
-            if linesBarButtonSelected {
-                return "for the day"
-            } else {
-                switch self.segment {
-                case 0:
-                    return "this morning"
-                case 1:
-                    return "this afternoon"
-                case 2:
-                    return "this evening"
-                case 3:
-                    return "tonight"
-                default:
-                    return ""
-                }
-            }
-        }
-
-        var tomorrowTimePeriodString: String {
-            if linesBarButtonSelected {
-                return "for tomorrow"
-            } else {
-                switch self.segment {
-                case 0:
-                    return "tomorrow morning"
-                case 1:
-                    return "tomorrow afternoon"
-                case 2:
-                    return "tomorrow evening"
-                case 3:
-                    return "tomorrow night"
-                default:
-                    return ""
-                }
-            }
-        }
-
-        if indexPath.section == 0 {
-            if incompleteItems?.isEmpty ?? false {
-                cell.cellTitleLabel.text = "No nore tasks \(todayTimePeriodString)"
-                cell.cellSubtitleLabel.text = nil
-                cell.repeatLabel.text = nil
-                cell.cellTitleLabel.textColor = .lightText
-                cell.accessoryType = .none
-                return cell
-            }
-        } else if indexPath.section == 1 {
-            if completedItems?.isEmpty ?? false {
-                cell.cellTitleLabel.text = "No tasks \(tomorrowTimePeriodString)"
-                cell.cellSubtitleLabel.text = nil
-                cell.repeatLabel.text = nil
-                cell.cellTitleLabel.textColor = .lightText
-                cell.accessoryType = .none
-                return cell
-            }
-        }
+//        var todayTimePeriodString: String {
+//            if linesBarButtonSelected {
+//                return "for the day"
+//            } else {
+//                switch self.segment {
+//                case 0:
+//                    return "this morning"
+//                case 1:
+//                    return "this afternoon"
+//                case 2:
+//                    return "this evening"
+//                case 3:
+//                    return "tonight"
+//                default:
+//                    return ""
+//                }
+//            }
+//        }
+//
+//        var tomorrowTimePeriodString: String {
+//            if linesBarButtonSelected {
+//                return "for tomorrow"
+//            } else {
+//                switch self.segment {
+//                case 0:
+//                    return "tomorrow morning"
+//                case 1:
+//                    return "tomorrow afternoon"
+//                case 2:
+//                    return "tomorrow evening"
+//                case 3:
+//                    return "tomorrow night"
+//                default:
+//                    return ""
+//                }
+//            }
+//        }
+//
+//        if indexPath.section == 0 {
+//            if incompleteItems?.isEmpty ?? false {
+//                cell.cellTitleLabel.text = "No nore tasks \(todayTimePeriodString)"
+//                cell.cellSubtitleLabel.text = nil
+//                cell.repeatLabel.text = nil
+//                cell.cellTitleLabel.textColor = .lightGray
+//                cell.accessoryType = .none
+//                return cell
+//            }
+//        } else if indexPath.section == 1 {
+//            if completedItems?.isEmpty ?? false {
+//                cell.cellTitleLabel.text = "No tasks \(tomorrowTimePeriodString)"
+//                cell.cellSubtitleLabel.text = nil
+//                cell.repeatLabel.text = nil
+//                cell.cellTitleLabel.textColor = .lightGray
+//                cell.accessoryType = .none
+//                return cell
+//            }
+//        }
 
         // Realm occasionally throws an error here. Use guard to return early if the item no-longer exist.
         guard let item = allItems[indexPath.section]?[indexPath.row] else { return cell }
@@ -452,6 +452,12 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         cell.cellTitleLabel?.text = cellTitle
         cell.cellSubtitleLabel?.text = cellSubtitle
+
+        if item.completeUntil > Date().endOfDay {
+            cell.cellTitleLabel.textColor = .lightGray
+            cell.cellSubtitleLabel.textColor = .lightGray
+            cell.repeatLabel.textColor = .lightGray
+        }
 
         return cell
     }
@@ -566,10 +572,14 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     @objc private func clearAll() {
-        incompleteItems?.forEach { item in
-            // TODO: Might be better to just grab a whole filtered list and then delete from there
-            item.completeItem()
+        var itemAray: [Items] = []
+
+        if let incompleteItems = incompleteItems {
+            itemAray.append(contentsOf: incompleteItems)
         }
+
+        Items.batchComplete(itemArray: itemAray)
+
         endEdit()
         resetTableView()
         changeTabBar(hidden: false, animated: true)
@@ -594,6 +604,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             }
         }
 
+        var itemsToDelete: [Items] = []
+
         if selectedCount != 0 {
             if let indexPaths = self.tableView.indexPathsForSelectedRows {
                 var itemArray: [Items] = []
@@ -609,16 +621,18 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 }
 
                 itemArray.forEach { item in
-                    item.softDelete()
+                    itemsToDelete.append(item)
                 }
+                Items.batchSoftDelete(itemArray: itemsToDelete)
             }
         } else if selectedCount == 0, itemCount != 0 {
             incompleteItems?.forEach { item in
-                item.softDelete()
+                itemsToDelete.append(item)
             }
             completedItems?.forEach { item in
-                item.softDelete()
+                itemsToDelete.append(item)
             }
+            Items.batchSoftDelete(itemArray: itemsToDelete)
             endEdit()
             resetTableView()
             changeTabBar(hidden: false, animated: true)
@@ -826,9 +840,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         // https://github.com/realm/realm-cocoa/issues/6152
         let sectionedNotificationTokenBlock = SectionedNotificationTokenBlock { changes in
             self.tableView.performBatchUpdates({
-                self.tableView.insertRows(at: changes.insertions, with: .automatic)
+                self.tableView.insertRows(at: changes.insertions, with: .right)
                 self.tableView.reloadRows(at: changes.modifications, with: .automatic)
-                self.tableView.deleteRows(at: changes.deletions, with: .automatic)
+                self.tableView.deleteRows(at: changes.deletions, with: .left)
             })
         }
         incompleteItemsNotificationToken = incompleteItems?.observe(sectionedNotificationTokenBlock.block(forSection: 0, initialBlock: {
