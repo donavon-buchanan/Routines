@@ -107,7 +107,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     @IBAction func longPressToEdit(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
-            if let count = items?.count {
+            if let count = incompleteItems?.count {
                 if count > 0 {
                     if !tableView.isEditing {
                         setEditing()
@@ -179,6 +179,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
+
         printDebug(#function + " end")
     }
 
@@ -267,9 +268,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     //
     //    func setTabBarTitles() {
-    //        if let tabBarItems = self.tabBarController?.tabBar.items {
-    //            let items = tabBarItems.enumerated().map { ($0, $1) }
-    //            items.forEach { index, item in
+    //        if let tabBarItems = self.tabBarController?.tabBar.incompleteItems {
+    //            let incompleteItems = tabBarItems.enumerated().map { ($0, $1) }
+    //            incompleteItems.forEach { index, item in
     //                item.title = returnTitle(forSegment: index)
     //            }
     //        }
@@ -282,18 +283,44 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     // MARK: - Table view data source
 
     override func numberOfSections(in _: UITableView) -> Int {
-        return 1
+//        guard let completedItems = self.completedItems else { return 1 }
+//        // guard let incompleteItems = self.incompleteItems else { return 1 }
+//        if completedItems.isEmpty {
+//            return 1
+//        } else {
+//            return 2
+//        }
+        return 2
     }
 
-    override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        return items?.count ?? 0
+    override func tableView(_: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "Today"
+        case 1:
+            return "Upcoming"
+        default:
+            return nil
+        }
+    }
+
+    override func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return incompleteItems?.count ?? 0
+        case 1:
+            return completedItems?.count ?? 0
+        default:
+            return 0
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TaskTableViewCell
 
+        let allItems = [incompleteItems, completedItems]
         // Realm occasionally throws an error here. Use guard to return early if the item no-longer exist.
-        guard let item = items?[indexPath.row] else { return cell }
+        guard let item = allItems[indexPath.section]?[indexPath.row] else { return cell }
 
         let segment = item.segment
         let cellTitle: String = item.title!
@@ -351,7 +378,12 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let itemSegment = items?[indexPath.row].segment
+        let allItems = [incompleteItems, completedItems]
+
+        let item = allItems[indexPath.section]![indexPath.row]
+
+        let itemSegment = item.segment
+
         var nextColor: UIColor {
             switch itemSegment {
             case 1:
@@ -378,6 +410,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             }
         }
         let nextSectionAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
+            printDebug("\(#function) - indexPath: \(String(describing: indexPath))")
             self.moveItemToNext(indexPath: indexPath)
             if !self.linesBarButtonSelected {
                 completion(true)
@@ -385,14 +418,22 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 completion(false)
             }
         }
-        // TODO: Image is not centered
+
         completeAction.image = UIImage(imageLiteralResourceName: "checkmark")
         completeAction.backgroundColor = GlobalPicker.primaryColor
         snoozeAction.backgroundColor = GlobalPicker.snoozeColor
         snoozeAction.image = UIImage(imageLiteralResourceName: "snooze")
         nextSectionAction.backgroundColor = nextColor
         nextSectionAction.image = UIImage(imageLiteralResourceName: "arrow-right")
-        let actions = UISwipeActionsConfiguration(actions: [completeAction, snoozeAction, nextSectionAction])
+
+        var arrayOfActions: [UIContextualAction] = []
+        if item.completeUntil < Date().endOfDay {
+            arrayOfActions = [completeAction, snoozeAction, nextSectionAction]
+        } else {
+            arrayOfActions = [nextSectionAction]
+        }
+
+        let actions = UISwipeActionsConfiguration(actions: arrayOfActions)
         return actions
     }
 
@@ -422,7 +463,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     @objc private func clearAll() {
-        items?.forEach { item in
+        incompleteItems?.forEach { item in
             // TODO: Might be better to just grab a whole filtered list and then delete from there
             item.completeItem()
         }
@@ -434,7 +475,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     // TODO: Do this for completing items too
     @objc func deleteSelectedRows() {
         var itemCount: Int {
-            if let items = self.items {
+            if let items = self.incompleteItems, let completedItems = self.completedItems {
+                return items.count + completedItems.count
+            } else if let items = self.incompleteItems {
                 return items.count
             } else {
                 return 0
@@ -454,8 +497,11 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 indexPaths.forEach { indexPath in
                     // The index paths are static during enumeration, but the item indexes are not
                     // Add them to an array first, delete only what's in the array, and then update the table UI
-                    if let itemAtIndex = self.items?[indexPath.row] {
+                    if let itemAtIndex = self.incompleteItems?[indexPath.row] {
                         itemArray.append(itemAtIndex)
+                    }
+                    if let completedItemAtIndex = self.completedItems?[indexPath.row] {
+                        itemArray.append(completedItemAtIndex)
                     }
                 }
 
@@ -464,7 +510,10 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 }
             }
         } else if selectedCount == 0, itemCount != 0 {
-            items?.forEach { item in
+            incompleteItems?.forEach { item in
+                item.softDelete()
+            }
+            completedItems?.forEach { item in
                 item.softDelete()
             }
             endEdit()
@@ -510,7 +559,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
             // pass in current item
             if let indexPath = tableView.indexPathForSelectedRow {
-                destination.item = items?[indexPath.row]
+                destination.item = incompleteItems?[indexPath.row]
             }
         }
 
@@ -523,27 +572,44 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     // Override empty delete func from super
     func softDeleteAtIndex(at indexPath: IndexPath) {
-        if let item = items?[indexPath.row] {
-            item.softDelete()
-            //            updateBadge()
+        switch indexPath.section {
+        case 0:
+            if let item = incompleteItems?[indexPath.row] {
+                item.softDelete()
+            }
+        case 1:
+            if let item = completedItems?[indexPath.row] {
+                item.softDelete()
+            }
+        default:
+            return
         }
     }
 
     func completeItemAtIndex(at indexPath: IndexPath) {
-        if let item = items?[indexPath.row] {
+        if let item = incompleteItems?[indexPath.row] {
             item.completeItem()
-            //            updateBadge()
         }
     }
 
     func snoozeItem(indexPath: IndexPath) {
-        guard let item = items?[indexPath.row] else { return }
+        guard let item = incompleteItems?[indexPath.row] else { return }
         item.snooze()
     }
 
     func moveItemToNext(indexPath: IndexPath) {
-        guard let item = items?[indexPath.row] else { return }
-        item.moveToNextSegment()
+        switch indexPath.section {
+        case 0:
+            if let item = incompleteItems?[indexPath.row] {
+                item.moveToNextSegment()
+            }
+        case 1:
+            if let item = completedItems?[indexPath.row] {
+                item.moveToNextSegment()
+            }
+        default:
+            return
+        }
     }
 
     // Set background graphic
@@ -569,7 +635,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     //    func updateBadge() {
     //        DispatchQueue.main.async {
     //            autoreleasepool {
-    //                if let tabs = self.tabBarController?.tabBar.items {
+    //                if let tabs = self.tabBarController?.tabBar.incompleteItems {
     //                    for tab in 0 ..< tabs.count {
     //                        let count = self.getCountForTab(tab)
     //                        // print("Count for tab \(tab) is \(count)")
@@ -587,9 +653,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     // Don't need this if we're not doing a badge for the tabs
     //    func getCountForTab(_ tab: Int) -> Int {
     //        let realm = try! Realm()
-    //        let items = realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", tab, Date(), Date().endOfDay)
+    //        let incompleteItems = realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", tab, Date(), Date().endOfDay)
     //        var badgeCount = 0
-    //        items.forEach { item in
+    //        incompleteItems.forEach { item in
     //            if item.firstTriggerDate(segment: item.segment) < Date() {
     //                badgeCount += 1
     //            }
@@ -601,7 +667,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     // MARK: - Realm
 
-    var items: Results<Items>?
+    var incompleteItems: Results<Items>?
+    var completedItems: Results<Items>?
 
     var segment: Int?
 
@@ -610,7 +677,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
+                self.incompleteItems = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
+                self.completedItems = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil > %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
             }
         }
         // For now it has to be like this
@@ -622,10 +690,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         printDebug("loading all items")
         // Sort by segment to put in order of the day
         DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                self.items = realm.objects(Items.self).filter("isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
-            }
+            let realm = try! Realm()
+            self.incompleteItems = realm.objects(Items.self).filter("isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+            self.completedItems = realm.objects(Items.self).filter("isDeleted = \(false) AND completeUntil > %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
         }
         // For now it has to be like this
         // Otherwise, items get potentially loaded into cells they should or that don't exist and crash
@@ -642,46 +709,97 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 //        }
 //    }
 
-    var notificationToken: NotificationToken?
+    var incompleteItemsNotificationToken: NotificationToken?
+    var completedItemsNotificationToken: NotificationToken?
+
+    func observeItems() {
+        // https://github.com/realm/realm-cocoa/issues/6152
+        let sectionedNotificationTokenBlock = SectionedNotificationTokenBlock { changes in
+            self.tableView.performBatchUpdates({
+                self.tableView.insertRows(at: changes.insertions, with: .automatic)
+                self.tableView.reloadRows(at: changes.modifications, with: .automatic)
+                self.tableView.deleteRows(at: changes.deletions, with: .automatic)
+            })
+        }
+        incompleteItemsNotificationToken = incompleteItems?.observe(sectionedNotificationTokenBlock.block(forSection: 0, initialBlock: {
+            self.tableView.reloadSections([0], with: .automatic)
+            }, errorBlock: { error in
+                print("Realm error reloading rows", error)
+        }))
+        completedItemsNotificationToken = completedItems?.observe(sectionedNotificationTokenBlock.block(forSection: 1, initialBlock: {
+            self.tableView.reloadSections([1], with: .automatic)
+            }, errorBlock: { error in
+                print("Realm error reloading rows", error)
+        }))
+    }
 
     // This only needs to be called once when the view is first loaded
-    func observeItems() {
-        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
-        // Observe Results Notifications
-        notificationToken = items?.observe { [weak self] (changes: RealmCollectionChange) in
-            guard let tableView = self?.tableView else { return }
-            switch changes {
-            case .initial:
-                printDebug("Initial load")
-                // Results are now populated and can be accessed without blocking the UI
-                tableView.reloadData()
-            case let .update(_, deletions, insertions, modifications):
-                printDebug("update detected")
-                // Query results have changed, so apply them to the UITableView
-                tableView.performBatchUpdates({
-                    tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) },
-                                         with: .right)
-                    tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) },
-                                         with: .automatic)
-                    tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) },
-                                         with: .fade)
-                }, completion: nil)
-            case let .error(error):
-                // An error occurred while opening the Realm file on the background worker thread
-                fatalError("\(error)")
-            }
-        }
-    }
+//    func observeIncompleteItems() {
+//        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
+//        // Observe Results Notifications
+//        incompleteItemsNotificationToken = incompleteItems?.observe { [weak self] (changes: RealmCollectionChange) in
+//            guard let tableView = self?.tableView else { return }
+//            switch changes {
+//            case .initial:
+//                printDebug("\(#function) - Initial load")
+//                // Results are now populated and can be accessed without blocking the UI
+//                tableView.reloadData()
+//            case let .update(_, deletions, insertions, modifications):
+//                printDebug("\(#function) - update detected")
+//                // Query results have changed, so apply them to the UITableView
+//                tableView.beginUpdates()
+//                tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) },
+//                                     with: .automatic)
+//                tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) },
+//                                     with: .left)
+//                tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) },
+//                                     with: .automatic)
+//                tableView.endUpdates()
+//            case let .error(error):
+//                // An error occurred while opening the Realm file on the background worker thread
+//                fatalError("\(error)")
+//            }
+//        }
+//    }
+//
+//    func observeCompletedItems() {
+//        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
+//        // Observe Results Notifications
+//        completedItemsNotificationToken = completedItems?.observe { [weak self] (changes: RealmCollectionChange) in
+//            guard let tableView = self?.tableView else { return }
+//            switch changes {
+//            case .initial:
+//                printDebug("\(#function) - Initial load")
+//                // Results are now populated and can be accessed without blocking the UI
+//                tableView.reloadData()
+//            case let .update(_, deletions, insertions, modifications):
+//                printDebug("\(#function) - update detected")
+//                // Query results have changed, so apply them to the UITableView
+//                tableView.beginUpdates()
+//                tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 1) },
+//                                     with: .automatic)
+//                tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 1) },
+//                                     with: .left)
+//                tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 1) },
+//                                     with: .automatic)
+//                tableView.endUpdates()
+//            case let .error(error):
+//                // An error occurred while opening the Realm file on the background worker thread
+//                fatalError("\(error)")
+//            }
+//        }
+//    }
 
     deinit {
         printDebug("\(#function) called. Tokens invalidated")
-        notificationToken?.invalidate()
-        debugOptionsToken?.invalidate()
+        incompleteItemsNotificationToken?.invalidate()
+        completedItemsNotificationToken?.invalidate()
+        // debugOptionsToken?.invalidate()
         optionsToken?.invalidate()
     }
 
     // var options: Options = Options()
-    var debugOptionsToken: NotificationToken?
+    // var debugOptionsToken: NotificationToken?
     var optionsToken: NotificationToken?
 
     func observeOptions() {
@@ -755,7 +873,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     @objc func deleteSelectedAlert() {
         var itemCount: Int {
-            if let items = self.items {
+            if let items = self.incompleteItems, let completedItems = self.completedItems {
+                return items.count + completedItems.count
+            } else if let items = self.incompleteItems {
                 return items.count
             } else {
                 return 0

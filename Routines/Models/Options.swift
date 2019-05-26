@@ -334,6 +334,7 @@ import RealmSwift
     }
 
     static func getCurrentSegmentFromTime() -> Int {
+        let morning = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 0), minute: Options.getOptionMinute(segment: 0), second: 0, of: Date())
         let afternoon = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 1), minute: Options.getOptionMinute(segment: 1), second: 0, of: Date())
         let evening = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 2), minute: Options.getOptionMinute(segment: 2), second: 0, of: Date())
         let night = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 3), minute: Options.getOptionMinute(segment: 3), second: 0, of: Date())
@@ -347,7 +348,7 @@ import RealmSwift
             currentSegment = 1
         case _ where Date() < night!:
             currentSegment = 2
-        case _ where Date() > night!:
+        case _ where Date() > night! && Date() < morning!:
             currentSegment = 3
         default:
             currentSegment = 3

@@ -29,13 +29,17 @@ import UserNotifications
     // For syncing
     dynamic var isDeleted: Bool = false
 
-    required convenience init(title: String, segment: Int, repeats: Bool, notes: String?) {
+    required convenience init(title: String, segment: Int, priority _: Int, repeats: Bool, notes: String?) {
         self.init()
         self.title = title
         self.segment = segment
         originalSegment = segment
         self.repeats = repeats
         self.notes = notes
+        // If the time period has already passed for today, set it as complete so it shows in the upcoming section
+        if segment < Options.getCurrentSegmentFromTime() {
+            completeUntil = Date().startOfNextDay
+        }
     }
 
     // Notification identifier
@@ -95,7 +99,7 @@ import UserNotifications
                     let realm = try! Realm()
                     do {
                         try realm.write {
-                            self.segment = originalSegment
+                            self.segment = self.originalSegment
                             self.completeUntil = Date().startOfNextDay
                             self.dateModified = Date()
                         }

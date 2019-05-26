@@ -247,13 +247,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         if let updatedItem = item {
             updatedItem.updateItem(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text, priority: Int(prioritySlider.value))
         } else {
-            let newItem = Items()
-            newItem.title = taskTextField.text!
-            newItem.segment = segmentSelection.selectedSegmentIndex
-            newItem.originalSegment = segmentSelection.selectedSegmentIndex
-            newItem.repeats = repeatDailySwitch.isOn
-            newItem.notes = notesTextView.text
-            newItem.priority = Int(prioritySlider.value)
+            let newItem = Items(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, priority: Int(prioritySlider.value), repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
             newItem.addNewItem(newItem)
         }
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
