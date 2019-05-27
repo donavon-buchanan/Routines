@@ -30,10 +30,10 @@ func loadDefaultData() {
 
     let item1 = Items(title: "Walk the dogs 🐕", segment: 0, priority: 0, repeats: true, notes: nil)
     let item2 = Items(title: "Meditate 🧘‍♂️", segment: 0, priority: 0, repeats: true, notes: nil)
-    let item3 = Items(title: "Do something healthy", segment: 0, priority: 0, repeats: true, notes: "🌻🌞🚲")
-    let item4 = Items(title: "Make a doctor's appointment", segment: 0, priority: 0, repeats: false, notes: nil)
+    let item3 = Items(title: "Find a healthy activity", segment: 0, priority: 0, repeats: true, notes: "🌻🌞🚲")
+    let item5 = Items(title: "Figure out dinner plans", segment: 0, priority: 0, repeats: false, notes: nil)
 
-    let item5 = Items(title: "Figure out dinner plans", segment: 1, priority: 0, repeats: false, notes: nil)
+    let item4 = Items(title: "Make a doctor's appointment", segment: 1, priority: 0, repeats: false, notes: nil)
     let item6 = Items(title: "Pick up dry cleaning", segment: 1, priority: 0, repeats: false, notes: nil)
     let item7 = Items(title: "Plan dad's birthday party", segment: 1, priority: 0, repeats: false, notes: """
     1. Order the cake 🎂
