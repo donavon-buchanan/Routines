@@ -52,6 +52,18 @@ class OptionsTableViewController: UITableViewController {
         printDebug("Cloud sync switch: \(sender.isOn)")
     }
 
+    @IBOutlet var upcomingTasksCellLabel: UILabel!
+    @IBOutlet var upcomingTasksCellStatusLabel: UILabel!
+    @IBOutlet var upcomingTasksSwitch: UISwitch!
+    @IBAction func upcomingTasksSwitchToggled(_ sender: UISwitch) {
+        if upcomingTasksSwitch.isEnabled {
+            RoutinesPlus.setUpcomingTasks(sender.isOn)
+        } else {
+            // Show Purchase Options
+            segueToRoutinesPlusViewController()
+        }
+    }
+
     // MARK: Automatic Dark Mode
 
     @IBOutlet var automaticDarkModeLabel: UILabel!
@@ -190,6 +202,16 @@ class OptionsTableViewController: UITableViewController {
                 if !RoutinesPlus.getPurchasedStatus() {
                     segueToRoutinesPlusViewController()
                 }
+            case 3:
+                if !RoutinesPlus.getPurchasedStatus() {
+                    segueToRoutinesPlusViewController()
+                } else {
+                    if upcomingTasksSwitch.isEnabled {
+                        upcomingTasksSwitch.setOn(!upcomingTasksSwitch.isOn, animated: true)
+                        RoutinesPlus.setUpcomingTasks(upcomingTasksSwitch.isOn)
+                        haptic.impactOccurred()
+                    }
+                }
             default:
                 break
             }
@@ -237,15 +259,24 @@ class OptionsTableViewController: UITableViewController {
         }
 
         taskPrioritiesLabel.theme_textColor = GlobalPicker.cellTextColors
+        upcomingTasksSwitch.setOn(RoutinesPlus.getShowUpcomingTasks(), animated: animated)
 
         if RoutinesPlus.getPurchasedStatus() {
             taskPrioritiesStatusLabel.text = "Unlocked"
             taskPrioritiesStatusLabel.theme_textColor = GlobalPicker.textColor
             taskPrioritiesCell.accessoryType = .none
+
+            upcomingTasksSwitch.isEnabled = true
+            upcomingTasksCellStatusLabel.text = "Unlocked"
+            upcomingTasksCellStatusLabel.theme_textColor = GlobalPicker.textColor
         } else {
             taskPrioritiesStatusLabel.text = "Disabled"
             taskPrioritiesStatusLabel.textColor = .lightGray
             taskPrioritiesCell.accessoryType = .disclosureIndicator
+
+            upcomingTasksSwitch.isEnabled = false
+            upcomingTasksCellStatusLabel.text = "Disabled"
+            upcomingTasksCellStatusLabel.textColor = .lightGray
         }
 
         morningSubLabel.text = Options.getSegmentTimeString(segment: 0)

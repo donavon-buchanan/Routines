@@ -168,7 +168,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         footerView.backgroundColor = .clear
         tableView.tableFooterView = footerView
-        //tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
 
         //        setViewBackgroundGraphic(enabled: true)
 
@@ -317,7 +317,11 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                     return ""
                 }
             } else {
-                return "Repeats Tomorrow"
+                if item.repeats {
+                    return "Tomorrow - Repeats Daily"
+                } else {
+                    return "Tomorrow"
+                }
             }
         }
 
@@ -362,7 +366,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let itemSegment = items?[indexPath.row].segment
+        guard let item = items?[indexPath.row] else { return nil }
+        let itemSegment = item.segment
         var nextColor: UIColor {
             switch itemSegment {
             case 1:
@@ -444,23 +449,21 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     @objc private func clearAll() {
         var itemAray: [Items] = []
 
-        if let incompleteItems = incompleteItems {
-            itemAray.append(contentsOf: incompleteItems)
+        if let items = items {
+            itemAray.append(contentsOf: items)
         }
 
         Items.batchComplete(itemArray: itemAray)
 
         endEdit()
-        resetTableView()
-        changeTabBar(hidden: false, animated: true)
+        // resetTableView()
+        // changeTabBar(hidden: false, animated: true)
     }
 
     // TODO: Do this for completing items too
     @objc func deleteSelectedRows() {
         var itemCount: Int {
-            if let items = self.incompleteItems, let completedItems = self.completedItems {
-                return items.count + completedItems.count
-            } else if let items = self.incompleteItems {
+            if let items = items {
                 return items.count
             } else {
                 return 0
@@ -482,11 +485,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 indexPaths.forEach { indexPath in
                     // The index paths are static during enumeration, but the item indexes are not
                     // Add them to an array first, delete only what's in the array, and then update the table UI
-                    if let itemAtIndex = self.incompleteItems?[indexPath.row] {
+                    if let itemAtIndex = items?[indexPath.row] {
                         itemArray.append(itemAtIndex)
-                    }
-                    if let completedItemAtIndex = self.completedItems?[indexPath.row] {
-                        itemArray.append(completedItemAtIndex)
                     }
                 }
 
@@ -496,10 +496,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 Items.batchSoftDelete(itemArray: itemsToDelete)
             }
         } else if selectedCount == 0, itemCount != 0 {
-            incompleteItems?.forEach { item in
-                itemsToDelete.append(item)
-            }
-            completedItems?.forEach { item in
+            items?.forEach { item in
                 itemsToDelete.append(item)
             }
             Items.batchSoftDelete(itemArray: itemsToDelete)
@@ -642,10 +639,14 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     func loadItemsForSegment(segment: Int) {
         printDebug("loading items for segment \(segment)")
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
+                if RoutinesPlus.getShowUpcomingTasks() {
+                    self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "completeUntil", ascending: true)
+                } else {
+                    self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
+                }
             }
         }
         // For now it has to be like this
@@ -656,10 +657,14 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     func loadAllItems() {
         printDebug("loading all items")
         // Sort by segment to put in order of the day
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                self.items = realm.objects(Items.self).filter("isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+                if RoutinesPlus.getShowUpcomingTasks() {
+                    self.items = realm.objects(Items.self).filter("isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true).sorted(byKeyPath: "completeUntil", ascending: true)
+                } else {
+                    self.items = realm.objects(Items.self).filter("isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+                }
             }
         }
         // For now it has to be like this
@@ -695,7 +700,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 // Query results have changed, so apply them to the UITableView
                 tableView.performBatchUpdates({
                     tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) },
-                                         with: .right)
+                                         with: .automatic)
                     tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) },
                                          with: .automatic)
                     tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) },

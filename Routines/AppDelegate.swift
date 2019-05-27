@@ -333,7 +333,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 21,
+            schemaVersion: 22,
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -367,7 +367,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //                    }
 //                }
 
-                if oldSchemaVersion > 9, oldSchemaVersion < 15 {
+                if oldSchemaVersion >= 9, oldSchemaVersion < 15 {
                     migration.enumerateObjects(ofType: Options.className()) { oldObject, newObject in
                         print("oldObject: " + String(describing: oldObject))
                         print("newObject: " + String(describing: newObject))
@@ -384,7 +384,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
 
-                if oldSchemaVersion > 15, oldSchemaVersion < 18 {
+                if oldSchemaVersion >= 15, oldSchemaVersion < 18 {
                     migration.enumerateObjects(ofType: Items.className()) { oldObject, newObject in
                         print("oldObject: " + String(describing: oldObject))
                         print("newObject: " + String(describing: newObject))
@@ -393,7 +393,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
 
-                if oldSchemaVersion > 18, oldSchemaVersion < 21 {
+                if oldSchemaVersion >= 18, oldSchemaVersion < 21 {
                     // migrate the Options split to RoutinesPlus
 
                     migration.enumerateObjects(ofType: Options.className()) { oldObject, newObject in
@@ -414,6 +414,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         newRoutinesPlus.routinesPlusPurchased = routinesPlusPurchased
 
                         migration.create("RoutinesPlus", value: newRoutinesPlus)
+                    }
+                }
+
+                if oldSchemaVersion == 21 {
+                    migration.enumerateObjects(ofType: Options.className()) { oldObject, _ in
+                        let darkMode = oldObject!["darkMode"] as! Bool
+                        UserDefaults.standard.set(darkMode, forKey: "darkMode")
                     }
                 }
             }
@@ -720,7 +727,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // TableView
         let tableViewUI = UITableView.appearance()
         tableViewUI.theme_separatorColor = GlobalPicker.cellSeparator
-        tableViewUI.theme_backgroundColor = GlobalPicker.cellBackground
+        //tableViewUI.theme_backgroundColor = GlobalPicker.cellBackground
 
         // switches
         let switchUI = UISwitch.appearance()

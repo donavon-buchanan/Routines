@@ -37,38 +37,16 @@ import RealmSwift
 
     // MARK: Dark Mode
 
-    dynamic var darkMode: Bool = false
+    // dynamic var darkMode: Bool = false
 
     static func getDarkModeStatus() -> Bool {
-        var darkMode = false
-        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    darkMode = options.darkMode
-                }
-            }
-        }
-        return darkMode
+        return UserDefaults.standard.bool(forKey: "darkMode")
     }
 
     static func setDarkMode(_ bool: Bool) {
         printDebug("Setting dark mode to: \(bool)")
-        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    // print("Options UUID: \(options.optionsKey)")
-                    do {
-                        try realm.write {
-                            options.darkMode = bool
-                        }
-                    } catch {
-                        fatalError("Failed to save dark mode: \(error)")
-                    }
-                }
-            }
-        }
+
+        UserDefaults.standard.set(bool, forKey: "darkMode")
         DispatchQueue.main.async {
             TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
         }

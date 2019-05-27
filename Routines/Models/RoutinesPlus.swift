@@ -23,6 +23,31 @@ import RealmSwift
     dynamic var routinesPlusPurchased: Bool = false
     dynamic var purchasedProduct: String = ""
 
+    // View upcoming
+    dynamic var showUpcomingTasks: Bool = false
+
+    static func getShowUpcomingTasks() -> Bool {
+        let realm = try! Realm()
+        guard let routinesPlusOptions = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey()) else { return false }
+        return routinesPlusOptions.showUpcomingTasks
+    }
+
+    static func setUpcomingTasks(_ isOn: Bool) {
+        DispatchQueue(label: RoutinesPlus.realmDispatchQueueLabel).sync {
+            autoreleasepool {
+                let realm = try! Realm()
+                guard let routinesPlusOptions = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey()) else { return }
+                do {
+                    try realm.write {
+                        routinesPlusOptions.showUpcomingTasks = isOn
+                    }
+                } catch {
+                    fatalError("\(#function) error: \(error)")
+                }
+            }
+        }
+    }
+
     static func getCloudSync() -> Bool {
         #if targetEnvironment(simulator) || DEBUG
             return true

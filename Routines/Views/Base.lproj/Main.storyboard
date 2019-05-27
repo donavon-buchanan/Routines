@@ -1443,7 +1443,7 @@
                             <tableViewSection headerTitle="Start Times" footerTitle="Set when each time period should begin" id="8lN-SC-WVk">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="startTimesCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" textLabel="X1n-I8-wot" style="IBUITableViewCellStyleDefault" id="2lR-8M-Lli">
-                                        <rect key="frame" x="0.0" y="55.333333333333343" width="375" height="64"/>
+                                        <rect key="frame" x="0.0" y="55.333333333333336" width="375" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="startTimesCellContentView" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2lR-8M-Lli" id="vkh-69-a6j">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="64"/>
@@ -1744,18 +1744,18 @@
                                         <rect key="frame" x="0.0" y="766.66666666666674" width="375" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="GAE-kO-018" id="2NK-FW-Nj9">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="63.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Task Priorities" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="FGl-8X-v3d">
-                                                    <rect key="frame" x="15" y="10.999999999999998" width="113" height="20.333333333333332"/>
+                                                    <rect key="frame" x="16" y="10.999999999999998" width="113" height="20.333333333333332"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kBL-JP-NNm">
-                                                    <rect key="frame" x="15" y="34.333333333333329" width="39" height="15.666666666666666"/>
+                                                    <rect key="frame" x="16" y="34.333333333333329" width="39" height="15.666666666666666"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1764,15 +1764,59 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="settingsUpcomingCell" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="upcomingCell" id="HmU-m9-qHa">
+                                        <rect key="frame" x="0.0" y="830.66666666666674" width="375" height="64"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HmU-m9-qHa" id="mwN-kF-QID">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="O5i-hI-S7J">
+                                                    <rect key="frame" x="8" y="8" width="359" height="47.666666666666664"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Za9-i2-Egb">
+                                                            <rect key="frame" x="0.0" y="4" width="310" height="40"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="showUpcomingLabel" text="Show Upcoming Tasks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t6l-Ww-83R">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="310" height="20.333333333333332"/>
+                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="showUpcomingStatus" text="Status" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UiE-yC-g7n">
+                                                                    <rect key="frame" x="0.0" y="24.333333333333339" width="310" height="15.666666666666668"/>
+                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                                    <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                        <switch opaque="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" restorationIdentifier="showUpcomingSwitch" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iPw-1T-UVh">
+                                                            <rect key="frame" x="310" y="8.3333333333333321" width="51" height="30.999999999999996"/>
+                                                            <connections>
+                                                                <action selector="upcomingTasksSwitchToggled:" destination="a3q-M5-d7t" eventType="valueChanged" id="UGv-0G-5dX"/>
+                                                            </connections>
+                                                        </switch>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="O5i-hI-S7J" secondAttribute="trailing" id="BQ3-7I-ibH"/>
+                                                <constraint firstItem="O5i-hI-S7J" firstAttribute="top" secondItem="mwN-kF-QID" secondAttribute="topMargin" id="eeL-9F-Ba1"/>
+                                                <constraint firstItem="O5i-hI-S7J" firstAttribute="leading" secondItem="mwN-kF-QID" secondAttribute="leadingMargin" id="pcC-pR-XLF"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="O5i-hI-S7J" secondAttribute="bottom" id="shd-WN-aCZ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="About" id="Mh0-Xn-pCD">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AboutCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" id="JZL-NA-pX6">
-                                        <rect key="frame" x="0.0" y="886.66666666666674" width="375" height="64"/>
+                                        <rect key="frame" x="0.0" y="950.66666666666674" width="375" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JZL-NA-pX6" id="XeW-Nf-qRm">
-                                            <rect key="frame" x="0.0" y="0.0" width="349" height="63.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="2c7-3J-lux">
@@ -1824,6 +1868,9 @@
                         <outlet property="taskPrioritiesCell" destination="GAE-kO-018" id="bUm-55-Kbn"/>
                         <outlet property="taskPrioritiesLabel" destination="FGl-8X-v3d" id="XbS-gw-Mq3"/>
                         <outlet property="taskPrioritiesStatusLabel" destination="kBL-JP-NNm" id="vSK-Od-FVt"/>
+                        <outlet property="upcomingTasksCellLabel" destination="t6l-Ww-83R" id="ToD-IU-vKA"/>
+                        <outlet property="upcomingTasksCellStatusLabel" destination="UiE-yC-g7n" id="t4R-mf-9fb"/>
+                        <outlet property="upcomingTasksSwitch" destination="iPw-1T-UVh" id="7ps-IT-CBX"/>
                         <outletCollection property="cellLabels" destination="X1n-I8-wot" collectionClass="NSMutableArray" id="UWm-Ts-c4c"/>
                         <outletCollection property="cellLabels" destination="t8n-qX-FiY" collectionClass="NSMutableArray" id="try-qJ-RZM"/>
                         <outletCollection property="cellLabels" destination="CQu-dM-fZe" collectionClass="NSMutableArray" id="uox-s2-yc2"/>
@@ -1839,6 +1886,8 @@
                         <outletCollection property="switches" destination="MGB-Cp-D5F" collectionClass="NSMutableArray" id="ZEK-rx-NwM"/>
                         <outletCollection property="cellLabels" destination="VCc-OP-gnR" collectionClass="NSMutableArray" id="QpP-Ja-68K"/>
                         <outletCollection property="cellLabels" destination="9en-xT-Fgu" collectionClass="NSMutableArray" id="jOk-jT-g6U"/>
+                        <outletCollection property="cellLabels" destination="t6l-Ww-83R" collectionClass="NSMutableArray" id="Fwl-TR-ih7"/>
+                        <outletCollection property="switches" destination="iPw-1T-UVh" collectionClass="NSMutableArray" id="DuM-Ie-zNh"/>
                         <segue destination="1aL-IG-qEf" kind="unwind" identifier="unwindToTableViewController" unwindAction="unwindToTableViewControllerWithSegue:" id="hf9-Xq-OiU"/>
                     </connections>
                 </tableViewController>

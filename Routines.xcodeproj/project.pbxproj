@@ -33,7 +33,6 @@
 		F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831BB2155CBB000DAF60E /* Main.storyboard */; };
 		F8B831C22155CBB100DAF60E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831C02155CBB100DAF60E /* LaunchScreen.storyboard */; };
 		F8B831CD2155CBE300DAF60E /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831CC2155CBE300DAF60E /* Items.swift */; };
-		F8BB9998229A79D300E14A74 /* SectionedNotificationTokenBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BB9997229A79D300E14A74 /* SectionedNotificationTokenBlock.swift */; };
 		F8C3EC98228D673F0027AFEB /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C3EC97228D673F0027AFEB /* UIImageExtension.swift */; };
 		F8CBBA5721A9058D00A4FFFD /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */; };
 		F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */; };
@@ -163,7 +162,6 @@
 		F8B831C12155CBB100DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F8B831C32155CBB100DAF60E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F8B831CC2155CBE300DAF60E /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
-		F8BB9997229A79D300E14A74 /* SectionedNotificationTokenBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionedNotificationTokenBlock.swift; sourceTree = "<group>"; };
 		F8C3EC97228D673F0027AFEB /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatTableViewController.swift; sourceTree = "<group>"; };
@@ -252,7 +250,6 @@
 				F8CE29C522714E9A00CD9BAE /* UIColorExtensions.swift */,
 				F8C3EC97228D673F0027AFEB /* UIImageExtension.swift */,
 				F81224C7229417E400AEED90 /* SimulatorData.swift */,
-				F8BB9997229A79D300E14A74 /* SectionedNotificationTokenBlock.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -665,7 +662,6 @@
 				F8C3EC98228D673F0027AFEB /* UIImageExtension.swift in Sources */,
 				F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */,
 				F8CCE20D2288E17E00BAAFEC /* RoutinesPlus.swift in Sources */,
-				F8BB9998229A79D300E14A74 /* SectionedNotificationTokenBlock.swift in Sources */,
 				F816DB342155CFBA009C6907 /* TaskTableViewController.swift in Sources */,
 				F85D2A8A227036CF009CE6CE /* RoutinesPlusViewController.swift in Sources */,
 				F8352C53227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift in Sources */,
