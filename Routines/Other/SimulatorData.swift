@@ -56,6 +56,12 @@ func loadDefaultData() {
 
     DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
         autoreleasepool {
+            // Subvert init logic for simulator
+            // Otherwise these show up as tomorrow's tasks
+            itemList.forEach { item in
+                item.completeUntil = Date()
+            }
+
             let realm = try! Realm()
             do {
                 realm.beginWrite()
