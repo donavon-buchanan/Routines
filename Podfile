@@ -24,5 +24,6 @@ target 'Routines' do
   pod 'SwiftyStoreKit'
   #pod 'fluid-slider'
   pod 'SimulatorStatusMagic', :configurations => ['Debug']
+  pod 'SwiftDate'
 
 end
