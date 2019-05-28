@@ -250,6 +250,7 @@
 				F8CE29C522714E9A00CD9BAE /* UIColorExtensions.swift */,
 				F8C3EC97228D673F0027AFEB /* UIImageExtension.swift */,
 				F81224C7229417E400AEED90 /* SimulatorData.swift */,
+				F8D5DB482269AC59005857F2 /* NetworkActivityIndicatorManager.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -298,7 +299,6 @@
 				F8B831C02155CBB100DAF60E /* LaunchScreen.storyboard */,
 				F8B831C32155CBB100DAF60E /* Info.plist */,
 				F8F3270D215C8509004AC619 /* Media.xcassets */,
-				F8D5DB482269AC59005857F2 /* NetworkActivityIndicatorManager.swift */,
 			);
 			path = Routines;
 			sourceTree = "<group>";
