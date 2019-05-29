@@ -60,6 +60,13 @@
 			remoteGlobalIDString = 0E11D5875359CFA4E1ED1E1C803B79CF;
 			remoteInfo = IceCream;
 		};
+		F8478728229F39620035D847 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F8FF259122085A180063295F /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1CF0FCCA8127BAF5F70FFE0970085900;
+			remoteInfo = SwiftDate;
+		};
 		F86E0AC42297FA5400BB53D6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8B831AC2155CBB000DAF60E /* Project object */;
@@ -345,6 +352,7 @@
 				F8FF259E22085A180063295F /* Realm.framework */,
 				F8FF25A022085A180063295F /* RealmSwift.framework */,
 				F8B5C7B8228470C900FA088E /* SimulatorStatusMagic.framework */,
+				F8478729229F39620035D847 /* SwiftDate.framework */,
 				F8FF25A222085A180063295F /* SwiftMessages.framework */,
 				F8FF25A422085A180063295F /* SwiftMessages.bundle */,
 				F8FF25A622085A180063295F /* SwiftTheme.framework */,
@@ -462,6 +470,13 @@
 			fileType = wrapper.framework;
 			path = IceCream.framework;
 			remoteRef = F8227D09225B1CF9005AE175 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F8478729229F39620035D847 /* SwiftDate.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SwiftDate.framework;
+			remoteRef = F8478728229F39620035D847 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		F87D49F92269AA1800845E0D /* SwiftyStoreKit.framework */ = {

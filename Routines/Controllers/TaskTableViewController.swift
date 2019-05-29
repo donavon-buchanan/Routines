@@ -265,7 +265,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
                 self.openSettings()
             }
-            showStandardAlert(title: "Don't see your new task?", body: "Don't worry, it's there. Because your \(returnTitle(forSegment: segment ?? Options.getSelectedIndex())) time has already happened, your task has been created for tomorrow. To see what's happening tomorrow, you can turn Show Upcoming Tasks from the settings.", action: settingsAction)
+            showStandardAlert(title: "Don't see your new task?", body: "Don't worry, it's there. Because your \(returnTitle(forSegment: segment ?? Options.getSelectedIndex())) time has already happened, your task has been created for tomorrow. To see what's happening tomorrow, you can enable Show Upcoming Tasks from the settings.", action: settingsAction)
             UserDefaults.standard.set(true, forKey: "hiddenTasksMessageShown")
         } else {
             shouldShowHiddenTasksMessage = false
