@@ -206,11 +206,16 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     func textViewDidEndEditing(_ textView: UITextView) {
         textView.isEditable = false
         textView.dataDetectorTypes = .all
+        textView.resignFirstResponder()
     }
 
     func textFieldShouldReturn(_: UITextField) -> Bool {
         view.endEditing(true)
         return false
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.resignFirstResponder()
     }
 
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -252,35 +257,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
-
-    // MARK: Theme
-
-    //    public func setAppearance(segment: Int) {
-    //        // print("Setting theme")
-    //        if Options.getDarkModeStatus() {
-    //            switch segment {
-    //            case 1:
-    //                Themes.switchTo(theme: .afternoonDark)
-    //            case 2:
-    //                Themes.switchTo(theme: .eveningDark)
-    //            case 3:
-    //                Themes.switchTo(theme: .nightDark)
-    //            default:
-    //                Themes.switchTo(theme: .morningDark)
-    //            }
-    //        } else {
-    //            switch segment {
-    //            case 1:
-    //                Themes.switchTo(theme: .afternoonLight)
-    //            case 2:
-    //                Themes.switchTo(theme: .eveningLight)
-    //            case 3:
-    //                Themes.switchTo(theme: .nightLight)
-    //            default:
-    //                Themes.switchTo(theme: .morningLight)
-    //            }
-    //        }
-    //    }
 
     // MARK: - Banners
 
