@@ -417,10 +417,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
 
-                if oldSchemaVersion == 21 {
+                if oldSchemaVersion <= 21 {
                     migration.enumerateObjects(ofType: Options.className()) { oldObject, _ in
-                        let darkMode = oldObject!["darkMode"] as! Bool
-                        UserDefaults.standard.set(darkMode, forKey: "darkMode")
+                        if let darkMode = oldObject!["darkMode"] as? Bool {
+                            UserDefaults.standard.set(darkMode, forKey: "darkMode")
+                        }
                     }
                 }
             }
