@@ -19,11 +19,13 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     @IBOutlet var linesBarButtonItem: UIBarButtonItem!
     @IBOutlet var editBarButtonItem: UIBarButtonItem!
 
+    var shouldShowHiddenTasksMessage = false
+
     override var keyCommands: [UIKeyCommand]? {
         return [
             // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
             UIKeyCommand(input: "n", modifierFlags: .command, action: #selector(addNewTask), discoverabilityTitle: "Add New Task"),
-            UIKeyCommand(input: "o", modifierFlags: .alternate, action: #selector(openSettingsKeyCommand), discoverabilityTitle: "Open Settings"),
+            UIKeyCommand(input: "o", modifierFlags: .alternate, action: #selector(openSettings), discoverabilityTitle: "Open Settings"),
             UIKeyCommand(input: "e", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(editKeyCommand), discoverabilityTitle: "Edit List"),
             UIKeyCommand(input: "a", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(showAllKeyCommand), discoverabilityTitle: "Show Entire Day"),
         ]
@@ -33,7 +35,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         performSegue(withIdentifier: "addSegue", sender: self)
     }
 
-    @objc func openSettingsKeyCommand() {
+    @objc func openSettings() {
         performSegue(withIdentifier: "optionsSegue", sender: self)
     }
 
@@ -249,7 +251,25 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
 
+        if shouldShowHiddenTasksMessage {
+            showHiddenTasksMessage()
+            shouldShowHiddenTasksMessage = false
+        }
+
         debugPrint(#function + " end")
+    }
+
+    func showHiddenTasksMessage() {
+        if !UserDefaults.standard.bool(forKey: "hiddenTasksMessageShown"), !RoutinesPlus.getShowUpcomingTasks() {
+            printDebug("Showing hidden task message")
+            let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
+                self.openSettings()
+            }
+            showStandardAlert(title: "Don't see your new task?", body: "Don't worry, it's there. Because your \(returnTitle(forSegment: segment ?? Options.getSelectedIndex())) time has already happened, your task has been created for tomorrow. To see what's happening tomorrow, you can turn Show Upcoming Tasks from the settings.", action: settingsAction)
+            UserDefaults.standard.set(true, forKey: "hiddenTasksMessageShown")
+        } else {
+            shouldShowHiddenTasksMessage = false
+        }
     }
 
     func returnTitle(forSegment segment: Int) -> String {
@@ -869,5 +889,14 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         }
 
         SwiftMessages.show(config: config, view: alert)
+    }
+
+    func showStandardAlert(title: String, body: String, action: UIAlertAction?) {
+        let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
+        if let action = action {
+            alertController.addAction(action)
+        }
+        alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        present(alertController, animated: true, completion: nil)
     }
 }

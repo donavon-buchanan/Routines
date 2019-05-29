@@ -62,6 +62,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     var item: Items?
 
     var editingSegment: Int?
+    var shouldShowHiddenTasksMessage = false
 
     func loadItem() {
         // If item is loaded, fill in values for editing
@@ -94,6 +95,15 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             prioritySlider.isEnabled = false
         } else {
             prioritySlider.isEnabled = true
+        }
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
+        if segue.identifier == "unwindToTableViewController" {
+            let destination = segue.destination as! TaskTableViewController
+            if shouldShowHiddenTasksMessage {
+                destination.shouldShowHiddenTasksMessage = shouldShowHiddenTasksMessage
+            }
         }
     }
 
@@ -257,6 +267,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         } else {
             let newItem = Items(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, priority: Int(prioritySlider.value), repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
             newItem.addNewItem(newItem)
+            if newItem.completeUntil > Date().endOfDay {
+                shouldShowHiddenTasksMessage = true
+            }
         }
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
