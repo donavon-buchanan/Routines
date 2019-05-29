@@ -63,7 +63,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     var editingSegment: Int?
 
-    fileprivate func setUpUI() {
+    func loadItem() {
         // If item is loaded, fill in values for editing
         if item != nil {
             TaskTableViewController.setAppearance(forSegment: item!.segment)
@@ -79,7 +79,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         } else {
             title = "Adding New Task"
         }
+    }
 
+    fileprivate func setUpUI() {
         repeatDailySwitch.layer.cornerRadius = 15
         repeatDailySwitch.layer.masksToBounds = true
 
@@ -174,19 +176,20 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         TaskTableViewController.setAppearance(forSegment: item?.segment ?? 0)
     }
 
-    override func viewWillAppear(_: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         DispatchQueue.main.async {
-            autoreleasepool {
-                self.setUpUI()
-            }
+            self.loadItem()
         }
     }
 
-    override func viewDidAppear(_: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         // UI doesn't know to scroll up if this is called too soon
         DispatchQueue.main.async {
             autoreleasepool {
                 do {
+                    self.setUpUI()
                     self.taskTextField.becomeFirstResponder()
                 }
             }

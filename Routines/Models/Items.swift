@@ -36,8 +36,8 @@ import UserNotifications
         originalSegment = segment
         self.repeats = repeats
         self.notes = notes
-        // If the time period has already passed for today, set it as complete so it shows in the upcoming section
-        if segment < Options.getCurrentSegmentFromTime() {
+
+        if Date() >= firstTriggerDate(segment: segment) {
             completeUntil = Date().startOfNextDay
         }
     }
@@ -299,10 +299,10 @@ import UserNotifications
 
         // Check if notifications are enabled for the segment first
         // Also check if item hasn't been marked as complete already
-        if Options.getSegmentNotification(segment: segment), completeUntil < Date().endOfDay {
+        if Options.getSegmentNotification(segment: segment), completeUntil < Date().endOfDay, Date() <= firstTriggerDate(segment: segment) {
             createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
             debugPrint("Notification Date: \(firstDate)")
-        } else if Options.getSegmentNotification(segment: segment), completeUntil > Date().endOfDay, segment > Options.getCurrentSegmentFromTime() {
+        } else if Options.getSegmentNotification(segment: segment), completeUntil > Date().endOfDay, Date() <= firstTriggerDate(segment: segment) {
             createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
             debugPrint("Notification Date: \(firstDate)")
         } else {
@@ -398,23 +398,15 @@ import UserNotifications
     }
 
     func firstTriggerDate(segment: Int) -> Date {
-        let tomorrow = Date().startOfNextDay
-        var dateComponents = DateComponents()
         var segmentTime = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: Date())
         segmentTime.hour = Options.getOptionHour(segment: segment)
         segmentTime.minute = Options.getOptionMinute(segment: segment)
         segmentTime.second = 0
-        // TODO: This might cause problems
-        if Date() > segmentTime.date! {
-            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: tomorrow)
-        } else {
-            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: Date())
-        }
-        dateComponents.hour = Options.getOptionHour(segment: segment)
-        dateComponents.minute = Options.getOptionMinute(segment: segment)
-        dateComponents.second = 0
 
-        return dateComponents.date!
+        // The actual day is handled in addNewNotification()
+        // The name of this func is now a bit misleading
+        printDebug("\(#function) - \(segmentTime.date!)")
+        return segmentTime.date!
     }
 
     static func getCountForSegment(segment: Int) -> Int {
