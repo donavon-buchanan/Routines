@@ -98,14 +98,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
-        if segue.identifier == "unwindToTableViewController" {
-            let destination = segue.destination as! TaskTableViewController
-            if shouldShowHiddenTasksMessage {
-                destination.shouldShowHiddenTasksMessage = shouldShowHiddenTasksMessage
-            }
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
+//        if segue.identifier == "unwindToTableViewController" {
+//            let destination = segue.destination as! TaskTableViewController
+//            if shouldShowHiddenTasksMessage {
+//                destination.shouldShowHiddenTasksMessage = shouldShowHiddenTasksMessage
+//            }
+//        }
+//    }
 
     @objc func dismissView() {
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)

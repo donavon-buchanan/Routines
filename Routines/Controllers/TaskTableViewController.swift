@@ -19,7 +19,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     @IBOutlet var linesBarButtonItem: UIBarButtonItem!
     @IBOutlet var editBarButtonItem: UIBarButtonItem!
 
-    var shouldShowHiddenTasksMessage = false
+//    var shouldShowHiddenTasksMessage = false
 
     override var keyCommands: [UIKeyCommand]? {
         return [
@@ -251,26 +251,26 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
 
-        if shouldShowHiddenTasksMessage {
-            showHiddenTasksMessage()
-            shouldShowHiddenTasksMessage = false
-        }
+//        if shouldShowHiddenTasksMessage {
+//            showHiddenTasksMessage()
+//            shouldShowHiddenTasksMessage = false
+//        }
 
         debugPrint(#function + " end")
     }
 
-    func showHiddenTasksMessage() {
-        if !UserDefaults.standard.bool(forKey: "hiddenTasksMessageShown"), !RoutinesPlus.getShowUpcomingTasks() {
-            printDebug("Showing hidden task message")
-            let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
-                self.openSettings()
-            }
-            showStandardAlert(title: "Don't see your new task?", body: "Don't worry, it's there. Because your \(returnTitle(forSegment: segment ?? Options.getSelectedIndex())) time has already happened, your task has been created for tomorrow. To see what's happening tomorrow, you can enable Show Upcoming Tasks from the settings.", action: settingsAction)
-            UserDefaults.standard.set(true, forKey: "hiddenTasksMessageShown")
-        } else {
-            shouldShowHiddenTasksMessage = false
-        }
-    }
+//    func showHiddenTasksMessage() {
+//        if !UserDefaults.standard.bool(forKey: "hiddenTasksMessageShown"), !RoutinesPlus.getShowUpcomingTasks() {
+//            printDebug("Showing hidden task message")
+//            let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
+//                self.openSettings()
+//            }
+//            showStandardAlert(title: "Don't see your new task?", body: "Don't worry, it's there. Because your \(returnTitle(forSegment: segment ?? Options.getSelectedIndex())) time has already happened, your task has been created for tomorrow. To see what's happening tomorrow, you can enable Show Upcoming Tasks from the settings.", action: settingsAction)
+//            UserDefaults.standard.set(true, forKey: "hiddenTasksMessageShown")
+//        } else {
+//            shouldShowHiddenTasksMessage = false
+//        }
+//    }
 
     func returnTitle(forSegment segment: Int) -> String {
         printDebug(#function + " segment: \(segment)")

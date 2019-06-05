@@ -37,7 +37,7 @@ import UserNotifications
         self.repeats = repeats
         self.notes = notes
 
-        if Date() >= firstTriggerDate(segment: segment) {
+        if Date() >= firstTriggerDate(segment: segment), RoutinesPlus.getShowUpcomingTasks() {
             completeUntil = Date().startOfNextDay
         }
     }

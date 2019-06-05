@@ -23,7 +23,7 @@ target 'Routines' do
   #pod 'RxRealm'
   pod 'SwiftyStoreKit'
   #pod 'fluid-slider'
-  pod 'SimulatorStatusMagic', :configurations => ['Debug']
+  pod 'SimulatorStatusMagic', :configurations => ['Debug','Beta']
   pod 'SwiftDate'
 
 end
