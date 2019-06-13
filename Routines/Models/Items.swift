@@ -54,7 +54,7 @@ import UserNotifications
                 let realm = try! Realm()
                 do {
                     try realm.write {
-                        realm.add(item, update: true)
+                        realm.add(item)
                     }
                 } catch {
                     fatalError("Error adding new item: \(error)")
@@ -78,7 +78,6 @@ import UserNotifications
                         self.repeats = repeats
                         self.notes = notes
                         self.priority = priority
-                        realm.add(self, update: true)
                     }
                 } catch {
                     fatalError("Error updating item: \(error)")
@@ -311,7 +310,7 @@ import UserNotifications
         }
     }
 
-    func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate: Date) {
+    func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate _: Date) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.sound = UNNotificationSound.default
@@ -337,10 +336,7 @@ import UserNotifications
 
         var dateComponents = DateComponents()
         dateComponents.calendar = Calendar.autoupdatingCurrent
-        // Keep notifications from occurring too early for tasks created for tomorrow
-        if firstDate > Date() {
-            dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
-        }
+        // dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
         dateComponents.timeZone = TimeZone.autoupdatingCurrent
 
         dateComponents.hour = Options.getOptionHour(segment: segment)
