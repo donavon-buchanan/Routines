@@ -106,6 +106,21 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var taskPrioritiesLabel: UILabel!
     @IBOutlet var taskPrioritiesStatusLabel: UILabel!
     @IBOutlet var taskPrioritiesCell: UITableViewCell!
+    
+    //MARK: Unlock and Restore Purchase
+    @IBOutlet weak var unlockCell: UITableViewCell!
+    @IBOutlet weak var unlockButton: UIButton!
+    @IBAction func unlockButtonAction(_ sender: UIButton) {
+        
+    }
+    @IBOutlet weak var restorePurchaseCell: UITableViewCell!
+    @IBOutlet weak var restorePurchaseButton: UIButton!
+    @IBAction func restorePurchaseButtonAction(_ sender: UIButton) {
+        
+    }
+    
+    
+    // MARK: - View management
 
     @objc func dismissView() {
         // dismiss(animated: true, completion: nil)

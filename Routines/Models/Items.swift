@@ -342,6 +342,14 @@ import UserNotifications
         dateComponents.hour = Options.getOptionHour(segment: segment)
         dateComponents.minute = Options.getOptionMinute(segment: segment)
 
+        #if DEBUG
+            if repeats {
+                debugPrint("Task titled \(title) repeats")
+            } else {
+                debugPrint("Task titled \(title) does NOT repeat")
+            }
+        #endif
+
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeats)
 
         // Create the request
