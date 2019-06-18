@@ -147,8 +147,6 @@ class OptionsTableViewController: UITableViewController {
         tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         observeOptions()
         observeRoutinesPlus()
-        
-        restorePurchaseButton.titleLabel?.theme_textColor = GlobalPicker.cellTextColors
     }
 
     override func applicationFinishedRestoringState() {
@@ -281,6 +279,9 @@ class OptionsTableViewController: UITableViewController {
         taskPrioritiesLabel.theme_textColor = GlobalPicker.cellTextColors
         upcomingTasksSwitch.setOn(RoutinesPlus.getShowUpcomingTasks(), animated: animated)
 
+        unlockButton.layer.masksToBounds = true
+        unlockButton.layer.cornerRadius = 12
+
         if RoutinesPlus.getPurchasedStatus() {
             taskPrioritiesStatusLabel.text = "Unlocked"
             taskPrioritiesStatusLabel.theme_textColor = GlobalPicker.textColor
@@ -291,7 +292,9 @@ class OptionsTableViewController: UITableViewController {
             upcomingTasksCellStatusLabel.theme_textColor = GlobalPicker.textColor
 
             unlockButton.isEnabled = false
-            unlockButton.backgroundColor = .lightGray
+            unlockButton.theme_backgroundColor = GlobalPicker.backgroundColor
+            unlockButton.layer.theme_borderColor = GlobalPicker.shadowColor
+            unlockButton.layer.borderWidth = 2
         } else {
             taskPrioritiesStatusLabel.text = "Disabled"
             taskPrioritiesStatusLabel.textColor = .lightGray
@@ -303,13 +306,16 @@ class OptionsTableViewController: UITableViewController {
 
             unlockButton.isEnabled = true
             unlockButton.theme_backgroundColor = GlobalPicker.barTextColor
+            unlockButton.layer.borderWidth = 0
         }
 
         unlockButton.setTitle("Unlock", for: .normal)
         unlockButton.setTitle("Unlocked", for: .disabled)
 
-        unlockButton.layer.masksToBounds = true
-        unlockButton.layer.cornerRadius = 12
+        unlockButton.setTitleColor(.white, for: .normal)
+        unlockButton.theme_setTitleColor(GlobalPicker.barTextColor, forState: .disabled)
+
+        restorePurchaseButton.theme_setTitleColor(GlobalPicker.cellTextColors, forState: .normal)
 
         morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
         afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
