@@ -147,6 +147,8 @@ class OptionsTableViewController: UITableViewController {
         tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         observeOptions()
         observeRoutinesPlus()
+        
+        restorePurchaseButton.titleLabel?.theme_textColor = GlobalPicker.cellTextColors
     }
 
     override func applicationFinishedRestoringState() {
@@ -308,8 +310,6 @@ class OptionsTableViewController: UITableViewController {
 
         unlockButton.layer.masksToBounds = true
         unlockButton.layer.cornerRadius = 12
-
-        restorePurchaseButton.titleLabel?.theme_textColor = GlobalPicker.cellTextColors
 
         morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
         afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
