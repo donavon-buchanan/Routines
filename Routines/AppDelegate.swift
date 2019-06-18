@@ -193,8 +193,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Sync with iCloud
         observeItems()
-        
-        //TODO: Still not sure this is the right spot for this
+
+        // TODO: Still not sure this is the right spot for this
         AppDelegate.removeOldNotifications()
 
         printDebug("\(#function) - End")

@@ -106,20 +106,23 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var taskPrioritiesLabel: UILabel!
     @IBOutlet var taskPrioritiesStatusLabel: UILabel!
     @IBOutlet var taskPrioritiesCell: UITableViewCell!
-    
-    //MARK: Unlock and Restore Purchase
-    @IBOutlet weak var unlockCell: UITableViewCell!
-    @IBOutlet weak var unlockButton: UIButton!
-    @IBAction func unlockButtonAction(_ sender: UIButton) {
-        
+
+    // MARK: Unlock and Restore Purchase
+
+    @IBOutlet var unlockCell: UITableViewCell!
+    @IBOutlet var unlockButton: UIButton!
+    @IBAction func unlockButtonAction(_: UIButton) {
+        if !RoutinesPlus.getPurchasedStatus() {
+            segueToRoutinesPlusViewController()
+        }
     }
-    @IBOutlet weak var restorePurchaseCell: UITableViewCell!
-    @IBOutlet weak var restorePurchaseButton: UIButton!
-    @IBAction func restorePurchaseButtonAction(_ sender: UIButton) {
-        
+
+    @IBOutlet var restorePurchaseCell: UITableViewCell!
+    @IBOutlet var restorePurchaseButton: UIButton!
+    @IBAction func restorePurchaseButtonAction(_: UIButton) {
+        restorePurchase()
     }
-    
-    
+
     // MARK: - View management
 
     @objc func dismissView() {
@@ -284,6 +287,9 @@ class OptionsTableViewController: UITableViewController {
             upcomingTasksSwitch.isEnabled = true
             upcomingTasksCellStatusLabel.text = "Unlocked"
             upcomingTasksCellStatusLabel.theme_textColor = GlobalPicker.textColor
+
+            unlockButton.isEnabled = false
+            unlockButton.backgroundColor = .lightGray
         } else {
             taskPrioritiesStatusLabel.text = "Disabled"
             taskPrioritiesStatusLabel.textColor = .lightGray
@@ -292,7 +298,18 @@ class OptionsTableViewController: UITableViewController {
             upcomingTasksSwitch.isEnabled = false
             upcomingTasksCellStatusLabel.text = "Disabled"
             upcomingTasksCellStatusLabel.textColor = .lightGray
+
+            unlockButton.isEnabled = true
+            unlockButton.theme_backgroundColor = GlobalPicker.barTextColor
         }
+
+        unlockButton.setTitle("Unlock", for: .normal)
+        unlockButton.setTitle("Unlocked", for: .disabled)
+
+        unlockButton.layer.masksToBounds = true
+        unlockButton.layer.cornerRadius = 12
+
+        restorePurchaseButton.titleLabel?.theme_textColor = GlobalPicker.cellTextColors
 
         morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
         afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
