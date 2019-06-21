@@ -2270,10 +2270,10 @@
                                 <rect key="frame" x="0.0" y="44" width="375" height="734"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ypN-sW-PBb">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1136.3333333333333"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="604.33333333333337"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="I52-pP-ghG" userLabel="Content View">
-                                                <rect key="frame" x="28" y="8" width="319" height="1120.3333333333333"/>
+                                                <rect key="frame" x="28" y="8" width="319" height="588.33333333333337"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="jYP-oa-Gpd" userLabel="Top Text">
                                                         <rect key="frame" x="0.0" y="0.0" width="319" height="185"/>
@@ -2296,8 +2296,8 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xQg-8L-dRw">
-                                                                <rect key="frame" x="2.6666666666666572" y="60.666666666666679" width="313.66666666666674" height="124.33333333333331"/>
-                                                                <string key="text">Subscribe or purchase a Lifetime unlock to Routines+ to access additional features, including Device Sync, and help support continued development of this app. More features will be included with future updates.</string>
+                                                                <rect key="frame" x="1.3333333333333428" y="60.666666666666679" width="316.33333333333326" height="124.33333333333331"/>
+                                                                <string key="text">Routines+ enables additional features, including Device Sync, Automatic Dark Mode, Task Priorities and Upcoming Tasks, and helps to support continued development of this app. More features will be included with future updates.</string>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
@@ -2305,64 +2305,15 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="kga-bb-WIu" userLabel="Buttons And Text">
-                                                        <rect key="frame" x="0.0" y="209.00000000000006" width="319" height="911.33333333333348"/>
+                                                        <rect key="frame" x="0.0" y="208.99999999999997" width="319" height="379.33333333333326"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="g70-O9-e6O" userLabel="Monthly Buttons">
-                                                                <rect key="frame" x="15.333333333333343" y="0.0" width="288.33333333333326" height="89.666666666666671"/>
-                                                                <subviews>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gkf-Qf-BMy">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="288.33333333333331" height="50"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="50" id="hkW-lD-B0G"/>
-                                                                        </constraints>
-                                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                                        <state key="normal" title="Monthly">
-                                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                        </state>
-                                                                        <connections>
-                                                                            <action selector="monthlyButtonTapped:" destination="Ufu-EB-SHB" eventType="touchUpInside" id="DoZ-Jq-W3a"/>
-                                                                        </connections>
-                                                                    </button>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 week free trial, then $0.99 / mo. after the trial has ended" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0bC-8i-oUq">
-                                                                        <rect key="frame" x="0.0" y="56" width="288.33333333333331" height="33.666666666666657"/>
-                                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                </subviews>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="trailingMargin" secondItem="Gkf-Qf-BMy" secondAttribute="trailing" id="6gJ-1b-8CQ"/>
-                                                                    <constraint firstItem="Gkf-Qf-BMy" firstAttribute="leading" secondItem="g70-O9-e6O" secondAttribute="leadingMargin" id="zfE-gR-g01"/>
-                                                                </constraints>
-                                                            </stackView>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="JcQ-hA-HrL" userLabel="Yearly Buttons">
-                                                                <rect key="frame" x="15.333333333333343" y="119.66666666666669" width="288.33333333333326" height="89.666666666666686"/>
-                                                                <subviews>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="15u-2D-tPJ">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="288.33333333333331" height="50"/>
-                                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                                        <state key="normal" title="Yearly">
-                                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                        </state>
-                                                                        <connections>
-                                                                            <action selector="yearlyButtonTapped:" destination="Ufu-EB-SHB" eventType="touchUpInside" id="IIK-f2-0Gf"/>
-                                                                        </connections>
-                                                                    </button>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 week free trial, then $5.99 / yr. after the trial has ended" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JeC-XE-Gen">
-                                                                        <rect key="frame" x="3" y="56" width="282.33333333333331" height="33.666666666666657"/>
-                                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                </subviews>
-                                                            </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="8hQ-dp-n2b" userLabel="Lifetime Buttons">
-                                                                <rect key="frame" x="15.333333333333343" y="239.33333333333329" width="288.33333333333326" height="89.666666666666657"/>
+                                                                <rect key="frame" x="29" y="0.0" width="261.33333333333331" height="72.666666666666671"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jTq-Zm-IoS">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="288.33333333333331" height="50"/>
+                                                                        <rect key="frame" x="101.66666666666666" y="0.0" width="58" height="33"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                                        <state key="normal" title="Lifetime">
+                                                                        <state key="normal" title="Forever">
                                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         </state>
                                                                         <connections>
@@ -2370,7 +2321,7 @@
                                                                         </connections>
                                                                     </button>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="One-time purchase to unlock all Routines+ features forever" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pj6-8P-JdO">
-                                                                        <rect key="frame" x="13.666666666666657" y="56.000000000000057" width="261.33333333333337" height="33.666666666666657"/>
+                                                                        <rect key="frame" x="0.0" y="39" width="261.33333333333331" height="33.666666666666657"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <nil key="highlightedColor"/>
@@ -2378,7 +2329,7 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="esB-cC-VTI">
-                                                                <rect key="frame" x="89" y="359" width="141" height="33"/>
+                                                                <rect key="frame" x="89" y="102.66666666666669" width="141" height="33"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                                 <state key="normal" title="Restore Purchase">
                                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2388,18 +2339,11 @@
                                                                 </connections>
                                                             </button>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="KWp-aK-FLz" userLabel="Terms">
-                                                                <rect key="frame" x="0.0" y="422" width="319" height="363.33333333333326"/>
+                                                                <rect key="frame" x="7" y="165.66666666666669" width="305" height="87.666666666666686"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vOt-gg-5gU">
-                                                                        <rect key="frame" x="6.3333333333333428" y="0.0" width="306.66666666666663" height="87.666666666666671"/>
-                                                                        <string key="text">The "Lifetime" purchase option is a one-time, non-consumable, purchase to unlock all current and future features included with Routines+. Payment will be charged to your Apple ID account at the confirmation of purchase.</string>
-                                                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zJW-Ry-dIl">
-                                                                        <rect key="frame" x="0.0" y="95.666666666666629" width="319" height="267.66666666666669"/>
-                                                                        <string key="text">For new subscribers, monthly subscription includes a 1 week free trial, or 2 weeks for the yearly subscription. During your free trial period, if the subscription is canceled, any unused portion of the free trial will be forfeited. At the end of your free trial, your Apple ID account will be billed $0.99 for monthly subscription, or $5.99 for yearly subscription unless your subscription is canceled at least 24 hours before the end of the free trial period. If you continue your subscription, your account will automatically be charged for renewal unless canceled at least 24 hours prior to the end of the current subscription period. You can manage and cancel your subscriptions by going to your App Store account settings after purchase.</string>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="305" height="87.666666666666671"/>
+                                                                        <string key="text">The "Forever" purchase option is a one-time, non-consumable, purchase to unlock all current and future features included with Routines+. Payment will be charged to your Apple ID account at the confirmation of purchase.</string>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <nil key="highlightedColor"/>
@@ -2407,10 +2351,10 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="dQD-qC-9kw" userLabel="Policy Buttons">
-                                                                <rect key="frame" x="15.333333333333343" y="815.33333333333326" width="288.33333333333326" height="96"/>
+                                                                <rect key="frame" x="101.66666666666666" y="283.33333333333337" width="116" height="96"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M4D-CB-oXV">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="288.33333333333331" height="40"/>
+                                                                        <rect key="frame" x="10.333333333333343" y="0.0" width="95" height="40"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="40" id="Bwh-hc-xXU"/>
                                                                         </constraints>
@@ -2423,7 +2367,7 @@
                                                                         </connections>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CBQ-Ba-dK8">
-                                                                        <rect key="frame" x="0.0" y="56" width="288.33333333333331" height="40"/>
+                                                                        <rect key="frame" x="0.0" y="56" width="116" height="40"/>
                                                                         <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                         <state key="normal" title="Terms of Service">
                                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2438,14 +2382,6 @@
                                                                 </constraints>
                                                             </stackView>
                                                         </subviews>
-                                                        <constraints>
-                                                            <constraint firstItem="CBQ-Ba-dK8" firstAttribute="width" secondItem="Gkf-Qf-BMy" secondAttribute="width" id="02U-jK-5Ut"/>
-                                                            <constraint firstItem="jTq-Zm-IoS" firstAttribute="height" secondItem="Gkf-Qf-BMy" secondAttribute="height" id="HcO-uI-m3L"/>
-                                                            <constraint firstItem="jTq-Zm-IoS" firstAttribute="width" secondItem="Gkf-Qf-BMy" secondAttribute="width" id="Lrm-zJ-Mok"/>
-                                                            <constraint firstItem="15u-2D-tPJ" firstAttribute="height" secondItem="Gkf-Qf-BMy" secondAttribute="height" id="cbt-2e-uQC"/>
-                                                            <constraint firstItem="15u-2D-tPJ" firstAttribute="width" secondItem="Gkf-Qf-BMy" secondAttribute="width" id="cex-7k-bga"/>
-                                                            <constraint firstItem="M4D-CB-oXV" firstAttribute="width" secondItem="Gkf-Qf-BMy" secondAttribute="width" id="xn5-9n-3oN"/>
-                                                        </constraints>
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
@@ -2480,26 +2416,16 @@
                     <connections>
                         <outlet property="lifetimeButton" destination="jTq-Zm-IoS" id="Adi-YE-VId"/>
                         <outlet property="lifetimeTermsLabel" destination="vOt-gg-5gU" id="CFS-Pl-oVu"/>
-                        <outlet property="monthlyButton" destination="Gkf-Qf-BMy" id="niR-fX-Mqj"/>
-                        <outlet property="monthlyDescriptionLabel" destination="0bC-8i-oUq" id="K3C-Se-iJB"/>
                         <outlet property="privacyPolicyButton" destination="M4D-CB-oXV" id="ji6-P9-e6M"/>
                         <outlet property="restoreButton" destination="esB-cC-VTI" id="QHU-I3-AFL"/>
                         <outlet property="routinesLabelPlusSymbol" destination="TXh-po-6Ly" id="nDG-pc-qOc"/>
                         <outlet property="routinesPlusLabel" destination="FUz-aZ-WIy" id="06K-AL-3NG"/>
-                        <outlet property="subscriptionTermsLabel" destination="zJW-Ry-dIl" id="KkC-eS-LFc"/>
                         <outlet property="termsOfServiceButton" destination="CBQ-Ba-dK8" id="aUJ-9A-uU4"/>
-                        <outlet property="yearlyButton" destination="15u-2D-tPJ" id="kvf-xT-FrV"/>
-                        <outlet property="yearlyDescriptionLabel" destination="JeC-XE-Gen" id="aPW-CE-jB3"/>
                         <outletCollection property="policyButtons" destination="M4D-CB-oXV" collectionClass="NSMutableArray" id="l6K-Ml-MnI"/>
-                        <outletCollection property="paymentButtons" destination="15u-2D-tPJ" collectionClass="NSMutableArray" id="T8z-tc-mhq"/>
                         <outletCollection property="policyButtons" destination="CBQ-Ba-dK8" collectionClass="NSMutableArray" id="wBC-SS-HnJ"/>
                         <outletCollection property="paymentButtons" destination="jTq-Zm-IoS" collectionClass="NSMutableArray" id="b6c-aJ-9CK"/>
-                        <outletCollection property="paymentButtons" destination="Gkf-Qf-BMy" collectionClass="NSMutableArray" id="QJc-yh-x2W"/>
-                        <outletCollection property="textLabelCollection" destination="0bC-8i-oUq" collectionClass="NSMutableArray" id="5tr-6g-iZS"/>
-                        <outletCollection property="textLabelCollection" destination="JeC-XE-Gen" collectionClass="NSMutableArray" id="vW0-rW-A5O"/>
                         <outletCollection property="textLabelCollection" destination="Pj6-8P-JdO" collectionClass="NSMutableArray" id="3Ip-1b-UXx"/>
                         <outletCollection property="textLabelCollection" destination="vOt-gg-5gU" collectionClass="NSMutableArray" id="P3B-7o-TdS"/>
-                        <outletCollection property="textLabelCollection" destination="zJW-Ry-dIl" collectionClass="NSMutableArray" id="AjS-Xs-0IB"/>
                         <outletCollection property="textLabelCollection" destination="xQg-8L-dRw" collectionClass="NSMutableArray" id="q7q-aM-kJo"/>
                     </connections>
                 </viewController>
