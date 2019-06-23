@@ -109,13 +109,18 @@ import UserNotifications
                 }
             }
         }
-        AppDelegate.refreshNotifications()
+        //AppDelegate.refreshNotifications()
     }
 
     static func batchComplete(itemArray: [Items]) {
+        printDebug(#function)
         var itemsToComplete: [Items] = []
         var itemsToSoftDelete: [Items] = []
-        printDebug(#function)
+        
+        itemsToSoftDelete.forEach { (item) in
+            item.removeNotification()
+        }
+        
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 itemArray.forEach { item in
@@ -146,6 +151,7 @@ import UserNotifications
                 }
             }
         }
+        //AppDelegate.refreshNotifications()
     }
 
     // MARK: - iCloud Sync
@@ -165,12 +171,16 @@ import UserNotifications
                     fatalError("Error with softDelete: \(error)")
                 }
             }
-            // print("softDelete completed")
         }
+        //AppDelegate.refreshNotifications()
     }
 
     static func batchSoftDelete(itemArray: [Items]) {
         printDebug(#function)
+        itemArray.forEach { (item) in
+            item.removeNotification()
+        }
+        
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -185,6 +195,7 @@ import UserNotifications
                 }
             }
         }
+        //AppDelegate.refreshNotifications()
     }
 
     // MARK: - Notification Handling
@@ -235,9 +246,11 @@ import UserNotifications
 
     func removeNotification() {
         printDebug("Removing notification for id: \(uuidString)")
-        let uuidStrings: [String] = ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3", uuidString]
+        let uuidStrings: [String] = ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3"]
 
         let center = UNUserNotificationCenter.current()
+        //Running removal of base string separately just to be double sure
+        center.removePendingNotificationRequests(withIdentifiers: [uuidString])
         center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
     }
 
