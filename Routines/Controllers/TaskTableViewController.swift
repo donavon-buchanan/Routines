@@ -249,7 +249,10 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         fetchIAPInfo()
 
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        // Kind of a band aid for orphaned notifications.
+        // UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+
+        AppDelegate.removeOldNotifications()
 
 //        if shouldShowHiddenTasksMessage {
 //            showHiddenTasksMessage()

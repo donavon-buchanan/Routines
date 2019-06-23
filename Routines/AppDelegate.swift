@@ -129,6 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         AppDelegate.syncEngine?.pull()
+        AppDelegate.refreshAndUpdate()
         completionHandler(.newData)
     }
 
@@ -195,7 +196,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         observeItems()
 
         // TODO: Still not sure this is the right spot for this
-        AppDelegate.removeOldNotifications()
+        // AppDelegate.removeOldNotifications()
 
         printDebug("\(#function) - End")
     }
@@ -220,37 +221,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     static func removeOrphanedNotifications() {
-        DispatchQueue.main.async {
-            printDebug("\(#function) - Start")
-            let center = UNUserNotificationCenter.current()
-            var orphanNotifications: [String] = []
-            center.getPendingNotificationRequests(completionHandler: { pendingNotifications in
-                pendingNotifications.forEach { notification in
-                    let id = notification.identifier
-                    let realm = try! Realm()
-                    let item = realm.object(ofType: Items.self, forPrimaryKey: id)
-                    // First test nil for items that don't exist
-                    if item == nil {
+        printDebug("\(#function) - Start")
+        let center = UNUserNotificationCenter.current()
+        var orphanNotifications: [String] = []
+        center.getPendingNotificationRequests(completionHandler: { pendingNotifications in
+            pendingNotifications.forEach { notification in
+                let id = notification.identifier
+                let realm = try! Realm()
+                let item = realm.object(ofType: Items.self, forPrimaryKey: id)
+                // First test nil for items that don't exist
+                if item == nil {
+                    orphanNotifications.append(id)
+                } else if let item = item {
+                    // Next test if item is valid, but marked for deletion
+                    if item.isDeleted {
                         orphanNotifications.append(id)
-                    } else if let item = item {
-                        // Next test if item is valid, but marked for deletion
-                        if item.isDeleted {
-                            orphanNotifications.append(id)
-                        }
                     }
                 }
-            })
-            center.removePendingNotificationRequests(withIdentifiers: orphanNotifications)
-            printDebug("\(#function) - End")
-        }
+            }
+        })
+        center.removePendingNotificationRequests(withIdentifiers: orphanNotifications)
+        printDebug("\(#function) - End")
     }
 
     func applicationWillTerminate(_: UIApplication) {
         printDebug("\(#function) - Start")
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 
-        // SKPaymentQueue.default().remove(AppDelegate.iapObserver)
-        AppDelegate.removeOldNotifications()
+        AppDelegate.refreshAndUpdate()
+
         printDebug("\(#function) - End")
     }
 
