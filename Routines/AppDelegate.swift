@@ -48,6 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
+    //TODO: This should be used way less. Make notification management on individual tasks better!
     static func refreshNotifications(function: String = #function) {
         printDebug(#function + "Called by \(function)")
         let realm = try! Realm()
