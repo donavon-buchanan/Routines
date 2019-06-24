@@ -48,13 +48,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
-    static func refreshNotifications() {
-        printDebug(#function)
-
+    static func refreshNotifications(function: String = #function) {
+        printDebug(#function + "Called by \(function)")
         let realm = try! Realm()
+        let center = UNUserNotificationCenter.current()
         let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
         items.forEach { item in
-            item.addNewNotification()
+            // TODO: If you're not getting notifications, check here
+            // If the item matches a delivered notification, ignore it
+            // Changes to the notification should be taken care of by the functions of those changes elsewhere
+            center.getDeliveredNotifications(completionHandler: { notifications in
+                // My god, this is awful
+                notifications.forEach { notification in
+                    if item.uuidString != notification.request.identifier {
+                        item.addNewNotification()
+                    }
+                }
+            })
         }
     }
 
@@ -178,7 +188,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug("\(#function) - End")
     }
 
-    static func removeOldNotifications() {
+    static func removeOldNotifications(function: String = #function) {
+        printDebug("\(#function) - Start")
+        debugPrint("#funciton was Called from: \(function)")
         let center = UNUserNotificationCenter.current()
         center.removeAllDeliveredNotifications()
 
@@ -187,6 +199,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 UIApplication.shared.applicationIconBadgeNumber = 0
             }
         }
+        printDebug("\(#function) - End")
     }
 
     func applicationWillEnterForeground(_: UIApplication) {
@@ -194,9 +207,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Sync with iCloud
         observeItems()
-
-        // TODO: Still not sure this is the right spot for this
-        // AppDelegate.removeOldNotifications()
 
         printDebug("\(#function) - End")
     }
@@ -490,8 +500,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
-    static func refreshAndUpdate() {
-        printDebug(#function)
+    static func refreshAndUpdate(function: String = #function) {
+        printDebug(#function + "Called by \(function)")
         AppDelegate.refreshNotifications()
         AppDelegate.updateBadgeFromPush()
         AppDelegate.removeOrphanedNotifications()

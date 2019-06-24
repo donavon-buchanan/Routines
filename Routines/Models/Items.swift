@@ -151,7 +151,7 @@ import UserNotifications
                 }
             }
         }
-        // AppDelegate.refreshNotifications()
+        // re AppDelegate.refreshNotifications()
     }
 
     // MARK: - iCloud Sync
@@ -273,7 +273,6 @@ import UserNotifications
             addNewNotification()
         }
         printDebug("Snoozing to \(segment). Original segment was \(originalSegment)")
-        AppDelegate.refreshNotifications()
     }
 
     fileprivate func snoozeTo() -> Int {
