@@ -14,7 +14,7 @@ struct NotificationHandler {
     let center = UNUserNotificationCenter.current()
 
     func firstTriggerDate(forItem item: Items) -> Date {
-        var segmentTime = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .timeZone], from: Date())
+        var segmentTime = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: Date())
 
         segmentTime.hour = Options.getOptionHour(segment: item.segment)
         segmentTime.minute = Options.getOptionMinute(segment: item.segment)
@@ -85,7 +85,7 @@ struct NotificationHandler {
             content.categoryIdentifier = "morning"
         }
 
-        let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .day, .timeZone], from: triggerDate)
+        let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .day, .calendar, .timeZone], from: triggerDate)
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: repeats)
 
