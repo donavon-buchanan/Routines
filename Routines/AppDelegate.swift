@@ -48,24 +48,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
-    //TODO: This should be used way less. Make notification management on individual tasks better!
+    // TODO: This should be used way less. Make notification management on individual tasks better!
     static func refreshNotifications(function: String = #function) {
         printDebug(#function + "Called by \(function)")
+
+        let notificationHandler = NotificationHandler()
+        notificationHandler.removeOrphanedNotifications()
+
         let realm = try! Realm()
-        let center = UNUserNotificationCenter.current()
         let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
         items.forEach { item in
-            // TODO: If you're not getting notifications, check here
-            // If the item matches a delivered notification, ignore it
-            // Changes to the notification should be taken care of by the functions of those changes elsewhere
-            center.getDeliveredNotifications(completionHandler: { notifications in
-                // My god, this is awful
-                notifications.forEach { notification in
-                    if item.uuidString != notification.request.identifier {
-                        item.addNewNotification()
-                    }
-                }
-            })
+            notificationHandler.createNewNotification(forItem: item)
         }
     }
 
@@ -231,29 +224,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug("\(#function) - End")
     }
 
-    static func removeOrphanedNotifications() {
-        printDebug("\(#function) - Start")
-        let center = UNUserNotificationCenter.current()
-        var orphanNotifications: [String] = []
-        center.getPendingNotificationRequests(completionHandler: { pendingNotifications in
-            pendingNotifications.forEach { notification in
-                let id = notification.identifier
-                let realm = try! Realm()
-                let item = realm.object(ofType: Items.self, forPrimaryKey: id)
-                // First test nil for items that don't exist
-                if item == nil {
-                    orphanNotifications.append(id)
-                } else if let item = item {
-                    // Next test if item is valid, but marked for deletion
-                    if item.isDeleted {
-                        orphanNotifications.append(id)
-                    }
-                }
-            }
-        })
-        center.removePendingNotificationRequests(withIdentifiers: orphanNotifications)
-        printDebug("\(#function) - End")
-    }
+//    static func removeOrphanedNotifications() {
+//        printDebug("\(#function) - Start")
+//        let center = UNUserNotificationCenter.current()
+//        var orphanNotifications: [String] = []
+//        center.getPendingNotificationRequests(completionHandler: { pendingNotifications in
+//            pendingNotifications.forEach { notification in
+//                let id = notification.identifier
+//                let realm = try! Realm()
+//                let item = realm.object(ofType: Items.self, forPrimaryKey: id)
+//                // First test nil for items that don't exist
+//                if item == nil {
+//                    orphanNotifications.append(id)
+//                } else if let item = item {
+//                    // Next test if item is valid, but marked for deletion
+//                    if item.isDeleted {
+//                        orphanNotifications.append(id)
+//                    }
+//                }
+//            }
+//        })
+//        center.removePendingNotificationRequests(withIdentifiers: orphanNotifications)
+//        printDebug("\(#function) - End")
+//    }
 
     func applicationWillTerminate(_: UIApplication) {
         printDebug("\(#function) - Start")
@@ -505,7 +498,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug(#function + "Called by \(function)")
         AppDelegate.refreshNotifications()
         AppDelegate.updateBadgeFromPush()
-        AppDelegate.removeOrphanedNotifications()
+        // AppDelegate.removeOrphanedNotifications()
     }
 
 //    @objc func backgroundRefresh() {

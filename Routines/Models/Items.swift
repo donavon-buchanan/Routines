@@ -15,6 +15,8 @@ import UserNotifications
 // TODO: Rename this. Shouldn't be plural. But causes realm migration complication.
 
 @objcMembers class Items: Object {
+    lazy var notificationHanlder = NotificationHandler()
+
     static let realmDispatchQueueLabel: String = "background"
 
     dynamic var title: String?
@@ -37,7 +39,7 @@ import UserNotifications
         self.repeats = repeats
         self.notes = notes
 
-        if Date() >= firstTriggerDate(segment: segment), RoutinesPlus.getShowUpcomingTasks() {
+        if Date() >= notificationHanlder.firstTriggerDate(forItem: self), RoutinesPlus.getShowUpcomingTasks() {
             completeUntil = Date().startOfNextDay
         }
     }
@@ -61,8 +63,7 @@ import UserNotifications
                 }
             }
         }
-        Items.requestNotificationPermission()
-        addNewNotification()
+        notificationHanlder.createNewNotification(forItem: self)
     }
 
     func updateItem(title: String, segment: Int, repeats: Bool, notes: String?, priority: Int) {
@@ -84,13 +85,13 @@ import UserNotifications
                 }
             }
         }
-        removeNotification()
-        addNewNotification()
+        notificationHanlder.createNewNotification(forItem: self)
     }
 
     func completeItem() {
         if !repeats {
             softDelete()
+            notificationHanlder.removeNotifications(withIdentifiers: [self.uuidString])
         } else {
             printDebug("marking completed until: \(Date().startOfNextDay)")
             DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
@@ -108,18 +109,14 @@ import UserNotifications
                     }
                 }
             }
+            notificationHanlder.createNewNotification(forItem: self)
         }
-        // AppDelegate.refreshNotifications()
     }
 
     static func batchComplete(itemArray: [Items]) {
         printDebug(#function)
         var itemsToComplete: [Items] = []
         var itemsToSoftDelete: [Items] = []
-
-        itemsToSoftDelete.forEach { item in
-            item.removeNotification()
-        }
 
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -151,7 +148,14 @@ import UserNotifications
                 }
             }
         }
-        // re AppDelegate.refreshNotifications()
+
+        let notificationHandler = NotificationHandler()
+
+        itemsToComplete.forEach { item in
+            notificationHandler.createNewNotification(forItem: item)
+        }
+
+        notificationHandler.removeNotifications(withIdentifiers: (itemsToSoftDelete.map { $0.uuidString }))
     }
 
     // MARK: - iCloud Sync
@@ -159,7 +163,7 @@ import UserNotifications
     // Sync soft delete
     func softDelete() {
         printDebug("soft deleting item")
-        removeNotification()
+        notificationHanlder.removeNotifications(withIdentifiers: [self.uuidString])
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -177,9 +181,9 @@ import UserNotifications
 
     static func batchSoftDelete(itemArray: [Items]) {
         printDebug(#function)
-        itemArray.forEach { item in
-            item.removeNotification()
-        }
+        let notificationHandler = NotificationHandler()
+
+        notificationHandler.removeNotifications(withIdentifiers: (itemArray.map { $0.uuidString }))
 
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -200,43 +204,43 @@ import UserNotifications
 
     // MARK: - Notification Handling
 
-    static func setBadgeNumber(id: String) -> Int {
-        var badgeCount = 0
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                // Get all the items in or under the current segment.
-                if let item = realm.object(ofType: Items.self, forPrimaryKey: id) {
-                    let itemSegment = item.segment
-                    // Only count the items who's segment is equal or greater than the current item
-                    // TODO: Maybe should match this against "originalSegment"?
-                    let items = realm.objects(Items.self).filter("segment >= %@ AND isDeleted = %@ AND completeUntil <= %@", itemSegment, false, item.completeUntil).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
-                    guard let currentItemIndex = items.index(of: item) else { return }
-                    printDebug("Item title: \(item.title!) at index: \(currentItemIndex)")
-                    badgeCount = currentItemIndex + 1
-                    printDebug("setBadgeNumber to \(badgeCount) for \(item.title!)")
-                }
-            }
-        }
+//    static func setBadgeNumber(id: String) -> Int {
+//        var badgeCount = 0
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                // Get all the items in or under the current segment.
+//                if let item = realm.object(ofType: Items.self, forPrimaryKey: id) {
+//                    let itemSegment = item.segment
+//                    // Only count the items who's segment is equal or greater than the current item
+//                    // TODO: Maybe should match this against "originalSegment"?
+//                    let items = realm.objects(Items.self).filter("segment >= %@ AND isDeleted = %@ AND completeUntil <= %@", itemSegment, false, item.completeUntil).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
+//                    guard let currentItemIndex = items.index(of: item) else { return }
+//                    printDebug("Item title: \(item.title!) at index: \(currentItemIndex)")
+//                    badgeCount = currentItemIndex + 1
+//                    printDebug("setBadgeNumber to \(badgeCount) for \(item.title!)")
+//                }
+//            }
+//        }
+//
+//        return badgeCount
+//    }
 
-        return badgeCount
-    }
-
-    static func requestNotificationPermission() {
-        let center = UNUserNotificationCenter.current()
-        // let center = UNUserNotificationCenter.current()
-        // Request permission to display alerts and play sounds
-        if #available(iOS 12.0, *) {
-            center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { _, _ in
-                // Enable or disable features based on authorization.
-            }
-        } else {
-            // Fallback on earlier versions
-            center.requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in
-                // Enable or disable features based on authorization.
-            }
-        }
-    }
+//    static func requestNotificationPermission() {
+//        let center = UNUserNotificationCenter.current()
+//        // let center = UNUserNotificationCenter.current()
+//        // Request permission to display alerts and play sounds
+//        if #available(iOS 12.0, *) {
+//            center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { _, _ in
+//                // Enable or disable features based on authorization.
+//            }
+//        } else {
+//            // Fallback on earlier versions
+//            center.requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in
+//                // Enable or disable features based on authorization.
+//            }
+//        }
+//    }
 
     // Remove notifications for Item
 //    func removeNotification(uuidStrings: [String]) {
@@ -244,19 +248,17 @@ import UserNotifications
 //        center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
 //    }
 
-    func removeNotification() {
-        printDebug("Removing notification for id: \(uuidString)")
-        let uuidStrings: [String] = ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3"]
-
-        let center = UNUserNotificationCenter.current()
-        // Running removal of base string separately just to be double sure
-        center.removePendingNotificationRequests(withIdentifiers: [uuidString])
-        center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
-    }
+//    func removeNotification() {
+//        printDebug("Removing notification for id: \(uuidString)")
+//        let uuidStrings: [String] = ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3"]
+//
+//        let center = UNUserNotificationCenter.current()
+//        // Running removal of base string separately just to be double sure
+//        center.removePendingNotificationRequests(withIdentifiers: [uuidString])
+//        center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
+//    }
 
     func snooze() {
-        removeNotification()
-
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
@@ -269,8 +271,8 @@ import UserNotifications
                     printDebug("failed to snooze item")
                 }
             }
-            // Little bit redundant. But this hasn't proven to be the most reliable system.
-            addNewNotification()
+
+            notificationHanlder.createNewNotification(forItem: self)
         }
         printDebug("Snoozing to \(segment). Original segment was \(originalSegment)")
     }
@@ -305,98 +307,98 @@ import UserNotifications
         }
     }
 
-    func addNewNotification() {
-        let firstDate = firstTriggerDate(segment: segment)
+//    func addNewNotification() {
+//        let firstDate = firstTriggerDate(segment: segment)
+//
+//        // Check if notifications are enabled for the segment first
+//        // Also check if item hasn't been marked as complete already
+//        if Options.getSegmentNotification(segment: segment), completeUntil < Date().endOfDay, Date() <= firstTriggerDate(segment: segment) {
+//            createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+//            debugPrint("Notification Date: \(firstDate)")
+//        } else if Options.getSegmentNotification(segment: segment), completeUntil > Date().endOfDay, Date() <= firstTriggerDate(segment: segment) {
+//            createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
+//            debugPrint("Notification Date: \(firstDate)")
+//        } else {
+//            createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate.nextDay)
+//            debugPrint("Notification Date: Next Day - \(firstDate.nextDay)")
+//        }
+//    }
 
-        // Check if notifications are enabled for the segment first
-        // Also check if item hasn't been marked as complete already
-        if Options.getSegmentNotification(segment: segment), completeUntil < Date().endOfDay, Date() <= firstTriggerDate(segment: segment) {
-            createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-            debugPrint("Notification Date: \(firstDate)")
-        } else if Options.getSegmentNotification(segment: segment), completeUntil > Date().endOfDay, Date() <= firstTriggerDate(segment: segment) {
-            createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate)
-            debugPrint("Notification Date: \(firstDate)")
-        } else {
-            createNotification(title: title!, notes: notes, segment: segment, uuidString: uuidString, firstDate: firstDate.nextDay)
-            debugPrint("Notification Date: Next Day - \(firstDate.nextDay)")
-        }
-    }
+//    func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate _: Date) {
+//        let content = UNMutableNotificationContent()
+//        content.title = title
+//        content.sound = UNNotificationSound.default
+//        content.threadIdentifier = String(getItemSegment(id: uuidString))
+//
+//        content.badge = NSNumber(integerLiteral: Items.setBadgeNumber(id: uuidString))
+//
+//        if let notesText = notes {
+//            content.body = notesText
+//        }
+//
+//        // Assign the category (and the associated actions).
+//        switch segment {
+//        case 1:
+//            content.categoryIdentifier = "afternoon"
+//        case 2:
+//            content.categoryIdentifier = "evening"
+//        case 3:
+//            content.categoryIdentifier = "night"
+//        default:
+//            content.categoryIdentifier = "morning"
+//        }
+//
+//        var dateComponents = DateComponents()
+//        dateComponents.calendar = Calendar.autoupdatingCurrent
+//        // dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
+//        dateComponents.timeZone = TimeZone.autoupdatingCurrent
+//
+//        dateComponents.hour = Options.getOptionHour(segment: segment)
+//        dateComponents.minute = Options.getOptionMinute(segment: segment)
+//
+//        #if DEBUG
+//            if repeats {
+//                debugPrint("Task titled \(title) repeats")
+//            } else {
+//                debugPrint("Task titled \(title) does NOT repeat")
+//            }
+//        #endif
+//
+//        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeats)
+//
+//        // Create the request
+//        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
+//
+//        // Schedule the request with the system
+//        let notificationCenter = UNUserNotificationCenter.current()
+//        notificationCenter.add(request) { error in
+//            if error != nil {
+//                printDebug("Failed to create notification with error: \(String(describing: error))")
+//            } else {
+//                printDebug("Notification created successfully")
+//            }
+//        }
+//    }
 
-    func createNotification(title: String, notes: String?, segment: Int, uuidString: String, firstDate _: Date) {
-        let content = UNMutableNotificationContent()
-        content.title = title
-        content.sound = UNNotificationSound.default
-        content.threadIdentifier = String(getItemSegment(id: uuidString))
-
-        content.badge = NSNumber(integerLiteral: Items.setBadgeNumber(id: uuidString))
-
-        if let notesText = notes {
-            content.body = notesText
-        }
-
-        // Assign the category (and the associated actions).
-        switch segment {
-        case 1:
-            content.categoryIdentifier = "afternoon"
-        case 2:
-            content.categoryIdentifier = "evening"
-        case 3:
-            content.categoryIdentifier = "night"
-        default:
-            content.categoryIdentifier = "morning"
-        }
-
-        var dateComponents = DateComponents()
-        dateComponents.calendar = Calendar.autoupdatingCurrent
-        // dateComponents = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day], from: firstDate)
-        dateComponents.timeZone = TimeZone.autoupdatingCurrent
-
-        dateComponents.hour = Options.getOptionHour(segment: segment)
-        dateComponents.minute = Options.getOptionMinute(segment: segment)
-
-        #if DEBUG
-            if repeats {
-                debugPrint("Task titled \(title) repeats")
-            } else {
-                debugPrint("Task titled \(title) does NOT repeat")
-            }
-        #endif
-
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: repeats)
-
-        // Create the request
-        let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
-
-        // Schedule the request with the system
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.add(request) { error in
-            if error != nil {
-                printDebug("Failed to create notification with error: \(String(describing: error))")
-            } else {
-                printDebug("Notification created successfully")
-            }
-        }
-    }
-
-    func getItemSegment(id: String) -> Int {
-        var identifier: String {
-            if id.count > 36 {
-                return String(id.dropLast())
-            } else {
-                return id
-            }
-        }
-        var segment = Int()
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                if let item = realm.object(ofType: Items.self, forPrimaryKey: identifier) {
-                    segment = item.segment
-                }
-            }
-        }
-        return segment
-    }
+//    func getItemSegment(id: String) -> Int {
+//        var identifier: String {
+//            if id.count > 36 {
+//                return String(id.dropLast())
+//            } else {
+//                return id
+//            }
+//        }
+//        var segment = Int()
+//        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                if let item = realm.object(ofType: Items.self, forPrimaryKey: identifier) {
+//                    segment = item.segment
+//                }
+//            }
+//        }
+//        return segment
+//    }
 
     func setDailyRepeat(_ bool: Bool) {
         DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
@@ -413,17 +415,17 @@ import UserNotifications
         }
     }
 
-    func firstTriggerDate(segment: Int) -> Date {
-        var segmentTime = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: Date())
-        segmentTime.hour = Options.getOptionHour(segment: segment)
-        segmentTime.minute = Options.getOptionMinute(segment: segment)
-        segmentTime.second = 0
-
-        // The actual day is handled in addNewNotification()
-        // The name of this func is now a bit misleading
-        printDebug("\(#function) - \(segmentTime.date!)")
-        return segmentTime.date!
-    }
+//    func firstTriggerDate(segment: Int) -> Date {
+//        var segmentTime = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: Date())
+//        segmentTime.hour = Options.getOptionHour(segment: segment)
+//        segmentTime.minute = Options.getOptionMinute(segment: segment)
+//        segmentTime.second = 0
+//
+//        // The actual day is handled in addNewNotification()
+//        // The name of this func is now a bit misleading
+//        printDebug("\(#function) - \(segmentTime.date!)")
+//        return segmentTime.date!
+//    }
 
     static func getCountForSegment(segment: Int) -> Int {
         var count = Int()

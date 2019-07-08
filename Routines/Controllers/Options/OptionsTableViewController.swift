@@ -360,19 +360,19 @@ class OptionsTableViewController: UITableViewController {
     var optionsToken: NotificationToken?
     var routinesPlusToken: NotificationToken?
 
-    var pleaseWaitAlert: SwiftMessagesAlertsController?
-    @objc private func dismissWaitAlert() {
-        guard pleaseWaitAlert != nil else { return }
-        pleaseWaitAlert?.dismissAlert()
-        pleaseWaitAlert = nil
-        Items.requestNotificationPermission()
-    }
+//    var pleaseWaitAlert: SwiftMessagesAlertsController?
+//    @objc private func dismissWaitAlert() {
+//        guard pleaseWaitAlert != nil else { return }
+//        pleaseWaitAlert?.dismissAlert()
+//        pleaseWaitAlert = nil
+//        Items.requestNotificationPermission()
+//    }
 
     deinit {
         printDebug("\(#function) called from OptionsTableViewController. Options token invalidated")
         optionsToken?.invalidate()
         routinesPlusToken?.invalidate()
-        pleaseWaitAlert = nil
+//        pleaseWaitAlert = nil
     }
 
     // Need to observe all options even though there will really only be one object because sometimes that object may need to be deleted
@@ -388,16 +388,16 @@ class OptionsTableViewController: UITableViewController {
             case .update:
                 // Don't bother taking action of Options don't even exist
                 // TODO: Remove all this crap. Go back to just observing the one object
-                guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else {
-                    guard self.pleaseWaitAlert == nil else { return }
-                    self.pleaseWaitAlert = SwiftMessagesAlertsController()
-                    self.pleaseWaitAlert?.showAlert(title: "Please Wait", body: "Syncing your data from iCloud. This shouldn't take long.")
-                    return
-                }
+//                guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else {
+//                    guard self.pleaseWaitAlert == nil else { return }
+//                    self.pleaseWaitAlert = SwiftMessagesAlertsController()
+//                    self.pleaseWaitAlert?.showAlert(title: "Please Wait", body: "Syncing your data from iCloud. This shouldn't take long.")
+//                    return
+//                }
                 self.refreshUI()
                 TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
-                guard self.pleaseWaitAlert != nil else { return }
-                self.perform(#selector(self.dismissWaitAlert), with: nil, afterDelay: 1)
+//                guard self.pleaseWaitAlert != nil else { return }
+//                self.perform(#selector(self.dismissWaitAlert), with: nil, afterDelay: 1)
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
                 fatalError("\(error)")
@@ -410,7 +410,7 @@ class OptionsTableViewController: UITableViewController {
         let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
         routinesPlusToken = routinesPlus?.observe { _ in
             printDebug("Something in RoutinesPlus changed")
-            Items.requestNotificationPermission()
+            NotificationHandler().checkNotificationPermission()
             self.refreshUI()
         }
     }
