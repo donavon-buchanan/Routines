@@ -19,6 +19,10 @@ import UserNotifications
 
     static let realmDispatchQueueLabel: String = "background"
 
+    override static func ignoredProperties() -> [String] {
+        return ["notificationHanlder"]
+    }
+
     dynamic var title: String?
     dynamic var dateModified = Date()
     dynamic var segment: Int = 0
