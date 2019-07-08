@@ -731,7 +731,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 }, completion: nil)
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
-                fatalError("\(error)")
+//                fatalError("\(error)")
+                printDebug("Error in \(#function) - \(error)")
             }
         }
     }
