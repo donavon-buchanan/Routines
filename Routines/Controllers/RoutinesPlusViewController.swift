@@ -117,7 +117,7 @@ class RoutinesPlusViewController: UIViewController {
         printDebug("setting prices on buttons")
 //        monthlyButton.setTitle("\(monthlyPrice) / Month", for: .normal)
 //        yearlyButton.setTitle("\(yearlyPrice) / Year", for: .normal)
-        lifetimeButton.setTitle("\(lifetimePrice) / Lifetime", for: .normal)
+        lifetimeButton.setTitle("\(lifetimePrice) / Forever", for: .normal)
 
 //        monthlyDescriptionLabel.text = monthlySubtext
 //        yearlyDescriptionLabel.text = yearlySubtext
