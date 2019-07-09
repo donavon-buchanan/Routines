@@ -643,7 +643,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftformat >/dev/null; then\nswiftformat . --exclude Pods,Generated,/Users/donavon/Developer/Projects/Routines/fastlane/*,/Users/donavon/Developer/Projects/Routines/RoutinesUITests --swiftversion 5\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#if which swiftformat >/dev/null; then\n#swiftformat . --exclude Pods,Generated,/Users/donavon/Developer/Projects/Routines/fastlane/*,/Users/donavon/Developer/Projects/Routines/RoutinesUITests --swiftversion 5\n#else\n#echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\n#fi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

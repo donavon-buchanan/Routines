@@ -102,20 +102,21 @@ struct NotificationHandler {
 
     func removeOrphanedNotifications() {
         let realm = try! Realm()
-        let items = realm.objects(Items.self)
+        let items = realm.objects(Items.self).filter("isDeleted = %@", false)
         let itemIDArray: [String] = items.map { $0.uuidString }
-        var notificationIDArray: [String] = []
 
         center.getPendingNotificationRequests { pendingRequests in
+            //This has to happen inside the closure, otherwise the values to notificationIDArray never get written in time.
+            var notificationIDArray: [String] = []
             notificationIDArray = pendingRequests.map { $0.identifier }
+            let itemSet = Set(itemIDArray)
+            print("itemSet count: \(itemSet.count)")
+            let notificationSet = Set(notificationIDArray)
+            print("notificationSet count: \(notificationSet.count)")
+            let orphans = notificationSet.subtracting(itemSet)
+            print("orphans count: \(orphans.count)")
+            self.removeNotifications(withIdentifiers: Array(orphans))
         }
-
-        let itemSet = Set(itemIDArray)
-        let notificationSet = Set(notificationIDArray)
-
-        let orphans = notificationSet.subtracting(itemSet)
-
-        removeNotifications(withIdentifiers: Array(orphans))
     }
 
     func checkNotificationPermission() {
