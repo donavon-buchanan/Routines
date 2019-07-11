@@ -70,6 +70,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         AppDelegate.registerNotificationCategoriesAndActions()
 
         migrateRealm()
+        
+        //I thought this would be needed. But it seems there's already another func to take care of this.
+//        if UserDefaults.standard.bool(forKey: "notificationsHaveRefreshed") {
+//            let notificationHandler = NotificationHandler()
+//            notificationHandler.refreshAllNotifications()
+//            UserDefaults.standard.set(true, forKey: "notificationsHaveRefreshed")
+//        }
 
         AppDelegate.checkOptions()
         AppDelegate.checkRoutinesPlus()

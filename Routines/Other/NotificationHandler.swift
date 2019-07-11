@@ -136,6 +136,15 @@ struct NotificationHandler {
             }
         }
     }
+    
+    func refreshAllNotifications() {
+        let realm = try! Realm()
+        let items = realm.objects(Items.self).filter("isDeleted = %@", false)
+        center.removeAllPendingNotificationRequests()
+        items.forEach { (item) in
+            createNewNotification(forItem: item)
+        }
+    }
 
     private func scheduleNotification(request: UNNotificationRequest) {
         center.add(request) { error in
