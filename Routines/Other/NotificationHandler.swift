@@ -85,7 +85,7 @@ struct NotificationHandler {
             content.categoryIdentifier = "morning"
         }
 
-        let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .day, .calendar, .timeZone], from: triggerDate)
+        let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: triggerDate)
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: repeats)
 

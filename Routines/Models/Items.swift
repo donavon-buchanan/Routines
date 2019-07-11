@@ -9,7 +9,7 @@
 import Foundation
 import IceCream
 import RealmSwift
-import UserNotifications
+//import UserNotifications
 
 // TODO: Figure out inits with Realm
 // TODO: Rename this. Shouldn't be plural. But causes realm migration complication.
