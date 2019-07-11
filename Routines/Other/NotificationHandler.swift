@@ -107,6 +107,7 @@ struct NotificationHandler {
 
         center.getPendingNotificationRequests { pendingRequests in
             //This has to happen inside the closure, otherwise the values to notificationIDArray never get written in time.
+            //Seems to execute async
             var notificationIDArray: [String] = []
             notificationIDArray = pendingRequests.map { $0.identifier }
             let itemSet = Set(itemIDArray)
