@@ -21,6 +21,8 @@ enum RegisteredPurchase: String {
 }
 
 class OptionsTableViewController: UITableViewController {
+    let notificationHandler = NotificationHandler()
+    
     @IBOutlet var cellLabels: [UILabel]!
     @IBOutlet var switches: [UISwitch]!
 
@@ -43,7 +45,7 @@ class OptionsTableViewController: UITableViewController {
             // cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
             RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
             if cloudSyncSwitch.isOn {
-                AppDelegate.refreshNotifications()
+                notificationHandler.refreshAllNotifications()
             }
         } else {
             // Show Purchase Options
@@ -208,7 +210,7 @@ class OptionsTableViewController: UITableViewController {
                     RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
                     haptic.impactOccurred()
                     if cloudSyncSwitch.isOn {
-                        AppDelegate.refreshNotifications()
+                        notificationHandler.refreshAllNotifications()
                     }
                 } else {
                     printDebug("\(#function) - Case 3 else, should show purchase options")

@@ -138,9 +138,11 @@ struct NotificationHandler {
     }
     
     func refreshAllNotifications() {
+        //TODO: Delivered notifications are being delivered. Check for change in notification properties before creating it again.
+        removeOrphanedNotifications()
         let realm = try! Realm()
-        let items = realm.objects(Items.self).filter("isDeleted = %@", false)
-        center.removeAllPendingNotificationRequests()
+        let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+        //center.removeAllPendingNotificationRequests()
         items.forEach { (item) in
             createNewNotification(forItem: item)
         }

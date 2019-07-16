@@ -21,7 +21,9 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
 
-    lazy var afterSyncTimer = AfterSyncTimer()
+    let afterSyncTimer = AfterSyncTimer()
+    
+    let notificationHandler = NotificationHandler()
 
     static let automaticDarkModeTimer = AutomaticDarkModeTimer()
 
@@ -49,18 +51,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     // TODO: This should be used way less. Make notification management on individual tasks better!
-    static func refreshNotifications(function: String = #function) {
-        printDebug(#function + "Called by \(function)")
-
-        let notificationHandler = NotificationHandler()
-        notificationHandler.removeOrphanedNotifications()
-
-        let realm = try! Realm()
-        let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
-        items.forEach { item in
-            notificationHandler.createNewNotification(forItem: item)
-        }
-    }
+//    static func refreshNotifications(function: String = #function) {
+//        printDebug(#function + "Called by \(function)")
+//
+//        let notificationHandler = NotificationHandler()
+//        notificationHandler.removeOrphanedNotifications()
+//
+//        let realm = try! Realm()
+//        let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+//        items.forEach { item in
+//            notificationHandler.createNewNotification(forItem: item)
+//        }
+//    }
 
     func application(_: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         printDebug("\(#function) - Start")
@@ -503,7 +505,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     static func refreshAndUpdate(function: String = #function) {
         printDebug(#function + "Called by \(function)")
-        AppDelegate.refreshNotifications()
+        let notificationHandler = NotificationHandler()
+        notificationHandler.refreshAllNotifications()
         AppDelegate.updateBadgeFromPush()
         // AppDelegate.removeOrphanedNotifications()
     }
