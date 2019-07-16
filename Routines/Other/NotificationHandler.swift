@@ -59,8 +59,8 @@ struct NotificationHandler {
         let notes = item.notes
         let segment = item.segment
         let id = item.uuidString
-        let triggerDate = firstTriggerDate(forItem: item)
-        let repeats = item.repeats
+        //let triggerDate = firstTriggerDate(forItem: item)
+        //let repeats = item.repeats
 
         let content = UNMutableNotificationContent()
         content.title = title
@@ -85,15 +85,21 @@ struct NotificationHandler {
             content.categoryIdentifier = "morning"
         }
 
-        let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: triggerDate)
+        //let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: triggerDate)
 
-        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: repeats)
+        let trigger = returnNotificationTrigger(item: item)
 
         // Create the request
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
 
         // Schedule the request with the system
         scheduleNotification(request: request)
+    }
+    
+    func returnNotificationTrigger(item: Items) -> UNCalendarNotificationTrigger {
+        let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: firstTriggerDate(forItem: item))
+        
+        return UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: item.repeats)
     }
 
     func removeNotifications(withIdentifiers identifiers: [String]) {
@@ -138,13 +144,36 @@ struct NotificationHandler {
     }
     
     func refreshAllNotifications() {
-        //TODO: Delivered notifications are being delivered. Check for change in notification properties before creating it again.
+        //Do some cleanup first
         removeOrphanedNotifications()
+        
         let realm = try! Realm()
         let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
-        //center.removeAllPendingNotificationRequests()
-        items.forEach { (item) in
-            createNewNotification(forItem: item)
+        
+        center.getPendingNotificationRequests { (pendingRequests) in
+            // 1. Iterate through all pending requests and check that the trigger matches what *would* be set with the item's current properties
+            // 2. If there's a match, the notification does not need to be updated and the item can be ignored. Add to Set of ignored items
+            // 3. After iteration has finished, subtract set from set of all qualifying Items in Realm and save as new set of items
+            // 4. Add new notifications for the set of items
+            var itemsToIgnore = Set<Items>()
+            // 1.
+            pendingRequests.forEach({ (request) in
+                if let item = realm.object(ofType: Items.self, forPrimaryKey: request.identifier) {
+                    // 2.
+                    if request.trigger == self.returnNotificationTrigger(item: item) {
+                        itemsToIgnore.insert(item)
+                    }
+                } else {
+                    self.removeNotifications(withIdentifiers: [request.identifier])
+                }
+            })
+            // 3.
+            let itemsNeedingNotificationRefresh = Set(items).subtracting(itemsToIgnore)
+            
+            // 4.
+            itemsNeedingNotificationRefresh.forEach({ (item) in
+                self.createNewNotification(forItem: item)
+            })
         }
     }
 
