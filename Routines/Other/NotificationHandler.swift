@@ -52,7 +52,8 @@ struct NotificationHandler {
         return badgeCount
     }
 
-    func createNewNotification(forItem item: Items) {
+    func createNewNotification(forItem item: Items, function: String = #function) {
+        printDebug(#function + "Called by \(function)")
         checkNotificationPermission()
 
         let title = item.title!
@@ -97,16 +98,19 @@ struct NotificationHandler {
     }
     
     func returnNotificationTrigger(item: Items) -> UNCalendarNotificationTrigger {
+        //printDebug(#function + "Called by \(function)")
         let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: firstTriggerDate(forItem: item))
         
         return UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: item.repeats)
     }
 
-    func removeNotifications(withIdentifiers identifiers: [String]) {
+    func removeNotifications(withIdentifiers identifiers: [String], function: String = #function) {
+        printDebug(#function + "Called by \(function)")
         center.removePendingNotificationRequests(withIdentifiers: identifiers)
     }
 
-    func removeOrphanedNotifications() {
+    func removeOrphanedNotifications(function: String = #function) {
+        printDebug(#function + "Called by \(function)")
         let realm = try! Realm()
         let items = realm.objects(Items.self).filter("isDeleted = %@", false)
         let itemIDArray: [String] = items.map { $0.uuidString }
@@ -143,14 +147,15 @@ struct NotificationHandler {
         }
     }
     
-    func refreshAllNotifications() {
+    func refreshAllNotifications(function: String = #function) {
+        printDebug(#function + "Called by \(function)")
         //Do some cleanup first
         removeOrphanedNotifications()
         
-        let realm = try! Realm()
-        let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
-        
         center.getPendingNotificationRequests { (pendingRequests) in
+            let realm = try! Realm()
+            let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+            debugPrint("Starting count for items list is \(items.count)")
             // 1. Iterate through all pending requests and check that the trigger matches what *would* be set with the item's current properties
             // 2. If there's a match, the notification does not need to be updated and the item can be ignored. Add to Set of ignored items
             // 3. After iteration has finished, subtract set from set of all qualifying Items in Realm and save as new set of items
@@ -159,17 +164,28 @@ struct NotificationHandler {
             // 1.
             pendingRequests.forEach({ (request) in
                 if let item = realm.object(ofType: Items.self, forPrimaryKey: request.identifier) {
+                    debugPrint("Found item matching notification request ID: \(item.title!)")
                     // 2.
-                    if request.trigger == self.returnNotificationTrigger(item: item) {
+                    let trigger = request.trigger as! UNCalendarNotificationTrigger
+                    //Calendar will never match. So set them equal, then compare
+                    var requestDateComponents = trigger.dateComponents
+                    var itemDateComponents = self.returnNotificationTrigger(item: item).dateComponents
+                    requestDateComponents.calendar = Calendar.autoupdatingCurrent
+                    itemDateComponents.calendar = Calendar.autoupdatingCurrent
+                    
+                    if requestDateComponents == itemDateComponents {
+                        debugPrint("Item notification does not need updating. Added to ignore list: \(item.title!)")
                         itemsToIgnore.insert(item)
                     }
                 } else {
+                    debugPrint("Did not find matching item for request ID. Removing notification")
                     self.removeNotifications(withIdentifiers: [request.identifier])
                 }
             })
             // 3.
+            debugPrint("Ignored items count is: \(itemsToIgnore.count)")
             let itemsNeedingNotificationRefresh = Set(items).subtracting(itemsToIgnore)
-            
+            debugPrint("itemsNeedingNotificationRefresh count is: \(itemsNeedingNotificationRefresh.count)")
             // 4.
             itemsNeedingNotificationRefresh.forEach({ (item) in
                 self.createNewNotification(forItem: item)
@@ -177,7 +193,8 @@ struct NotificationHandler {
         }
     }
 
-    private func scheduleNotification(request: UNNotificationRequest) {
+    private func scheduleNotification(request: UNNotificationRequest, function: String = #function) {
+        printDebug(#function + "Called by \(function)")
         center.add(request) { error in
             if error != nil {
                 printDebug("Failed to create notification with error: \(String(describing: error))")
