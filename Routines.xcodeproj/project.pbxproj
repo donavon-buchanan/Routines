@@ -23,6 +23,7 @@
 		F86E0AC22297FA5400BB53D6 /* RoutinesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86E0AC12297FA5400BB53D6 /* RoutinesUITests.swift */; };
 		F86E0ACA2297FAA400BB53D6 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A9B0A222842BC20043E43A /* SnapshotHelper.swift */; };
 		F896D96F22802E5B0005C899 /* AutomaticDarkModeTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F896D96E22802E5B0005C899 /* AutomaticDarkModeTimer.swift */; };
+		F89C786E22E31E000079B089 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F89C786C22E31E000079B089 /* LaunchScreen.storyboard */; };
 		F8A8B2E2228356F9005C9E56 /* AfterSyncTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A8B2E1228356F9005C9E56 /* AfterSyncTimer.swift */; };
 		F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */; };
 		F8ACD4642269F89100E136E9 /* IAPHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ACD4632269F89100E136E9 /* IAPHandler.swift */; };
@@ -155,6 +156,7 @@
 		F86E0AC32297FA5400BB53D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F87D49EE2269AA1700845E0D /* AppSecrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSecrets.swift; sourceTree = "<group>"; };
 		F896D96E22802E5B0005C899 /* AutomaticDarkModeTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticDarkModeTimer.swift; sourceTree = "<group>"; };
+		F89C786D22E31E000079B089 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
 		F8A761F022580AB400FB9654 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS5.2.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
 		F8A8B2E1228356F9005C9E56 /* AfterSyncTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfterSyncTimer.swift; sourceTree = "<group>"; };
 		F8A9B0A222842BC20043E43A /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = RoutinesUITests/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
@@ -330,6 +332,7 @@
 			isa = PBXGroup;
 			children = (
 				F8B831BB2155CBB000DAF60E /* Main.storyboard */,
+				F89C786C22E31E000079B089 /* LaunchScreen.storyboard */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -549,6 +552,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F89C786E22E31E000079B089 /* LaunchScreen.storyboard in Resources */,
 				F8F3270E215C8509004AC619 /* Media.xcassets in Resources */,
 				F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */,
 			);
@@ -703,6 +707,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		F89C786C22E31E000079B089 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F89C786D22E31E000079B089 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
 		F8B831BB2155CBB000DAF60E /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
