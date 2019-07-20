@@ -524,6 +524,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 switch change {
                 case .change(let properties):
                     properties.forEach({ (property) in
+                        debugPrint("Changed options property is \(property.name)")
                         if property.name.contains("Minute") || property.name.contains("Hour") {
                             printDebug("Notification times changed. Recreating notifications as necessary.")
                             notificationHandler.refreshAllNotifications()
