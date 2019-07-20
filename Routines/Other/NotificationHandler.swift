@@ -152,16 +152,18 @@ struct NotificationHandler {
         }
     }
     
-    func batchModifyNotifications(items: [Items], function: String = #function) {
+    func batchModifyNotifications(items: [Items?], function: String = #function) {
         printDebug(#function + "Called by \(function)")
         DispatchQueue.main.async {
             items.forEach { (item) in
-                if !item.isDeleted {
-                    debugPrint("Updating Notification")
-                    self.createNewNotification(forItem: item)
-                } else {
-                    debugPrint("Removing notification for soft deleted item")
-                    self.removeNotifications(withIdentifiers: [item.uuidString])
+                if let item = item {
+                    if !item.isDeleted {
+                        debugPrint("Updating Notification")
+                        self.createNewNotification(forItem: item)
+                    } else {
+                        debugPrint("Removing notification for soft deleted item")
+                        self.removeNotifications(withIdentifiers: [item.uuidString])
+                    }
                 }
             }
         }

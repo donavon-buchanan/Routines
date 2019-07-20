@@ -52,6 +52,16 @@
                ReferencedContainer = "container:Routines.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F8085E5422E3952A00DD6AAE"
+               BuildableName = "RoutinesTests.xctest"
+               BlueprintName = "RoutinesTests"
+               ReferencedContainer = "container:Routines.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

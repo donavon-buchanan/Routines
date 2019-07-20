@@ -129,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         observeItems()
-
+        observeOptions()
         #if targetEnvironment(simulator)
             loadDefaultData()
         #endif
@@ -141,6 +141,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func application(_: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         AppDelegate.syncEngine?.pull()
         observeItems()
+        observeOptions()
         completionHandler(.newData)
     }
 
@@ -151,15 +152,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let subscriptionID = notification?.subscriptionID, IceCreamSubscription.allIDs.contains(subscriptionID) {
             NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
         }
-        switch application.applicationState {
-        case .active:
-            observeItems()
-            completionHandler(.newData)
-        default:
-            // Still have to do this because changes in time don't cause an update to the list of items
-            observeItems()
-            completionHandler(.newData)
-        }
+//        switch application.applicationState {
+//        case .active:
+//            observeItems()
+//            completionHandler(.newData)
+//        default:
+//            // Still have to do this because changes in time don't cause an update to the list of items
+//            observeItems()
+//            completionHandler(.newData)
+//        }
+        observeItems()
+        observeOptions()
 
         printDebug("Received push notification")
     }
@@ -181,6 +184,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 
         observeItems()
+        observeOptions()
         notificationHandler.removeOrphanedNotifications()
         
         printDebug("\(#function) - End")
@@ -205,6 +209,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Sync with iCloud
         observeItems()
+        observeOptions()
 
         printDebug("\(#function) - End")
     }
@@ -500,8 +505,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 //Caused crashes because deleted items don't exist and can't provide a property value
                 //notificationHandler.removeNotifications(withIdentifiers: deletions.map { (self.items?[$0].uuidString) ?? ""})
                 notificationHandler.removeOrphanedNotifications()
-                notificationHandler.batchModifyNotifications(items: insertions.map { (self.items?[$0])!})
-                notificationHandler.batchModifyNotifications(items: modifications.map { (self.items?[$0])!})
+                notificationHandler.batchModifyNotifications(items: insertions.map { (self.items?[$0])})
+                notificationHandler.batchModifyNotifications(items: modifications.map { (self.items?[$0])})
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
                 printDebug("Error in \(#function) - \(error)")
@@ -509,7 +514,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
     
-    func observeOptions() {
+    func observeOptions(function: String = #function) {
+        printDebug(#function + "Called by \(function)")
         let realm = try! Realm()
         let notificationHandler = NotificationHandler()
         if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
