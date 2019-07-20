@@ -20,8 +20,6 @@ import UserNotifications
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
-
-    let afterSyncTimer = AfterSyncTimer()
     
     let notificationHandler = NotificationHandler()
 
@@ -142,7 +140,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         AppDelegate.syncEngine?.pull()
-        AppDelegate.refreshAndUpdate()
+        observeItems()
         completionHandler(.newData)
     }
 
@@ -155,11 +153,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         switch application.applicationState {
         case .active:
-            afterSyncTimer.startTimer()
+            observeItems()
             completionHandler(.newData)
         default:
             // Still have to do this because changes in time don't cause an update to the list of items
-            AppDelegate.refreshAndUpdate()
+            observeItems()
             completionHandler(.newData)
         }
 
@@ -170,14 +168,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug("\(#function) - Start")
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        afterSyncTimer.stopTimer()
         AppDelegate.automaticDarkModeTimer.stopTimer()
 
         AppDelegate.syncEngine?.pushAll()
-
-        // Redundant. But necessary for now.
-        AppDelegate.refreshAndUpdate()
-
+        
         printDebug("\(#function) - End")
     }
 
@@ -187,7 +181,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 
         observeItems()
-
+        notificationHandler.removeOrphanedNotifications()
+        
         printDebug("\(#function) - End")
     }
 
@@ -260,9 +255,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillTerminate(_: UIApplication) {
         printDebug("\(#function) - Start")
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-
-        AppDelegate.refreshAndUpdate()
-
+        notificationHandler.removeOrphanedNotifications()
         printDebug("\(#function) - End")
     }
 
@@ -485,31 +478,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var itemsToken: NotificationToken?
     var items: Results<Items>?
 
-    func observeItems() {
+    //TODO: This creates some redudancies with notification creation and deletion as handled by the Items class.
+    func observeItems(function: String = #function) {
+        printDebug(#function + "Called by \(function)")
+        let notificationHandler = NotificationHandler()
         // Observe Results Notifications
         guard itemsToken == nil else { return }
-        printDebug(#function + "Setting token and observing items")
-
         let realm = try! Realm()
-        let application = UIApplication.shared
         items = realm.objects(Items.self)
-
-        itemsToken = items?.observe { _ in
-            if application.applicationState == .active {
-                self.afterSyncTimer.startTimer()
-            } else {
-                AppDelegate.refreshAndUpdate()
+        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
+        // Observe Results Notifications
+        itemsToken = items?.observe { (changes: RealmCollectionChange) in
+            switch changes {
+            case .initial:
+                notificationHandler.removeOrphanedNotifications()
+                notificationHandler.checkForMissingNotifications()
+            case let .update(_, deletions, insertions, modifications):
+                printDebug("updated items detected")
+                notificationHandler.removeNotifications(withIdentifiers: deletions.map { (self.items?[$0].uuidString)!})
+                notificationHandler.batchModifyNotifications(items: insertions.map { (self.items?[$0])!})
+                notificationHandler.batchModifyNotifications(items: modifications.map { (self.items?[$0])!})
+            case let .error(error):
+                // An error occurred while opening the Realm file on the background worker thread
+                printDebug("Error in \(#function) - \(error)")
             }
         }
     }
 
-    static func refreshAndUpdate(function: String = #function) {
-        printDebug(#function + "Called by \(function)")
-        let notificationHandler = NotificationHandler()
-        notificationHandler.refreshAllNotifications()
-        AppDelegate.updateBadgeFromPush()
-        // AppDelegate.removeOrphanedNotifications()
-    }
+//    static func refreshAndUpdate(function: String = #function) {
+//        printDebug(#function + "Called by \(function)")
+//        let notificationHandler = NotificationHandler()
+//        notificationHandler.refreshAllNotifications()
+//        AppDelegate.updateBadgeFromPush()
+//        // AppDelegate.removeOrphanedNotifications()
+//    }
 
 //    @objc func backgroundRefresh() {
 //        printDebug(#function)

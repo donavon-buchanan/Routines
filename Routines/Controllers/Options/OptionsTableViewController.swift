@@ -44,9 +44,9 @@ class OptionsTableViewController: UITableViewController {
         if cloudSyncSwitch.isEnabled {
             // cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
             RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
-            if cloudSyncSwitch.isOn {
-                notificationHandler.refreshAllNotifications()
-            }
+//            if cloudSyncSwitch.isOn {
+//                notificationHandler.refreshAllNotifications()
+//            }
         } else {
             // Show Purchase Options
             segueToRoutinesPlusViewController()
@@ -209,9 +209,9 @@ class OptionsTableViewController: UITableViewController {
                     cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
                     RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
                     haptic.impactOccurred()
-                    if cloudSyncSwitch.isOn {
-                        notificationHandler.refreshAllNotifications()
-                    }
+//                    if cloudSyncSwitch.isOn {
+//                        notificationHandler.refreshAllNotifications()
+//                    }
                 } else {
                     printDebug("\(#function) - Case 3 else, should show purchase options")
                     segueToRoutinesPlusViewController()

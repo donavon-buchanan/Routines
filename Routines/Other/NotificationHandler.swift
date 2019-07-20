@@ -129,6 +129,41 @@ struct NotificationHandler {
             self.removeNotifications(withIdentifiers: Array(orphans))
         }
     }
+    
+    func checkForMissingNotifications(function: String = #function) {
+        printDebug(#function + "Called by \(function)")
+        center.getPendingNotificationRequests { (pendingRequests) in
+            let realm = try! Realm()
+            let items = realm.objects(Items.self).filter("isDeleted = %@", false)
+            debugPrint("Pending Requests Count: \(pendingRequests.count)")
+            let pendingRequestsSet = Set(pendingRequests.map { $0.identifier })
+            debugPrint("Pending Requests Set Count: \(pendingRequestsSet.count)")
+            let itemIDArray: [String] = items.map { $0.uuidString }
+            debugPrint("Item Array Count: \(itemIDArray.count)")
+            itemIDArray.forEach({ (itemID) in
+                if !pendingRequestsSet.contains(itemID) {
+                    if let item = realm.object(ofType: Items.self, forPrimaryKey: itemID) {
+                        self.createNewNotification(forItem: item)
+                    }
+                }
+            })
+        }
+    }
+    
+    func batchModifyNotifications(items: [Items], function: String = #function) {
+        printDebug(#function + "Called by \(function)")
+        DispatchQueue.main.async {
+            items.forEach { (item) in
+                if !item.isDeleted {
+                    debugPrint("Updating Notification")
+                    self.createNewNotification(forItem: item)
+                } else {
+                    debugPrint("Removing notification for soft deleted item")
+                    self.removeNotifications(withIdentifiers: [item.uuidString])
+                }
+            }
+        }
+    }
 
     func checkNotificationPermission() {
         // Request permission to display alerts and play sounds
@@ -147,51 +182,51 @@ struct NotificationHandler {
         }
     }
     
-    func refreshAllNotifications(function: String = #function) {
-        printDebug(#function + "Called by \(function)")
-        //Do some cleanup first
-        removeOrphanedNotifications()
-        
-        center.getPendingNotificationRequests { (pendingRequests) in
-            let realm = try! Realm()
-            let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
-            debugPrint("Starting count for items list is \(items.count)")
-            // 1. Iterate through all pending requests and check that the trigger matches what *would* be set with the item's current properties
-            // 2. If there's a match, the notification does not need to be updated and the item can be ignored. Add to Set of ignored items
-            // 3. After iteration has finished, subtract set from set of all qualifying Items in Realm and save as new set of items
-            // 4. Add new notifications for the set of items
-            var itemsToIgnore = Set<Items>()
-            // 1.
-            pendingRequests.forEach({ (request) in
-                if let item = realm.object(ofType: Items.self, forPrimaryKey: request.identifier) {
-                    debugPrint("Found item matching notification request ID: \(item.title!)")
-                    // 2.
-                    let trigger = request.trigger as! UNCalendarNotificationTrigger
-                    //Calendar will never match. So set them equal, then compare
-                    var requestDateComponents = trigger.dateComponents
-                    var itemDateComponents = self.returnNotificationTrigger(item: item).dateComponents
-                    requestDateComponents.calendar = Calendar.autoupdatingCurrent
-                    itemDateComponents.calendar = Calendar.autoupdatingCurrent
-                    
-                    if requestDateComponents == itemDateComponents {
-                        debugPrint("Item notification does not need updating. Added to ignore list: \(item.title!)")
-                        itemsToIgnore.insert(item)
-                    }
-                } else {
-                    debugPrint("Did not find matching item for request ID. Removing notification")
-                    self.removeNotifications(withIdentifiers: [request.identifier])
-                }
-            })
-            // 3.
-            debugPrint("Ignored items count is: \(itemsToIgnore.count)")
-            let itemsNeedingNotificationRefresh = Set(items).subtracting(itemsToIgnore)
-            debugPrint("itemsNeedingNotificationRefresh count is: \(itemsNeedingNotificationRefresh.count)")
-            // 4.
-            itemsNeedingNotificationRefresh.forEach({ (item) in
-                self.createNewNotification(forItem: item)
-            })
-        }
-    }
+//    func refreshAllNotifications(function: String = #function) {
+//        printDebug(#function + "Called by \(function)")
+//        //Do some cleanup first
+//        removeOrphanedNotifications()
+//        
+//        center.getPendingNotificationRequests { (pendingRequests) in
+//            let realm = try! Realm()
+//            let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+//            debugPrint("Starting count for items list is \(items.count)")
+//            // 1. Iterate through all pending requests and check that the trigger matches what *would* be set with the item's current properties
+//            // 2. If there's a match, the notification does not need to be updated and the item can be ignored. Add to Set of ignored items
+//            // 3. After iteration has finished, subtract set from set of all qualifying Items in Realm and save as new set of items
+//            // 4. Add new notifications for the set of items
+//            var itemsToIgnore = Set<Items>()
+//            // 1.
+//            pendingRequests.forEach({ (request) in
+//                if let item = realm.object(ofType: Items.self, forPrimaryKey: request.identifier) {
+//                    debugPrint("Found item matching notification request ID: \(item.title!)")
+//                    // 2.
+//                    let trigger = request.trigger as! UNCalendarNotificationTrigger
+//                    //Calendar will never match. So set them equal, then compare
+//                    var requestDateComponents = trigger.dateComponents
+//                    var itemDateComponents = self.returnNotificationTrigger(item: item).dateComponents
+//                    requestDateComponents.calendar = Calendar.autoupdatingCurrent
+//                    itemDateComponents.calendar = Calendar.autoupdatingCurrent
+//                    
+//                    if requestDateComponents == itemDateComponents {
+//                        debugPrint("Item notification does not need updating. Added to ignore list: \(item.title!)")
+//                        itemsToIgnore.insert(item)
+//                    }
+//                } else {
+//                    debugPrint("Did not find matching item for request ID. Removing notification")
+//                    self.removeNotifications(withIdentifiers: [request.identifier])
+//                }
+//            })
+//            // 3.
+//            debugPrint("Ignored items count is: \(itemsToIgnore.count)")
+//            let itemsNeedingNotificationRefresh = Set(items).subtracting(itemsToIgnore)
+//            debugPrint("itemsNeedingNotificationRefresh count is: \(itemsNeedingNotificationRefresh.count)")
+//            // 4.
+//            itemsNeedingNotificationRefresh.forEach({ (item) in
+//                self.createNewNotification(forItem: item)
+//            })
+//        }
+//    }
 
     private func scheduleNotification(request: UNNotificationRequest, function: String = #function) {
         printDebug(#function + "Called by \(function)")
