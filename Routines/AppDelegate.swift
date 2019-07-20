@@ -476,7 +476,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     // MARK: - Update after Notifications
 
     var itemsToken: NotificationToken?
+    var optionsToken: NotificationToken?
     var items: Results<Items>?
+    var options: Options?
 
     //TODO: This creates some redudancies with notification creation and deletion as handled by the Items class.
     func observeItems(function: String = #function) {
@@ -493,14 +495,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             case .initial:
                 notificationHandler.removeOrphanedNotifications()
                 notificationHandler.checkForMissingNotifications()
-            case let .update(_, deletions, insertions, modifications):
+            case let .update(_, _, insertions, modifications):
                 printDebug("updated items detected")
-                notificationHandler.removeNotifications(withIdentifiers: deletions.map { (self.items?[$0].uuidString)!})
+                //Caused crashes because deleted items don't exist and can't provide a property value
+                //notificationHandler.removeNotifications(withIdentifiers: deletions.map { (self.items?[$0].uuidString) ?? ""})
+                notificationHandler.removeOrphanedNotifications()
                 notificationHandler.batchModifyNotifications(items: insertions.map { (self.items?[$0])!})
                 notificationHandler.batchModifyNotifications(items: modifications.map { (self.items?[$0])!})
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
                 printDebug("Error in \(#function) - \(error)")
+            }
+        }
+    }
+    
+    func observeOptions() {
+        let realm = try! Realm()
+        let notificationHandler = NotificationHandler()
+        if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+            optionsToken = options.observe { change in
+                switch change {
+                case .change(let properties):
+                    properties.forEach({ (property) in
+                        if property.name.contains("Minute") || property.name.contains("Hour") {
+                            printDebug("Notification times changed. Recreating notifications as necessary.")
+                            notificationHandler.refreshAllNotifications()
+                        }
+                    })
+                case .error(let error):
+                    debugPrint("An error occurred: \(error)")
+                case .deleted:
+                    debugPrint("Options was deleted.")
+                }
             }
         }
     }
@@ -521,6 +547,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     deinit {
         printDebug("\(#function) called. Tokens invalidated")
         itemsToken?.invalidate()
+        optionsToken?.invalidate()
     }
 
     // MARK: - Notification Categories and Actions

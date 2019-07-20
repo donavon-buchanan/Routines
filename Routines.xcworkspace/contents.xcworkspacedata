@@ -7,4 +7,11 @@
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
+   <Group
+      location = "group:"
+      name = "LaunchScreen.storyboard">
+      <FileRef
+         location = "group:Routines/Base.lproj/LaunchScreen.storyboard">
+      </FileRef>
+   </Group>
 </Workspace>

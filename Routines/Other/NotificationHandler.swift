@@ -126,6 +126,8 @@ struct NotificationHandler {
             print("notificationSet count: \(notificationSet.count)")
             let orphans = notificationSet.subtracting(itemSet)
             print("orphans count: \(orphans.count)")
+            
+            guard (orphans.count > 0) else { return }
             self.removeNotifications(withIdentifiers: Array(orphans))
         }
     }
@@ -227,6 +229,13 @@ struct NotificationHandler {
 //            })
 //        }
 //    }
+    
+    func refreshAllNotifications(function: String = #function) {
+        printDebug(#function + "Called by \(function)")
+        let realm = try! Realm()
+        let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+        batchModifyNotifications(items: items.map {$0})
+    }
 
     private func scheduleNotification(request: UNNotificationRequest, function: String = #function) {
         printDebug(#function + "Called by \(function)")
