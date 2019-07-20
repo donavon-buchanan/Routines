@@ -488,9 +488,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     //TODO: This creates some redudancies with notification creation and deletion as handled by the Items class.
     func observeItems(function: String = #function) {
         printDebug(#function + "Called by \(function)")
-        let notificationHandler = NotificationHandler()
         // Observe Results Notifications
         guard itemsToken == nil else { return }
+        let notificationHandler = NotificationHandler()
         let realm = try! Realm()
         items = realm.objects(Items.self)
         // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
@@ -516,6 +516,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func observeOptions(function: String = #function) {
         printDebug(#function + "Called by \(function)")
+        guard optionsToken == nil else { return }
         let realm = try! Realm()
         let notificationHandler = NotificationHandler()
         if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
