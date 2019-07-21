@@ -22,13 +22,43 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 //    var shouldShowHiddenTasksMessage = false
 
     override var keyCommands: [UIKeyCommand]? {
-        return [
+        var commandArray = [
             // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
             UIKeyCommand(input: "n", modifierFlags: .command, action: #selector(addNewTask), discoverabilityTitle: "Add New Task"),
             UIKeyCommand(input: "o", modifierFlags: .alternate, action: #selector(openSettings), discoverabilityTitle: "Open Settings"),
             UIKeyCommand(input: "e", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(editKeyCommand), discoverabilityTitle: "Edit List"),
             UIKeyCommand(input: "a", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(showAllKeyCommand), discoverabilityTitle: "Show Entire Day"),
-        ]
+            ]
+        if !self.linesBarButtonSelected {
+            commandArray.append(contentsOf: [
+                UIKeyCommand(input: "1", modifierFlags: .command, action: #selector(setSegmentZero), discoverabilityTitle: "Select Morning"),
+                UIKeyCommand(input: "2", modifierFlags: .command, action: #selector(setSegmentOne), discoverabilityTitle: "Select Afternoon"),
+                UIKeyCommand(input: "3", modifierFlags: .command, action: #selector(setSegmentTwo), discoverabilityTitle: "Select Evening"),
+                UIKeyCommand(input: "4", modifierFlags: .command, action: #selector(setSegmentThree), discoverabilityTitle: "Select Night"),
+                ])
+        }
+        return commandArray
+    }
+    
+    @objc func setSegmentZero() {
+        guard let tabBarController = tabBarController else { return }
+        tabBarController.selectedIndex = 0
+        TaskTableViewController.setAppearance(forSegment: 0)
+    }
+    @objc func setSegmentOne() {
+        guard let tabBarController = tabBarController else { return }
+        tabBarController.selectedIndex = 1
+        TaskTableViewController.setAppearance(forSegment: 1)
+    }
+    @objc func setSegmentTwo() {
+        guard let tabBarController = tabBarController else { return }
+        tabBarController.selectedIndex = 2
+        TaskTableViewController.setAppearance(forSegment: 2)
+    }
+    @objc func setSegmentThree() {
+        guard let tabBarController = tabBarController else { return }
+        tabBarController.selectedIndex = 3
+        TaskTableViewController.setAppearance(forSegment: 3)
     }
 
     @objc func addNewTask() {

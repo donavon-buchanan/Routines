@@ -30,6 +30,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     @IBOutlet var taskTextField: UITextField!
     @IBOutlet var segmentSelection: UISegmentedControl!
+    
     @IBOutlet var notesTextView: UITextView!
 
     @IBOutlet var repeatDailySwitch: UISwitch!
@@ -38,11 +39,17 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
-
+    
     override var keyCommands: [UIKeyCommand]? {
         return [
+            // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
             UIKeyCommand(input: "s", modifierFlags: .command, action: #selector(saveKeyCommand), discoverabilityTitle: "Save Task"),
             UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit"),
+            UIKeyCommand(input: "r", modifierFlags: .command, action: #selector(toggleRepeat), discoverabilityTitle: "Toggle Repeat Daily"),
+            UIKeyCommand(input: "1", modifierFlags: .command, action: #selector(setSegmentZero), discoverabilityTitle: "Select Morning"),
+            UIKeyCommand(input: "2", modifierFlags: .command, action: #selector(setSegmentOne), discoverabilityTitle: "Select Afternoon"),
+            UIKeyCommand(input: "3", modifierFlags: .command, action: #selector(setSegmentTwo), discoverabilityTitle: "Select Evening"),
+            UIKeyCommand(input: "4", modifierFlags: .command, action: #selector(setSegmentThree), discoverabilityTitle: "Select Night"),
         ]
     }
 
@@ -51,6 +58,27 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         if navigationItem.rightBarButtonItem!.isEnabled {
             saveButtonPressed()
         }
+    }
+    
+    @objc func toggleRepeat() {
+        repeatDailySwitch.setOn(!repeatDailySwitch.isOn, animated: true)
+    }
+    
+    @objc func setSegmentZero() {
+        segmentSelection.selectedSegmentIndex = 0
+        TaskTableViewController.setAppearance(forSegment: 0)
+    }
+    @objc func setSegmentOne() {
+        segmentSelection.selectedSegmentIndex = 1
+        TaskTableViewController.setAppearance(forSegment: 1)
+    }
+    @objc func setSegmentTwo() {
+        segmentSelection.selectedSegmentIndex = 2
+        TaskTableViewController.setAppearance(forSegment: 2)
+    }
+    @objc func setSegmentThree() {
+        segmentSelection.selectedSegmentIndex = 3
+        TaskTableViewController.setAppearance(forSegment: 3)
     }
 
     @IBOutlet var repeatDailyLabel: UILabel!

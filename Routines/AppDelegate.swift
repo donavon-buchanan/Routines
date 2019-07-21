@@ -139,7 +139,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        AppDelegate.syncEngine?.pull()
+//        AppDelegate.syncEngine?.pull()
         observeItems()
         observeOptions()
         completionHandler(.newData)
@@ -173,7 +173,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
         AppDelegate.automaticDarkModeTimer.stopTimer()
 
-        AppDelegate.syncEngine?.pushAll()
+//        AppDelegate.syncEngine?.pushAll()
         
         printDebug("\(#function) - End")
     }
@@ -504,8 +504,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 printDebug("updated items detected")
                 //Caused crashes because deleted items don't exist and can't provide a property value
                 //notificationHandler.removeNotifications(withIdentifiers: deletions.map { (self.items?[$0].uuidString) ?? ""})
+                //These are being called too much because the order of the list is changing
                 notificationHandler.removeOrphanedNotifications()
+                debugPrint(#function + "Item Insertions: \(insertions.map { (self.items?[$0].title!)}) ")
                 notificationHandler.batchModifyNotifications(items: insertions.map { (self.items?[$0])})
+                debugPrint(#function + "Item Modifications: \(modifications.map { (self.items?[$0].title!)}) ")
                 notificationHandler.batchModifyNotifications(items: modifications.map { (self.items?[$0])})
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
@@ -526,6 +529,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     properties.forEach({ (property) in
                         debugPrint("Changed options property is \(property.name)")
                         if property.name.contains("Minute") || property.name.contains("Hour") {
+                            //this is being called too much because of sync
                             printDebug("Notification times changed. Recreating notifications as necessary.")
                             notificationHandler.refreshAllNotifications()
                         }
