@@ -1,11 +1,11 @@
 PODS:
-  - IceCream (1.9.2):
+  - IceCream (1.11.0):
     - RealmSwift
-  - Realm (3.16.2):
-    - Realm/Headers (= 3.16.2)
-  - Realm/Headers (3.16.2)
-  - RealmSwift (3.16.2):
-    - Realm (= 3.16.2)
+  - Realm (3.17.1):
+    - Realm/Headers (= 3.17.1)
+  - Realm/Headers (3.17.1)
+  - RealmSwift (3.17.1):
+    - Realm (= 3.17.1)
   - SimulatorStatusMagic (2.4.1)
   - SwiftDate (6.0.3)
   - SwiftMessages (7.0.0):
@@ -35,9 +35,9 @@ SPEC REPOS:
     - SwiftyStoreKit
 
 SPEC CHECKSUMS:
-  IceCream: a4dc38bf35f34b02fc8a1f9028267cb220982542
-  Realm: 0e73b4edeb5b6a90da3d83206883b2e34e00eb38
-  RealmSwift: a81e650171ef0a5f999df1ed8d39ba8d6fce88a4
+  IceCream: 0f6c48ab61c49ae41dc9e323139bfeb3674bfbed
+  Realm: c204f1a890f07dea43b14132a6aad118c054b8f2
+  RealmSwift: 4d3c9233544b9cd08a8913e0872b9038eb99b054
   SimulatorStatusMagic: 28d4a9d1a500ac7cea0b2b5a43c1c6ddb40ba56c
   SwiftDate: 8d4f14bf1ef68e95094511504856547bf9e3e1a6
   SwiftMessages: a952f7a9103d9aeab93730a2861d2d8fcdd8758f
@@ -46,4 +46,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 8b2d361d32ef44e9c8d9ea4c796911f2230038ff
 
-COCOAPODS: 1.7.2
+COCOAPODS: 1.7.5

@@ -140,9 +140,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
 //        AppDelegate.syncEngine?.pull()
-        observeItems()
-        observeOptions()
-        completionHandler(.newData)
+        AppDelegate.syncEngine?.pull(completionHandler: { (error) in
+            if let error = error {
+                printDebug("Error with sync pull: \(error)")
+                completionHandler(.failed)
+            } else {
+                self.observeItems()
+                self.observeOptions()
+                completionHandler(.newData)
+            }
+        })
     }
 
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
@@ -182,7 +189,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug("\(#function) - Start")
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-
+        AppDelegate.syncEngine?.pushAll()
+        
         observeItems()
         observeOptions()
         notificationHandler.removeOrphanedNotifications()

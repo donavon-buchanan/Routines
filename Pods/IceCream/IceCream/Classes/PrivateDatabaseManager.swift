@@ -26,7 +26,7 @@ final class PrivateDatabaseManager: DatabaseManager {
         self.database = container.privateCloudDatabase
     }
     
-    func fetchChangesInDatabase(_ callback: (() -> Void)?) {
+    func fetchChangesInDatabase(_ callback: ((Error?) -> Void)?) {
         let changesOperation = CKFetchDatabaseChangesOperation(previousServerChangeToken: databaseChangeToken)
         
         /// Only update the changeToken when fetch process completes
@@ -134,7 +134,7 @@ final class PrivateDatabaseManager: DatabaseManager {
         }
     }
     
-    private func fetchChangesInZones(_ callback: (() -> Void)? = nil) {
+    private func fetchChangesInZones(_ callback: ((Error?) -> Void)? = nil) {
         let changesOp = CKFetchRecordZoneChangesOperation(recordZoneIDs: zoneIds, optionsByRecordZoneID: zoneIdOptions)
         changesOp.fetchAllChanges = true
         
@@ -164,8 +164,6 @@ final class PrivateDatabaseManager: DatabaseManager {
             case .success:
                 guard let syncObject = self.syncObjects.first(where: { $0.zoneID == zoneId }) else { return }
                 syncObject.zoneChangesToken = token
-                callback?()
-                print("Fetch records successfully in zone: \(zoneId))")
             case .retry(let timeToWait, _):
                 ErrorHandler.shared.retryOperationIfPossible(retryAfter: timeToWait, block: {
                     self.fetchChangesInZones(callback)
@@ -183,6 +181,10 @@ final class PrivateDatabaseManager: DatabaseManager {
             default:
                 return
             }
+        }
+        
+        changesOp.fetchRecordZoneChangesCompletionBlock = { error in
+            callback?(error)
         }
         
         database.add(changesOp)

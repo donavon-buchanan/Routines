@@ -16,7 +16,6 @@ import CloudKit
 public final class SyncEngine {
     
     private let databaseManager: DatabaseManager
-    private let backgroundWorker = BackgroundWorker()
     
     public convenience init(objects: [Syncable], databaseScope: CKDatabase.Scope = .private, container: CKContainer = .default()) {
         switch databaseScope {
@@ -29,8 +28,6 @@ public final class SyncEngine {
         default:
             fatalError("Not supported yet")
         }
-        
-        objects.forEach { $0.backgroundWorker = self.backgroundWorker }
     }
     
     private init(databaseManager: DatabaseManager) {
@@ -60,6 +57,8 @@ public final class SyncEngine {
                 self.databaseManager.createDatabaseSubscriptionIfHaveNot()
             case .couldNotDetermine:
                 break
+            @unknown default:
+                break
             }
         }
     }
@@ -68,9 +67,12 @@ public final class SyncEngine {
 
 // MARK: Public Method
 extension SyncEngine {
+    
     /// Fetch data on the CloudKit and merge with local
-    public func pull() {
-        databaseManager.fetchChangesInDatabase(nil)
+    ///
+    /// - Parameter completionHandler: Supported in the `privateCloudDatabase` when the fetch data process completes, completionHandler will be called. The error will be returned when anything wrong happens. Otherwise the error will be `nil`.
+    public func pull(completionHandler: ((Error?) -> Void)? = nil) {
+        databaseManager.fetchChangesInDatabase(completionHandler)
     }
     
     /// Push all existing local data to CloudKit
@@ -78,6 +80,7 @@ extension SyncEngine {
     public func pushAll() {
         databaseManager.syncObjects.forEach { $0.pushLocalObjectsToCloudKit() }
     }
+    
 }
 
 public enum Notifications: String, NotificationName {
