@@ -139,14 +139,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-//        AppDelegate.syncEngine?.pull()
+
+        self.observeItems()
+        self.observeOptions()
+        
         AppDelegate.syncEngine?.pull(completionHandler: { (error) in
             if let error = error {
                 printDebug("Error with sync pull: \(error)")
                 completionHandler(.failed)
             } else {
-                self.observeItems()
-                self.observeOptions()
                 completionHandler(.newData)
             }
         })
@@ -159,17 +160,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let subscriptionID = notification?.subscriptionID, IceCreamSubscription.allIDs.contains(subscriptionID) {
             NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
         }
-//        switch application.applicationState {
-//        case .active:
-//            observeItems()
-//            completionHandler(.newData)
-//        default:
-//            // Still have to do this because changes in time don't cause an update to the list of items
-//            observeItems()
-//            completionHandler(.newData)
-//        }
-        observeItems()
-        observeOptions()
+
+        self.observeItems()
+        self.observeOptions()
+        
+        AppDelegate.syncEngine?.pull(completionHandler: { (error) in
+            if let error = error {
+                printDebug("Error with sync pull: \(error)")
+                completionHandler(.failed)
+            } else {
+                completionHandler(.newData)
+            }
+        })
 
         printDebug("Received push notification")
     }
