@@ -23,23 +23,23 @@ class AboutTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+//        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         versionNumberLabel.text = setVersionNumberLabel()
         setViewBackgroundGraphic()
 
-        cells.forEach { cell in
-            cell.theme_backgroundColor = GlobalPicker.cellBackground
-        }
-
-        labels.forEach { label in
-            label.theme_textColor = GlobalPicker.cellTextColors
-        }
-
-        gearImage.theme_image = GlobalPicker.gear
-        morningImage.theme_image = GlobalPicker.morning
-        afternoonImage.theme_image = GlobalPicker.afternoon
-        eveningImage.theme_image = GlobalPicker.evening
-        nightImage.theme_image = GlobalPicker.night
+//        cells.forEach { cell in
+//            cell.theme_backgroundColor = GlobalPicker.cellBackground
+//        }
+//
+//        labels.forEach { label in
+//            label.theme_textColor = GlobalPicker.cellTextColors
+//        }
+//
+//        gearImage.theme_image = GlobalPicker.gear
+//        morningImage.theme_image = GlobalPicker.morning
+//        afternoonImage.theme_image = GlobalPicker.afternoon
+//        eveningImage.theme_image = GlobalPicker.evening
+//        nightImage.theme_image = GlobalPicker.night
     }
 
     func setVersionNumberLabel() -> String {

@@ -13,35 +13,29 @@ import UIKit
 extension UIViewController {
     #if targetEnvironment(simulator) || DEBUG
         var sharedSecret: String {
-            return ""
+            ""
         }
 
     #else
         var sharedSecret: String {
-            return AppSecrets.sharedSecret
+            AppSecrets.sharedSecret
         }
     #endif
 
     func getInfo(purchase: RegisteredPurchase) {
-        NetworkActivityIndicatorManager.networkOperationStarted()
         SwiftyStoreKit.retrieveProductsInfo([purchase.rawValue]) { result in
-            NetworkActivityIndicatorManager.networkOperationEnded()
             self.showAlert(alert: self.alertForProductRetrievalInfo(result: result))
         }
     }
 
     func getAllProductInfo(productIDs: Set<String>) {
-        NetworkActivityIndicatorManager.networkOperationStarted()
         SwiftyStoreKit.retrieveProductsInfo(productIDs) { results in
-            NetworkActivityIndicatorManager.networkOperationEnded()
             AppDelegate.productInfo = results
         }
     }
 
     func purchase(purchase: RegisteredPurchase) {
-        NetworkActivityIndicatorManager.networkOperationStarted()
         SwiftyStoreKit.purchaseProduct(purchase.rawValue) { result in
-            NetworkActivityIndicatorManager.networkOperationEnded()
             switch result {
             case let .success(product):
                 RoutinesPlus.setPurchasedProduct(productID: product.productId)
@@ -57,9 +51,7 @@ extension UIViewController {
     }
 
     func restorePurchase() {
-        NetworkActivityIndicatorManager.networkOperationStarted()
         SwiftyStoreKit.restorePurchases(atomically: true, applicationUsername: "") { result in
-            NetworkActivityIndicatorManager.networkOperationEnded()
             var productId = String()
             result.restoredPurchases.forEach { product in
                 if product.needsFinishTransaction {
@@ -83,10 +75,8 @@ extension UIViewController {
     }
 
     func verifyReceipt() {
-        NetworkActivityIndicatorManager.networkOperationStarted()
         let appleValidator = AppleReceiptValidator(service: .production, sharedSecret: sharedSecret)
         SwiftyStoreKit.verifyReceipt(using: appleValidator) { result in
-            NetworkActivityIndicatorManager.networkOperationEnded()
             // self.showAlert(alert: self.alertForVerifyReceipt(result: result))
 
             if case let .error(error) = result {
@@ -104,10 +94,8 @@ extension UIViewController {
     }
 
     func verifyPurchase(product: RegisteredPurchase) {
-        NetworkActivityIndicatorManager.networkOperationStarted()
         let appleValidator = AppleReceiptValidator(service: .production, sharedSecret: sharedSecret)
         SwiftyStoreKit.verifyReceipt(using: appleValidator) { result in
-            NetworkActivityIndicatorManager.networkOperationEnded()
             switch result {
             case .success:
                 printDebug("Verify purchase result: Success. \(product.rawValue) is valid")

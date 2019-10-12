@@ -17,7 +17,7 @@ import RealmSwift
 
     dynamic var routinesPlusKey = UUID().uuidString
     override static func primaryKey() -> String {
-        return "routinesPlusKey"
+        "routinesPlusKey"
     }
 
     dynamic var routinesPlusPurchased: Bool = false
@@ -68,7 +68,7 @@ import RealmSwift
     }
 
     static func getExpiryDate() -> Date {
-        return (UserDefaults.standard.object(forKey: expiryDateKey) as? Date) ?? Date()
+        (UserDefaults.standard.object(forKey: expiryDateKey) as? Date) ?? Date()
     }
 
     static func getPurchasedStatus() -> Bool {
@@ -132,7 +132,7 @@ import RealmSwift
 
 extension RoutinesPlus: CKRecordConvertible {
     var isDeleted: Bool {
-        return false
+        false
     }
 
     // Yep, leave it blank!

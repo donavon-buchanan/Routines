@@ -9,18 +9,15 @@
 import CloudKit
 import IceCream
 import RealmSwift
-import SwiftTheme
+// import SwiftTheme
 import SwiftyStoreKit
 import UIKit
 import UserNotifications
-#if targetEnvironment(simulator)
-    import SimulatorStatusMagic
-#endif
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
-    
+
     let notificationHandler = NotificationHandler()
 
     static let automaticDarkModeTimer = AutomaticDarkModeTimer()
@@ -70,8 +67,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         AppDelegate.registerNotificationCategoriesAndActions()
 
         migrateRealm()
-        
-        //I thought this would be needed. But it seems there's already another func to take care of this.
+
+        // I thought this would be needed. But it seems there's already another func to take care of this.
 //        if UserDefaults.standard.bool(forKey: "notificationsHaveRefreshed") {
 //            let notificationHandler = NotificationHandler()
 //            notificationHandler.refreshAllNotifications()
@@ -82,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         AppDelegate.checkRoutinesPlus()
 
         // Theme
-        setUpTheme()
+//        setUpTheme()
 
         Options.automaticDarkModeCheck()
 
@@ -92,12 +89,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         printDebug("\(#function) - Start")
-
-        #if targetEnvironment(simulator)
-            SDStatusBarManager.sharedInstance()?.enableOverrides()
-        #endif
-
-        application.setMinimumBackgroundFetchInterval(270)
 
         // Override point for customization after application launch.
 
@@ -139,11 +130,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        observeItems()
+        observeOptions()
 
-        self.observeItems()
-        self.observeOptions()
-        
-        AppDelegate.syncEngine?.pull(completionHandler: { (error) in
+        AppDelegate.syncEngine?.pull(completionHandler: { error in
             if let error = error {
                 printDebug("Error with sync pull: \(error)")
                 completionHandler(.failed)
@@ -153,7 +143,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         })
     }
 
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         let dict = userInfo as! [String: NSObject]
         let notification = CKNotification(fromRemoteNotificationDictionary: dict)
 
@@ -161,10 +151,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
         }
 
-        self.observeItems()
-        self.observeOptions()
-        
-        AppDelegate.syncEngine?.pull(completionHandler: { (error) in
+        observeItems()
+        observeOptions()
+
+        AppDelegate.syncEngine?.pull(completionHandler: { error in
             if let error = error {
                 printDebug("Error with sync pull: \(error)")
                 completionHandler(.failed)
@@ -183,7 +173,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         AppDelegate.automaticDarkModeTimer.stopTimer()
 
 //        AppDelegate.syncEngine?.pushAll()
-        
+
         printDebug("\(#function) - End")
     }
 
@@ -192,11 +182,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         AppDelegate.syncEngine?.pushAll()
-        
+
         observeItems()
         observeOptions()
         notificationHandler.removeOrphanedNotifications()
-        
+
         printDebug("\(#function) - End")
     }
 
@@ -275,11 +265,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_: UIApplication, shouldSaveApplicationState _: NSCoder) -> Bool {
-        return true
+        true
     }
 
     func application(_: UIApplication, shouldRestoreApplicationState _: NSCoder) -> Bool {
-        return true
+        true
     }
 
     open func restoreSelectedTab(tab: Int?) {
@@ -495,7 +485,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var items: Results<Items>?
     var options: Options?
 
-    //TODO: This creates some redudancies with notification creation and deletion as handled by the Items class.
+    // TODO: This creates some redudancies with notification creation and deletion as handled by the Items class.
     func observeItems(function: String = #function) {
         printDebug(#function + "Called by \(function)")
         // Observe Results Notifications
@@ -512,21 +502,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 notificationHandler.checkForMissingNotifications()
             case let .update(_, _, insertions, modifications):
                 printDebug("updated items detected")
-                //Caused crashes because deleted items don't exist and can't provide a property value
-                //notificationHandler.removeNotifications(withIdentifiers: deletions.map { (self.items?[$0].uuidString) ?? ""})
-                //These are being called too much because the order of the list is changing
+                // Caused crashes because deleted items don't exist and can't provide a property value
+                // notificationHandler.removeNotifications(withIdentifiers: deletions.map { (self.items?[$0].uuidString) ?? ""})
+                // These are being called too much because the order of the list is changing
                 notificationHandler.removeOrphanedNotifications()
-                debugPrint(#function + "Item Insertions: \(insertions.map { (self.items?[$0].title!)}) ")
-                notificationHandler.batchModifyNotifications(items: insertions.map { (self.items?[$0])})
-                debugPrint(#function + "Item Modifications: \(modifications.map { (self.items?[$0].title!)}) ")
-                notificationHandler.batchModifyNotifications(items: modifications.map { (self.items?[$0])})
+                debugPrint(#function + "Item Insertions: \(insertions.map { (self.items?[$0].title!) }) ")
+                notificationHandler.batchModifyNotifications(items: insertions.map { (self.items?[$0]) })
+                debugPrint(#function + "Item Modifications: \(modifications.map { (self.items?[$0].title!) }) ")
+                notificationHandler.batchModifyNotifications(items: modifications.map { (self.items?[$0]) })
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
                 printDebug("Error in \(#function) - \(error)")
             }
         }
     }
-    
+
     func observeOptions(function: String = #function) {
         printDebug(#function + "Called by \(function)")
         guard optionsToken == nil else { return }
@@ -535,16 +525,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
             optionsToken = options.observe { change in
                 switch change {
-                case .change(let properties):
-                    properties.forEach({ (property) in
+                case let .change(properties):
+                    properties.forEach { property in
                         debugPrint("Changed options property is \(property.name)")
                         if property.name.contains("Minute") || property.name.contains("Hour") {
                             //this is being called too much because of sync
                             printDebug("Notification times changed. Recreating notifications as necessary.")
                             notificationHandler.refreshAllNotifications()
                         }
-                    })
-                case .error(let error):
+                    }
+                case let .error(error):
                     debugPrint("An error occurred: \(error)")
                 case .deleted:
                     debugPrint("Options was deleted.")
@@ -596,41 +586,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         var morningCategory: UNNotificationCategory
         if #available(iOS 12.0, *) {
             morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: morningPreviewPlaceholder, categorySummaryFormat: morningSummaryFormat, options: [])
-        } else if #available(iOS 11.0, *) {
-            morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: morningPreviewPlaceholder, options: [])
         } else {
-            // Fallback on earlier versions
-            morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction, completeAction], intentIdentifiers: [], options: [])
+            morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: morningPreviewPlaceholder, options: [])
         }
 
         var afternoonCategory: UNNotificationCategory
         if #available(iOS 12.0, *) {
             afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: afternoonPreviewPlaceholder, categorySummaryFormat: afternoonSummaryFormat, options: [])
-        } else if #available(iOS 11.0, *) {
-            afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: afternoonPreviewPlaceholder, options: [])
         } else {
-            // Fallback on earlier versions
-            afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction, completeAction], intentIdentifiers: [], options: [])
+            afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: afternoonPreviewPlaceholder, options: [])
         }
 
         var eveningCategory: UNNotificationCategory
         if #available(iOS 12.0, *) {
             eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: eveningPreviewPlaceholder, categorySummaryFormat: eveningSummaryFormat, options: [])
-        } else if #available(iOS 11.0, *) {
-            eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: eveningPreviewPlaceholder, options: [])
         } else {
-            // Fallback on earlier versions
-            eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction, completeAction], intentIdentifiers: [], options: [])
+            eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: eveningPreviewPlaceholder, options: [])
         }
 
         var nightCategory: UNNotificationCategory
         if #available(iOS 12.0, *) {
             nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: nightPreviewPlaceholder, categorySummaryFormat: nightSummaryFormat, options: [])
-        } else if #available(iOS 11.0, *) {
-            nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: nightPreviewPlaceholder, options: [])
         } else {
-            // Fallback on earlier versions
-            nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction, completeAction], intentIdentifiers: [], options: [])
+            nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: nightPreviewPlaceholder, options: [])
         }
 
         center.setNotificationCategories([morningCategory, afternoonCategory, eveningCategory, nightCategory])
@@ -744,61 +722,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     // MARK: - Themes
 
-    func setUpTheme() {
-        window?.theme_backgroundColor = GlobalPicker.backgroundColor
-
-        // tab bar
-        let tabBar = UITabBar.appearance()
-        tabBar.theme_tintColor = GlobalPicker.barTextColor
-        tabBar.theme_barStyle = GlobalPicker.barStyle
-        tabBar.theme_barTintColor = GlobalPicker.tabBarTintColor
-        tabBar.backgroundImage = UIImage()
-        tabBar.theme_backgroundColor = GlobalPicker.backgroundColor
-        tabBar.shadowImage = UIImage()
-
-        // Themes.restoreLastTheme()
-
-        // status bar
-
-        UIApplication.shared.theme_setStatusBarStyle([.default, .default, .default, .default, .lightContent, .lightContent, .lightContent, .lightContent, .lightContent], animated: true)
-
-        // navigation bar
-
-        let navigationBar = UINavigationBar.appearance()
-        navigationBar.theme_barStyle = GlobalPicker.barStyle
-        navigationBar.theme_tintColor = GlobalPicker.barTextColor
-        navigationBar.shadowImage = UIImage()
-        // isTranslucent false seems to cause a layout bug
-
-        let shadow = NSShadow()
-        shadow.shadowOffset = CGSize(width: 0, height: 0)
-
-        let titleAttributes = GlobalPicker.barTextColors.map { hexString in
-            [
-                NSAttributedString.Key.foregroundColor: UIColor(rgba: hexString),
-                // NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
-
-                NSAttributedString.Key.shadow: shadow,
-            ]
-        }
-
-        navigationBar.theme_titleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
-        navigationBar.theme_largeTitleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
-
-        // Cells
-        let cell = UITableViewCell.appearance()
-        cell.theme_backgroundColor = GlobalPicker.barTintColor
-        cell.theme_tintColor = GlobalPicker.barTextColor
-
-        // TableView
-        let tableViewUI = UITableView.appearance()
-        tableViewUI.theme_separatorColor = GlobalPicker.cellSeparator
-        //tableViewUI.theme_backgroundColor = GlobalPicker.cellBackground
-
-        // switches
-        let switchUI = UISwitch.appearance()
-        switchUI.theme_onTintColor = GlobalPicker.switchTintColor
-        switchUI.theme_tintColor = GlobalPicker.switchTintColor
-        switchUI.theme_backgroundColor = GlobalPicker.cellBackground
-    }
+//    func setUpTheme() {
+    ////        window?.theme_backgroundColor = GlobalPicker.backgroundColor
+//
+//        // tab bar
+//        let tabBar = UITabBar.appearance()
+//        tabBar.theme_tintColor = GlobalPicker.barTextColor
+//        tabBar.theme_barStyle = GlobalPicker.barStyle
+//        tabBar.theme_barTintColor = GlobalPicker.tabBarTintColor
+//        tabBar.backgroundImage = UIImage()
+//        tabBar.theme_backgroundColor = GlobalPicker.backgroundColor
+//        tabBar.shadowImage = UIImage()
+//
+//        // Themes.restoreLastTheme()
+//
+//        // status bar
+//
+    ////        UIApplication.shared.theme_setStatusBarStyle([.default, .default, .default, .default, .lightContent, .lightContent, .lightContent, .lightContent, .lightContent], animated: true)
+//
+//        // navigation bar
+//
+    ////        let navigationBar = UINavigationBar.appearance()
+    ////        navigationBar.theme_barStyle = GlobalPicker.barStyle
+    ////        navigationBar.theme_tintColor = GlobalPicker.barTextColor
+    ////        navigationBar.shadowImage = UIImage()
+//        // isTranslucent false seems to cause a layout bug
+//
+    ////        let shadow = NSShadow()
+    ////        shadow.shadowOffset = CGSize(width: 0, height: 0)
+    ////
+    ////        let titleAttributes = GlobalPicker.barTextColors.map { hexString in
+    ////            [
+    ////                NSAttributedString.Key.foregroundColor: UIColor(rgba: hexString),
+    ////                // NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+    ////
+    ////                NSAttributedString.Key.shadow: shadow,
+    ////            ]
+    ////        }
+    ////        //I seem to have forgotten why I'm doing this, which is why I should have commented here to begin with
+    ////        navigationBar.theme_titleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
+    ////        navigationBar.theme_largeTitleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
+//
+//        // Cells
+    ////        let cell = UITableViewCell.appearance()
+    ////        cell.theme_backgroundColor = GlobalPicker.barTintColor
+    ////        cell.theme_tintColor = GlobalPicker.barTextColor
+    ////
+    ////        // TableView
+    ////        let tableViewUI = UITableView.appearance()
+    ////        tableViewUI.theme_separatorColor = GlobalPicker.cellSeparator
+    ////        //tableViewUI.theme_backgroundColor = GlobalPicker.cellBackground
+    ////
+    ////        // switches
+    ////        let switchUI = UISwitch.appearance()
+    ////        switchUI.theme_onTintColor = GlobalPicker.switchTintColor
+    ////        switchUI.theme_tintColor = GlobalPicker.switchTintColor
+    ////        switchUI.theme_backgroundColor = GlobalPicker.cellBackground
+//    }
 }

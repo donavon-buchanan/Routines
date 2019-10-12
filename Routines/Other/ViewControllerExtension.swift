@@ -15,7 +15,7 @@ extension UIViewController {
     // MARK: - Appearance
 
     func debug(file: String = #file, line: Int = #line, function: String = #function) -> String {
-        return "\(file):\(line) : \(function)"
+        "\(file):\(line) : \(function)"
     }
 
     // MARK: - Notifications

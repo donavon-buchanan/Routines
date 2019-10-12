@@ -6,8 +6,7 @@
 //  Copyright © 2019 Donavon Buchanan. All rights reserved.
 //
 
-import SwiftMessages
-import SwiftTheme
+// import SwiftTheme
 import UIKit
 
 class RoutinesPlusViewController: UIViewController {
@@ -124,10 +123,10 @@ class RoutinesPlusViewController: UIViewController {
     }
 
     func setUpUI() {
-        routinesLabelPlusSymbol.theme_textColor = GlobalPicker.barTextColor
-        routinesPlusLabel.theme_textColor = GlobalPicker.barTextColor
+//        routinesLabelPlusSymbol.theme_textColor = GlobalPicker.barTextColor
+//        routinesPlusLabel.theme_textColor = GlobalPicker.barTextColor
 
-        routinesLabelPlusSymbol.layer.theme_shadowColor = GlobalPicker.shadowColor
+//        routinesLabelPlusSymbol.layer.theme_shadowColor = GlobalPicker.shadowColor
         routinesLabelPlusSymbol.layer.shadowRadius = 7
         routinesLabelPlusSymbol.layer.shadowOpacity = 1
         routinesLabelPlusSymbol.layer.shadowOffset = CGSize(width: 0, height: 0)
@@ -136,7 +135,7 @@ class RoutinesPlusViewController: UIViewController {
         paymentButtons.forEach { button in
             button.layer.masksToBounds = true
             button.layer.cornerRadius = 12
-            button.theme_backgroundColor = GlobalPicker.barTextColor
+//            button.theme_backgroundColor = GlobalPicker.barTextColor
         }
 
         let policyColor = UIColor(red: 0.05, green: 0.30, blue: 0.57, alpha: 1.00)
@@ -152,16 +151,16 @@ class RoutinesPlusViewController: UIViewController {
 //        yearlyButton.layer.shadowOffset = CGSize(width: 0, height: 0)
 //        yearlyButton.layer.masksToBounds = false
 
-        restoreButton.theme_setTitleColor(GlobalPicker.barTextColor, forState: .normal)
+//        restoreButton.theme_setTitleColor(GlobalPicker.barTextColor, forState: .normal)
 
         setButtonText()
 
 //        subscriptionTermsLabel.text = subscriptionTermsString
 
-        view.theme_backgroundColor = GlobalPicker.backgroundColor
+//        view.theme_backgroundColor = GlobalPicker.backgroundColor
 
-        textLabelCollection.forEach { label in
-            label.theme_textColor = GlobalPicker.cellTextColors
-        }
+//        textLabelCollection.forEach { label in
+//            label.theme_textColor = GlobalPicker.cellTextColors
+//        }
     }
 }

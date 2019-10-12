@@ -60,8 +60,8 @@ struct NotificationHandler {
         let notes = item.notes
         let segment = item.segment
         let id = item.uuidString
-        //let triggerDate = firstTriggerDate(forItem: item)
-        //let repeats = item.repeats
+        // let triggerDate = firstTriggerDate(forItem: item)
+        // let repeats = item.repeats
 
         let content = UNMutableNotificationContent()
         content.title = title
@@ -86,7 +86,7 @@ struct NotificationHandler {
             content.categoryIdentifier = "morning"
         }
 
-        //let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: triggerDate)
+        // let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: triggerDate)
 
         let trigger = returnNotificationTrigger(item: item)
 
@@ -96,11 +96,11 @@ struct NotificationHandler {
         // Schedule the request with the system
         scheduleNotification(request: request)
     }
-    
+
     func returnNotificationTrigger(item: Items) -> UNCalendarNotificationTrigger {
-        //printDebug(#function + "Called by \(function)")
+        // printDebug(#function + "Called by \(function)")
         let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: firstTriggerDate(forItem: item))
-        
+
         return UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: item.repeats)
     }
 
@@ -116,8 +116,8 @@ struct NotificationHandler {
         let itemIDArray: [String] = items.map { $0.uuidString }
 
         center.getPendingNotificationRequests { pendingRequests in
-            //This has to happen inside the closure, otherwise the values to notificationIDArray never get written in time.
-            //Seems to execute async
+            // This has to happen inside the closure, otherwise the values to notificationIDArray never get written in time.
+            // Seems to execute async
             var notificationIDArray: [String] = []
             notificationIDArray = pendingRequests.map { $0.identifier }
             let itemSet = Set(itemIDArray)
@@ -126,15 +126,15 @@ struct NotificationHandler {
             print("notificationSet count: \(notificationSet.count)")
             let orphans = notificationSet.subtracting(itemSet)
             print("orphans count: \(orphans.count)")
-            
-            guard (orphans.count > 0) else { return }
+
+            guard orphans.count > 0 else { return }
             self.removeNotifications(withIdentifiers: Array(orphans))
         }
     }
-    
+
     func checkForMissingNotifications(function: String = #function) {
         printDebug(#function + "Called by \(function)")
-        center.getPendingNotificationRequests { (pendingRequests) in
+        center.getPendingNotificationRequests { pendingRequests in
             let realm = try! Realm()
             let items = realm.objects(Items.self).filter("isDeleted = %@", false)
             debugPrint("Pending Requests Count: \(pendingRequests.count)")
@@ -142,20 +142,20 @@ struct NotificationHandler {
             debugPrint("Pending Requests Set Count: \(pendingRequestsSet.count)")
             let itemIDArray: [String] = items.map { $0.uuidString }
             debugPrint("Item Array Count: \(itemIDArray.count)")
-            itemIDArray.forEach({ (itemID) in
+            itemIDArray.forEach { itemID in
                 if !pendingRequestsSet.contains(itemID) {
                     if let item = realm.object(ofType: Items.self, forPrimaryKey: itemID) {
                         self.createNewNotification(forItem: item)
                     }
                 }
-            })
+            }
         }
     }
-    
+
     func batchModifyNotifications(items: [Items?], function: String = #function) {
         printDebug(#function + "Called by \(function)")
         DispatchQueue.main.async {
-            items.forEach { (item) in
+            items.forEach { item in
                 if let item = item {
                     if !item.isDeleted {
                         debugPrint("Updating Notification")
@@ -185,12 +185,12 @@ struct NotificationHandler {
             }
         }
     }
-    
+
 //    func refreshAllNotifications(function: String = #function) {
 //        printDebug(#function + "Called by \(function)")
 //        //Do some cleanup first
 //        removeOrphanedNotifications()
-//        
+//
 //        center.getPendingNotificationRequests { (pendingRequests) in
 //            let realm = try! Realm()
 //            let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
@@ -211,7 +211,7 @@ struct NotificationHandler {
 //                    var itemDateComponents = self.returnNotificationTrigger(item: item).dateComponents
 //                    requestDateComponents.calendar = Calendar.autoupdatingCurrent
 //                    itemDateComponents.calendar = Calendar.autoupdatingCurrent
-//                    
+//
 //                    if requestDateComponents == itemDateComponents {
 //                        debugPrint("Item notification does not need updating. Added to ignore list: \(item.title!)")
 //                        itemsToIgnore.insert(item)
@@ -231,12 +231,12 @@ struct NotificationHandler {
 //            })
 //        }
 //    }
-    
+
     func refreshAllNotifications(function: String = #function) {
         printDebug(#function + "Called by \(function)")
         let realm = try! Realm()
         let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
-        batchModifyNotifications(items: items.map {$0})
+        batchModifyNotifications(items: items.map { $0 })
     }
 
     private func scheduleNotification(request: UNNotificationRequest, function: String = #function) {

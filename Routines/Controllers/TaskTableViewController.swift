@@ -8,7 +8,7 @@
 
 import RealmSwift
 import SwiftMessages
-import SwiftTheme
+// import SwiftTheme
 import UIKit
 import UserNotifications
 
@@ -19,46 +19,86 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     @IBOutlet var linesBarButtonItem: UIBarButtonItem!
     @IBOutlet var editBarButtonItem: UIBarButtonItem!
 
+    var segmentColor: UIColor {
+        switch segment {
+        case 0:
+            return UIColor(red: 0.96, green: 0.46, blue: 0.27, alpha: 1.0)
+        case 1:
+            return UIColor(red: 0.15, green: 0.73, blue: 0.93, alpha: 1.0)
+        case 2:
+            return UIColor(red: 0.38, green: 0.64, blue: 0.53, alpha: 1.0)
+        case 3:
+            return UIColor(red: 0.39, green: 0.36, blue: 0.91, alpha: 1.0)
+        default:
+            return .clear
+        }
+    }
+
 //    var shouldShowHiddenTasksMessage = false
 
     override var keyCommands: [UIKeyCommand]? {
-        var commandArray = [
-            // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
-            UIKeyCommand(input: "n", modifierFlags: .command, action: #selector(addNewTask), discoverabilityTitle: "Add New Task"),
-            UIKeyCommand(input: "o", modifierFlags: .alternate, action: #selector(openSettings), discoverabilityTitle: "Open Settings"),
-            UIKeyCommand(input: "e", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(editKeyCommand), discoverabilityTitle: "Edit List"),
-            UIKeyCommand(input: "a", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(showAllKeyCommand), discoverabilityTitle: "Show Entire Day"),
+        var commandArray: [UIKeyCommand]
+        if #available(iOS 13.0, *) {
+            commandArray = [
+                // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
+                UIKeyCommand(title: "Add New Task", action: #selector(addNewTask), input: "n", modifierFlags: .command),
+                UIKeyCommand(title: "Open Settings", action: #selector(openSettings), input: "o", modifierFlags: .alternate),
+                UIKeyCommand(title: "Edit List", action: #selector(editKeyCommand), input: "e", modifierFlags: .init(arrayLiteral: .shift, .command)),
+                UIKeyCommand(title: "Show Entire Day", action: #selector(showAllKeyCommand), input: "a", modifierFlags: .init(arrayLiteral: .shift, .command)),
             ]
-        if !self.linesBarButtonSelected {
-            commandArray.append(contentsOf: [
-                UIKeyCommand(input: "1", modifierFlags: .command, action: #selector(setSegmentZero), discoverabilityTitle: "Select Morning"),
-                UIKeyCommand(input: "2", modifierFlags: .command, action: #selector(setSegmentOne), discoverabilityTitle: "Select Afternoon"),
-                UIKeyCommand(input: "3", modifierFlags: .command, action: #selector(setSegmentTwo), discoverabilityTitle: "Select Evening"),
-                UIKeyCommand(input: "4", modifierFlags: .command, action: #selector(setSegmentThree), discoverabilityTitle: "Select Night"),
+        } else {
+            // Fallback on earlier versions
+            commandArray = [
+                // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
+                UIKeyCommand(input: "n", modifierFlags: .command, action: #selector(addNewTask), discoverabilityTitle: "Add New Task"),
+                UIKeyCommand(input: "o", modifierFlags: .alternate, action: #selector(openSettings), discoverabilityTitle: "Open Settings"),
+                UIKeyCommand(input: "e", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(editKeyCommand), discoverabilityTitle: "Edit List"),
+                UIKeyCommand(input: "a", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(showAllKeyCommand), discoverabilityTitle: "Show Entire Day"),
+            ]
+        }
+        if !linesBarButtonSelected {
+            if #available(iOS 13.0, *) {
+                commandArray.append(contentsOf: [
+                    UIKeyCommand(title: "Select Morning", action: #selector(setSegmentZero), input: "1", modifierFlags: .command),
+                    UIKeyCommand(title: "Select Afternoon", action: #selector(setSegmentOne), input: "2", modifierFlags: .command),
+                    UIKeyCommand(title: "Select Evening", action: #selector(setSegmentTwo), input: "3", modifierFlags: .command),
+                    UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command),
                 ])
+            } else {
+                // Fallback on earlier versions
+                commandArray.append(contentsOf: [
+                    UIKeyCommand(input: "1", modifierFlags: .command, action: #selector(setSegmentZero), discoverabilityTitle: "Select Morning"),
+                    UIKeyCommand(input: "2", modifierFlags: .command, action: #selector(setSegmentOne), discoverabilityTitle: "Select Afternoon"),
+                    UIKeyCommand(input: "3", modifierFlags: .command, action: #selector(setSegmentTwo), discoverabilityTitle: "Select Evening"),
+                    UIKeyCommand(input: "4", modifierFlags: .command, action: #selector(setSegmentThree), discoverabilityTitle: "Select Night"),
+                ])
+            }
         }
         return commandArray
     }
-    
+
     @objc func setSegmentZero() {
         guard let tabBarController = tabBarController else { return }
         tabBarController.selectedIndex = 0
-        TaskTableViewController.setAppearance(forSegment: 0)
+//        TaskTableViewController.setAppearance(forSegment: 0)
     }
+
     @objc func setSegmentOne() {
         guard let tabBarController = tabBarController else { return }
         tabBarController.selectedIndex = 1
-        TaskTableViewController.setAppearance(forSegment: 1)
+//        TaskTableViewController.setAppearance(forSegment: 1)
     }
+
     @objc func setSegmentTwo() {
         guard let tabBarController = tabBarController else { return }
         tabBarController.selectedIndex = 2
-        TaskTableViewController.setAppearance(forSegment: 2)
+//        TaskTableViewController.setAppearance(forSegment: 2)
     }
+
     @objc func setSegmentThree() {
         guard let tabBarController = tabBarController else { return }
         tabBarController.selectedIndex = 3
-        TaskTableViewController.setAppearance(forSegment: 3)
+//        TaskTableViewController.setAppearance(forSegment: 3)
     }
 
     @objc func addNewTask() {
@@ -200,7 +240,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         footerView.backgroundColor = .clear
         tableView.tableFooterView = footerView
-        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+//        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
 
         //        setViewBackgroundGraphic(enabled: true)
 
@@ -217,12 +257,12 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     @objc func appBecameActive() {
         debugPrint(#function + " start")
-        observeOptions()
+//        observeOptions()
         observeItems()
         // View loading funcs aren't always called when the app transitions from background to active
         // So this is to ensure that the UI refreshes
         Options.automaticDarkModeCheck()
-        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
+//        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
 
         printDebug(#function + " end")
     }
@@ -247,16 +287,36 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         // Avoids flashing screen glitch
         // TODO: Restoration is loading all the views at once
         printDebug("View loaded? - \(isViewLoaded)")
-        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
+//        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
     }
 
     override func viewWillAppear(_: Bool) {
         debugPrint(#function + " start")
 
         loadItemsForSegment(segment: segment!)
-        TaskTableViewController.setAppearance(forSegment: segment!)
-
+//        TaskTableViewController.setAppearance(forSegment: segment!)
         title = returnTitle(forSegment: segment!)
+
+        if #available(iOS 13.0, *) {
+            let navigationBarAppearance = UINavigationBarAppearance()
+            navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: segmentColor]
+            navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: segmentColor]
+            let buttonAppearance = UIBarButtonItemAppearance()
+            buttonAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: segmentColor]
+            self.navigationController?.navigationBar.tintColor = segmentColor
+            navigationBarAppearance.buttonAppearance = buttonAppearance
+            self.navigationController?.navigationBar.standardAppearance = navigationBarAppearance
+            self.navigationController?.navigationBar.compactAppearance = navigationBarAppearance
+            self.tabBarController?.tabBar.tintColor = segmentColor
+        } else {
+            // Fallback on earlier versions
+            let navigationBarAppearance = UINavigationBar.appearance()
+            navigationController?.navigationBar.tintColor = segmentColor
+            navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: segmentColor]
+            navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: segmentColor]
+            tabBarController?.tabBar.tintColor = segmentColor
+        }
+
         debugPrint(#function + " end")
     }
 
@@ -336,11 +396,11 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     // MARK: - Table view data source
 
     override func numberOfSections(in _: UITableView) -> Int {
-        return 1
+        1
     }
 
     override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        return items?.count ?? 0
+        items?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -378,21 +438,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             }
         }
 
-        var segmentColor: UIColor {
-            switch segment {
-            case 0:
-                return UIColor(rgba: "#f47645", defaultColor: .red)
-            case 1:
-                return UIColor(rgba: "#26baee", defaultColor: .red)
-            case 2:
-                return UIColor(rgba: "#62a388", defaultColor: .red)
-            case 3:
-                return UIColor(rgba: "#645be7", defaultColor: .red)
-            default:
-                return .clear
-            }
-        }
-
         if linesBarButtonSelected {
             cell.configColorBar(segment: segment)
         } else {
@@ -415,7 +460,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     override func tableView(_: UITableView, canEditRowAt _: IndexPath) -> Bool {
-        return true
+        true
     }
 
     override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -424,13 +469,13 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         var nextColor: UIColor {
             switch itemSegment {
             case 1:
-                return UIColor(rgba: "#62a388", defaultColor: .blue)
+                return UIColor(hex: "#62a388") ?? UIColor(red: 0.38, green: 0.64, blue: 0.53, alpha: 1.0)
             case 2:
-                return UIColor(rgba: "#645be7", defaultColor: .blue)
+                return UIColor(hex: "#645be7") ?? UIColor(red: 0.39, green: 0.36, blue: 0.91, alpha: 1.0)
             case 3:
-                return UIColor(rgba: "#f47645", defaultColor: .blue)
+                return UIColor(hex: "#f47645") ?? UIColor(red: 0.96, green: 0.46, blue: 0.27, alpha: 1.0)
             default:
-                return UIColor(rgba: "#26baee", defaultColor: .blue)
+                return UIColor(hex: "#26baee") ?? UIColor(red: 0.15, green: 0.73, blue: 0.93, alpha: 1.0)
             }
         }
 
@@ -457,8 +502,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         }
 
         completeAction.image = UIImage(imageLiteralResourceName: "checkmark")
-        completeAction.backgroundColor = GlobalPicker.primaryColor
-        snoozeAction.backgroundColor = GlobalPicker.snoozeColor
+//        completeAction.backgroundColor = GlobalPicker.primaryColor
+//        snoozeAction.backgroundColor = GlobalPicker.snoozeColor
         snoozeAction.image = UIImage(imageLiteralResourceName: "snooze")
         nextSectionAction.backgroundColor = nextColor
         nextSectionAction.image = UIImage(imageLiteralResourceName: "arrow-right")
@@ -770,67 +815,67 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     deinit {
         printDebug("\(#function) called. Tokens invalidated")
         notificationToken?.invalidate()
-        optionsToken?.invalidate()
+//        optionsToken?.invalidate()
     }
 
     // var options: Options = Options()
     // var debugOptionsToken: NotificationToken?
-    var optionsToken: NotificationToken?
-
-    func observeOptions() {
-        let realm = try! Realm()
-        let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-        optionsToken = options?.observe { changes in
-            switch changes {
-            case let .change(propertyChanged):
-                propertyChanged.forEach { change in
-                    if change.name == "darkMode" {
-                        if change.oldValue as? Bool != change.newValue as? Bool {
-                            DispatchQueue.main.async {
-                                TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
-                            }
-                        }
-                    }
-                }
-                AppDelegate.setAutomaticDarkModeTimer()
-            case let .error(error):
-                // An error occurred while opening the Realm file on the background worker thread
-                fatalError("\(error)")
-            case .deleted:
-                break
-            }
-        }
-    }
+//    var optionsToken: NotificationToken?
+//
+//    func observeOptions() {
+//        let realm = try! Realm()
+//        let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+//        optionsToken = options?.observe { changes in
+//            switch changes {
+//            case let .change(propertyChanged):
+//                propertyChanged.forEach { change in
+//                    if change.name == "darkMode" {
+//                        if change.oldValue as? Bool != change.newValue as? Bool {
+//                            DispatchQueue.main.async {
+//                                TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
+//                            }
+//                        }
+//                    }
+//                }
+//                AppDelegate.setAutomaticDarkModeTimer()
+//            case let .error(error):
+//                // An error occurred while opening the Realm file on the background worker thread
+//                fatalError("\(error)")
+//            case .deleted:
+//                break
+//            }
+//        }
+//    }
 
     // MARK: - Themeing
 
-    static func setAppearance(forSegment segment: Int, function: String = #function) {
-        debugPrint("Setting theme for segment: \(segment)")
-        debugPrint("Called from: \(function)")
-        if Options.getDarkModeStatus() {
-            switch segment {
-            case 1:
-                Themes.switchTo(theme: .afternoonDark)
-            case 2:
-                Themes.switchTo(theme: .eveningDark)
-            case 3:
-                Themes.switchTo(theme: .nightDark)
-            default:
-                Themes.switchTo(theme: .morningDark)
-            }
-        } else {
-            switch segment {
-            case 1:
-                Themes.switchTo(theme: .afternoonLight)
-            case 2:
-                Themes.switchTo(theme: .eveningLight)
-            case 3:
-                Themes.switchTo(theme: .nightLight)
-            default:
-                Themes.switchTo(theme: .morningLight)
-            }
-        }
-    }
+//    static func setAppearance(forSegment segment: Int, function: String = #function) {
+//        debugPrint("Setting theme for segment: \(segment)")
+//        debugPrint("Called from: \(function)")
+//        if Options.getDarkModeStatus() {
+//            switch segment {
+//            case 1:
+//                Themes.switchTo(theme: .afternoonDark)
+//            case 2:
+//                Themes.switchTo(theme: .eveningDark)
+//            case 3:
+//                Themes.switchTo(theme: .nightDark)
+//            default:
+//                Themes.switchTo(theme: .morningDark)
+//            }
+//        } else {
+//            switch segment {
+//            case 1:
+//                Themes.switchTo(theme: .afternoonLight)
+//            case 2:
+//                Themes.switchTo(theme: .eveningLight)
+//            case 3:
+//                Themes.switchTo(theme: .nightLight)
+//            default:
+//                Themes.switchTo(theme: .morningLight)
+//            }
+//        }
+//    }
 
     func deleteAlert(_ indexPath: IndexPath) -> Bool {
         var completion = false

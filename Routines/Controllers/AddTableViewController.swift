@@ -30,7 +30,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     @IBOutlet var taskTextField: UITextField!
     @IBOutlet var segmentSelection: UISegmentedControl!
-    
+
     @IBOutlet var notesTextView: UITextView!
 
     @IBOutlet var repeatDailySwitch: UISwitch!
@@ -39,18 +39,32 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
-    
+
     override var keyCommands: [UIKeyCommand]? {
-        return [
-            // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
-            UIKeyCommand(input: "s", modifierFlags: .command, action: #selector(saveKeyCommand), discoverabilityTitle: "Save Task"),
-            UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit"),
-            UIKeyCommand(input: "r", modifierFlags: .command, action: #selector(toggleRepeat), discoverabilityTitle: "Toggle Repeat Daily"),
-            UIKeyCommand(input: "1", modifierFlags: .command, action: #selector(setSegmentZero), discoverabilityTitle: "Select Morning"),
-            UIKeyCommand(input: "2", modifierFlags: .command, action: #selector(setSegmentOne), discoverabilityTitle: "Select Afternoon"),
-            UIKeyCommand(input: "3", modifierFlags: .command, action: #selector(setSegmentTwo), discoverabilityTitle: "Select Evening"),
-            UIKeyCommand(input: "4", modifierFlags: .command, action: #selector(setSegmentThree), discoverabilityTitle: "Select Night"),
-        ]
+        if #available(iOS 13.0, *) {
+            return [
+                // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
+                UIKeyCommand(title: "Save Task", action: #selector(saveKeyCommand), input: "s", modifierFlags: .command),
+                UIKeyCommand(title: "Exit", action: #selector(dismissView), input: "w", modifierFlags: .init(arrayLiteral: .command)),
+                UIKeyCommand(title: "Toggle Repeat Daily", action: #selector(toggleRepeat), input: "r", modifierFlags: .command),
+                UIKeyCommand(title: "Select Morning", action: #selector(setSegmentZero), input: "1", modifierFlags: .command),
+                UIKeyCommand(title: "Select Afternoon", action: #selector(setSegmentOne), input: "2", modifierFlags: .command),
+                UIKeyCommand(title: "Select Evening", action: #selector(setSegmentTwo), input: "3", modifierFlags: .command),
+                UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command),
+            ]
+        } else {
+            // Fallback on earlier versions
+            return [
+                // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
+                UIKeyCommand(input: "s", modifierFlags: .command, action: #selector(saveKeyCommand), discoverabilityTitle: "Save Task"),
+                UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit"),
+                UIKeyCommand(input: "r", modifierFlags: .command, action: #selector(toggleRepeat), discoverabilityTitle: "Toggle Repeat Daily"),
+                UIKeyCommand(input: "1", modifierFlags: .command, action: #selector(setSegmentZero), discoverabilityTitle: "Select Morning"),
+                UIKeyCommand(input: "2", modifierFlags: .command, action: #selector(setSegmentOne), discoverabilityTitle: "Select Afternoon"),
+                UIKeyCommand(input: "3", modifierFlags: .command, action: #selector(setSegmentTwo), discoverabilityTitle: "Select Evening"),
+                UIKeyCommand(input: "4", modifierFlags: .command, action: #selector(setSegmentThree), discoverabilityTitle: "Select Night"),
+            ]
+        }
     }
 
     @objc func saveKeyCommand() {
@@ -59,32 +73,35 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             saveButtonPressed()
         }
     }
-    
+
     @objc func toggleRepeat() {
         repeatDailySwitch.setOn(!repeatDailySwitch.isOn, animated: true)
     }
-    
+
     @objc func setSegmentZero() {
         segmentSelection.selectedSegmentIndex = 0
-        TaskTableViewController.setAppearance(forSegment: 0)
+//        TaskTableViewController.setAppearance(forSegment: 0)
     }
+
     @objc func setSegmentOne() {
         segmentSelection.selectedSegmentIndex = 1
-        TaskTableViewController.setAppearance(forSegment: 1)
+//        TaskTableViewController.setAppearance(forSegment: 1)
     }
+
     @objc func setSegmentTwo() {
         segmentSelection.selectedSegmentIndex = 2
-        TaskTableViewController.setAppearance(forSegment: 2)
+//        TaskTableViewController.setAppearance(forSegment: 2)
     }
+
     @objc func setSegmentThree() {
         segmentSelection.selectedSegmentIndex = 3
-        TaskTableViewController.setAppearance(forSegment: 3)
+//        TaskTableViewController.setAppearance(forSegment: 3)
     }
 
     @IBOutlet var repeatDailyLabel: UILabel!
 
-    @IBAction func segmentSelected(_ sender: UISegmentedControl) {
-        TaskTableViewController.setAppearance(forSegment: sender.selectedSegmentIndex)
+    @IBAction func segmentSelected(_: UISegmentedControl) {
+//        TaskTableViewController.setAppearance(forSegment: sender.selectedSegmentIndex)
     }
 
     var item: Items?
@@ -95,7 +112,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     func loadItem() {
         // If item is loaded, fill in values for editing
         if item != nil {
-            TaskTableViewController.setAppearance(forSegment: item!.segment)
+//            TaskTableViewController.setAppearance(forSegment: item!.segment)
 
             taskTextField.text = item?.title
             segmentSelection.selectedSegmentIndex = item?.segment ?? 0
@@ -114,10 +131,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         repeatDailySwitch.layer.cornerRadius = 15
         repeatDailySwitch.layer.masksToBounds = true
 
-        repeatDailyLabel.theme_textColor = GlobalPicker.cellTextColors
+//        repeatDailyLabel.theme_textColor = GlobalPicker.cellTextColors
 
-        priorityNumberLabel.theme_textColor = GlobalPicker.textColor
-        prioritySlider.theme_thumbTintColor = GlobalPicker.textColor
+//        priorityNumberLabel.theme_textColor = GlobalPicker.textColor
+//        prioritySlider.theme_thumbTintColor = GlobalPicker.textColor
 
         if !RoutinesPlus.getPurchasedStatus() {
             prioritySlider.isEnabled = false
@@ -148,10 +165,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         navigationItem.rightBarButtonItem?.isEnabled = false
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissView))
 
-        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+//        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
 
-        let cellAppearance = UITableViewCell.appearance()
-        cellAppearance.theme_backgroundColor = GlobalPicker.backgroundColor
+//        let cellAppearance = UITableViewCell.appearance()
+//        cellAppearance.theme_backgroundColor = GlobalPicker.backgroundColor
 
         if #available(iOS 11.0, *) {
             self.navigationItem.largeTitleDisplayMode = .never
@@ -183,13 +200,13 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         viewTap.cancelsTouchesInView = false
         view.addGestureRecognizer(viewTap)
 
-        taskTextField.theme_keyboardAppearance = GlobalPicker.keyboardStyle
-        taskTextField.theme_textColor = GlobalPicker.cellTextColors
-        taskTextField.theme_backgroundColor = GlobalPicker.textInputBackground
-
-        notesTextView.theme_keyboardAppearance = GlobalPicker.keyboardStyle
-        notesTextView.theme_textColor = GlobalPicker.cellTextColors
-        notesTextView.theme_backgroundColor = GlobalPicker.textInputBackground
+//        taskTextField.theme_keyboardAppearance = GlobalPicker.keyboardStyle
+//        taskTextField.theme_textColor = GlobalPicker.cellTextColors
+//        taskTextField.theme_backgroundColor = GlobalPicker.textInputBackground
+//
+//        notesTextView.theme_keyboardAppearance = GlobalPicker.keyboardStyle
+//        notesTextView.theme_textColor = GlobalPicker.cellTextColors
+//        notesTextView.theme_backgroundColor = GlobalPicker.textInputBackground
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
@@ -210,9 +227,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         super.decodeRestorableState(with: coder)
     }
 
-    override func applicationFinishedRestoringState() {
-        TaskTableViewController.setAppearance(forSegment: item?.segment ?? 0)
-    }
+//    override func applicationFinishedRestoringState() {
+//        TaskTableViewController.setAppearance(forSegment: item?.segment ?? 0)
+//    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

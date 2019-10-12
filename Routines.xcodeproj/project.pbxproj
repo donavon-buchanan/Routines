@@ -3,11 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B9799563AA6F69F9AE62F757 /* Pods_Routines.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7FA850B99E0EAE1A13408EB /* Pods_Routines.framework */; };
+		1AC7F2C3572C67159ACFD850 /* Pods_Routines.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA68B843AB23B7578F47ABB /* Pods_Routines.framework */; };
 		F802FC982254C3E10054CF22 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F802FC972254C3E10054CF22 /* CloudKit.framework */; };
 		F807D3CD216073E300FF36D9 /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3CC216073E300FF36D9 /* Options.swift */; };
 		F807D3CF2160964E00FF36D9 /* OptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3CE2160964E00FF36D9 /* OptionsTableViewController.swift */; };
@@ -30,7 +30,6 @@
 		F8ACD4642269F89100E136E9 /* IAPHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ACD4632269F89100E136E9 /* IAPHandler.swift */; };
 		F8B30787219C0DAB00437AAA /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B30786219C0DAB00437AAA /* Themes.swift */; };
 		F8B30789219C13B500437AAA /* GlobalPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B30788219C13B500437AAA /* GlobalPicker.swift */; };
-		F8B5B7D52286C0ED0024FC2B /* SwiftMessagesAlertsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B5B7D42286C0ED0024FC2B /* SwiftMessagesAlertsController.swift */; };
 		F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831B72155CBB000DAF60E /* AppDelegate.swift */; };
 		F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831BB2155CBB000DAF60E /* Main.storyboard */; };
 		F8B831CD2155CBE300DAF60E /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831CC2155CBE300DAF60E /* Items.swift */; };
@@ -39,7 +38,7 @@
 		F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */; };
 		F8CCE20D2288E17E00BAAFEC /* RoutinesPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CCE20C2288E17E00BAAFEC /* RoutinesPlus.swift */; };
 		F8CE29C622714E9A00CD9BAE /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CE29C522714E9A00CD9BAE /* UIColorExtensions.swift */; };
-		F8D5DB492269AC59005857F2 /* NetworkActivityIndicatorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5DB482269AC59005857F2 /* NetworkActivityIndicatorManager.swift */; };
+		F8D106922351975300583612 /* SwiftyStoreKit in Frameworks */ = {isa = PBXBuildFile; productRef = F8D106912351975300583612 /* SwiftyStoreKit */; };
 		F8D5DB532269BCAD005857F2 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */; };
 		F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */; };
 		F8DC390222D075D9005C3BE0 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DC390122D075D9005C3BE0 /* NotificationHandler.swift */; };
@@ -50,8 +49,6 @@
 		F8FE52202296929000929DA3 /* AppSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87D49EE2269AA1700845E0D /* AppSecrets.swift */; };
 		F8FF25A922085A2C0063295F /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FF259E22085A180063295F /* Realm.framework */; };
 		F8FF25AA22085A2C0063295F /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FF25A022085A180063295F /* RealmSwift.framework */; };
-		F8FF25AB22085A2C0063295F /* SwiftMessages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FF25A222085A180063295F /* SwiftMessages.framework */; };
-		F8FF25AC22085A2C0063295F /* SwiftTheme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8FF25A622085A180063295F /* SwiftTheme.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,13 +66,6 @@
 			remoteGlobalIDString = 0E11D5875359CFA4E1ED1E1C803B79CF;
 			remoteInfo = IceCream;
 		};
-		F8478728229F39620035D847 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F8FF259122085A180063295F /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1CF0FCCA8127BAF5F70FFE0970085900;
-			remoteInfo = SwiftDate;
-		};
 		F86E0AC42297FA5400BB53D6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8B831AC2155CBB000DAF60E /* Project object */;
@@ -83,19 +73,19 @@
 			remoteGlobalIDString = F8B831B32155CBB000DAF60E;
 			remoteInfo = Routines;
 		};
-		F87D49F82269AA1800845E0D /* PBXContainerItemProxy */ = {
+		F8F591C023519D100002165C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8FF259122085A180063295F /* Pods.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = C4319CF22B98F3C6B88F5B6E05F71274;
-			remoteInfo = SwiftyStoreKit;
+			remoteGlobalIDString = 4824F23D80FF9070A5F8A452DB11EB9A;
+			remoteInfo = SwiftMessages;
 		};
-		F8B5C7B7228470C900FA088E /* PBXContainerItemProxy */ = {
+		F8F591C223519D100002165C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F8FF259122085A180063295F /* Pods.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 7D7C69F1A97F463B37AAA34399549117;
-			remoteInfo = SimulatorStatusMagic;
+			remoteGlobalIDString = 753DD909979478A0C1B33E0524504EF1;
+			remoteInfo = "SwiftMessages-SwiftMessages";
 		};
 		F8FF259B22085A180063295F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -118,34 +108,13 @@
 			remoteGlobalIDString = 7E091260BCBBED6E2D97E0779D86C933;
 			remoteInfo = RealmSwift;
 		};
-		F8FF25A122085A180063295F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F8FF259122085A180063295F /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 32BCC1BD8A38CFE9EEEC48552CD2D581;
-			remoteInfo = SwiftMessages;
-		};
-		F8FF25A322085A180063295F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F8FF259122085A180063295F /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2B0BEAFECCA953AC2EDE5C9A1005442;
-			remoteInfo = "SwiftMessages-SwiftMessages";
-		};
-		F8FF25A522085A180063295F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F8FF259122085A180063295F /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = B719FD9C3FDC63552DCD36042A62147C;
-			remoteInfo = SwiftTheme;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2210EEE67B16C145A4C32A03 /* Pods-Routines.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routines.debug.xcconfig"; path = "Target Support Files/Pods-Routines/Pods-Routines.debug.xcconfig"; sourceTree = "<group>"; };
-		88C341C80A93826E102A4CC5 /* Pods-Routines.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routines.release.xcconfig"; path = "Target Support Files/Pods-Routines/Pods-Routines.release.xcconfig"; sourceTree = "<group>"; };
-		B7FA850B99E0EAE1A13408EB /* Pods_Routines.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Routines.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D2050DC0A0736D86FA07D8B8 /* Pods-Routines.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routines.beta.xcconfig"; path = "Target Support Files/Pods-Routines/Pods-Routines.beta.xcconfig"; sourceTree = "<group>"; };
+		29A3CDEED3A83B544C3575C2 /* Pods-Routines.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routines.release.xcconfig"; path = "Target Support Files/Pods-Routines/Pods-Routines.release.xcconfig"; sourceTree = "<group>"; };
+		3FA68B843AB23B7578F47ABB /* Pods_Routines.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Routines.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D19514A6953B351D654DC4BB /* Pods-Routines.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routines.debug.xcconfig"; path = "Target Support Files/Pods-Routines/Pods-Routines.debug.xcconfig"; sourceTree = "<group>"; };
+		E0E609236D65769FF044D184 /* Pods-Routines.beta.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Routines.beta.xcconfig"; path = "Target Support Files/Pods-Routines/Pods-Routines.beta.xcconfig"; sourceTree = "<group>"; };
 		F802FC962254C3D60054CF22 /* Routines.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Routines.entitlements; sourceTree = "<group>"; };
 		F802FC972254C3E10054CF22 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		F807D3CC216073E300FF36D9 /* Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
@@ -175,7 +144,6 @@
 		F8ACD4632269F89100E136E9 /* IAPHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPHandler.swift; sourceTree = "<group>"; };
 		F8B30786219C0DAB00437AAA /* Themes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themes.swift; sourceTree = "<group>"; };
 		F8B30788219C13B500437AAA /* GlobalPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalPicker.swift; sourceTree = "<group>"; };
-		F8B5B7D42286C0ED0024FC2B /* SwiftMessagesAlertsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftMessagesAlertsController.swift; sourceTree = "<group>"; };
 		F8B831B42155CBB000DAF60E /* Routines.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routines.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8B831B72155CBB000DAF60E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8B831BC2155CBB000DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -186,7 +154,6 @@
 		F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatTableViewController.swift; sourceTree = "<group>"; };
 		F8CCE20C2288E17E00BAAFEC /* RoutinesPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinesPlus.swift; sourceTree = "<group>"; };
 		F8CE29C522714E9A00CD9BAE /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
-		F8D5DB482269AC59005857F2 /* NetworkActivityIndicatorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkActivityIndicatorManager.swift; sourceTree = "<group>"; };
 		F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTableViewController.swift; sourceTree = "<group>"; };
 		F8DC390122D075D9005C3BE0 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
@@ -217,12 +184,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				F802FC982254C3E10054CF22 /* CloudKit.framework in Frameworks */,
+				F8D106922351975300583612 /* SwiftyStoreKit in Frameworks */,
 				F81194F72267D8E0002E8E7A /* StoreKit.framework in Frameworks */,
 				F8FF25A922085A2C0063295F /* Realm.framework in Frameworks */,
 				F8FF25AA22085A2C0063295F /* RealmSwift.framework in Frameworks */,
-				F8FF25AB22085A2C0063295F /* SwiftMessages.framework in Frameworks */,
-				F8FF25AC22085A2C0063295F /* SwiftTheme.framework in Frameworks */,
-				B9799563AA6F69F9AE62F757 /* Pods_Routines.framework in Frameworks */,
+				1AC7F2C3572C67159ACFD850 /* Pods_Routines.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,9 +198,9 @@
 		245142063868388EBE73944F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				2210EEE67B16C145A4C32A03 /* Pods-Routines.debug.xcconfig */,
-				D2050DC0A0736D86FA07D8B8 /* Pods-Routines.beta.xcconfig */,
-				88C341C80A93826E102A4CC5 /* Pods-Routines.release.xcconfig */,
+				D19514A6953B351D654DC4BB /* Pods-Routines.debug.xcconfig */,
+				E0E609236D65769FF044D184 /* Pods-Routines.beta.xcconfig */,
+				29A3CDEED3A83B544C3575C2 /* Pods-Routines.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -246,7 +212,7 @@
 				F8A761F022580AB400FB9654 /* CloudKit.framework */,
 				F802FC972254C3E10054CF22 /* CloudKit.framework */,
 				F8FF259122085A180063295F /* Pods.xcodeproj */,
-				B7FA850B99E0EAE1A13408EB /* Pods_Routines.framework */,
+				3FA68B843AB23B7578F47ABB /* Pods_Routines.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -286,7 +252,6 @@
 				F8CE29C522714E9A00CD9BAE /* UIColorExtensions.swift */,
 				F8C3EC97228D673F0027AFEB /* UIImageExtension.swift */,
 				F81224C7229417E400AEED90 /* SimulatorData.swift */,
-				F8D5DB482269AC59005857F2 /* NetworkActivityIndicatorManager.swift */,
 				F8DC390122D075D9005C3BE0 /* NotificationHandler.swift */,
 			);
 			path = Other;
@@ -352,7 +317,6 @@
 				F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */,
 				F85D2A89227036CF009CE6CE /* RoutinesPlusViewController.swift */,
 				F85D2A8B22703892009CE6CE /* iAPSegue.swift */,
-				F8B5B7D42286C0ED0024FC2B /* SwiftMessagesAlertsController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -383,12 +347,8 @@
 				F8FF259C22085A180063295F /* Pods_Routines.framework */,
 				F8FF259E22085A180063295F /* Realm.framework */,
 				F8FF25A022085A180063295F /* RealmSwift.framework */,
-				F8B5C7B8228470C900FA088E /* SimulatorStatusMagic.framework */,
-				F8478729229F39620035D847 /* SwiftDate.framework */,
-				F8FF25A222085A180063295F /* SwiftMessages.framework */,
-				F8FF25A422085A180063295F /* SwiftMessages.bundle */,
-				F8FF25A622085A180063295F /* SwiftTheme.framework */,
-				F87D49F92269AA1800845E0D /* SwiftyStoreKit.framework */,
+				F8F591C123519D100002165C /* SwiftMessages.framework */,
+				F8F591C323519D100002165C /* SwiftMessages.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -436,19 +396,22 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F8B831C62155CBB100DAF60E /* Build configuration list for PBXNativeTarget "Routines" */;
 			buildPhases = (
-				48867F253281CD1DB248B20E /* [CP] Check Pods Manifest.lock */,
+				0B781C9890AB826E3669DCA7 /* [CP] Check Pods Manifest.lock */,
 				F8B831B02155CBB000DAF60E /* Sources */,
 				F8B831B12155CBB000DAF60E /* Frameworks */,
 				F8B831B22155CBB000DAF60E /* Resources */,
 				F888607E2182757300FDF808 /* Increment Build */,
 				F890109821F9A5FB00ED2002 /* SwiftFormat */,
-				06D786E89E2B87DDE0A025F1 /* [CP] Embed Pods Frameworks */,
+				787D07D119F9BCC836F8CEE8 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Routines;
+			packageProductDependencies = (
+				F8D106912351975300583612 /* SwiftyStoreKit */,
+			);
 			productName = Routines;
 			productReference = F8B831B42155CBB000DAF60E /* Routines.app */;
 			productType = "com.apple.product-type.application";
@@ -503,6 +466,9 @@
 				Base,
 			);
 			mainGroup = F8B831AB2155CBB000DAF60E;
+			packageReferences = (
+				F8D106902351975300583612 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */,
+			);
 			productRefGroup = F8B831B52155CBB000DAF60E /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -528,25 +494,18 @@
 			remoteRef = F8227D09225B1CF9005AE175 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		F8478729229F39620035D847 /* SwiftDate.framework */ = {
+		F8F591C123519D100002165C /* SwiftMessages.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = SwiftDate.framework;
-			remoteRef = F8478728229F39620035D847 /* PBXContainerItemProxy */;
+			path = SwiftMessages.framework;
+			remoteRef = F8F591C023519D100002165C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		F87D49F92269AA1800845E0D /* SwiftyStoreKit.framework */ = {
+		F8F591C323519D100002165C /* SwiftMessages.bundle */ = {
 			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SwiftyStoreKit.framework;
-			remoteRef = F87D49F82269AA1800845E0D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F8B5C7B8228470C900FA088E /* SimulatorStatusMagic.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SimulatorStatusMagic.framework;
-			remoteRef = F8B5C7B7228470C900FA088E /* PBXContainerItemProxy */;
+			fileType = wrapper.cfbundle;
+			path = SwiftMessages.bundle;
+			remoteRef = F8F591C223519D100002165C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		F8FF259C22085A180063295F /* Pods_Routines.framework */ = {
@@ -568,27 +527,6 @@
 			fileType = wrapper.framework;
 			path = RealmSwift.framework;
 			remoteRef = F8FF259F22085A180063295F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F8FF25A222085A180063295F /* SwiftMessages.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SwiftMessages.framework;
-			remoteRef = F8FF25A122085A180063295F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F8FF25A422085A180063295F /* SwiftMessages.bundle */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = SwiftMessages.bundle;
-			remoteRef = F8FF25A322085A180063295F /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F8FF25A622085A180063295F /* SwiftTheme.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SwiftTheme.framework;
-			remoteRef = F8FF25A522085A180063295F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -621,37 +559,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		06D786E89E2B87DDE0A025F1 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Routines/Pods-Routines-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
-				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SimulatorStatusMagic/SimulatorStatusMagic.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftDate/SwiftDate.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftMessages/SwiftMessages.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftTheme/SwiftTheme.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyStoreKit/SwiftyStoreKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SimulatorStatusMagic.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftDate.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftMessages.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftTheme.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyStoreKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Routines/Pods-Routines-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		48867F253281CD1DB248B20E /* [CP] Check Pods Manifest.lock */ = {
+		0B781C9890AB826E3669DCA7 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -671,6 +579,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		787D07D119F9BCC836F8CEE8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Routines/Pods-Routines-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Routines/Pods-Routines-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Routines/Pods-Routines-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F888607E2182757300FDF808 /* Increment Build */ = {
@@ -703,7 +628,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#if which swiftformat >/dev/null; then\n#swiftformat . --exclude Pods,Generated,/Users/donavon/Developer/Projects/Routines/fastlane/*,/Users/donavon/Developer/Projects/Routines/RoutinesUITests --swiftversion 5\n#else\n#echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\n#fi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftformat >/dev/null; then\nswiftformat . --exclude Pods,Generated,/Users/donavon/Developer/Projects/Routines/fastlane/*,/Users/donavon/Developer/Projects/Routines/RoutinesUITests --swiftversion 5.1\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -729,7 +654,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8B5B7D52286C0ED0024FC2B /* SwiftMessagesAlertsController.swift in Sources */,
 				F8B831CD2155CBE300DAF60E /* Items.swift in Sources */,
 				F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */,
 				F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */,
@@ -737,7 +661,6 @@
 				F8FE52202296929000929DA3 /* AppSecrets.swift in Sources */,
 				F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */,
 				F8E031862269C410002C2E32 /* AppStrings.swift in Sources */,
-				F8D5DB492269AC59005857F2 /* NetworkActivityIndicatorManager.swift in Sources */,
 				F81194FB2267F875002E8E7A /* SKProductPriceExtension.swift in Sources */,
 				F81224C8229417E400AEED90 /* SimulatorData.swift in Sources */,
 				F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */,
@@ -807,7 +730,11 @@
 				DEVELOPMENT_TEAM = G8WL98TTBE;
 				INFOPLIST_FILE = RoutinesTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.donavonbuchanan.RoutinesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -824,7 +751,11 @@
 				DEVELOPMENT_TEAM = G8WL98TTBE;
 				INFOPLIST_FILE = RoutinesTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.donavonbuchanan.RoutinesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -841,7 +772,11 @@
 				DEVELOPMENT_TEAM = G8WL98TTBE;
 				INFOPLIST_FILE = RoutinesTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.donavonbuchanan.RoutinesTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -857,7 +792,11 @@
 				DEVELOPMENT_TEAM = G8WL98TTBE;
 				INFOPLIST_FILE = RoutinesUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = app.donavon.RoutinesUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -873,7 +812,11 @@
 				DEVELOPMENT_TEAM = G8WL98TTBE;
 				INFOPLIST_FILE = RoutinesUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = app.donavon.RoutinesUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -889,7 +832,11 @@
 				DEVELOPMENT_TEAM = G8WL98TTBE;
 				INFOPLIST_FILE = RoutinesUITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = app.donavon.RoutinesUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -931,7 +878,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -949,7 +896,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -961,7 +908,7 @@
 		};
 		F870BF53228BB1CD0024C777 /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2050DC0A0736D86FA07D8B8 /* Pods-Routines.beta.xcconfig */;
+			baseConfigurationReference = E0E609236D65769FF044D184 /* Pods-Routines.beta.xcconfig */;
 			buildSettings = {
 				APP_BUNDLE_ID = app.donavon.routines.beta;
 				APP_DISPLAY_NAME = "Routines Beta";
@@ -971,8 +918,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G8WL98TTBE;
 				INFOPLIST_FILE = Routines/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.2.12;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1016,7 +966,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1034,7 +984,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1077,7 +1027,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1089,18 +1039,19 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		F8B831C72155CBB100DAF60E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2210EEE67B16C145A4C32A03 /* Pods-Routines.debug.xcconfig */;
+			baseConfigurationReference = D19514A6953B351D654DC4BB /* Pods-Routines.debug.xcconfig */;
 			buildSettings = {
 				APP_BUNDLE_ID = com.donavonbuchanan.Routines;
 				APP_DISPLAY_NAME = "Routines Debug";
@@ -1110,8 +1061,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G8WL98TTBE;
 				INFOPLIST_FILE = Routines/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.2.12;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1124,7 +1078,7 @@
 		};
 		F8B831C82155CBB100DAF60E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 88C341C80A93826E102A4CC5 /* Pods-Routines.release.xcconfig */;
+			baseConfigurationReference = 29A3CDEED3A83B544C3575C2 /* Pods-Routines.release.xcconfig */;
 			buildSettings = {
 				APP_BUNDLE_ID = com.donavonbuchanan.Routines;
 				APP_DISPLAY_NAME = Routines;
@@ -1134,8 +1088,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G8WL98TTBE;
 				INFOPLIST_FILE = Routines/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MARKETING_VERSION = 1.2.12;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1190,6 +1147,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F8D106902351975300583612 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/bizz84/SwiftyStoreKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.15.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F8D106912351975300583612 /* SwiftyStoreKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F8D106902351975300583612 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */;
+			productName = SwiftyStoreKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F8B831AC2155CBB000DAF60E /* Project object */;
 }

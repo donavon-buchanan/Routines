@@ -6,9 +6,9 @@
 ////  Copyright © 2019 Donavon Buchanan. All rights reserved.
 ////
 //
-//import Foundation
+// import Foundation
 //
-//class AfterSyncTimer {
+// class AfterSyncTimer {
 //    var timer: Timer?
 //
 //    func startTimer() {
@@ -32,4 +32,4 @@
 //
 //        stopTimer()
 //    }
-//}
+// }

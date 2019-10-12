@@ -40,16 +40,16 @@ import RealmSwift
     // dynamic var darkMode: Bool = false
 
     static func getDarkModeStatus() -> Bool {
-        return UserDefaults.standard.bool(forKey: "darkMode")
+        UserDefaults.standard.bool(forKey: "darkMode")
     }
 
     static func setDarkMode(_ bool: Bool) {
         printDebug("Setting dark mode to: \(bool)")
 
         UserDefaults.standard.set(bool, forKey: "darkMode")
-        DispatchQueue.main.async {
-            TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
-        }
+//        DispatchQueue.main.async {
+//            TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
+//        }
     }
 
     dynamic var autoDarkMode: Bool = false
@@ -160,7 +160,7 @@ import RealmSwift
 
     dynamic var optionsKey = UUID().uuidString
     override static func primaryKey() -> String {
-        return "optionsKey"
+        "optionsKey"
     }
 
     static let realmDispatchQueueLabel: String = "background"
@@ -345,7 +345,7 @@ import RealmSwift
     }
 
     static func getCurrentGenericDate() -> Date {
-        return getDateFromComponents(hour: getHour(date: Date()), minute: getMinute(date: Date()))
+        getDateFromComponents(hour: getHour(date: Date()), minute: getMinute(date: Date()))
     }
 
     static func getSegmentTimeString(segment: Int) -> String {
@@ -414,13 +414,13 @@ import RealmSwift
     }
 
     static func getSelectedIndex() -> Int {
-        return UserDefaults.standard.integer(forKey: AppStrings.selectedIndex)
+        UserDefaults.standard.integer(forKey: AppStrings.selectedIndex)
     }
 }
 
 extension Options: CKRecordConvertible {
     var isDeleted: Bool {
-        return false
+        false
     }
 
     // Yep, leave it blank!

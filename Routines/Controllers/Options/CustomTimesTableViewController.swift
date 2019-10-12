@@ -10,7 +10,7 @@
 
 import RealmSwift
 import UIKit
-//import UserNotifications
+// import UserNotifications
 
 class CustomTimesTableViewController: UITableViewController {
     @IBOutlet var morningDatePicker: UIDatePicker!
@@ -38,17 +38,17 @@ class CustomTimesTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        datePickers.forEach { picker in
-            // We can't assign a color directly to the date picker
-            // But we can assign it to text that doesn't exist and then fetch the color from that
-            let text = UILabel()
-            text.theme_textColor = GlobalPicker.cellTextColors
-            // Get color
-            let textColor = text.textColor
-            // Assign color
-            picker.setValue(textColor, forKeyPath: "textColor")
-        }
-        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+//        datePickers.forEach { picker in
+//            // We can't assign a color directly to the date picker
+//            // But we can assign it to text that doesn't exist and then fetch the color from that
+//            let text = UILabel()
+//            text.theme_textColor = GlobalPicker.cellTextColors
+//            // Get color
+//            let textColor = text.textColor
+//            // Assign color
+//            picker.setValue(textColor, forKeyPath: "textColor")
+//        }
+//        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(displayResetAction))
     }

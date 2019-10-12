@@ -8,8 +8,7 @@
 
 import RealmSwift
 import StoreKit
-import SwiftMessages
-import SwiftTheme
+// import SwiftTheme
 import SwiftyStoreKit
 import UIKit
 import UserNotifications
@@ -22,7 +21,7 @@ enum RegisteredPurchase: String {
 
 class OptionsTableViewController: UITableViewController {
     let notificationHandler = NotificationHandler()
-    
+
     @IBOutlet var cellLabels: [UILabel]!
     @IBOutlet var switches: [UISwitch]!
 
@@ -72,9 +71,16 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var automaticDarkModeStatusLabel: UILabel!
 
     override var keyCommands: [UIKeyCommand]? {
-        return [
-            UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit"),
-        ]
+        if #available(iOS 13.0, *) {
+            return [
+                UIKeyCommand(title: "Exit", action: #selector(dismissView), input: "w", modifierFlags: .init(arrayLiteral: .command)),
+            ]
+        } else {
+            // Fallback to earlier version
+            return [
+                UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit"),
+            ]
+        }
     }
 
     @IBAction func notificationSwitchToggled(_ sender: UISwitch) {
@@ -135,9 +141,9 @@ class OptionsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Colors
-        cellLabels.forEach { label in
-            label.theme_textColor = GlobalPicker.cellTextColors
-        }
+//        cellLabels.forEach { label in
+//            label.theme_textColor = GlobalPicker.cellTextColors
+//        }
         switches.forEach { UISwitch in
             // band-aid for graphical glitch when toggling dark mode
             UISwitch.layer.cornerRadius = 15
@@ -146,14 +152,14 @@ class OptionsTableViewController: UITableViewController {
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissView))
 
-        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+//        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         observeOptions()
         observeRoutinesPlus()
     }
 
-    override func applicationFinishedRestoringState() {
-        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
-    }
+//    override func applicationFinishedRestoringState() {
+//        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
+//    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -272,13 +278,13 @@ class OptionsTableViewController: UITableViewController {
         switch Options.getAutomaticDarkModeStatus() {
         case true:
             automaticDarkModeStatusLabel.text = "Enabled"
-            automaticDarkModeStatusLabel.theme_textColor = GlobalPicker.textColor
+//            automaticDarkModeStatusLabel.theme_textColor = GlobalPicker.textColor
         case false:
             automaticDarkModeStatusLabel.text = "Disabled"
             automaticDarkModeStatusLabel.textColor = .lightGray
         }
 
-        taskPrioritiesLabel.theme_textColor = GlobalPicker.cellTextColors
+//        taskPrioritiesLabel.theme_textColor = GlobalPicker.cellTextColors
         upcomingTasksSwitch.setOn(RoutinesPlus.getShowUpcomingTasks(), animated: animated)
 
         unlockButton.layer.masksToBounds = true
@@ -286,16 +292,16 @@ class OptionsTableViewController: UITableViewController {
 
         if RoutinesPlus.getPurchasedStatus() {
             taskPrioritiesStatusLabel.text = "Unlocked"
-            taskPrioritiesStatusLabel.theme_textColor = GlobalPicker.textColor
+//            taskPrioritiesStatusLabel.theme_textColor = GlobalPicker.textColor
             taskPrioritiesCell.accessoryType = .none
 
             upcomingTasksSwitch.isEnabled = true
             upcomingTasksCellStatusLabel.text = "Unlocked"
-            upcomingTasksCellStatusLabel.theme_textColor = GlobalPicker.textColor
+//            upcomingTasksCellStatusLabel.theme_textColor = GlobalPicker.textColor
 
             unlockButton.isEnabled = false
-            unlockButton.theme_backgroundColor = GlobalPicker.backgroundColor
-            unlockButton.layer.theme_borderColor = GlobalPicker.shadowColor
+//            unlockButton.theme_backgroundColor = GlobalPicker.backgroundColor
+//            unlockButton.layer.theme_borderColor = GlobalPicker.shadowColor
             unlockButton.layer.borderWidth = 2
         } else {
             taskPrioritiesStatusLabel.text = "Disabled"
@@ -307,7 +313,7 @@ class OptionsTableViewController: UITableViewController {
             upcomingTasksCellStatusLabel.textColor = .lightGray
 
             unlockButton.isEnabled = true
-            unlockButton.theme_backgroundColor = GlobalPicker.barTextColor
+//            unlockButton.theme_backgroundColor = GlobalPicker.barTextColor
             unlockButton.layer.borderWidth = 0
         }
 
@@ -315,9 +321,9 @@ class OptionsTableViewController: UITableViewController {
         unlockButton.setTitle("Unlocked", for: .disabled)
 
         unlockButton.setTitleColor(.white, for: .normal)
-        unlockButton.theme_setTitleColor(GlobalPicker.barTextColor, forState: .disabled)
+//        unlockButton.theme_setTitleColor(GlobalPicker.barTextColor, forState: .disabled)
 
-        restorePurchaseButton.theme_setTitleColor(GlobalPicker.cellTextColors, forState: .normal)
+//        restorePurchaseButton.theme_setTitleColor(GlobalPicker.cellTextColors, forState: .normal)
 
         morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
         afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
@@ -397,7 +403,7 @@ class OptionsTableViewController: UITableViewController {
 //                    return
 //                }
                 self.refreshUI()
-                TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
+//                TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
 //                guard self.pleaseWaitAlert != nil else { return }
 //                self.perform(#selector(self.dismissWaitAlert), with: nil, afterDelay: 1)
             case let .error(error):

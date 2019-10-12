@@ -17,7 +17,7 @@ class AutomaticDarkModeTableViewController: UITableViewController {
     @IBAction func automaticDarkModeSwitchAction(_ sender: UISwitch) {
         Options.setAutomaticDarkModeStatus(sender.isOn)
 
-        perform(#selector(refreshUI), with: nil, afterDelay: 0.1)
+//        perform(#selector(refreshUI), with: nil, afterDelay: 0.1)
     }
 
     @IBOutlet var startTimeDatePicker: UIDatePicker!
@@ -26,7 +26,7 @@ class AutomaticDarkModeTableViewController: UITableViewController {
         let minute = Options.getMinute(date: sender.date)
         Options.setAutomaticDarkModeStartTime(hour: hour, minute: minute)
         Options.automaticDarkModeCheck()
-        perform(#selector(refreshUI), with: nil, afterDelay: 0.1)
+//        perform(#selector(refreshUI), with: nil, afterDelay: 0.1)
     }
 
     @IBOutlet var endTimeDatePicker: UIDatePicker!
@@ -35,12 +35,12 @@ class AutomaticDarkModeTableViewController: UITableViewController {
         let minute = Options.getMinute(date: sender.date)
         Options.setAutomaticDarkModeEndTime(hour: hour, minute: minute)
         Options.automaticDarkModeCheck()
-        perform(#selector(refreshUI), with: nil, afterDelay: 0.1)
+//        perform(#selector(refreshUI), with: nil, afterDelay: 0.1)
     }
 
     func setUpUI() {
         // Set view theme
-        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+//        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
 
         // Get dates from Options for times
         if let startTime = Options.getAutomaticDarkModeStartTime() {
@@ -56,46 +56,46 @@ class AutomaticDarkModeTableViewController: UITableViewController {
         // Set theme on date pickers
         // We can't assign a color directly to the date picker
         // But we can assign it to text that doesn't exist and then fetch the color from that
-        let text = UILabel()
-        text.theme_textColor = GlobalPicker.cellTextColors
+//        let text = UILabel()
+//        text.theme_textColor = GlobalPicker.cellTextColors
         // Get color
-        let textColor = text.textColor
+//        let textColor = text.textColor
         // Assign color
-        startTimeDatePicker.setValue(textColor, forKeyPath: "textColor")
-        endTimeDatePicker.setValue(textColor, forKeyPath: "textColor")
+//        startTimeDatePicker.setValue(textColor, forKeyPath: "textColor")
+//        endTimeDatePicker.setValue(textColor, forKeyPath: "textColor")
 
         // band-aid for graphical glitch when toggling dark mode
         automaticDarkModeSwitch.layer.cornerRadius = 15
         automaticDarkModeSwitch.layer.masksToBounds = true
 
-        automaticDarkModeLabel.theme_textColor = GlobalPicker.cellTextColors
+//        automaticDarkModeLabel.theme_textColor = GlobalPicker.cellTextColors
     }
 
-    @objc func refreshUI() {
-        DispatchQueue.main.async {
-            // Set view theme
-            self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+//    @objc func refreshUI() {
+//        DispatchQueue.main.async {
+//            // Set view theme
+//            self.tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+//
+//            // Set theme on date pickers
+//            // We can't assign a color directly to the date picker
+//            // But we can assign it to text that doesn't exist and then fetch the color from that
+//            let text = UILabel()
+//            text.theme_textColor = GlobalPicker.cellTextColors
+//            // Get color
+//            let textColor = text.textColor
+//            // Assign color
+//            self.startTimeDatePicker.setValue(textColor, forKeyPath: "textColor")
+//            self.endTimeDatePicker.setValue(textColor, forKeyPath: "textColor")
+//
+//            self.automaticDarkModeLabel.theme_textColor = GlobalPicker.cellTextColors
+//        }
+//    }
 
-            // Set theme on date pickers
-            // We can't assign a color directly to the date picker
-            // But we can assign it to text that doesn't exist and then fetch the color from that
-            let text = UILabel()
-            text.theme_textColor = GlobalPicker.cellTextColors
-            // Get color
-            let textColor = text.textColor
-            // Assign color
-            self.startTimeDatePicker.setValue(textColor, forKeyPath: "textColor")
-            self.endTimeDatePicker.setValue(textColor, forKeyPath: "textColor")
-
-            self.automaticDarkModeLabel.theme_textColor = GlobalPicker.cellTextColors
-        }
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
-    override func viewWillAppear(_: Bool) {
-        setUpUI()
-    }
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//    }
+//
+//    override func viewWillAppear(_: Bool) {
+//        setUpUI()
+//    }
 }
