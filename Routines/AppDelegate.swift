@@ -10,7 +10,7 @@ import CloudKit
 import IceCream
 import RealmSwift
 // import SwiftTheme
-import SwiftyStoreKit
+// import SwiftyStoreKit
 import UIKit
 import UserNotifications
 
@@ -33,8 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var shortcutItemToProcess: UIApplicationShortcutItem?
 
     static var syncEngine: SyncEngine?
-
-    static var productInfo: RetrieveResults?
 
     func application(_: UIApplication, supportedInterfaceOrientationsFor _: UIWindow?) -> UIInterfaceOrientationMask {
         switch UIDevice.current.userInterfaceIdiom {
@@ -81,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Theme
 //        setUpTheme()
 
-        Options.automaticDarkModeCheck()
+//        Options.automaticDarkModeCheck()
 
         printDebug("\(#function) - End")
         return true
@@ -129,21 +127,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
 
-    func application(_: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    func application(_: UIApplication, performFetchWithCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
         observeItems()
         observeOptions()
 
-        AppDelegate.syncEngine?.pull(completionHandler: { error in
-            if let error = error {
-                printDebug("Error with sync pull: \(error)")
-                completionHandler(.failed)
-            } else {
-                completionHandler(.newData)
-            }
-        })
+//        AppDelegate.syncEngine?.pull(completionHandler: { error in
+//            if let error = error {
+//                printDebug("Error with sync pull: \(error)")
+//                completionHandler(.failed)
+//            } else {
+//                completionHandler(.newData)
+//            }
+//        })
     }
 
-    func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
         let dict = userInfo as! [String: NSObject]
         let notification = CKNotification(fromRemoteNotificationDictionary: dict)
 
@@ -154,14 +152,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         observeItems()
         observeOptions()
 
-        AppDelegate.syncEngine?.pull(completionHandler: { error in
-            if let error = error {
-                printDebug("Error with sync pull: \(error)")
-                completionHandler(.failed)
-            } else {
-                completionHandler(.newData)
-            }
-        })
+//        AppDelegate.syncEngine?.pull(completionHandler: { error in
+//            if let error = error {
+//                printDebug("Error with sync pull: \(error)")
+//                completionHandler(.failed)
+//            } else {
+//                completionHandler(.newData)
+//            }
+//        })
 
         printDebug("Received push notification")
     }
@@ -181,7 +179,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug("\(#function) - Start")
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        AppDelegate.syncEngine?.pushAll()
+//        AppDelegate.syncEngine?.pushAll()
 
         observeItems()
         observeOptions()
@@ -229,7 +227,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             shortcutItemToProcess = nil
         }
 
-        AppDelegate.setAutomaticDarkModeTimer()
+//        AppDelegate.setAutomaticDarkModeTimer()
         printDebug("\(#function) - End")
     }
 

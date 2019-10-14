@@ -9,7 +9,7 @@
 import RealmSwift
 import StoreKit
 // import SwiftTheme
-import SwiftyStoreKit
+// import SwiftyStoreKit
 import UIKit
 import UserNotifications
 
