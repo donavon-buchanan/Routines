@@ -647,40 +647,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UIApplication.shared.applicationIconBadgeNumber = remoteBadge
     }
 
+    fileprivate func presentStoryboardView(withIdentifier identifier: String) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let addViewController = storyBoard.instantiateViewController(withIdentifier: identifier)
+        let navigationController = UIApplication.shared.keyWindow?.rootViewController
+        navigationController?.present(addViewController, animated: true, completion: nil)
+    }
+
     // Notification Settings Screen
     fileprivate func goToSettings() {
-        // print("Opening settings")
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsViewController") as! OptionsTableViewController
-//        let rootVC = window?.rootViewController as! UITabBarController
-//        // Set the selected index so you know what child will be on screen
-//        let index = Options.getSelectedIndex()
-//        rootVC.selectedIndex = index
-//        printDebug(#function + " segment \(index)")
-//        let navVC = rootVC.children[index] as? UINavigationController
-//        print("navVC Description: " + navVC.debugDescription)
-//        print("keyWindow Description: " + UIApplication.shared.keyWindow.debugDescription.debugDescription)
-//        let taskVC = UIApplication.shared.keyWindow?.rootViewController?.children[0].children[0] as! TaskTableViewController
-//        optionsViewController.presentingViewController = taskVC
-//        taskVC.present(optionsViewController, animated: true, completion: nil)
-//        TableViewController.setAppearance(segment: index)
-        let navigationController = UIApplication.shared.keyWindow?.rootViewController?.children[0].children[0] as! TaskTableViewController
-        navigationController.present(optionsViewController, animated: true, completion: nil)
+        presentStoryboardView(withIdentifier: "settingsNavigationController")
     }
 
     fileprivate func goToAdd() {
-        // print("Opening Add view")
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let addViewController = storyBoard.instantiateViewController(withIdentifier: "addEditViewController") as! AddTableViewController
-        let rootVC = window?.rootViewController as! UITabBarController
-        // Set the selected index so you know what child will be on screen
-        let index = Options.getSelectedIndex()
-        rootVC.selectedIndex = index
-        printDebug(#function + " segment \(index)")
-        let navVC = rootVC.children[index] as! UINavigationController
-        navVC.pushViewController(addViewController, animated: true)
-        addViewController.editingSegment = index
-        // TableViewController.setAppearance(segment: index)
+        presentStoryboardView(withIdentifier: "addEditNavigationController")
     }
 
     func userNotificationCenter(_: UNUserNotificationCenter, openSettingsFor _: UNNotification?) {
