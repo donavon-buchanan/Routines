@@ -101,23 +101,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             shortcutItemToProcess = shortcutItem
         }
 
-        // SwiftyStoreKit
-        SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
-            for purchase in purchases {
-                switch purchase.transaction.transactionState {
-                case .purchased, .restored:
-                    if purchase.needsFinishTransaction {
-                        SwiftyStoreKit.finishTransaction(purchase.transaction)
-                    }
-                    // Unlock content
-                    RoutinesPlus.setPurchasedStatus(status: true)
-                case .failed, .purchasing, .deferred:
-                    break // do nothing
-                @unknown default:
-                    break
-                }
-            }
-        }
+//        // SwiftyStoreKit
+//        SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
+//            for purchase in purchases {
+//                switch purchase.transaction.transactionState {
+//                case .purchased, .restored:
+//                    if purchase.needsFinishTransaction {
+//                        SwiftyStoreKit.finishTransaction(purchase.transaction)
+//                    }
+//                    // Unlock content
+//                    RoutinesPlus.setPurchasedStatus(status: true)
+//                case .failed, .purchasing, .deferred:
+//                    break // do nothing
+//                @unknown default:
+//                    break
+//                }
+//            }
+//        }
 
         observeItems()
         observeOptions()
@@ -344,7 +344,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 22,
+            schemaVersion: 23,
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -414,25 +414,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         let cloudSync = oldObject!["cloudSync"] as! Bool
                         UserDefaults.standard.set(cloudSync, forKey: "cloudSync")
 
-                        let purchasedProduct = oldObject!["purchasedProduct"] as! String
-
-                        let routinesPlusPurchased = oldObject!["routinesPlusPurchased"] as! Bool
+//                        let purchasedProduct = oldObject!["purchasedProduct"] as! String
+//
+//                        let routinesPlusPurchased = oldObject!["routinesPlusPurchased"] as! Bool
 
                         let newRoutinesPlus = RoutinesPlus()
 
                         newRoutinesPlus.routinesPlusKey = RoutinesPlus.primaryKey()
-                        newRoutinesPlus.purchasedProduct = purchasedProduct
-                        newRoutinesPlus.routinesPlusPurchased = routinesPlusPurchased
+//                        newRoutinesPlus.purchasedProduct = purchasedProduct
+//                        newRoutinesPlus.routinesPlusPurchased = routinesPlusPurchased
 
                         migration.create("RoutinesPlus", value: newRoutinesPlus)
                     }
                 }
 
-                if oldSchemaVersion <= 21 {
+                if oldSchemaVersion == 21 {
                     migration.enumerateObjects(ofType: Options.className()) { oldObject, _ in
                         if let darkMode = oldObject!["darkMode"] as? Bool {
                             UserDefaults.standard.set(darkMode, forKey: "darkMode")
                         }
+                    }
+                }
+
+                if oldSchemaVersion == 22 {
+                    migration.enumerateObjects(ofType: RoutinesPlus.className()) { _, _ in
+                        // auto migration
                     }
                 }
             }
@@ -462,7 +468,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     static func setSync() {
         printDebug(#function)
-        if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getCloudSync() {
+        if RoutinesPlus.getCloudSync() {
             // Setting this each time was causing the list of items to trigger a change in observation tokens
             // Only needs to be set if it isn't already
             guard AppDelegate.syncEngine == nil else { return }
@@ -583,33 +589,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let nightSummaryFormat = "%u more Night tasks"
         let nightPreviewPlaceholder = "%u Night tasks"
 
-        var morningCategory: UNNotificationCategory
-        if #available(iOS 12.0, *) {
-            morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: morningPreviewPlaceholder, categorySummaryFormat: morningSummaryFormat, options: [])
-        } else {
-            morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: morningPreviewPlaceholder, options: [])
-        }
+        let morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: morningPreviewPlaceholder, categorySummaryFormat: morningSummaryFormat, options: [])
 
-        var afternoonCategory: UNNotificationCategory
-        if #available(iOS 12.0, *) {
-            afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: afternoonPreviewPlaceholder, categorySummaryFormat: afternoonSummaryFormat, options: [])
-        } else {
-            afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: afternoonPreviewPlaceholder, options: [])
-        }
+        let afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: afternoonPreviewPlaceholder, categorySummaryFormat: afternoonSummaryFormat, options: [])
 
-        var eveningCategory: UNNotificationCategory
-        if #available(iOS 12.0, *) {
-            eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: eveningPreviewPlaceholder, categorySummaryFormat: eveningSummaryFormat, options: [])
-        } else {
-            eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: eveningPreviewPlaceholder, options: [])
-        }
+        let eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: eveningPreviewPlaceholder, categorySummaryFormat: eveningSummaryFormat, options: [])
 
-        var nightCategory: UNNotificationCategory
-        if #available(iOS 12.0, *) {
-            nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: nightPreviewPlaceholder, categorySummaryFormat: nightSummaryFormat, options: [])
-        } else {
-            nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: nightPreviewPlaceholder, options: [])
-        }
+        let nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: nightPreviewPlaceholder, categorySummaryFormat: nightSummaryFormat, options: [])
 
         center.setNotificationCategories([morningCategory, afternoonCategory, eveningCategory, nightCategory])
     }

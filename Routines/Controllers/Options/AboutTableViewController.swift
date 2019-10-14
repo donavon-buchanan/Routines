@@ -15,17 +15,17 @@ class AboutTableViewController: UITableViewController {
 
     @IBOutlet var labels: [UILabel]!
 
-    @IBOutlet var gearImage: UIImageView!
-    @IBOutlet var morningImage: UIImageView!
-    @IBOutlet var afternoonImage: UIImageView!
-    @IBOutlet var eveningImage: UIImageView!
-    @IBOutlet var nightImage: UIImageView!
+//    @IBOutlet var gearImage: UIImageView!
+//    @IBOutlet var morningImage: UIImageView!
+//    @IBOutlet var afternoonImage: UIImageView!
+//    @IBOutlet var eveningImage: UIImageView!
+//    @IBOutlet var nightImage: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 //        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         versionNumberLabel.text = setVersionNumberLabel()
-        setViewBackgroundGraphic()
+//        setViewBackgroundGraphic()
 
 //        cells.forEach { cell in
 //            cell.theme_backgroundColor = GlobalPicker.cellBackground
@@ -53,13 +53,13 @@ class AboutTableViewController: UITableViewController {
     }
 
     // Set background graphic
-    func setViewBackgroundGraphic() {
-        let backgroundImageView = UIImageView()
-        let backgroundImage = UIImage(imageLiteralResourceName: "inlay")
-
-        backgroundImageView.image = backgroundImage
-        backgroundImageView.contentMode = .scaleAspectFit
-
-        tableView.backgroundView = backgroundImageView
-    }
+//    func setViewBackgroundGraphic() {
+//        let backgroundImageView = UIImageView()
+//        let backgroundImage = UIImage(imageLiteralResourceName: "inlay")
+//
+//        backgroundImageView.image = backgroundImage
+//        backgroundImageView.contentMode = .scaleAspectFit
+//
+//        tableView.backgroundView = backgroundImageView
+//    }
 }

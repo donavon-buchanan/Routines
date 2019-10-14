@@ -41,30 +41,16 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     override var keyCommands: [UIKeyCommand]? {
-        if #available(iOS 13.0, *) {
-            return [
-                // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
-                UIKeyCommand(title: "Save Task", action: #selector(saveKeyCommand), input: "s", modifierFlags: .command),
-                UIKeyCommand(title: "Exit", action: #selector(dismissView), input: "w", modifierFlags: .init(arrayLiteral: .command)),
-                UIKeyCommand(title: "Toggle Repeat Daily", action: #selector(toggleRepeat), input: "r", modifierFlags: .command),
-                UIKeyCommand(title: "Select Morning", action: #selector(setSegmentZero), input: "1", modifierFlags: .command),
-                UIKeyCommand(title: "Select Afternoon", action: #selector(setSegmentOne), input: "2", modifierFlags: .command),
-                UIKeyCommand(title: "Select Evening", action: #selector(setSegmentTwo), input: "3", modifierFlags: .command),
-                UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command),
-            ]
-        } else {
-            // Fallback on earlier versions
-            return [
-                // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
-                UIKeyCommand(input: "s", modifierFlags: .command, action: #selector(saveKeyCommand), discoverabilityTitle: "Save Task"),
-                UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit"),
-                UIKeyCommand(input: "r", modifierFlags: .command, action: #selector(toggleRepeat), discoverabilityTitle: "Toggle Repeat Daily"),
-                UIKeyCommand(input: "1", modifierFlags: .command, action: #selector(setSegmentZero), discoverabilityTitle: "Select Morning"),
-                UIKeyCommand(input: "2", modifierFlags: .command, action: #selector(setSegmentOne), discoverabilityTitle: "Select Afternoon"),
-                UIKeyCommand(input: "3", modifierFlags: .command, action: #selector(setSegmentTwo), discoverabilityTitle: "Select Evening"),
-                UIKeyCommand(input: "4", modifierFlags: .command, action: #selector(setSegmentThree), discoverabilityTitle: "Select Night"),
-            ]
-        }
+        [
+            // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
+            UIKeyCommand(title: "Save Task", action: #selector(saveKeyCommand), input: "s", modifierFlags: .command),
+            UIKeyCommand(title: "Exit", action: #selector(dismissView), input: "w", modifierFlags: .init(arrayLiteral: .command)),
+            UIKeyCommand(title: "Toggle Repeat Daily", action: #selector(toggleRepeat), input: "r", modifierFlags: .command),
+            UIKeyCommand(title: "Select Morning", action: #selector(setSegmentZero), input: "1", modifierFlags: .command),
+            UIKeyCommand(title: "Select Afternoon", action: #selector(setSegmentOne), input: "2", modifierFlags: .command),
+            UIKeyCommand(title: "Select Evening", action: #selector(setSegmentTwo), input: "3", modifierFlags: .command),
+            UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command),
+        ]
     }
 
     @objc func saveKeyCommand() {
@@ -105,6 +91,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     var item: Items?
+    var selectedIndex: Int?
 
     var editingSegment: Int?
     var shouldShowHiddenTasksMessage = false
@@ -136,11 +123,11 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 //        priorityNumberLabel.theme_textColor = GlobalPicker.textColor
 //        prioritySlider.theme_thumbTintColor = GlobalPicker.textColor
 
-        if !RoutinesPlus.getPurchasedStatus() {
-            prioritySlider.isEnabled = false
-        } else {
-            prioritySlider.isEnabled = true
-        }
+//        if !RoutinesPlus.getPurchasedStatus() {
+//            prioritySlider.isEnabled = false
+//        } else {
+//            prioritySlider.isEnabled = true
+//        }
     }
 
 //    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
@@ -159,6 +146,20 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if let selectedIndex = self.selectedIndex {
+            print("Appearance condition 1")
+            setAppearance(forSegment: selectedIndex)
+            print("Setting appearance for index of \(selectedIndex)")
+        } else if let currentItem = item {
+            print("Appearance condition 2")
+            print("Setting appearance for index of \(currentItem.segment)")
+            // I'm not sure why, but the method below doesn't change the color in time
+            // Needs to be done more directly here
+//            setAppearance(forSegment: currentItem.segment)
+            navigationController?.navigationBar.tintColor = UIColor(segment: currentItem.segment)
+            UISwitch.appearance().onTintColor = UIColor(segment: currentItem.segment)
+        }
+
         // Set right bar item as "Save"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButtonPressed))
         // Disable button until all values are filled
@@ -170,9 +171,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 //        let cellAppearance = UITableViewCell.appearance()
 //        cellAppearance.theme_backgroundColor = GlobalPicker.backgroundColor
 
-        if #available(iOS 11.0, *) {
-            self.navigationItem.largeTitleDisplayMode = .never
-        }
+        navigationItem.largeTitleDisplayMode = .never
 
         // load in segment from add segue
         if let currentSegmentSelection = editingSegment {
@@ -277,17 +276,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 4 {
+        if indexPath.section == 3 {
             let haptic = UIImpactFeedbackGenerator(style: .light)
             haptic.impactOccurred()
             repeatDailySwitch.setOn(!repeatDailySwitch.isOn, animated: true)
             if item != nil, taskTextField.hasText {
                 navigationItem.rightBarButtonItem?.isEnabled = true
-            }
-        }
-        if indexPath.section == 2 {
-            if !prioritySlider.isEnabled {
-                segueToRoutinesPlusViewController()
             }
         }
     }

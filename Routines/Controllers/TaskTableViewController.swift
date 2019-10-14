@@ -38,41 +38,20 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     override var keyCommands: [UIKeyCommand]? {
         var commandArray: [UIKeyCommand]
-        if #available(iOS 13.0, *) {
-            commandArray = [
-                // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
-                UIKeyCommand(title: "Add New Task", action: #selector(addNewTask), input: "n", modifierFlags: .command),
-                UIKeyCommand(title: "Open Settings", action: #selector(openSettings), input: "o", modifierFlags: .alternate),
-                UIKeyCommand(title: "Edit List", action: #selector(editKeyCommand), input: "e", modifierFlags: .init(arrayLiteral: .shift, .command)),
-                UIKeyCommand(title: "Show Entire Day", action: #selector(showAllKeyCommand), input: "a", modifierFlags: .init(arrayLiteral: .shift, .command)),
-            ]
-        } else {
-            // Fallback on earlier versions
-            commandArray = [
-                // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
-                UIKeyCommand(input: "n", modifierFlags: .command, action: #selector(addNewTask), discoverabilityTitle: "Add New Task"),
-                UIKeyCommand(input: "o", modifierFlags: .alternate, action: #selector(openSettings), discoverabilityTitle: "Open Settings"),
-                UIKeyCommand(input: "e", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(editKeyCommand), discoverabilityTitle: "Edit List"),
-                UIKeyCommand(input: "a", modifierFlags: .init(arrayLiteral: .shift, .command), action: #selector(showAllKeyCommand), discoverabilityTitle: "Show Entire Day"),
-            ]
-        }
+        commandArray = [
+            // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
+            UIKeyCommand(title: "Add New Task", action: #selector(addNewTask), input: "n", modifierFlags: .command),
+            UIKeyCommand(title: "Open Settings", action: #selector(openSettings), input: "o", modifierFlags: .alternate),
+            UIKeyCommand(title: "Edit List", action: #selector(editKeyCommand), input: "e", modifierFlags: .init(arrayLiteral: .shift, .command)),
+            UIKeyCommand(title: "Show Entire Day", action: #selector(showAllKeyCommand), input: "a", modifierFlags: .init(arrayLiteral: .shift, .command)),
+        ]
         if !linesBarButtonSelected {
-            if #available(iOS 13.0, *) {
-                commandArray.append(contentsOf: [
-                    UIKeyCommand(title: "Select Morning", action: #selector(setSegmentZero), input: "1", modifierFlags: .command),
-                    UIKeyCommand(title: "Select Afternoon", action: #selector(setSegmentOne), input: "2", modifierFlags: .command),
-                    UIKeyCommand(title: "Select Evening", action: #selector(setSegmentTwo), input: "3", modifierFlags: .command),
-                    UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command),
-                ])
-            } else {
-                // Fallback on earlier versions
-                commandArray.append(contentsOf: [
-                    UIKeyCommand(input: "1", modifierFlags: .command, action: #selector(setSegmentZero), discoverabilityTitle: "Select Morning"),
-                    UIKeyCommand(input: "2", modifierFlags: .command, action: #selector(setSegmentOne), discoverabilityTitle: "Select Afternoon"),
-                    UIKeyCommand(input: "3", modifierFlags: .command, action: #selector(setSegmentTwo), discoverabilityTitle: "Select Evening"),
-                    UIKeyCommand(input: "4", modifierFlags: .command, action: #selector(setSegmentThree), discoverabilityTitle: "Select Night"),
-                ])
-            }
+            commandArray.append(contentsOf: [
+                UIKeyCommand(title: "Select Morning", action: #selector(setSegmentZero), input: "1", modifierFlags: .command),
+                UIKeyCommand(title: "Select Afternoon", action: #selector(setSegmentOne), input: "2", modifierFlags: .command),
+                UIKeyCommand(title: "Select Evening", action: #selector(setSegmentTwo), input: "3", modifierFlags: .command),
+                UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command),
+            ])
         }
         return commandArray
     }
@@ -206,12 +185,12 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     // Footer view
     let footerView = UIView()
 
-    fileprivate func fetchIAPInfo() {
-        // prefetch prices
-        if !RoutinesPlus.getPurchasedStatus() {
-            getAllProductInfo(productIDs: [RegisteredPurchase.lifetime.rawValue, RegisteredPurchase.monthly.rawValue, RegisteredPurchase.yearly.rawValue])
-        }
-    }
+//    fileprivate func fetchIAPInfo() {
+//        // prefetch prices
+//        if !RoutinesPlus.getPurchasedStatus() {
+//            getAllProductInfo(productIDs: [RegisteredPurchase.lifetime.rawValue, RegisteredPurchase.monthly.rawValue, RegisteredPurchase.yearly.rawValue])
+//        }
+//    }
 
     override func viewDidLoad() {
         debugPrint(#function + " start")
@@ -297,25 +276,16 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 //        TaskTableViewController.setAppearance(forSegment: segment!)
         title = returnTitle(forSegment: segment!)
 
-        if #available(iOS 13.0, *) {
-            let navigationBarAppearance = UINavigationBarAppearance()
-            navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
-            navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
-            let buttonAppearance = UIBarButtonItemAppearance()
-            buttonAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
-            self.navigationController?.navigationBar.tintColor = UIColor(segment: self.segment!)
-            navigationBarAppearance.buttonAppearance = buttonAppearance
-            self.navigationController?.navigationBar.standardAppearance = navigationBarAppearance
-            self.navigationController?.navigationBar.compactAppearance = navigationBarAppearance
-            self.tabBarController?.tabBar.tintColor = UIColor(segment: self.segment!)
-        } else {
-            // Fallback on earlier versions
-            let navigationBarAppearance = UINavigationBar.appearance()
-            navigationController?.navigationBar.tintColor = UIColor(segment: segment!)
-            navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
-            navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
-            tabBarController?.tabBar.tintColor = UIColor(segment: segment!)
-        }
+        let navigationBarAppearance = UINavigationBarAppearance()
+        navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
+        navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
+        let buttonAppearance = UIBarButtonItemAppearance()
+        buttonAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
+        navigationController?.navigationBar.tintColor = UIColor(segment: segment!)
+        navigationBarAppearance.buttonAppearance = buttonAppearance
+        navigationController?.navigationBar.standardAppearance = navigationBarAppearance
+        navigationController?.navigationBar.compactAppearance = navigationBarAppearance
+        tabBarController?.tabBar.tintColor = UIColor(segment: segment!)
 
         debugPrint(#function + " end")
     }
@@ -327,17 +297,17 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     override func viewDidAppear(_: Bool) {
         debugPrint(#function + " start")
 
-        if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getPurchasedProduct() != "", RoutinesPlus.getPurchasedProduct() != RegisteredPurchase.lifetime.rawValue, Date() >= RoutinesPlus.getExpiryDate() {
-            debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
-            debugPrint("Routines Plus Product: \(RoutinesPlus.getPurchasedProduct())")
-            verifyReceipt()
-        } else {
-            debugPrint("No need to verify yet. Will check on \(RoutinesPlus.getExpiryDate())")
-            debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
-            debugPrint("Routines Plus Product: \(RoutinesPlus.getPurchasedProduct())")
-        }
-
-        fetchIAPInfo()
+//        if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getPurchasedProduct() != "", RoutinesPlus.getPurchasedProduct() != RegisteredPurchase.lifetime.rawValue, Date() >= RoutinesPlus.getExpiryDate() {
+//            debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
+//            debugPrint("Routines Plus Product: \(RoutinesPlus.getPurchasedProduct())")
+//            verifyReceipt()
+//        } else {
+//            debugPrint("No need to verify yet. Will check on \(RoutinesPlus.getExpiryDate())")
+//            debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
+//            debugPrint("Routines Plus Product: \(RoutinesPlus.getPurchasedProduct())")
+//        }
+//
+//        fetchIAPInfo()
 
         // Kind of a band aid for orphaned notifications.
         // UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
@@ -469,13 +439,13 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         var nextColor: UIColor {
             switch itemSegment {
             case 1:
-                return UIColor(hex: "#62a388") ?? UIColor(red: 0.38, green: 0.64, blue: 0.53, alpha: 1.0)
+                return UIColor(red: 0.38, green: 0.64, blue: 0.53, alpha: 1.0)
             case 2:
-                return UIColor(hex: "#645be7") ?? UIColor(red: 0.39, green: 0.36, blue: 0.91, alpha: 1.0)
+                return UIColor(red: 0.39, green: 0.36, blue: 0.91, alpha: 1.0)
             case 3:
-                return UIColor(hex: "#f47645") ?? UIColor(red: 0.96, green: 0.46, blue: 0.27, alpha: 1.0)
+                return UIColor(red: 0.96, green: 0.46, blue: 0.27, alpha: 1.0)
             default:
-                return UIColor(hex: "#26baee") ?? UIColor(red: 0.15, green: 0.73, blue: 0.93, alpha: 1.0)
+                return UIColor(red: 0.15, green: 0.73, blue: 0.93, alpha: 1.0)
             }
         }
 
@@ -501,12 +471,12 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             }
         }
 
-        completeAction.image = UIImage(imageLiteralResourceName: "checkmark")
-//        completeAction.backgroundColor = GlobalPicker.primaryColor
-//        snoozeAction.backgroundColor = GlobalPicker.snoozeColor
-        snoozeAction.image = UIImage(imageLiteralResourceName: "snooze")
+        completeAction.image = UIImage(imageLiteralResourceName: "checkmark").withTintColor(.white, renderingMode: .alwaysTemplate)
+        completeAction.backgroundColor = ColorPicker.mainColor
+        snoozeAction.backgroundColor = ColorPicker.snoozeColor
+        snoozeAction.image = UIImage(systemName: "bell.slash.fill")
         nextSectionAction.backgroundColor = nextColor
-        nextSectionAction.image = UIImage(imageLiteralResourceName: "arrow-right")
+        nextSectionAction.image = UIImage(systemName: "arrowshape.turn.up.right.fill")
 
         var arrayOfActions: [UIContextualAction] = []
         if item.completeUntil < Date().endOfDay {
@@ -523,7 +493,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
             completion(self.deleteAlert(indexPath))
         }
-        deleteAction.image = UIImage(imageLiteralResourceName: "trash-icon")
+        deleteAction.image = UIImage(systemName: "trash")
         let actions = UISwipeActionsConfiguration(actions: [deleteAction])
         return actions
     }
@@ -631,7 +601,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             // set segment based on current tab
             guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
             destination.editingSegment = selectedTab
-
+            destination.selectedIndex = segment
             resetTableView()
         }
 
@@ -643,6 +613,12 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             if let indexPath = tableView.indexPathForSelectedRow {
                 destination.item = items?[indexPath.row]
             }
+        }
+
+        if segue.identifier == "optionsSegue" {
+            let navVC = segue.destination as! UINavigationController
+            let destination = navVC.topViewController as! OptionsTableViewController
+            destination.selectedIndex = tabBarController?.selectedIndex
         }
 
         if let indexPath = tableView.indexPathForSelectedRow {

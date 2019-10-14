@@ -13,14 +13,16 @@ import SwiftyStoreKit
 import UIKit
 import UserNotifications
 
-enum RegisteredPurchase: String {
-    case lifetime = "lifetime1"
-    case yearly = "routines_plus_yearly"
-    case monthly = "routines_plus_monthly"
-}
+// enum RegisteredPurchase: String {
+//    case lifetime = "lifetime1"
+//    case yearly = "routines_plus_yearly"
+//    case monthly = "routines_plus_monthly"
+// }
 
 class OptionsTableViewController: UITableViewController {
     let notificationHandler = NotificationHandler()
+
+    var selectedIndex: Int?
 
     @IBOutlet var cellLabels: [UILabel]!
     @IBOutlet var switches: [UISwitch]!
@@ -40,47 +42,26 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var cloudSyncLabel: UILabel!
     @IBOutlet var cloudSyncSwitch: UISwitch!
     @IBAction func cloudSyncSwitchToggled(_ sender: UISwitch) {
-        if cloudSyncSwitch.isEnabled {
-            // cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
-            RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
-//            if cloudSyncSwitch.isOn {
-//                notificationHandler.refreshAllNotifications()
-//            }
-        } else {
-            // Show Purchase Options
-            segueToRoutinesPlusViewController()
-        }
+        RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
         printDebug("Cloud sync switch: \(sender.isOn)")
     }
 
     @IBOutlet var upcomingTasksCellLabel: UILabel!
-    @IBOutlet var upcomingTasksCellStatusLabel: UILabel!
+//    @IBOutlet var upcomingTasksCellStatusLabel: UILabel!
     @IBOutlet var upcomingTasksSwitch: UISwitch!
     @IBAction func upcomingTasksSwitchToggled(_ sender: UISwitch) {
-        if upcomingTasksSwitch.isEnabled {
-            RoutinesPlus.setUpcomingTasks(sender.isOn)
-        } else {
-            // Show Purchase Options
-            segueToRoutinesPlusViewController()
-        }
+        RoutinesPlus.setUpcomingTasks(sender.isOn)
     }
 
     // MARK: Automatic Dark Mode
 
-    @IBOutlet var automaticDarkModeLabel: UILabel!
-    @IBOutlet var automaticDarkModeStatusLabel: UILabel!
+//    @IBOutlet var automaticDarkModeLabel: UILabel!
+//    @IBOutlet var automaticDarkModeStatusLabel: UILabel!
 
     override var keyCommands: [UIKeyCommand]? {
-        if #available(iOS 13.0, *) {
-            return [
-                UIKeyCommand(title: "Exit", action: #selector(dismissView), input: "w", modifierFlags: .init(arrayLiteral: .command)),
-            ]
-        } else {
-            // Fallback to earlier version
-            return [
-                UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit"),
-            ]
-        }
+        [
+            UIKeyCommand(title: "Exit", action: #selector(dismissView), input: "w", modifierFlags: .init(arrayLiteral: .command)),
+        ]
     }
 
     @IBAction func notificationSwitchToggled(_ sender: UISwitch) {
@@ -117,19 +98,19 @@ class OptionsTableViewController: UITableViewController {
 
     // MARK: Unlock and Restore Purchase
 
-    @IBOutlet var unlockCell: UITableViewCell!
-    @IBOutlet var unlockButton: UIButton!
-    @IBAction func unlockButtonAction(_: UIButton) {
-        if !RoutinesPlus.getPurchasedStatus() {
-            segueToRoutinesPlusViewController()
-        }
-    }
-
-    @IBOutlet var restorePurchaseCell: UITableViewCell!
-    @IBOutlet var restorePurchaseButton: UIButton!
-    @IBAction func restorePurchaseButtonAction(_: UIButton) {
-        restorePurchase()
-    }
+//    @IBOutlet var unlockCell: UITableViewCell!
+//    @IBOutlet var unlockButton: UIButton!
+//    @IBAction func unlockButtonAction(_: UIButton) {
+//        if !RoutinesPlus.getPurchasedStatus() {
+//            segueToRoutinesPlusViewController()
+//        }
+//    }
+//
+//    @IBOutlet var restorePurchaseCell: UITableViewCell!
+//    @IBOutlet var restorePurchaseButton: UIButton!
+//    @IBAction func restorePurchaseButtonAction(_: UIButton) {
+//        restorePurchase()
+//    }
 
     // MARK: - View management
 
@@ -140,7 +121,9 @@ class OptionsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setAppearance(forSegment: Options.getSelectedIndex())
+        if let selectedIndex = self.selectedIndex {
+            setAppearance(forSegment: selectedIndex)
+        }
         // Colors
 //        cellLabels.forEach { label in
 //            label.theme_textColor = GlobalPicker.cellTextColors
@@ -155,7 +138,7 @@ class OptionsTableViewController: UITableViewController {
 
 //        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         observeOptions()
-        observeRoutinesPlus()
+//        observeRoutinesPlus()
     }
 
 //    override func applicationFinishedRestoringState() {
@@ -210,35 +193,12 @@ class OptionsTableViewController: UITableViewController {
         case 3:
             switch indexPath.row {
             case 0:
-                printDebug("\(#function) - Case 3")
-                if cloudSyncSwitch.isEnabled {
-                    printDebug("\(#function) - cloudSyncSwitch.isEnabled")
-                    cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
-                    RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
-                    haptic.impactOccurred()
-//                    if cloudSyncSwitch.isOn {
-//                        notificationHandler.refreshAllNotifications()
-//                    }
-                } else {
-                    printDebug("\(#function) - Case 3 else, should show purchase options")
-                    segueToRoutinesPlusViewController()
-                }
+                printDebug("\(#function) - cloudSyncSwitch.isEnabled")
+                cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
+                haptic.impactOccurred()
             case 1:
-                segueToAutomaticDarkModeTableView()
-            case 2:
-                if !RoutinesPlus.getPurchasedStatus() {
-                    segueToRoutinesPlusViewController()
-                }
-            case 3:
-                if !RoutinesPlus.getPurchasedStatus() {
-                    segueToRoutinesPlusViewController()
-                } else {
-                    if upcomingTasksSwitch.isEnabled {
-                        upcomingTasksSwitch.setOn(!upcomingTasksSwitch.isOn, animated: true)
-                        RoutinesPlus.setUpcomingTasks(upcomingTasksSwitch.isOn)
-                        haptic.impactOccurred()
-                    }
-                }
+                upcomingTasksSwitch.setOn(!upcomingTasksSwitch.isOn, animated: true)
+                haptic.impactOccurred()
             default:
                 break
             }
@@ -253,12 +213,6 @@ class OptionsTableViewController: UITableViewController {
             return "Set when each time period should begin"
         case 1:
             return "Enable to receive notifications at the start of each period"
-        case 3:
-            if RoutinesPlus.getPurchasedStatus() {
-                return "Thanks for your support!"
-            } else {
-                return "Tap to unlock"
-            }
         default:
             return nil
         }
@@ -271,57 +225,57 @@ class OptionsTableViewController: UITableViewController {
         nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: animated)
 
         cloudSyncSwitch.setOn(RoutinesPlus.getCloudSync(), animated: animated)
-        cloudSyncSwitch.isEnabled = RoutinesPlus.getPurchasedStatus()
+//        cloudSyncSwitch.isEnabled = RoutinesPlus.getPurchasedStatus()
 
-        darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: animated)
-        darkModeSwtich.isEnabled = !Options.getAutomaticDarkModeStatus()
+//        darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: animated)
+//        darkModeSwtich.isEnabled = !Options.getAutomaticDarkModeStatus()
 
-        switch Options.getAutomaticDarkModeStatus() {
-        case true:
-            automaticDarkModeStatusLabel.text = "Enabled"
-//            automaticDarkModeStatusLabel.theme_textColor = GlobalPicker.textColor
-        case false:
-            automaticDarkModeStatusLabel.text = "Disabled"
-            automaticDarkModeStatusLabel.textColor = .lightGray
-        }
+//        switch Options.getAutomaticDarkModeStatus() {
+//        case true:
+//            automaticDarkModeStatusLabel.text = "Enabled"
+        ////            automaticDarkModeStatusLabel.theme_textColor = GlobalPicker.textColor
+//        case false:
+//            automaticDarkModeStatusLabel.text = "Disabled"
+//            automaticDarkModeStatusLabel.textColor = .lightGray
+//        }
 
 //        taskPrioritiesLabel.theme_textColor = GlobalPicker.cellTextColors
         upcomingTasksSwitch.setOn(RoutinesPlus.getShowUpcomingTasks(), animated: animated)
 
-        unlockButton.layer.masksToBounds = true
-        unlockButton.layer.cornerRadius = 12
+//        unlockButton.layer.masksToBounds = true
+//        unlockButton.layer.cornerRadius = 12
 
-        if RoutinesPlus.getPurchasedStatus() {
-            taskPrioritiesStatusLabel.text = "Unlocked"
+//        if RoutinesPlus.getPurchasedStatus() {
+//            taskPrioritiesStatusLabel.text = "Unlocked"
 //            taskPrioritiesStatusLabel.theme_textColor = GlobalPicker.textColor
-            taskPrioritiesCell.accessoryType = .none
+//            taskPrioritiesCell.accessoryType = .none
 
-            upcomingTasksSwitch.isEnabled = true
-            upcomingTasksCellStatusLabel.text = "Unlocked"
+//            upcomingTasksSwitch.isEnabled = true
+//            upcomingTasksCellStatusLabel.text = "Unlocked"
 //            upcomingTasksCellStatusLabel.theme_textColor = GlobalPicker.textColor
 
-            unlockButton.isEnabled = false
+//            unlockButton.isEnabled = false
 //            unlockButton.theme_backgroundColor = GlobalPicker.backgroundColor
 //            unlockButton.layer.theme_borderColor = GlobalPicker.shadowColor
-            unlockButton.layer.borderWidth = 2
-        } else {
-            taskPrioritiesStatusLabel.text = "Disabled"
-            taskPrioritiesStatusLabel.textColor = .lightGray
-            taskPrioritiesCell.accessoryType = .disclosureIndicator
-
-            upcomingTasksSwitch.isEnabled = false
-            upcomingTasksCellStatusLabel.text = "Disabled"
-            upcomingTasksCellStatusLabel.textColor = .lightGray
-
-            unlockButton.isEnabled = true
+//            unlockButton.layer.borderWidth = 2
+//        } else {
+//            taskPrioritiesStatusLabel.text = "Disabled"
+//            taskPrioritiesStatusLabel.textColor = .lightGray
+//            taskPrioritiesCell.accessoryType = .disclosureIndicator
+//
+//            upcomingTasksSwitch.isEnabled = false
+//            upcomingTasksCellStatusLabel.text = "Disabled"
+//            upcomingTasksCellStatusLabel.textColor = .lightGray
+//
+//            unlockButton.isEnabled = true
 //            unlockButton.theme_backgroundColor = GlobalPicker.barTextColor
-            unlockButton.layer.borderWidth = 0
-        }
+//            unlockButton.layer.borderWidth = 0
+//        }
 
-        unlockButton.setTitle("Unlock", for: .normal)
-        unlockButton.setTitle("Unlocked", for: .disabled)
+//        unlockButton.setTitle("Unlock", for: .normal)
+//        unlockButton.setTitle("Unlocked", for: .disabled)
 
-        unlockButton.setTitleColor(.white, for: .normal)
+//        unlockButton.setTitleColor(.white, for: .normal)
 //        unlockButton.theme_setTitleColor(GlobalPicker.barTextColor, forState: .disabled)
 
 //        restorePurchaseButton.theme_setTitleColor(GlobalPicker.cellTextColors, forState: .normal)
@@ -367,7 +321,7 @@ class OptionsTableViewController: UITableViewController {
     // MARK: - Options
 
     var optionsToken: NotificationToken?
-    var routinesPlusToken: NotificationToken?
+//    var routinesPlusToken: NotificationToken?
 
 //    var pleaseWaitAlert: SwiftMessagesAlertsController?
 //    @objc private func dismissWaitAlert() {
@@ -380,7 +334,7 @@ class OptionsTableViewController: UITableViewController {
     deinit {
         printDebug("\(#function) called from OptionsTableViewController. Options token invalidated")
         optionsToken?.invalidate()
-        routinesPlusToken?.invalidate()
+//        routinesPlusToken?.invalidate()
 //        pleaseWaitAlert = nil
     }
 
@@ -414,25 +368,25 @@ class OptionsTableViewController: UITableViewController {
         }
     }
 
-    func observeRoutinesPlus() {
-        let realm = try! Realm()
-        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
-        routinesPlusToken = routinesPlus?.observe { _ in
-            printDebug("Something in RoutinesPlus changed")
-            NotificationHandler().checkNotificationPermission()
-            self.refreshUI()
-        }
-    }
+//    func observeRoutinesPlus() {
+//        let realm = try! Realm()
+//        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
+//        routinesPlusToken = routinesPlus?.observe { _ in
+//            printDebug("Something in RoutinesPlus changed")
+//            NotificationHandler().checkNotificationPermission()
+//            self.refreshUI()
+//        }
+//    }
 
     // MARK: - IAP
 
-    func segueToAutomaticDarkModeTableView() {
-        if !RoutinesPlus.getPurchasedStatus() {
-            segueToRoutinesPlusViewController()
-        } else {
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let AutomaticDarkModeTableViewController = storyBoard.instantiateViewController(withIdentifier: "AutomaticDarkModeTableView") as! AutomaticDarkModeTableViewController
-            navigationController?.pushViewController(AutomaticDarkModeTableViewController, animated: true)
-        }
-    }
+//    func segueToAutomaticDarkModeTableView() {
+//        if !RoutinesPlus.getPurchasedStatus() {
+//            segueToRoutinesPlusViewController()
+//        } else {
+//            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//            let AutomaticDarkModeTableViewController = storyBoard.instantiateViewController(withIdentifier: "AutomaticDarkModeTableView") as! AutomaticDarkModeTableViewController
+//            navigationController?.pushViewController(AutomaticDarkModeTableViewController, animated: true)
+//        }
+//    }
 }

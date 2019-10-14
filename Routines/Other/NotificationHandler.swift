@@ -171,18 +171,8 @@ struct NotificationHandler {
 
     func checkNotificationPermission() {
         // Request permission to display alerts and play sounds
-        /* center.requestAuthorization(options: [.alert, .sound, .badge, .provisional, .providesAppNotificationSettings]) { (status, error) in
-            //
-         } */
-        if #available(iOS 12.0, *) {
-            center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { _, _ in
-                // Enable or disable features based on authorization.
-            }
-        } else {
-            // Fallback on earlier versions
-            center.requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in
-                // Enable or disable features based on authorization.
-            }
+        center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { _, _ in
+            // Enable or disable features based on authorization.
         }
     }
 

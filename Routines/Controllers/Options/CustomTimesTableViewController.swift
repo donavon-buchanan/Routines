@@ -39,24 +39,6 @@ class CustomTimesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setAppearance(forSegment: Options.getSelectedIndex())
-        if #available(iOS 13, *) {
-            // Do nothing
-        } else {
-            // Older versions
-            if Options.getDarkModeStatus() {
-                // If dark mode
-                datePickers.forEach { picker in
-                    picker.setValue(UIColor.white, forKeyPath: "textColor")
-                }
-                tableView.backgroundColor = .black
-            } else {
-                // If light mode
-                datePickers.forEach { picker in
-                    picker.setValue(UIColor.black, forKeyPath: "textColor")
-                }
-                tableView.backgroundColor = .white
-            }
-        }
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(displayResetAction))
     }
