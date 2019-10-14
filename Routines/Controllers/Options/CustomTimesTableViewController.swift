@@ -38,17 +38,25 @@ class CustomTimesTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        datePickers.forEach { picker in
-//            // We can't assign a color directly to the date picker
-//            // But we can assign it to text that doesn't exist and then fetch the color from that
-//            let text = UILabel()
-//            text.theme_textColor = GlobalPicker.cellTextColors
-//            // Get color
-//            let textColor = text.textColor
-//            // Assign color
-//            picker.setValue(textColor, forKeyPath: "textColor")
-//        }
-//        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+        setAppearance(forSegment: Options.getSelectedIndex())
+        if #available(iOS 13, *) {
+            // Do nothing
+        } else {
+            // Older versions
+            if Options.getDarkModeStatus() {
+                // If dark mode
+                datePickers.forEach { picker in
+                    picker.setValue(UIColor.white, forKeyPath: "textColor")
+                }
+                tableView.backgroundColor = .black
+            } else {
+                // If light mode
+                datePickers.forEach { picker in
+                    picker.setValue(UIColor.black, forKeyPath: "textColor")
+                }
+                tableView.backgroundColor = .white
+            }
+        }
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Reset", style: .plain, target: self, action: #selector(displayResetAction))
     }

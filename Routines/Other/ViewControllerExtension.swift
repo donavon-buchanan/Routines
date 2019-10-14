@@ -14,6 +14,16 @@ import UserNotifications
 extension UIViewController {
     // MARK: - Appearance
 
+    func setAppearance(forSegment segment: Int) {
+        // Swtiches
+        let switchAppearance = UISwitch.appearance()
+        switchAppearance.onTintColor = UIColor(segment: segment)
+
+        // Navigation
+        let navBarAppearance = UINavigationBar.appearance()
+        navBarAppearance.tintColor = UIColor(segment: Options.getSelectedIndex())
+    }
+
     func debug(file: String = #file, line: Int = #line, function: String = #function) -> String {
         "\(file):\(line) : \(function)"
     }

@@ -140,6 +140,7 @@ class OptionsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setAppearance(forSegment: Options.getSelectedIndex())
         // Colors
 //        cellLabels.forEach { label in
 //            label.theme_textColor = GlobalPicker.cellTextColors

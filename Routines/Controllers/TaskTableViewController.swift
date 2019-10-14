@@ -19,20 +19,20 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     @IBOutlet var linesBarButtonItem: UIBarButtonItem!
     @IBOutlet var editBarButtonItem: UIBarButtonItem!
 
-    var segmentColor: UIColor {
-        switch segment {
-        case 0:
-            return UIColor(red: 0.96, green: 0.46, blue: 0.27, alpha: 1.0)
-        case 1:
-            return UIColor(red: 0.15, green: 0.73, blue: 0.93, alpha: 1.0)
-        case 2:
-            return UIColor(red: 0.38, green: 0.64, blue: 0.53, alpha: 1.0)
-        case 3:
-            return UIColor(red: 0.39, green: 0.36, blue: 0.91, alpha: 1.0)
-        default:
-            return .clear
-        }
-    }
+//    var segmentColor: UIColor {
+//        switch segment {
+//        case 0:
+//            return UIColor(red: 0.96, green: 0.46, blue: 0.27, alpha: 1.0)
+//        case 1:
+//            return UIColor(red: 0.15, green: 0.73, blue: 0.93, alpha: 1.0)
+//        case 2:
+//            return UIColor(red: 0.38, green: 0.64, blue: 0.53, alpha: 1.0)
+//        case 3:
+//            return UIColor(red: 0.39, green: 0.36, blue: 0.91, alpha: 1.0)
+//        default:
+//            return .clear
+//        }
+//    }
 
 //    var shouldShowHiddenTasksMessage = false
 
@@ -299,22 +299,22 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         if #available(iOS 13.0, *) {
             let navigationBarAppearance = UINavigationBarAppearance()
-            navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: segmentColor]
-            navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: segmentColor]
+            navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
+            navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
             let buttonAppearance = UIBarButtonItemAppearance()
-            buttonAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: segmentColor]
-            self.navigationController?.navigationBar.tintColor = segmentColor
+            buttonAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
+            self.navigationController?.navigationBar.tintColor = UIColor(segment: self.segment!)
             navigationBarAppearance.buttonAppearance = buttonAppearance
             self.navigationController?.navigationBar.standardAppearance = navigationBarAppearance
             self.navigationController?.navigationBar.compactAppearance = navigationBarAppearance
-            self.tabBarController?.tabBar.tintColor = segmentColor
+            self.tabBarController?.tabBar.tintColor = UIColor(segment: self.segment!)
         } else {
             // Fallback on earlier versions
             let navigationBarAppearance = UINavigationBar.appearance()
-            navigationController?.navigationBar.tintColor = segmentColor
-            navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: segmentColor]
-            navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: segmentColor]
-            tabBarController?.tabBar.tintColor = segmentColor
+            navigationController?.navigationBar.tintColor = UIColor(segment: segment!)
+            navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
+            navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
+            tabBarController?.tabBar.tintColor = UIColor(segment: segment!)
         }
 
         debugPrint(#function + " end")
@@ -445,7 +445,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         }
 
         cell.repeatLabel?.text = repeatLabel
-        cell.repeatLabel?.textColor = segmentColor
+        cell.repeatLabel?.textColor = UIColor(segment: segment)
 
         cell.cellTitleLabel?.text = cellTitle
         cell.cellSubtitleLabel?.text = cellSubtitle
