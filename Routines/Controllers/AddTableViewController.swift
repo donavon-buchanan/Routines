@@ -220,7 +220,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
-        let itemId = coder.decodeObject(forKey: "itemId") as! String
+        guard let itemId = coder.decodeObject(forKey: "itemId") as! String? else { return }
         let realm = try! Realm()
         item = realm.object(ofType: Items.self, forPrimaryKey: itemId)
         setUpUI()

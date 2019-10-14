@@ -652,14 +652,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // print("Opening settings")
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsViewController") as! OptionsTableViewController
-        let rootVC = window?.rootViewController as! UITabBarController
-        // Set the selected index so you know what child will be on screen
-        let index = Options.getSelectedIndex()
-        rootVC.selectedIndex = index
-        printDebug(#function + " segment \(index)")
-        let navVC = rootVC.children[index] as! UINavigationController
-        navVC.pushViewController(optionsViewController, animated: true)
-        // TableViewController.setAppearance(segment: index)
+//        let rootVC = window?.rootViewController as! UITabBarController
+//        // Set the selected index so you know what child will be on screen
+//        let index = Options.getSelectedIndex()
+//        rootVC.selectedIndex = index
+//        printDebug(#function + " segment \(index)")
+//        let navVC = rootVC.children[index] as? UINavigationController
+//        print("navVC Description: " + navVC.debugDescription)
+//        print("keyWindow Description: " + UIApplication.shared.keyWindow.debugDescription.debugDescription)
+//        let taskVC = UIApplication.shared.keyWindow?.rootViewController?.children[0].children[0] as! TaskTableViewController
+//        optionsViewController.presentingViewController = taskVC
+//        taskVC.present(optionsViewController, animated: true, completion: nil)
+//        TableViewController.setAppearance(segment: index)
+        let navigationController = UIApplication.shared.keyWindow?.rootViewController?.children[0].children[0] as! TaskTableViewController
+        navigationController.present(optionsViewController, animated: true, completion: nil)
     }
 
     fileprivate func goToAdd() {
