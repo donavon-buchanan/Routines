@@ -43,7 +43,7 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var cloudSyncSwitch: UISwitch!
     @IBAction func cloudSyncSwitchToggled(_ sender: UISwitch) {
         RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
-        printDebug("Cloud sync switch: \(sender.isOn)")
+        debugPrint("Cloud sync switch: \(sender.isOn)")
     }
 
     @IBOutlet var upcomingTasksCellLabel: UILabel!
@@ -51,6 +51,7 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var upcomingTasksSwitch: UISwitch!
     @IBAction func upcomingTasksSwitchToggled(_ sender: UISwitch) {
         RoutinesPlus.setUpcomingTasks(sender.isOn)
+        debugPrint("Upcoming tasks switch: \(sender.isOn)")
     }
 
     // MARK: Automatic Dark Mode
@@ -166,39 +167,43 @@ class OptionsTableViewController: UITableViewController {
                 let isOn = !afternoonSwitch.isOn
                 afternoonSwitch.setOn(isOn, animated: true)
                 haptic.impactOccurred()
+                // The next line should not be necessary. iOS 13 bug/regression
+                Options.setSegmentNotification(segment: 1, bool: afternoonSwitch.isOn)
             case 2:
                 // print("Tapped Evening Cell")
                 let isOn = !eveningSwitch.isOn
                 eveningSwitch.setOn(isOn, animated: true)
                 haptic.impactOccurred()
+                // The next line should not be necessary. iOS 13 bug/regression
+                Options.setSegmentNotification(segment: 2, bool: eveningSwitch.isOn)
             case 3:
                 // print("Tapped Night Cell")
                 let isOn = !nightSwitch.isOn
                 nightSwitch.setOn(isOn, animated: true)
                 haptic.impactOccurred()
+                // The next line should not be necessary. iOS 13 bug/regression
+                Options.setSegmentNotification(segment: 3, bool: nightSwitch.isOn)
             default:
                 // print("Tapped Morning Cell")
                 let isOn = !morningSwitch.isOn
                 morningSwitch.setOn(isOn, animated: true)
                 haptic.impactOccurred()
+                // The next line should not be necessary. iOS 13 bug/regression
+                Options.setSegmentNotification(segment: 0, bool: morningSwitch.isOn)
             }
         case 2:
-            if darkModeSwtich.isEnabled {
-                darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
-                Options.setDarkMode(darkModeSwtich.isOn)
-                // Shouldn't be necessary with the observation token
-                // TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
-                haptic.impactOccurred()
-            }
-        case 3:
             switch indexPath.row {
             case 0:
                 printDebug("\(#function) - cloudSyncSwitch.isEnabled")
                 cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
                 haptic.impactOccurred()
+                // The next line should not be necessary. iOS 13 bug/regression
+                RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
             case 1:
                 upcomingTasksSwitch.setOn(!upcomingTasksSwitch.isOn, animated: true)
                 haptic.impactOccurred()
+                // The next line should not be necessary. iOS 13 bug/regression
+                RoutinesPlus.setUpcomingTasks(upcomingTasksSwitch.isOn)
             default:
                 break
             }

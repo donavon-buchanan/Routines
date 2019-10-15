@@ -953,7 +953,7 @@
                                                         <segment title="" image="moon.stars" catalog="system"/>
                                                     </segments>
                                                     <connections>
-                                                        <action selector="segmentSelected:" destination="A8c-r3-V1W" eventType="valueChanged" id="v8z-OZ-PoH"/>
+                                                        <action selector="segmentValueChanged:" destination="A8c-r3-V1W" eventType="valueChanged" id="232-Hw-YiP"/>
                                                     </connections>
                                                 </segmentedControl>
                                             </subviews>

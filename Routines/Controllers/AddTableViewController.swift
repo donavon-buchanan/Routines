@@ -14,6 +14,21 @@ import UserNotifications
 class AddTableViewController: UITableViewController, UITextViewDelegate, UITextFieldDelegate {
     // MARK: - Properties
 
+    func segmentColor(segment: Int) -> UIColor {
+        switch segment {
+        case 0:
+            return UIColor(red: 0.96, green: 0.46, blue: 0.27, alpha: 1.0)
+        case 1:
+            return UIColor(red: 0.15, green: 0.73, blue: 0.93, alpha: 1.0)
+        case 2:
+            return UIColor(red: 0.38, green: 0.64, blue: 0.53, alpha: 1.0)
+        case 3:
+            return UIColor(red: 0.39, green: 0.36, blue: 0.91, alpha: 1.0)
+        default:
+            return UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        }
+    }
+
     @IBOutlet var priorityNumberLabel: UILabel!
 
     @IBOutlet var prioritySlider: UISlider!
@@ -86,8 +101,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     @IBOutlet var repeatDailyLabel: UILabel!
 
-    @IBAction func segmentSelected(_: UISegmentedControl) {
-//        TaskTableViewController.setAppearance(forSegment: sender.selectedSegmentIndex)
+//    @IBAction func segmentSelected(sender: UISegmentedControl) {
+//        sender.selectedSegmentTintColor = segmentColor(segment: sender.selectedSegmentIndex)
+//    }
+
+    @IBAction func segmentValueChanged(_ sender: UISegmentedControl) {
+        sender.selectedSegmentTintColor = UIColor(segment: sender.selectedSegmentIndex)
     }
 
     var item: Items?
@@ -150,6 +169,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             print("Appearance condition 1")
             setAppearance(forSegment: selectedIndex)
             print("Setting appearance for index of \(selectedIndex)")
+            segmentSelection.selectedSegmentTintColor = UIColor(segment: selectedIndex)
         } else if let currentItem = item {
             print("Appearance condition 2")
             print("Setting appearance for index of \(currentItem.segment)")
@@ -158,6 +178,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 //            setAppearance(forSegment: currentItem.segment)
             navigationController?.navigationBar.tintColor = UIColor(segment: currentItem.segment)
             UISwitch.appearance().onTintColor = UIColor(segment: currentItem.segment)
+            segmentSelection.selectedSegmentTintColor = UIColor(segment: currentItem.segment)
         }
 
         // Set right bar item as "Save"
@@ -188,7 +209,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         notesTextView.layer.cornerRadius = 6
         notesTextView.layer.masksToBounds = true
         notesTextView.layer.borderWidth = 0.1
-        notesTextView.layer.borderColor = UIColor.darkGray.cgColor
+        notesTextView.layer.borderColor = UIColor.secondarySystemBackground.cgColor
+        notesTextView.layer.backgroundColor = UIColor.tertiarySystemBackground.cgColor
 
         // Add tap gesture for editing notes
         let textFieldTap = UITapGestureRecognizer(target: self, action: #selector(setNotesEditable))
