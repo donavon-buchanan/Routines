@@ -205,12 +205,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         segmentSelection.addTarget(self, action: #selector(textFieldDidChange), for: .valueChanged)
         notesTextView.delegate = self
         taskTextField.delegate = self
+        taskTextField.backgroundColor = UIColor.tertiarySystemBackground
 
         notesTextView.layer.cornerRadius = 6
         notesTextView.layer.masksToBounds = true
         notesTextView.layer.borderWidth = 0.1
-        notesTextView.layer.borderColor = UIColor.secondarySystemBackground.cgColor
-        notesTextView.layer.backgroundColor = UIColor.tertiarySystemBackground.cgColor
+        notesTextView.backgroundColor = UIColor.tertiarySystemBackground
 
         // Add tap gesture for editing notes
         let textFieldTap = UITapGestureRecognizer(target: self, action: #selector(setNotesEditable))

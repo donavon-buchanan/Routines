@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lsp-WH-zrr">
-    <device id="retina5_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lsp-WH-zrr">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,7 +12,7 @@
             <objects>
                 <viewController id="VDl-Zp-rGc" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kI1-rZ-mWf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="672"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="eIY-wE-vhf"/>
@@ -23,7 +20,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="xX2-vo-vJE">
                         <leftBarButtonItems>
-                            <barButtonItem title="Item" image="gear-white" id="Klk-SI-Yvz">
+                            <barButtonItem title="Item" image="gear" catalog="system" id="Klk-SI-Yvz">
                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </barButtonItem>
                             <barButtonItem systemItem="edit" id="dBH-PH-qu6">
@@ -53,7 +50,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="selectedImageTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="8jr-ix-HvO" kind="relationship" relationship="viewControllers" id="TOk-vp-yZ4"/>
@@ -64,13 +61,13 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cgt-dp-99R" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-110" y="231"/>
+            <point key="canvasLocation" x="-492" y="51"/>
         </scene>
         <!--Night-->
         <scene sceneID="12Y-77-Cjw">
             <objects>
                 <navigationController title="Night" automaticallyAdjustsScrollViewInsets="NO" id="HqD-Iz-Ymw" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="night" selectedImage="night-selected" id="Gwe-Fe-vLH"/>
+                    <tabBarItem key="tabBarItem" title="" image="night" selectedImage="moon.stars" catalog="system" id="Gwe-Fe-vLH"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="hsq-sV-5q5">
@@ -90,7 +87,7 @@
         <scene sceneID="Sds-Se-YAZ">
             <objects>
                 <navigationController title="Afternoon" automaticallyAdjustsScrollViewInsets="NO" id="Azq-nL-rqx" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="afternoon" selectedImage="afternoon-selected" id="Oqh-ny-HNO"/>
+                    <tabBarItem key="tabBarItem" title="" image="afternoon" selectedImage="sun.max" catalog="system" id="Oqh-ny-HNO"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="oLr-0q-Cib">
@@ -110,7 +107,7 @@
         <scene sceneID="U3a-2a-0MP">
             <objects>
                 <navigationController title="Evening" automaticallyAdjustsScrollViewInsets="NO" id="QWd-BU-7Lm" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="evening" selectedImage="evening-selected" id="0gz-jW-uVG"/>
+                    <tabBarItem key="tabBarItem" title="" image="evening" selectedImage="sunset" catalog="system" id="0gz-jW-uVG"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="gg9-ZD-ATP">
@@ -130,7 +127,7 @@
         <scene sceneID="QrM-QX-M99">
             <objects>
                 <navigationController id="8jr-ix-HvO" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="morning" selectedImage="morning-selected" id="4QB-5x-kNF"/>
+                    <tabBarItem key="tabBarItem" title="" image="morning" selectedImage="sunrise" catalog="system" id="4QB-5x-kNF"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" shadowImage="clear-pixel" largeTitles="YES" id="BP9-ZD-4WK">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -146,18 +143,18 @@
     </scenes>
     <resources>
         <image name="afternoon" width="23" height="23"/>
-        <image name="afternoon-selected" width="23" height="23"/>
         <image name="clear-pixel" width="1" height="1"/>
         <image name="evening" width="23" height="23"/>
-        <image name="evening-selected" width="23" height="23"/>
-        <image name="gear-white" width="26" height="26"/>
+        <image name="gear" catalog="system" width="64" height="58"/>
         <image name="lines-button" width="26" height="26"/>
+        <image name="moon.stars" catalog="system" width="64" height="62"/>
         <image name="morning" width="23" height="23"/>
-        <image name="morning-selected" width="23" height="23"/>
         <image name="night" width="23" height="23"/>
-        <image name="night-selected" width="23" height="23"/>
+        <image name="sun.max" catalog="system" width="64" height="62"/>
+        <image name="sunrise" catalog="system" width="64" height="48"/>
+        <image name="sunset" catalog="system" width="64" height="48"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="zxk-pW-3in"/>
+        <segue reference="mP7-lL-god"/>
     </inferredMetricsTieBreakers>
 </document>

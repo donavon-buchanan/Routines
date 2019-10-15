@@ -20,15 +20,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     let notificationHandler = NotificationHandler()
 
-    static let automaticDarkModeTimer = AutomaticDarkModeTimer()
+//    static let automaticDarkModeTimer = AutomaticDarkModeTimer()
 
-    static func setAutomaticDarkModeTimer() {
-        if Options.getAutomaticDarkModeStatus() {
-            automaticDarkModeTimer.startTimer()
-        } else {
-            automaticDarkModeTimer.stopTimer()
-        }
-    }
+//    static func setAutomaticDarkModeTimer() {
+//        if Options.getAutomaticDarkModeStatus() {
+//            automaticDarkModeTimer.startTimer()
+//        } else {
+//            automaticDarkModeTimer.stopTimer()
+//        }
+//    }
 
     var shortcutItemToProcess: UIApplicationShortcutItem?
 
@@ -123,6 +123,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             loadDefaultData()
         #endif
 
+        var shortcutItems: [UIApplicationShortcutItem] = []
+        let settingsShortcut = UIMutableApplicationShortcutItem(type: "SettingsAction", localizedTitle: "Settings")
+        settingsShortcut.icon = UIApplicationShortcutIcon(systemImageName: "gear")
+        shortcutItems.append(settingsShortcut)
+        UIApplication.shared.shortcutItems = shortcutItems
+
         printDebug("\(#function) - End")
         return true
     }
@@ -168,9 +174,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         printDebug("\(#function) - Start")
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        AppDelegate.automaticDarkModeTimer.stopTimer()
+//        AppDelegate.automaticDarkModeTimer.stopTimer()
 
 //        AppDelegate.syncEngine?.pushAll()
+
+        func applicationWillResignActive(_: UIApplication) {
+            //
+        }
 
         printDebug("\(#function) - End")
     }
