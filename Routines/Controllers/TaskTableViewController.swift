@@ -433,6 +433,37 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         true
     }
 
+    var shouldAllowRearranging: Bool = true
+
+    // Override to support conditional rearranging of the table view.
+    override func tableView(_: UITableView, canMoveRowAt _: IndexPath) -> Bool {
+        // Return false if you do not want the item to be re-orderable.
+        shouldAllowRearranging
+    }
+
+    // Override to support rearranging the table view.
+    override func tableView(_: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+        let realm = try! Realm()
+        realm.beginWrite()
+        // The order will never save because the list itself needs to be contained within a Realm object
+        let items = List<Items>()
+        items.append(objectsIn: self.items!)
+        items.move(from: fromIndexPath.row, to: to.row)
+        if let notificationToken = notificationToken {
+            do {
+                try realm.commitWrite(withoutNotifying: [notificationToken])
+            } catch {
+                realm.cancelWrite()
+            }
+        } else {
+            do {
+                try realm.commitWrite()
+            } catch {
+                realm.cancelWrite()
+            }
+        }
+    }
+
     override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let item = items?[indexPath.row] else { return nil }
         let itemSegment = item.segment

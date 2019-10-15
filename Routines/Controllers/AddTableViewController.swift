@@ -179,6 +179,11 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             navigationController?.navigationBar.tintColor = UIColor(segment: currentItem.segment)
             UISwitch.appearance().onTintColor = UIColor(segment: currentItem.segment)
             segmentSelection.selectedSegmentTintColor = UIColor(segment: currentItem.segment)
+        } else {
+            navigationController?.navigationBar.tintColor = UIColor(segment: 0)
+            UISwitch.appearance().onTintColor = UIColor(segment: 0)
+            segmentSelection.selectedSegmentIndex = 0
+            segmentSelection.selectedSegmentTintColor = UIColor(segment: 0)
         }
 
         // Set right bar item as "Save"
@@ -298,7 +303,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 3 {
+        // This is a bad way to do this
+        if indexPath.section == 2 {
             let haptic = UIImpactFeedbackGenerator(style: .light)
             haptic.impactOccurred()
             repeatDailySwitch.setOn(!repeatDailySwitch.isOn, animated: true)

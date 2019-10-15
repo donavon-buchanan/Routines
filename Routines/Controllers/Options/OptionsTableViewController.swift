@@ -120,11 +120,19 @@ class OptionsTableViewController: UITableViewController {
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
 
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        debugPrint("Segue")
+//        if let taskView = segue.destination as? TaskTableViewController {
+//            // KVO, all the built in lifecycle functions, and this completely fail
+//            debugPrint("Reloading table after unloading options view")
+//            taskView.tableView.reloadData()
+//        }
+//    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let selectedIndex = self.selectedIndex {
-            setAppearance(forSegment: selectedIndex)
-        }
+        UISwitch.appearance().onTintColor = UIColor(segment: selectedIndex ?? 0)
+        navigationController?.navigationBar.tintColor = UIColor(segment: selectedIndex ?? 0)
         // Colors
 //        cellLabels.forEach { label in
 //            label.theme_textColor = GlobalPicker.cellTextColors
