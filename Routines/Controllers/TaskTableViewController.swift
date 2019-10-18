@@ -768,23 +768,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         // Sort by segment to put in order of the day
         DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
-//                let realm = try! Realm()
-                let morningList = TaskCategory.returnTaskCategory(0).taskList
-                let afternoonList = TaskCategory.returnTaskCategory(1).taskList
-                let eveningList = TaskCategory.returnTaskCategory(2).taskList
-                let nightList = TaskCategory.returnTaskCategory(3).taskList
-//                if RoutinesPlus.getShowUpcomingTasks() {
-//                    self.items = taskCategory.taskList//.filter("isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true).sorted(byKeyPath: "completeUntil", ascending: true)
-//                } else {
-//                    self.items = taskCategory.taskList//.filter("isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
-//                }
-                var fullList = [Task]()
-                fullList.append(contentsOf: morningList)
-                fullList.append(contentsOf: afternoonList)
-                fullList.append(contentsOf: eveningList)
-                fullList.append(contentsOf: nightList)
-                self.items = List<Task>()
-                self.items?.append(objectsIn: fullList)
+                items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
             }
         }
         // For now it has to be like this

@@ -1,11 +1,11 @@
 PODS:
-  - IceCream (1.11.0):
+  - IceCream (1.12.1):
     - RealmSwift
-  - Realm (3.19.0):
-    - Realm/Headers (= 3.19.0)
-  - Realm/Headers (3.19.0)
-  - RealmSwift (3.19.0):
-    - Realm (= 3.19.0)
+  - Realm (3.19.1):
+    - Realm/Headers (= 3.19.1)
+  - Realm/Headers (3.19.1)
+  - RealmSwift (3.19.1):
+    - Realm (= 3.19.1)
   - SwiftMessages (7.0.1):
     - SwiftMessages/App (= 7.0.1)
   - SwiftMessages/App (7.0.1)
@@ -15,17 +15,16 @@ DEPENDENCIES:
   - SwiftMessages
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - IceCream
   trunk:
+    - IceCream
     - Realm
     - RealmSwift
     - SwiftMessages
 
 SPEC CHECKSUMS:
-  IceCream: 0f6c48ab61c49ae41dc9e323139bfeb3674bfbed
-  Realm: 995d585bcf699aaff226715886c849a29dd3d07f
-  RealmSwift: 35f284a537989f2187b413e5917091948cb87a3f
+  IceCream: b1b9c2d696d18f424039c118fce07bb8e08a15b3
+  Realm: fb377747e694c7deb62d402400454134fe321bee
+  RealmSwift: 1302b0ab60f3105a2b214a735eeb0938607cf16b
   SwiftMessages: b577dc7043be8b299857ab35bb663dbff6483bd0
 
 PODFILE CHECKSUM: 5aa21ef0140d885503861d8519df2d74f02064f9

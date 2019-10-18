@@ -403,8 +403,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F8B831C62155CBB100DAF60E /* Build configuration list for PBXNativeTarget "Routines" */;
 			buildPhases = (
-				F888607E2182757300FDF808 /* Increment Build */,
 				0B781C9890AB826E3669DCA7 /* [CP] Check Pods Manifest.lock */,
+				F888607E2182757300FDF808 /* Increment Build */,
 				F8B831B02155CBB000DAF60E /* Sources */,
 				F8B831B12155CBB000DAF60E /* Frameworks */,
 				F8B831B22155CBB000DAF60E /* Resources */,
@@ -417,8 +417,6 @@
 			dependencies = (
 			);
 			name = Routines;
-			packageProductDependencies = (
-			);
 			productName = Routines;
 			productReference = F8B831B42155CBB000DAF60E /* Routines.app */;
 			productType = "com.apple.product-type.application";
@@ -473,8 +471,6 @@
 				Base,
 			);
 			mainGroup = F8B831AB2155CBB000DAF60E;
-			packageReferences = (
-			);
 			productRefGroup = F8B831B52155CBB000DAF60E /* Products */;
 			projectDirPath = "";
 			projectReferences = (

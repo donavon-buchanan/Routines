@@ -437,21 +437,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
 
                 if oldSchemaVersion >= 21, oldSchemaVersion <= 25 {
+                    //First, create the new category objects
+                    let morningCategory = migration.create("TaskCategory", value: TaskCategory(category: 0))
+                    let afternoonCategory = migration.create("TaskCategory", value: TaskCategory(category: 1))
+                    let eveningCategory = migration.create("TaskCategory", value: TaskCategory(category: 2))
+                    let nightCategory = migration.create("TaskCategory", value: TaskCategory(category: 3))
+                    let allCategory = migration.create("TaskCategory", value: TaskCategory(category: 4))
                     
-                    migration.create("TaskCategory", value: TaskCategory(category: 0))
-                    migration.create("TaskCategory", value: TaskCategory(category: 1))
-                    migration.create("TaskCategory", value: TaskCategory(category: 2))
-                    migration.create("TaskCategory", value: TaskCategory(category: 3))
-                    
-                    migration.enumerateObjects(ofType: RoutinesPlus.className()) { oldObject, _ in
+                    migration.enumerateObjects(ofType: RoutinesPlus.className()) { _, _ in
                         //auto migration
                     }
                     migration.enumerateObjects(ofType: Options.className()) { (_, _) in
                         // auto migration
                     }
-                    migration.enumerateObjects(ofType: "Items") { oldObject, _ in
-                        let newTask = Task(title: oldObject!["title"] as! String, segment: oldObject!["segment"] as! Int, repeats:  oldObject!["repeats"] as! Bool, notes:  oldObject!["notes"] as? String)
-                        migration.create("Task", value: newTask)
+                    migration.enumerateObjects(ofType: "Items") { oldObject, newObject in
+                        //Create a new task from the old object
+                        let newTask = migration.create(Task.className(), value: oldObject!)
+                        
+                        /*  Based on the segment of that task, add it to the appropriate
+                            category taskList from the categories above
+                        */
+                        switch (newTask["segment"] as! Int) {
+                        case 1:
+                            afternoonCategory.dynamicList("taskList").append(newTask)
+                        case 2:
+                            eveningCategory.dynamicList("taskList").append(newTask)
+                        case 3:
+                            nightCategory.dynamicList("taskList").append(newTask)
+                        default:
+                            morningCategory.dynamicList("taskList").append(newTask)
+                        }
+                        //Finally add each new task to the All category taskList
+                        allCategory.dynamicList("taskList").append(newTask)
                     }
                 }
                 

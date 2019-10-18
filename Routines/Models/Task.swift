@@ -33,6 +33,7 @@ import RealmSwift
     dynamic var isDeleted: Bool = false
 
     required convenience init(title: String, segment: Int, repeats: Bool, notes: String?) {
+        debugPrint("Running init on Task")
         self.init()
         self.title = title
         self.segment = segment
@@ -220,6 +221,7 @@ import RealmSwift
                     try realm.write {
                         self.isDeleted = true
                         removeTaskFromCategoryList(segment: self.segment)
+                        removeTaskFromCategoryList(segment: CategorySelections.All.rawValue)
                     }
                 } catch {
                     fatalError("Error with softDelete: \(error)")
