@@ -142,7 +142,7 @@ import RealmSwift
             softDelete()
             notificationHanlder.removeNotifications(withIdentifiers: [self.uuidString])
         } else {
-            printDebug("marking completed until: \(Date().startOfNextDay)")
+            debugPrint("marking completed until: \(Date().startOfNextDay)")
             DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
@@ -165,7 +165,7 @@ import RealmSwift
     }
 
     static func batchComplete(itemArray: [Task]) {
-        printDebug(#function)
+        debugPrint(#function)
         var itemsToComplete: [Task] = []
         var itemsToSoftDelete: [Task] = []
 
@@ -217,7 +217,7 @@ import RealmSwift
 
     // Sync soft delete
     func softDelete() {
-        printDebug("soft deleting item")
+        debugPrint("soft deleting item")
         notificationHanlder.removeNotifications(withIdentifiers: [self.uuidString])
         DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -237,7 +237,7 @@ import RealmSwift
     }
 
     static func batchSoftDelete(itemArray: [Task]) {
-        printDebug(#function)
+        debugPrint(#function)
         let notificationHandler = NotificationHandler()
 
         notificationHandler.removeNotifications(withIdentifiers: (itemArray.map { $0.uuidString }))
@@ -275,9 +275,9 @@ import RealmSwift
 //                    // TODO: Maybe should match this against "originalSegment"?
 //                    let items = realm.objects(Task.self).filter("segment >= %@ AND isDeleted = %@ AND completeUntil <= %@", itemSegment, false, item.completeUntil).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
 //                    guard let currentItemIndex = items.index(of: item) else { return }
-//                    printDebug("Item title: \(item.title!) at index: \(currentItemIndex)")
+//                    debugPrint("Item title: \(item.title!) at index: \(currentItemIndex)")
 //                    badgeCount = currentItemIndex + 1
-//                    printDebug("setBadgeNumber to \(badgeCount) for \(item.title!)")
+//                    debugPrint("setBadgeNumber to \(badgeCount) for \(item.title!)")
 //                }
 //            }
 //        }
@@ -308,7 +308,7 @@ import RealmSwift
 //    }
 
 //    func removeNotification() {
-//        printDebug("Removing notification for id: \(uuidString)")
+//        debugPrint("Removing notification for id: \(uuidString)")
 //        let uuidStrings: [String] = ["\(uuidString)0", "\(uuidString)1", "\(uuidString)2", "\(uuidString)3"]
 //
 //        let center = UNUserNotificationCenter.current()
@@ -334,13 +334,13 @@ import RealmSwift
                         self.segment = snoozeTo()
                     }
                 } catch {
-                    printDebug("failed to snooze item")
+                    debugPrint("failed to snooze item")
                 }
             }
 
             notificationHanlder.createNewNotification(forItem: self)
         }
-        printDebug("Snoozing to \(segment). Original segment was \(originalSegment)")
+        debugPrint("Snoozing to \(segment). Original segment was \(originalSegment)")
     }
 
     fileprivate func snoozeTo() -> Int {
@@ -369,7 +369,7 @@ import RealmSwift
                         }
                     }
                 } catch {
-                    printDebug("\(#function): \(error)")
+                    debugPrint("\(#function): \(error)")
                 }
             }
         }
@@ -441,9 +441,9 @@ import RealmSwift
 //        let notificationCenter = UNUserNotificationCenter.current()
 //        notificationCenter.add(request) { error in
 //            if error != nil {
-//                printDebug("Failed to create notification with error: \(String(describing: error))")
+//                debugPrint("Failed to create notification with error: \(String(describing: error))")
 //            } else {
-//                printDebug("Notification created successfully")
+//                debugPrint("Notification created successfully")
 //            }
 //        }
 //    }
@@ -477,7 +477,7 @@ import RealmSwift
                         self.repeats = bool
                     }
                 } catch {
-                    printDebug("failed to update daily repeat bool")
+                    debugPrint("failed to update daily repeat bool")
                 }
             }
         }
@@ -491,7 +491,7 @@ import RealmSwift
 //
 //        // The actual day is handled in addNewNotification()
 //        // The name of this func is now a bit misleading
-//        printDebug("\(#function) - \(segmentTime.date!)")
+//        debugPrint("\(#function) - \(segmentTime.date!)")
 //        return segmentTime.date!
 //    }
 

@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     // TODO: This should be used way less. Make notification management on individual tasks better!
 //    static func refreshNotifications(function: String = #function) {
-//        printDebug(#function + "Called by \(function)")
+//        debugPrint(#function + "Called by \(function)")
 //
 //        let notificationHandler = NotificationHandler()
 //        notificationHandler.removeOrphanedNotifications()
@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    }
 
     func application(_: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
         let center = UNUserNotificationCenter.current()
         center.delegate = self
 
@@ -81,12 +81,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 //        Options.automaticDarkModeCheck()
 
-        printDebug("\(#function) - End")
+        debugPrint("\(#function) - End")
         return true
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
 
         // Override point for customization after application launch.
 
@@ -129,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         shortcutItems.append(settingsShortcut)
         UIApplication.shared.shortcutItems = shortcutItems
 
-        printDebug("\(#function) - End")
+        debugPrint("\(#function) - End")
         return true
     }
 
@@ -139,7 +139,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 //        AppDelegate.syncEngine?.pull(completionHandler: { error in
 //            if let error = error {
-//                printDebug("Error with sync pull: \(error)")
+//                debugPrint("Error with sync pull: \(error)")
 //                completionHandler(.failed)
 //            } else {
 //                completionHandler(.newData)
@@ -160,18 +160,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 //        AppDelegate.syncEngine?.pull(completionHandler: { error in
 //            if let error = error {
-//                printDebug("Error with sync pull: \(error)")
+//                debugPrint("Error with sync pull: \(error)")
 //                completionHandler(.failed)
 //            } else {
 //                completionHandler(.newData)
 //            }
 //        })
 
-        printDebug("Received push notification")
+        debugPrint("Received push notification")
     }
 
     func applicationWillResignActive(_: UIApplication) {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
 //        AppDelegate.automaticDarkModeTimer.stopTimer()
@@ -182,11 +182,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             //
         }
 
-        printDebug("\(#function) - End")
+        debugPrint("\(#function) - End")
     }
 
     func applicationDidEnterBackground(_: UIApplication) {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 //        AppDelegate.syncEngine?.pushAll()
@@ -195,11 +195,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         observeOptions()
         notificationHandler.removeOrphanedNotifications()
 
-        printDebug("\(#function) - End")
+        debugPrint("\(#function) - End")
     }
 
     static func removeOldNotifications(function: String = #function) {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
         debugPrint("#funciton was Called from: \(function)")
         let center = UNUserNotificationCenter.current()
         center.removeAllDeliveredNotifications()
@@ -209,21 +209,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 UIApplication.shared.applicationIconBadgeNumber = 0
             }
         }
-        printDebug("\(#function) - End")
+        debugPrint("\(#function) - End")
     }
 
     func applicationWillEnterForeground(_: UIApplication) {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
 
         // Sync with iCloud
         observeItems()
         observeOptions()
 
-        printDebug("\(#function) - End")
+        debugPrint("\(#function) - End")
     }
 
     func applicationDidBecomeActive(_: UIApplication) {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         AppDelegate.setSync()
 
@@ -238,11 +238,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
 //        AppDelegate.setAutomaticDarkModeTimer()
-        printDebug("\(#function) - End")
+        debugPrint("\(#function) - End")
     }
 
 //    static func removeOrphanedNotifications() {
-//        printDebug("\(#function) - Start")
+//        debugPrint("\(#function) - Start")
 //        let center = UNUserNotificationCenter.current()
 //        var orphanNotifications: [String] = []
 //        center.getPendingNotificationRequests(completionHandler: { pendingNotifications in
@@ -262,14 +262,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //            }
 //        })
 //        center.removePendingNotificationRequests(withIdentifiers: orphanNotifications)
-//        printDebug("\(#function) - End")
+//        debugPrint("\(#function) - End")
 //    }
 
     func applicationWillTerminate(_: UIApplication) {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         notificationHandler.removeOrphanedNotifications()
-        printDebug("\(#function) - End")
+        debugPrint("\(#function) - End")
     }
 
     func application(_: UIApplication, shouldSaveApplicationState _: NSCoder) -> Bool {
@@ -309,9 +309,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             autoreleasepool {
                 let realm = try! Realm()
                 if realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil {
-                    printDebug("Options exist. App should continue")
+                    debugPrint("Options exist. App should continue")
                 } else {
-                    printDebug("Options DO NOT exist. Creating")
+                    debugPrint("Options DO NOT exist. Creating")
                     let newOptions = Options()
                     newOptions.optionsKey = Options.primaryKey()
                     do {
@@ -331,9 +331,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             autoreleasepool {
                 let realm = try! Realm()
                 if realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey()) != nil {
-                    printDebug("RoutinesPlus exist. App should continue")
+                    debugPrint("RoutinesPlus exist. App should continue")
                 } else {
-                    printDebug("RoutinesPlus DOES NOT exist. Creating")
+                    debugPrint("RoutinesPlus DOES NOT exist. Creating")
                     let newRoutinesPlus = RoutinesPlus()
                     newRoutinesPlus.routinesPlusKey = RoutinesPlus.primaryKey()
                     do {
@@ -357,7 +357,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
             migrationBlock: { migration, oldSchemaVersion in
-                printDebug("oldSchemaVersion: \(oldSchemaVersion)")
+                debugPrint("oldSchemaVersion: \(oldSchemaVersion)")
                 if oldSchemaVersion < 9 {
                     migration.enumerateObjects(ofType: Options.className()) { oldObject, newObject in
                         let morningStartTime = oldObject!["morningStartTime"] as! Date
@@ -526,21 +526,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     static func setSync() {
-        printDebug(#function)
+        debugPrint(#function)
         if RoutinesPlus.getCloudSync() {
             // Setting this each time was causing the list of items to trigger a change in observation tokens
             // Only needs to be set if it isn't already
             guard AppDelegate.syncEngine == nil else { return }
-            printDebug("Enabling cloud syncEngine")
+            debugPrint("Enabling cloud syncEngine")
 
             AppDelegate.syncEngine = SyncEngine(objects: [
-                SyncObject<Task>(),
+//                SyncObject<Task>(),
                 SyncObject<Options>(),
                 SyncObject<TaskCategory>(),
                 SyncObject<RoutinesPlus>(),
             ], databaseScope: .private)
         } else {
-            printDebug("Disabling cloud syncEngine")
+            debugPrint("Disabling cloud syncEngine")
             AppDelegate.syncEngine = nil
         }
     }
@@ -554,7 +554,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     // TODO: This creates some redudancies with notification creation and deletion as handled by the Items class.
     func observeItems(function: String = #function) {
-        printDebug(#function + "Called by \(function)")
+        debugPrint(#function + "Called by \(function)")
         // Observe Results Notifications
         guard itemsToken == nil else { return }
         let notificationHandler = NotificationHandler()
@@ -568,7 +568,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 notificationHandler.removeOrphanedNotifications()
                 notificationHandler.checkForMissingNotifications()
             case let .update(_, _, insertions, modifications):
-                printDebug("updated items detected")
+                debugPrint("updated items detected")
                 // Caused crashes because deleted items don't exist and can't provide a property value
                 // notificationHandler.removeNotifications(withIdentifiers: deletions.map { (self.items?[$0].uuidString) ?? ""})
                 // These are being called too much because the order of the list is changing
@@ -579,13 +579,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 notificationHandler.batchModifyNotifications(items: modifications.map { (self.items?[$0]) })
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
-                printDebug("Error in \(#function) - \(error)")
+                debugPrint("Error in \(#function) - \(error)")
             }
         }
     }
 
     func observeOptions(function: String = #function) {
-        printDebug(#function + "Called by \(function)")
+        debugPrint(#function + "Called by \(function)")
         guard optionsToken == nil else { return }
         let realm = try! Realm()
         let notificationHandler = NotificationHandler()
@@ -597,7 +597,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         debugPrint("Changed options property is \(property.name)")
                         if property.name.contains("Minute") || property.name.contains("Hour") {
                             //this is being called too much because of sync
-                            printDebug("Notification times changed. Recreating notifications as necessary.")
+                            debugPrint("Notification times changed. Recreating notifications as necessary.")
                             notificationHandler.refreshAllNotifications()
                         }
                     }
@@ -611,7 +611,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
 //    static func refreshAndUpdate(function: String = #function) {
-//        printDebug(#function + "Called by \(function)")
+//        debugPrint(#function + "Called by \(function)")
 //        let notificationHandler = NotificationHandler()
 //        notificationHandler.refreshAllNotifications()
 //        AppDelegate.updateBadgeFromPush()
@@ -619,12 +619,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //    }
 
 //    @objc func backgroundRefresh() {
-//        printDebug(#function)
+//        debugPrint(#function)
 //        refreshAndUpdate()
 //    }
 
     deinit {
-        printDebug("\(#function) called. Tokens invalidated")
+        debugPrint("\(#function) called. Tokens invalidated")
         itemsToken?.invalidate()
         optionsToken?.invalidate()
     }
@@ -684,8 +684,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     static func updateBadgeFromPush() {
-        printDebug(#function)
-        printDebug("updating badge from remote push")
+        debugPrint(#function)
+        debugPrint("updating badge from remote push")
         let center = UNUserNotificationCenter.current()
         var remoteBadge = 0
         center.getDeliveredNotifications { deliveredNotifications in

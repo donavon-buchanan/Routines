@@ -63,7 +63,7 @@
 //    override func viewDidLoad() {
 //        super.viewDidLoad()
 //        getPrices()
-//        printDebug("routines plus view loaded")
+//        debugPrint("routines plus view loaded")
 //        // Do stuff
 //        setUpUI()
 //    }
@@ -113,7 +113,7 @@
 //    }
 //
 //    func setButtonText() {
-//        printDebug("setting prices on buttons")
+//        debugPrint("setting prices on buttons")
 ////        monthlyButton.setTitle("\(monthlyPrice) / Month", for: .normal)
 ////        yearlyButton.setTitle("\(yearlyPrice) / Year", for: .normal)
 //        lifetimeButton.setTitle("\(lifetimePrice) / Forever", for: .normal)

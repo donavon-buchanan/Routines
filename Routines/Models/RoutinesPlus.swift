@@ -63,7 +63,7 @@ import RealmSwift
     }
 
 //    static func setExpiryDate(date: Date) {
-//        printDebug("Setting Routines Plus expiration date to: \(date)")
+//        debugPrint("Setting Routines Plus expiration date to: \(date)")
 //        UserDefaults.standard.set(date, forKey: expiryDateKey)
 //    }
 

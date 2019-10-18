@@ -201,13 +201,13 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         // This convoluted mess is needed because the tab bar controller returns some inane int value during restoration because viewDidLoad is called for all four tabs at once.
         if let tabBarController = tabBarController {
             if tabBarController.selectedIndex < 4 {
-                printDebug("tabBarController index < 4, setting to \(tabBarController.selectedIndex)")
+                debugPrint("tabBarController index < 4, setting to \(tabBarController.selectedIndex)")
                 if segment == nil {
                     segment = tabBarController.selectedIndex
                 }
             }
         } else {
-            printDebug("tabBarController is nil. Setting segment to 0")
+            debugPrint("tabBarController is nil. Setting segment to 0")
             if segment == nil {
                 segment = 0
             }
@@ -231,7 +231,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
 
-        printDebug(#function + " end")
+        debugPrint(#function + " end")
     }
 
     @objc func appBecameActive() {
@@ -243,7 +243,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 //        Options.automaticDarkModeCheck()
 //        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
 
-        printDebug(#function + " end")
+        debugPrint(#function + " end")
     }
 
     override func applicationFinishedRestoringState() {
@@ -265,7 +265,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         }
         // Avoids flashing screen glitch
         // TODO: Restoration is loading all the views at once
-        printDebug("View loaded? - \(isViewLoaded)")
+        debugPrint("View loaded? - \(isViewLoaded)")
 //        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
     }
 
@@ -291,7 +291,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     override func viewWillDisappear(_: Bool) {
-        printDebug("\(#function)")
+        debugPrint("\(#function)")
     }
 
     override func viewDidAppear(_: Bool) {
@@ -324,7 +324,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
 //    func showHiddenTasksMessage() {
 //        if !UserDefaults.standard.bool(forKey: "hiddenTasksMessageShown"), !RoutinesPlus.getShowUpcomingTasks() {
-//            printDebug("Showing hidden task message")
+//            debugPrint("Showing hidden task message")
 //            let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
 //                self.openSettings()
 //            }
@@ -336,7 +336,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 //    }
 
     func returnTitle(forSegment segment: Int) -> String {
-        printDebug(#function + " segment: \(segment)")
+        debugPrint(#function + " segment: \(segment)")
         switch segment {
         case 0:
             return AppStrings.timePeriod.morning.rawValue.localizedCapitalized
@@ -494,7 +494,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             }
         }
         let nextSectionAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
-            printDebug("\(#function) - indexPath: \(String(describing: indexPath))")
+            debugPrint("\(#function) - indexPath: \(String(describing: indexPath))")
             self.moveItemToNext(indexPath: indexPath)
             if !self.linesBarButtonSelected {
                 completion(true)
@@ -744,7 +744,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     var segment: Int?
 
     func loadItemsForSegment(segment: Int) {
-        printDebug("loading items for segment \(segment)")
+        debugPrint("loading items for segment \(segment)")
         shouldAllowRearranging = true
         DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
@@ -763,7 +763,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     func loadAllItems() {
-        printDebug("loading all items")
+        debugPrint("loading all items")
         shouldAllowRearranging = false
         // Sort by segment to put in order of the day
         DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
@@ -796,11 +796,11 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             guard let tableView = self?.tableView else { return }
             switch changes {
             case .initial:
-                printDebug("Initial load")
+                debugPrint("Initial load")
                 // Results are now populated and can be accessed without blocking the UI
                 tableView.reloadData()
             case let .update(_, deletions, insertions, modifications):
-                printDebug("update detected")
+                debugPrint("update detected")
                 // Query results have changed, so apply them to the UITableView
                 tableView.performBatchUpdates({
                     tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) },
@@ -813,13 +813,13 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
 //                fatalError("\(error)")
-                printDebug("Error in \(#function) - \(error)")
+                debugPrint("Error in \(#function) - \(error)")
             }
         }
     }
 
     deinit {
-        printDebug("\(#function) called. Tokens invalidated")
+        debugPrint("\(#function) called. Tokens invalidated")
         notificationToken?.invalidate()
 //        optionsToken?.invalidate()
     }

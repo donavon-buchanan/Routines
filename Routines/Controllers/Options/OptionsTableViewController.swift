@@ -202,7 +202,7 @@ class OptionsTableViewController: UITableViewController {
         case 2:
             switch indexPath.row {
             case 0:
-                printDebug("\(#function) - cloudSyncSwitch.isEnabled")
+                debugPrint("\(#function) - cloudSyncSwitch.isEnabled")
                 cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
                 haptic.impactOccurred()
                 // The next line should not be necessary. iOS 13 bug/regression
@@ -216,7 +216,7 @@ class OptionsTableViewController: UITableViewController {
                 break
             }
         default:
-            printDebug("\(#function) - Default case triggered")
+            debugPrint("\(#function) - Default case triggered")
         }
     }
 
@@ -345,7 +345,7 @@ class OptionsTableViewController: UITableViewController {
 //    }
 
     deinit {
-        printDebug("\(#function) called from OptionsTableViewController. Options token invalidated")
+        debugPrint("\(#function) called from OptionsTableViewController. Options token invalidated")
         optionsToken?.invalidate()
 //        routinesPlusToken?.invalidate()
 //        pleaseWaitAlert = nil
@@ -359,7 +359,7 @@ class OptionsTableViewController: UITableViewController {
             guard let self = self else { return }
             switch changes {
             case .initial:
-                printDebug("Initial load for Options. Set up UI")
+                debugPrint("Initial load for Options. Set up UI")
                 self.setUpUI(animated: false)
             case .update:
                 // Don't bother taking action of Options don't even exist
@@ -385,7 +385,7 @@ class OptionsTableViewController: UITableViewController {
 //        let realm = try! Realm()
 //        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
 //        routinesPlusToken = routinesPlus?.observe { _ in
-//            printDebug("Something in RoutinesPlus changed")
+//            debugPrint("Something in RoutinesPlus changed")
 //            NotificationHandler().checkNotificationPermission()
 //            self.refreshUI()
 //        }

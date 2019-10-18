@@ -44,7 +44,7 @@ import RealmSwift
 //    }
 //
 //    static func setDarkMode(_ bool: Bool) {
-//        printDebug("Setting dark mode to: \(bool)")
+//        debugPrint("Setting dark mode to: \(bool)")
 //
 //        UserDefaults.standard.set(bool, forKey: "darkMode")
 ////        DispatchQueue.main.async {
@@ -59,7 +59,7 @@ import RealmSwift
 //    dynamic var autoDarkModeEndMinute: Int = 0
 //
 //    static func automaticDarkModeCheck(function: String = #function) {
-//        printDebug(#function + " called from: " + function)
+//        debugPrint(#function + " called from: " + function)
 //        if Options.getAutomaticDarkModeStatus() {
 //            guard let startTime = Options.getAutomaticDarkModeStartTime() else { return }
 //            guard let endTime = Options.getAutomaticDarkModeEndTime() else { return }
@@ -99,7 +99,7 @@ import RealmSwift
 //    }
 //
 //    static func setAutomaticDarkModeStatus(_ isOn: Bool, function: String = #function) {
-//        printDebug(#function + " called from: " + function)
+//        debugPrint(#function + " called from: " + function)
 //        DispatchQueue(label: realmDispatchQueueLabel).sync {
 //            autoreleasepool {
 //                let realm = try! Realm()
@@ -109,7 +109,7 @@ import RealmSwift
 //                        options.autoDarkMode = isOn
 //                    }
 //                } catch {
-//                    printDebug("\(#function): Error: \(error)")
+//                    debugPrint("\(#function): Error: \(error)")
 //                }
 //            }
 //        }
@@ -119,7 +119,7 @@ import RealmSwift
 //    }
 //
 //    static func setAutomaticDarkModeStartTime(hour: Int, minute: Int, function: String = #function) {
-//        printDebug(#function + " called from: " + function)
+//        debugPrint(#function + " called from: " + function)
 //        DispatchQueue(label: realmDispatchQueueLabel).sync {
 //            autoreleasepool {
 //                let realm = try! Realm()
@@ -130,14 +130,14 @@ import RealmSwift
 //                        options.autoDarkModeStartMinute = minute
 //                    }
 //                } catch {
-//                    printDebug("\(#function): Error: \(error)")
+//                    debugPrint("\(#function): Error: \(error)")
 //                }
 //            }
 //        }
 //    }
 //
 //    static func setAutomaticDarkModeEndTime(hour: Int, minute: Int, function: String = #function) {
-//        printDebug(#function + " called from: " + function)
+//        debugPrint(#function + " called from: " + function)
 //        DispatchQueue(label: realmDispatchQueueLabel).sync {
 //            autoreleasepool {
 //                let realm = try! Realm()
@@ -148,7 +148,7 @@ import RealmSwift
 //                        options.autoDarkModeEndMinute = minute
 //                    }
 //                } catch {
-//                    printDebug("\(#function): Error: \(error)")
+//                    debugPrint("\(#function): Error: \(error)")
 //                }
 //            }
 //        }

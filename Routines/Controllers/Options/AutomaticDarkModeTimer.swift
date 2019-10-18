@@ -15,14 +15,14 @@
 //        guard timer == nil else { return }
 //        automaticDarkModeCheck()
 //        timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(automaticDarkModeCheck), userInfo: nil, repeats: true)
-//        printDebug("automatic dark mode timer started")
+//        debugPrint("automatic dark mode timer started")
 //    }
 //
 //    func stopTimer() {
 //        guard timer != nil else { return }
 //        timer?.invalidate()
 //        timer = nil
-//        printDebug("automatic dark mode timer invalidated")
+//        debugPrint("automatic dark mode timer invalidated")
 //    }
 //
 //    @objc func automaticDarkModeCheck() {

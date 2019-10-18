@@ -14,7 +14,7 @@
 //    func startTimer() {
 //        DispatchQueue.main.async {
 //            guard self.timer == nil else { return }
-//            printDebug("afterSyncTimer started")
+//            debugPrint("afterSyncTimer started")
 //            self.timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.doRefresh), userInfo: nil, repeats: false)
 //        }
 //    }
@@ -23,11 +23,11 @@
 //        guard timer != nil else { return }
 //        timer?.invalidate()
 //        timer = nil
-//        printDebug("afterSyncTimer invalidated")
+//        debugPrint("afterSyncTimer invalidated")
 //    }
 //
 //    @objc func doRefresh() {
-//        printDebug(#function)
+//        debugPrint(#function)
 //        AppDelegate.refreshAndUpdate()
 //
 //        stopTimer()

@@ -65,7 +65,7 @@
 //                    self.setExpiryDateFromSubscription(productId: productId)
 //                }
 //            }
-//            printDebug("Restored purchase with ID: \(productId)")
+//            debugPrint("Restored purchase with ID: \(productId)")
 //            RoutinesPlus.setPurchasedProduct(productID: productId)
 //            if !productId.isEmpty {
 //                RoutinesPlus.setPurchasedStatus(status: true)
@@ -81,14 +81,14 @@
 //
 //            if case let .error(error) = result {
 //                if case .noReceiptData = error {
-//                    printDebug("No receipt data. Will attempt to refresh.")
+//                    debugPrint("No receipt data. Will attempt to refresh.")
 //                    self.refreshReceipt()
 //                } else {
-//                    printDebug("Receipt is invalid. Attempting to verify purchase with Apple.")
+//                    debugPrint("Receipt is invalid. Attempting to verify purchase with Apple.")
 //                    self.verifyPurchase(product: RegisteredPurchase(rawValue: RoutinesPlus.getPurchasedProduct())!)
 //                }
 //            } else {
-//                printDebug("Successfully verified receipt.")
+//                debugPrint("Successfully verified receipt.")
 //            }
 //        }
 //    }
@@ -98,12 +98,12 @@
 //        SwiftyStoreKit.verifyReceipt(using: appleValidator) { result in
 //            switch result {
 //            case .success:
-//                printDebug("Verify purchase result: Success. \(product.rawValue) is valid")
+//                debugPrint("Verify purchase result: Success. \(product.rawValue) is valid")
 //                RoutinesPlus.setPurchasedProduct(productID: product.rawValue)
 //                RoutinesPlus.setPurchasedStatus(status: true)
 //                self.setExpiryDateFromSubscription(productId: product.rawValue)
 //            case let .error(error):
-//                printDebug("Verify purchase result: Error. No valid purchase active.")
+//                debugPrint("Verify purchase result: Error. No valid purchase active.")
 //                RoutinesPlus.setPurchasedProduct(productID: "")
 //                RoutinesPlus.setPurchasedStatus(status: false)
 //                RoutinesPlus.setCloudSync(toggle: false)
@@ -149,10 +149,10 @@
 //        SwiftyStoreKit.fetchReceipt(forceRefresh: false) { result in
 //            switch result {
 //            case .error:
-//                printDebug("Error refreshing receipt. Attempting to verify purchase with Apple.")
+//                debugPrint("Error refreshing receipt. Attempting to verify purchase with Apple.")
 //                self.verifyPurchase(product: RegisteredPurchase(rawValue: RoutinesPlus.getPurchasedProduct())!)
 //            case .success:
-//                printDebug("Sucessfully refreshed receipt.")
+//                debugPrint("Sucessfully refreshed receipt.")
 //                self.verifyReceipt()
 //            }
 //        }
