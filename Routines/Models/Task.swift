@@ -244,6 +244,8 @@ import RealmSwift
                     realm.beginWrite()
                     itemArray.forEach { item in
                         item.isDeleted = true
+                        item.removeTaskFromCategoryList(segment: item.segment)
+                        item.removeTaskFromCategoryList(segment: CategorySelections.All.rawValue)
                     }
                     try realm.commitWrite()
                 } catch {
