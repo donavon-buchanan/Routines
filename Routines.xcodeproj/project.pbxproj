@@ -33,8 +33,9 @@
 		F8B30789219C13B500437AAA /* GlobalPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B30788219C13B500437AAA /* GlobalPicker.swift */; };
 		F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831B72155CBB000DAF60E /* AppDelegate.swift */; };
 		F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831BB2155CBB000DAF60E /* Main.storyboard */; };
-		F8B831CD2155CBE300DAF60E /* Items.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831CC2155CBE300DAF60E /* Items.swift */; };
+		F8B831CD2155CBE300DAF60E /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831CC2155CBE300DAF60E /* Task.swift */; };
 		F8C3EC98228D673F0027AFEB /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C3EC97228D673F0027AFEB /* UIImageExtension.swift */; };
+		F8C731E623566A6E0074EEB5 /* TaskCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C731E523566A6E0074EEB5 /* TaskCategory.swift */; };
 		F8CBBA5721A9058D00A4FFFD /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */; };
 		F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */; };
 		F8CCE20D2288E17E00BAAFEC /* RoutinesPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CCE20C2288E17E00BAAFEC /* RoutinesPlus.swift */; };
@@ -150,8 +151,9 @@
 		F8B831B72155CBB000DAF60E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8B831BC2155CBB000DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F8B831C32155CBB100DAF60E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F8B831CC2155CBE300DAF60E /* Items.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Items.swift; sourceTree = "<group>"; };
+		F8B831CC2155CBE300DAF60E /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		F8C3EC97228D673F0027AFEB /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
+		F8C731E523566A6E0074EEB5 /* TaskCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCategory.swift; sourceTree = "<group>"; };
 		F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
 		F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatTableViewController.swift; sourceTree = "<group>"; };
 		F8CCE20C2288E17E00BAAFEC /* RoutinesPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinesPlus.swift; sourceTree = "<group>"; };
@@ -337,7 +339,8 @@
 		F8B831CB2155CBD000DAF60E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F8B831CC2155CBE300DAF60E /* Items.swift */,
+				F8B831CC2155CBE300DAF60E /* Task.swift */,
+				F8C731E523566A6E0074EEB5 /* TaskCategory.swift */,
 				F807D3CC216073E300FF36D9 /* Options.swift */,
 				F8CCE20C2288E17E00BAAFEC /* RoutinesPlus.swift */,
 			);
@@ -400,13 +403,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F8B831C62155CBB100DAF60E /* Build configuration list for PBXNativeTarget "Routines" */;
 			buildPhases = (
-				F890109821F9A5FB00ED2002 /* SwiftFormat */,
 				F888607E2182757300FDF808 /* Increment Build */,
 				0B781C9890AB826E3669DCA7 /* [CP] Check Pods Manifest.lock */,
 				F8B831B02155CBB000DAF60E /* Sources */,
 				F8B831B12155CBB000DAF60E /* Frameworks */,
 				F8B831B22155CBB000DAF60E /* Resources */,
 				787D07D119F9BCC836F8CEE8 /* [CP] Embed Pods Frameworks */,
+				F890109821F9A5FB00ED2002 /* SwiftFormat */,
+				F8AE682B2357068A00052769 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -630,7 +634,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftformat >/dev/null; then\nswiftformat . --exclude Pods,Generated,/Users/donavon/Developer/Projects/Routines/fastlane/*,/Users/donavon/Developer/Projects/Routines/RoutinesUITests --swiftversion 5.1\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#if which swiftformat >/dev/null; then\n#swiftformat . --exclude Pods,Generated,/Users/donavon/Developer/Projects/Routines/fastlane/*,/Users/donavon/Developer/Projects/Routines/RoutinesUITests --swiftversion 5.1\n#else\n#echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\n#fi\n";
+		};
+		F8AE682B2357068A00052769 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#if which swiftlint >/dev/null; then\n#  swiftlint\n#else\n#  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n#fi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -656,7 +678,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8B831CD2155CBE300DAF60E /* Items.swift in Sources */,
+				F8B831CD2155CBE300DAF60E /* Task.swift in Sources */,
 				F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */,
 				F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */,
 				F85D2A8C22703892009CE6CE /* iAPSegue.swift in Sources */,
@@ -688,6 +710,7 @@
 				F8B30787219C0DAB00437AAA /* Themes.swift in Sources */,
 				F8A8B2E2228356F9005C9E56 /* AfterSyncTimer.swift in Sources */,
 				F8D9B8E223559FD00047423F /* TestTableViewController.swift in Sources */,
+				F8C731E623566A6E0074EEB5 /* TaskCategory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,7 +13,7 @@ import UserNotifications
 struct NotificationHandler {
     let center = UNUserNotificationCenter.current()
 
-    func firstTriggerDate(forItem item: Items) -> Date {
+    func firstTriggerDate(forItem item: Task) -> Date {
         var segmentTime = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: Date())
 
         segmentTime.hour = Options.getOptionHour(segment: item.segment)
@@ -37,11 +37,11 @@ struct NotificationHandler {
         var badgeCount = 0
         let realm = try! Realm()
         // Get all the items in or under the current segment.
-        if let item = realm.object(ofType: Items.self, forPrimaryKey: id) {
+        if let item = realm.object(ofType: Task.self, forPrimaryKey: id) {
             let itemSegment = item.segment
             // Only count the items who's segment is equal or greater than the current item
             // TODO: Maybe should match this against "originalSegment"?
-            let items = realm.objects(Items.self).filter("segment >= %@ AND isDeleted = %@ AND completeUntil <= %@", itemSegment, false, item.completeUntil).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
+            let items = realm.objects(Task.self).filter("segment >= %@ AND isDeleted = %@ AND completeUntil <= %@", itemSegment, false, item.completeUntil).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
             if let currentItemIndex = items.index(of: item) {
                 printDebug("Item title: \(item.title!) at index: \(currentItemIndex)")
                 badgeCount = currentItemIndex + 1
@@ -52,7 +52,7 @@ struct NotificationHandler {
         return badgeCount
     }
 
-    func createNewNotification(forItem item: Items, function: String = #function) {
+    func createNewNotification(forItem item: Task, function: String = #function) {
         printDebug(#function + "Called by \(function)")
         checkNotificationPermission()
 
@@ -97,7 +97,7 @@ struct NotificationHandler {
         scheduleNotification(request: request)
     }
 
-    func returnNotificationTrigger(item: Items) -> UNCalendarNotificationTrigger {
+    func returnNotificationTrigger(item: Task) -> UNCalendarNotificationTrigger {
         // printDebug(#function + "Called by \(function)")
         let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: firstTriggerDate(forItem: item))
 
@@ -112,7 +112,7 @@ struct NotificationHandler {
     func removeOrphanedNotifications(function: String = #function) {
         printDebug(#function + "Called by \(function)")
         let realm = try! Realm()
-        let items = realm.objects(Items.self).filter("isDeleted = %@", false)
+        let items = realm.objects(Task.self).filter("isDeleted = %@", false)
         let itemIDArray: [String] = items.map { $0.uuidString }
 
         center.getPendingNotificationRequests { pendingRequests in
@@ -136,7 +136,7 @@ struct NotificationHandler {
         printDebug(#function + "Called by \(function)")
         center.getPendingNotificationRequests { pendingRequests in
             let realm = try! Realm()
-            let items = realm.objects(Items.self).filter("isDeleted = %@", false)
+            let items = realm.objects(Task.self).filter("isDeleted = %@", false)
             debugPrint("Pending Requests Count: \(pendingRequests.count)")
             let pendingRequestsSet = Set(pendingRequests.map { $0.identifier })
             debugPrint("Pending Requests Set Count: \(pendingRequestsSet.count)")
@@ -144,7 +144,7 @@ struct NotificationHandler {
             debugPrint("Item Array Count: \(itemIDArray.count)")
             itemIDArray.forEach { itemID in
                 if !pendingRequestsSet.contains(itemID) {
-                    if let item = realm.object(ofType: Items.self, forPrimaryKey: itemID) {
+                    if let item = realm.object(ofType: Task.self, forPrimaryKey: itemID) {
                         self.createNewNotification(forItem: item)
                     }
                 }
@@ -152,7 +152,7 @@ struct NotificationHandler {
         }
     }
 
-    func batchModifyNotifications(items: [Items?], function: String = #function) {
+    func batchModifyNotifications(items: [Task?], function: String = #function) {
         printDebug(#function + "Called by \(function)")
         DispatchQueue.main.async {
             items.forEach { item in
@@ -183,16 +183,16 @@ struct NotificationHandler {
 //
 //        center.getPendingNotificationRequests { (pendingRequests) in
 //            let realm = try! Realm()
-//            let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+//            let items = realm.objects(Task.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
 //            debugPrint("Starting count for items list is \(items.count)")
 //            // 1. Iterate through all pending requests and check that the trigger matches what *would* be set with the item's current properties
 //            // 2. If there's a match, the notification does not need to be updated and the item can be ignored. Add to Set of ignored items
-//            // 3. After iteration has finished, subtract set from set of all qualifying Items in Realm and save as new set of items
+//            // 3. After iteration has finished, subtract set from set of all qualifying Task in Realm and save as new set of items
 //            // 4. Add new notifications for the set of items
-//            var itemsToIgnore = Set<Items>()
+//            var itemsToIgnore = Set<Task>()
 //            // 1.
 //            pendingRequests.forEach({ (request) in
-//                if let item = realm.object(ofType: Items.self, forPrimaryKey: request.identifier) {
+//                if let item = realm.object(ofType: Task.self, forPrimaryKey: request.identifier) {
 //                    debugPrint("Found item matching notification request ID: \(item.title!)")
 //                    // 2.
 //                    let trigger = request.trigger as! UNCalendarNotificationTrigger
@@ -225,7 +225,7 @@ struct NotificationHandler {
     func refreshAllNotifications(function: String = #function) {
         printDebug(#function + "Called by \(function)")
         let realm = try! Realm()
-        let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+        let items = realm.objects(Task.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
         batchModifyNotifications(items: items.map { $0 })
     }
 

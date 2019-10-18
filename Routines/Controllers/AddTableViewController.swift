@@ -29,19 +29,19 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
     }
 
-    @IBOutlet var priorityNumberLabel: UILabel!
-
-    @IBOutlet var prioritySlider: UISlider!
-    @IBAction func prioritySliderChanged(_ sender: UISlider) {
-        priorityNumberLabel.text = String(Int(sender.value))
-    }
-
-    @IBAction func prioritySliderTouched(_: UISlider) {
-        view.endEditing(true)
-        if item != nil, taskTextField.hasText {
-            navigationItem.rightBarButtonItem?.isEnabled = true
-        }
-    }
+//    @IBOutlet var priorityNumberLabel: UILabel!
+//
+//    @IBOutlet var prioritySlider: UISlider!
+//    @IBAction func prioritySliderChanged(_ sender: UISlider) {
+//        priorityNumberLabel.text = String(Int(sender.value))
+//    }
+//
+//    @IBAction func prioritySliderTouched(_: UISlider) {
+//        view.endEditing(true)
+//        if item != nil, taskTextField.hasText {
+//            navigationItem.rightBarButtonItem?.isEnabled = true
+//        }
+//    }
 
     @IBOutlet var taskTextField: UITextField!
     @IBOutlet var segmentSelection: UISegmentedControl!
@@ -109,7 +109,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         sender.selectedSegmentTintColor = UIColor(segment: sender.selectedSegmentIndex)
     }
 
-    var item: Items?
+    var item: Task?
     var selectedIndex: Int?
 
     var editingSegment: Int?
@@ -124,8 +124,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             segmentSelection.selectedSegmentIndex = item?.segment ?? 0
             notesTextView.text = item?.notes
             repeatDailySwitch.setOn(item!.repeats, animated: false)
-            priorityNumberLabel.text = "\(item?.priority ?? 0)"
-            prioritySlider.value = Float(item?.priority ?? 0)
 
             title = "Editing Task"
         } else {
@@ -248,7 +246,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     override func decodeRestorableState(with coder: NSCoder) {
         guard let itemId = coder.decodeObject(forKey: "itemId") as! String? else { return }
         let realm = try! Realm()
-        item = realm.object(ofType: Items.self, forPrimaryKey: itemId)
+        item = realm.object(ofType: Task.self, forPrimaryKey: itemId)
         setUpUI()
         super.decodeRestorableState(with: coder)
     }
@@ -330,11 +328,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     @objc func saveButtonPressed() {
         if let updatedItem = item {
-            updatedItem.updateItem(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text, priority: Int(prioritySlider.value))
+            updatedItem.updateItem(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
         } else {
-            let newItem = Items(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, priority: Int(prioritySlider.value), repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
-            newItem.addNewItem(newItem)
-            if newItem.completeUntil > Date().endOfDay {
+//            let newItem = Task(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, priority: Int(prioritySlider.value), repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
+            let newTask = Task(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
+            newTask.addNewItem()
+            if newTask.completeUntil > Date().endOfDay {
                 shouldShowHiddenTasksMessage = true
             }
         }

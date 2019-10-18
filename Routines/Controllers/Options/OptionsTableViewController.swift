@@ -85,11 +85,11 @@ class OptionsTableViewController: UITableViewController {
         }
     }
 
-    @IBOutlet var darkModeSwtich: UISwitch!
-    @IBAction func darkModeSwitchToggled(_ sender: UISwitch) {
-        Options.setDarkMode(sender.isOn)
-        // setAppearance(forSegment: Options.getSelectedIndex())
-    }
+//    @IBOutlet var darkModeSwtich: UISwitch!
+//    @IBAction func darkModeSwitchToggled(_ sender: UISwitch) {
+//        Options.setDarkMode(sender.isOn)
+//        // setAppearance(forSegment: Options.getSelectedIndex())
+//    }
 
     // MARK: Task Priorities
 
@@ -341,7 +341,7 @@ class OptionsTableViewController: UITableViewController {
 //        guard pleaseWaitAlert != nil else { return }
 //        pleaseWaitAlert?.dismissAlert()
 //        pleaseWaitAlert = nil
-//        Items.requestNotificationPermission()
+//        Task.requestNotificationPermission()
 //    }
 
     deinit {

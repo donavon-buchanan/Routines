@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        notificationHandler.removeOrphanedNotifications()
 //
 //        let realm = try! Realm()
-//        let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+//        let items = realm.objects(Task.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
 //        items.forEach { item in
 //            notificationHandler.createNewNotification(forItem: item)
 //        }
@@ -249,7 +249,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //            pendingNotifications.forEach { notification in
 //                let id = notification.identifier
 //                let realm = try! Realm()
-//                let item = realm.object(ofType: Items.self, forPrimaryKey: id)
+//                let item = realm.object(ofType: Task.self, forPrimaryKey: id)
 //                // First test nil for items that don't exist
 //                if item == nil {
 //                    orphanNotifications.append(id)
@@ -352,7 +352,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 23,
+            schemaVersion: 27,
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -391,9 +391,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         print("oldObject: " + String(describing: oldObject))
                         print("newObject: " + String(describing: newObject))
                     }
-                    // TODO: !!! Items class name can't migrate because class name changed !!!
+                    // TODO: !!! Task class name can't migrate because class name changed !!!
                     // TODO: Also, future migrations may conflict with iCloud
-                    migration.enumerateObjects(ofType: Items.className()) { _, newObject in
+                    migration.enumerateObjects(ofType: "Items") { _, newObject in
                         // print("oldObject: " + String(describing: oldObject))
                         newObject!["isDeleted"] = false
                         newObject!["dateModified"] = Date()
@@ -404,7 +404,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
 
                 if oldSchemaVersion >= 15, oldSchemaVersion < 18 {
-                    migration.enumerateObjects(ofType: Items.className()) { oldObject, newObject in
+                    migration.enumerateObjects(ofType: "Items") { oldObject, newObject in
                         print("oldObject: " + String(describing: oldObject))
                         print("newObject: " + String(describing: newObject))
                         let originalSegment = oldObject!["segment"] as! Int
@@ -436,17 +436,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
 
-                if oldSchemaVersion == 21 {
-                    migration.enumerateObjects(ofType: Options.className()) { oldObject, _ in
-                        if let darkMode = oldObject!["darkMode"] as? Bool {
-                            UserDefaults.standard.set(darkMode, forKey: "darkMode")
-                        }
+                if oldSchemaVersion >= 21, oldSchemaVersion <= 25 {
+                    
+                    migration.create("TaskCategory", value: TaskCategory(category: 0))
+                    migration.create("TaskCategory", value: TaskCategory(category: 1))
+                    migration.create("TaskCategory", value: TaskCategory(category: 2))
+                    migration.create("TaskCategory", value: TaskCategory(category: 3))
+                    
+                    migration.enumerateObjects(ofType: RoutinesPlus.className()) { oldObject, _ in
+                        //auto migration
+                    }
+                    migration.enumerateObjects(ofType: Options.className()) { (_, _) in
+                        // auto migration
+                    }
+                    migration.enumerateObjects(ofType: "Items") { oldObject, _ in
+                        let newTask = Task(title: oldObject!["title"] as! String, segment: oldObject!["segment"] as! Int, repeats:  oldObject!["repeats"] as! Bool, notes:  oldObject!["notes"] as? String)
+                        migration.create("Task", value: newTask)
                     }
                 }
-
-                if oldSchemaVersion == 22 {
-                    migration.enumerateObjects(ofType: RoutinesPlus.className()) { _, _ in
-                        // auto migration
+                
+                if oldSchemaVersion > 25, oldSchemaVersion <= 26 {
+                    migration.enumerateObjects(ofType: "Task") { (_, _) in
+                        //auto
                     }
                 }
             }
@@ -462,14 +473,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func completeItem(uuidString: String) {
         let realm = try! Realm()
-        guard let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) else { return }
+        guard let item = realm.object(ofType: Task.self, forPrimaryKey: uuidString) else { return }
 
         item.completeItem()
     }
 
     func snoozeItem(uuidString: String) {
         let realm = try! Realm()
-        guard let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) else { return }
+        guard let item = realm.object(ofType: Task.self, forPrimaryKey: uuidString) else { return }
 
         item.snooze()
     }
@@ -483,7 +494,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             printDebug("Enabling cloud syncEngine")
 
             AppDelegate.syncEngine = SyncEngine(objects: [
-                SyncObject<Items>(),
+                SyncObject<Task>(),
                 SyncObject<Options>(),
             ], databaseScope: .private)
         } else {
@@ -496,7 +507,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var itemsToken: NotificationToken?
     var optionsToken: NotificationToken?
-    var items: Results<Items>?
+    var items: Results<Task>?
     var options: Options?
 
     // TODO: This creates some redudancies with notification creation and deletion as handled by the Items class.
@@ -506,7 +517,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         guard itemsToken == nil else { return }
         let notificationHandler = NotificationHandler()
         let realm = try! Realm()
-        items = realm.objects(Items.self)
+        items = realm.objects(Task.self)
         // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
         // Observe Results Notifications
         itemsToken = items?.observe { (changes: RealmCollectionChange) in
@@ -678,10 +689,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
         var segment = Int()
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let item = realm.object(ofType: Items.self, forPrimaryKey: identifier) {
+                if let item = realm.object(ofType: Task.self, forPrimaryKey: identifier) {
                     segment = item.segment
                 }
             }

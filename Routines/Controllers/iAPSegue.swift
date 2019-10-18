@@ -20,12 +20,12 @@ class iAPSegue: SwiftMessagesSegue {
             configure(layout: .bottomTab)
         }
 
-        if Options.getDarkModeStatus() {
-            dimMode = .blur(style: .dark, alpha: 0.9, interactive: true)
-            messageView.configureNoDropShadow()
-        } else {
-            dimMode = .blur(style: .regular, alpha: 0.9, interactive: true)
-            messageView.configureDropShadow()
-        }
+//        if Options.getDarkModeStatus() {
+//            dimMode = .blur(style: .dark, alpha: 0.9, interactive: true)
+//            messageView.configureNoDropShadow()
+//        } else {
+//            dimMode = .blur(style: .regular, alpha: 0.9, interactive: true)
+//            messageView.configureDropShadow()
+//        }
     }
 }

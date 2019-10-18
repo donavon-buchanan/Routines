@@ -256,7 +256,7 @@ class CustomTimesTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                count = realm.objects(Items.self).filter("segment = \(segment)").count
+                count = realm.objects(Task.self).filter("segment = \(segment)").count
             }
         }
         return count

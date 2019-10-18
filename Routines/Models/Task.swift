@@ -1,5 +1,5 @@
 //
-//  Items.swift
+//  Task.swift
 //  Routines
 //
 //  Created by Donavon Buchanan on 9/21/18.
@@ -9,12 +9,8 @@
 import Foundation
 import IceCream
 import RealmSwift
-// import UserNotifications
 
-// TODO: Figure out inits with Realm
-// TODO: Rename this. Shouldn't be plural. But causes realm migration complication.
-
-@objcMembers class Items: Object {
+@objcMembers class Task: Object {
     lazy var notificationHanlder = NotificationHandler()
 
     static let realmDispatchQueueLabel: String = "background"
@@ -31,11 +27,12 @@ import RealmSwift
     dynamic var repeats: Bool = true
     dynamic var notes: String?
     dynamic var priority: Int = 0
+    let category = LinkingObjects(fromType: TaskCategory.self, property: "taskList")
 
     // For syncing
     dynamic var isDeleted: Bool = false
 
-    required convenience init(title: String, segment: Int, priority _: Int, repeats: Bool, notes: String?) {
+    required convenience init(title: String, segment: Int, repeats: Bool, notes: String?) {
         self.init()
         self.title = title
         self.segment = segment
@@ -54,13 +51,17 @@ import RealmSwift
         "uuidString"
     }
 
-    func addNewItem(_ item: Items) {
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+    func addNewItem() {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
                     try realm.write {
-                        realm.add(item)
+                        //realm.add(self)
+                        TaskCategory.returnTaskCategory(self.segment).taskList.append(self)
+                        
+                        //This line adds all tasks to the "All" category object
+                        TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList.append(self)
                     }
                 } catch {
                     fatalError("Error adding new item: \(error)")
@@ -69,11 +70,50 @@ import RealmSwift
         }
         notificationHanlder.createNewNotification(forItem: self)
     }
+    
+    //MUST be called from within a realm write operation
+    private func removeTaskFromCategoryList(segment: Int) {
+        let previousCategoryList = TaskCategory.returnTaskCategory(segment).taskList
+        if let index = previousCategoryList.index(of: self) {
+            previousCategoryList.remove(at: index)
+        }
+    }
+    
+    //MUST be called from within a realm write operation
+    //This is probably overkill and potentially problematic doing a -1 count on an index that might already be 0
+    private func moveTaskInList(task: Task, categories: [Int]?, toIndex: Int?) {
+        let taskPrimaryCategory = TaskCategory.returnTaskCategory(task.segment)
+        let taskPrimaryCategoryIndex = taskPrimaryCategory.taskList.index(of: task)
+        let lastPrimaryCategoryIndex = taskPrimaryCategory.taskList.count - 1
+        let allCategory = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue)
+        let lastAllCategoryIndex = allCategory.taskList.count - 1
+        let taskAllCategoryIndex = allCategory.taskList.index(of: task)
+        // If specific categories were provided, act on those
+        // Else, default to the task's primary (segment) category
+        // toIndex should default to the last index of the list if not provided
+        if let categories = categories {
+            categories.forEach { (category) in
+                let taskCategory = TaskCategory.returnTaskCategory(category)
+                let lastIndex = taskCategory.taskList.count - 1
+                if let taskCategoryIndex = taskCategory.taskList.index(of: task) {
+                    taskCategory.taskList.move(from: taskCategoryIndex, to: toIndex ?? lastIndex)
+                }
+            }
+        } else {
+            if let currentIndex = taskPrimaryCategoryIndex {
+                taskPrimaryCategory.taskList.move(from: currentIndex, to: toIndex ?? lastPrimaryCategoryIndex)
+            }
+            if let allIndex = taskAllCategoryIndex {
+                allCategory.taskList.move(from: allIndex, to: lastAllCategoryIndex)
+            }
+        }
+    }
 
-    func updateItem(title: String, segment: Int, repeats: Bool, notes: String?, priority: Int) {
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+    func updateItem(title: String, segment: Int, repeats: Bool, notes: String?) {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
+                let previousSegment = self.segment
                 do {
                     try realm.write {
                         self.dateModified = Date()
@@ -82,7 +122,8 @@ import RealmSwift
                         self.originalSegment = segment
                         self.repeats = repeats
                         self.notes = notes
-                        self.priority = priority
+                        removeTaskFromCategoryList(segment: previousSegment)
+                        TaskCategory.returnTaskCategory(segment).taskList.append(self)
                     }
                 } catch {
                     fatalError("Error updating item: \(error)")
@@ -98,7 +139,7 @@ import RealmSwift
             notificationHanlder.removeNotifications(withIdentifiers: [self.uuidString])
         } else {
             printDebug("marking completed until: \(Date().startOfNextDay)")
-            DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+            DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
                 autoreleasepool {
                     let realm = try! Realm()
                     do {
@@ -106,6 +147,8 @@ import RealmSwift
                             self.segment = self.originalSegment
                             self.completeUntil = Date().startOfNextDay
                             self.dateModified = Date()
+                            //Move task to bottom of list
+                            self.moveTaskInList(task: self, categories: nil, toIndex: nil)
                         }
                     } catch {
                         // print("failed to save completeUntil")
@@ -117,12 +160,12 @@ import RealmSwift
         }
     }
 
-    static func batchComplete(itemArray: [Items]) {
+    static func batchComplete(itemArray: [Task]) {
         printDebug(#function)
-        var itemsToComplete: [Items] = []
-        var itemsToSoftDelete: [Items] = []
+        var itemsToComplete: [Task] = []
+        var itemsToSoftDelete: [Task] = []
 
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 itemArray.forEach { item in
                     if item.repeats {
@@ -140,11 +183,13 @@ import RealmSwift
                     realm.beginWrite()
                     itemsToSoftDelete.forEach { item in
                         item.isDeleted = true
+                        item.removeTaskFromCategoryList(segment: item.segment)
                     }
                     itemsToComplete.forEach { item in
                         item.segment = item.originalSegment
                         item.completeUntil = Date().startOfNextDay
                         item.dateModified = Date()
+                        item.removeTaskFromCategoryList(segment: item.segment)
                     }
                     try realm.commitWrite()
                 } catch {
@@ -168,12 +213,13 @@ import RealmSwift
     func softDelete() {
         printDebug("soft deleting item")
         notificationHanlder.removeNotifications(withIdentifiers: [self.uuidString])
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
                     try realm.write {
                         self.isDeleted = true
+                        removeTaskFromCategoryList(segment: self.segment)
                     }
                 } catch {
                     fatalError("Error with softDelete: \(error)")
@@ -183,13 +229,13 @@ import RealmSwift
         // AppDelegate.refreshNotifications()
     }
 
-    static func batchSoftDelete(itemArray: [Items]) {
+    static func batchSoftDelete(itemArray: [Task]) {
         printDebug(#function)
         let notificationHandler = NotificationHandler()
 
         notificationHandler.removeNotifications(withIdentifiers: (itemArray.map { $0.uuidString }))
 
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
@@ -214,11 +260,11 @@ import RealmSwift
 //            autoreleasepool {
 //                let realm = try! Realm()
 //                // Get all the items in or under the current segment.
-//                if let item = realm.object(ofType: Items.self, forPrimaryKey: id) {
+//                if let item = realm.object(ofType: Task.self, forPrimaryKey: id) {
 //                    let itemSegment = item.segment
 //                    // Only count the items who's segment is equal or greater than the current item
 //                    // TODO: Maybe should match this against "originalSegment"?
-//                    let items = realm.objects(Items.self).filter("segment >= %@ AND isDeleted = %@ AND completeUntil <= %@", itemSegment, false, item.completeUntil).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
+//                    let items = realm.objects(Task.self).filter("segment >= %@ AND isDeleted = %@ AND completeUntil <= %@", itemSegment, false, item.completeUntil).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
 //                    guard let currentItemIndex = items.index(of: item) else { return }
 //                    printDebug("Item title: \(item.title!) at index: \(currentItemIndex)")
 //                    badgeCount = currentItemIndex + 1
@@ -261,14 +307,21 @@ import RealmSwift
 //        center.removePendingNotificationRequests(withIdentifiers: [uuidString])
 //        center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
 //    }
+    
+    //MUST be called from within a realm write operation
+    private func moveTaskCategory(from: Int, to: Int) {
+        removeTaskFromCategoryList(segment: from)
+        TaskCategory.returnTaskCategory(to).taskList.append(self)
+    }
 
     func snooze() {
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
                     try realm.write {
                         self.dateModified = Date()
+                        moveTaskCategory(from: segment, to: snoozeTo())
                         self.segment = snoozeTo()
                     }
                 } catch {
@@ -292,15 +345,17 @@ import RealmSwift
     }
 
     func moveToNextSegment() {
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
                     try realm.write {
                         switch self.segment {
                         case 3:
+                            moveTaskCategory(from: segment, to: 0)
                             self.segment = 0
                         default:
+                            moveTaskCategory(from: segment, to: (self.segment + 1))
                             self.segment += 1
                         }
                     }
@@ -334,7 +389,7 @@ import RealmSwift
 //        content.sound = UNNotificationSound.default
 //        content.threadIdentifier = String(getItemSegment(id: uuidString))
 //
-//        content.badge = NSNumber(integerLiteral: Items.setBadgeNumber(id: uuidString))
+//        content.badge = NSNumber(integerLiteral: Task.setBadgeNumber(id: uuidString))
 //
 //        if let notesText = notes {
 //            content.body = notesText
@@ -393,10 +448,10 @@ import RealmSwift
 //            }
 //        }
 //        var segment = Int()
-//        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+//        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
 //            autoreleasepool {
 //                let realm = try! Realm()
-//                if let item = realm.object(ofType: Items.self, forPrimaryKey: identifier) {
+//                if let item = realm.object(ofType: Task.self, forPrimaryKey: identifier) {
 //                    segment = item.segment
 //                }
 //            }
@@ -405,7 +460,7 @@ import RealmSwift
 //    }
 
     func setDailyRepeat(_ bool: Bool) {
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
                 do {
@@ -433,10 +488,10 @@ import RealmSwift
 
     static func getCountForSegment(segment: Int) -> Int {
         var count = Int()
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                count = realm.objects(Items.self).filter("segment = \(segment)").count
+                count = realm.objects(Task.self).filter("segment = \(segment)").count
             }
         }
         return count
@@ -444,20 +499,20 @@ import RealmSwift
 
     static func getItemCount() -> Int {
         var count = Int()
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                count = realm.objects(Items.self).count
+                count = realm.objects(Task.self).count
             }
         }
         return count
     }
 }
 
-extension Items: CKRecordConvertible {
+extension Task: CKRecordConvertible {
     // Yep, leave it blank!
 }
 
-extension Items: CKRecordRecoverable {
+extension Task: CKRecordRecoverable {
     // Leave it blank, too.
 }

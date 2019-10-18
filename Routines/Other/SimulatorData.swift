@@ -12,10 +12,10 @@ import RealmSwift
 func loadDefaultData() {
     #if targetEnvironment(simulator)
 
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                let items = realm.objects(Items.self)
+                let items = realm.objects(Task.self)
                 do {
                     try realm.write {
                         realm.delete(items)
@@ -26,33 +26,33 @@ func loadDefaultData() {
             }
         }
 
-        let item1 = Items(title: "Walk the dogs 🐕", segment: 0, priority: 0, repeats: true, notes: nil)
-        let item2 = Items(title: "Meditate 🧘‍♂️", segment: 0, priority: 0, repeats: true, notes: nil)
-        let item3 = Items(title: "Find a healthy activity", segment: 0, priority: 0, repeats: true, notes: "🌻🌞🚲")
-        let item5 = Items(title: "Figure out dinner plans", segment: 0, priority: 0, repeats: false, notes: nil)
+        let item1 = Task(title: "Walk the dogs 🐕", segment: 0, repeats: true, notes: nil)
+        let item2 = Task(title: "Meditate 🧘‍♂️", segment: 0, repeats: true, notes: nil)
+        let item3 = Task(title: "Find a healthy activity", segment: 0, repeats: true, notes: "🌻🌞🚲")
+        let item5 = Task(title: "Figure out dinner plans", segment: 0, repeats: false, notes: nil)
 
-        let item4 = Items(title: "Make a doctor's appointment", segment: 1, priority: 0, repeats: false, notes: nil)
-        let item6 = Items(title: "Pick up dry cleaning", segment: 1, priority: 0, repeats: false, notes: nil)
-        let item7 = Items(title: "Plan dad's birthday party", segment: 1, priority: 0, repeats: false, notes: """
+        let item4 = Task(title: "Make a doctor's appointment", segment: 1, repeats: false, notes: nil)
+        let item6 = Task(title: "Pick up dry cleaning", segment: 1, repeats: false, notes: nil)
+        let item7 = Task(title: "Plan dad's birthday party", segment: 1, repeats: false, notes: """
         1. Order the cake 🎂
         2. Send out invitations 🥳🥳
         3. Get party decorations and supplies 🎈🎉
         """)
 
-        let item8 = Items(title: "Buy groceries", segment: 2, priority: 0, repeats: false, notes: """
+        let item8 = Task(title: "Buy groceries", segment: 2, repeats: false, notes: """
         - Coffee
         - Flour
         - Sugar
         """)
-        let item9 = Items(title: "Water the plants 🌱", segment: 2, priority: 0, repeats: true, notes: nil)
+        let item9 = Task(title: "Water the plants 🌱", segment: 2, repeats: true, notes: nil)
 
-        let item10 = Items(title: "Clean the kitchen", segment: 3, priority: 0, repeats: true, notes: nil)
-        let item11 = Items(title: "Do the laundry", segment: 3, priority: 0, repeats: true, notes: nil)
-        let item12 = Items(title: "Exercise your mind", segment: 3, priority: 0, repeats: true, notes: nil)
+        let item10 = Task(title: "Clean the kitchen", segment: 3, repeats: true, notes: nil)
+        let item11 = Task(title: "Do the laundry", segment: 3, repeats: true, notes: nil)
+        let item12 = Task(title: "Exercise your mind", segment: 3, repeats: true, notes: nil)
 
         let itemList = [item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12]
 
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 // Subvert init logic for simulator
                 // Otherwise these show up as tomorrow's tasks
@@ -60,13 +60,8 @@ func loadDefaultData() {
                     item.completeUntil = Date()
                 }
 
-                let realm = try! Realm()
-                do {
-                    realm.beginWrite()
-                    realm.add(itemList)
-                    try realm.commitWrite()
-                } catch {
-                    fatalError("Simulator failed to add list of items with error: \(error)")
+                itemList.forEach { (task) in
+                    task.addNewItem()
                 }
             }
         }

@@ -240,7 +240,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         observeItems()
         // View loading funcs aren't always called when the app transitions from background to active
         // So this is to ensure that the UI refreshes
-        Options.automaticDarkModeCheck()
+//        Options.automaticDarkModeCheck()
 //        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
 
         printDebug(#function + " end")
@@ -370,14 +370,18 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        items?.count ?? 0
+        debugPrint("Items count for number of rows is " + String(describing: items?.count))
+        return items?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TaskTableViewCell
 
         // Realm occasionally throws an error here. Use guard to return early if the item no-longer exist.
-        guard let item = items?[indexPath.row] else { return cell }
+        guard let item = items?[indexPath.row] else {
+            debugPrint("Failed to fetch item from index path. Returning empty cell")
+            return cell 
+        }
 
         let segment = item.segment
         let cellTitle: String = item.title!
@@ -445,10 +449,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     override func tableView(_: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
         let realm = try! Realm()
         realm.beginWrite()
-        // The order will never save because the list itself needs to be contained within a Realm object
-        let items = List<Items>()
-        items.append(objectsIn: self.items!)
-        items.move(from: fromIndexPath.row, to: to.row)
+        items?.move(from: fromIndexPath.row, to: to.row)
         if let notificationToken = notificationToken {
             do {
                 try realm.commitWrite(withoutNotifying: [notificationToken])
@@ -546,13 +547,13 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     @objc private func clearAll() {
-        var itemAray: [Items] = []
+        var itemAray: [Task] = []
 
         if let items = items {
             itemAray.append(contentsOf: items)
         }
 
-        Items.batchComplete(itemArray: itemAray)
+        Task.batchComplete(itemArray: itemAray)
 
         endEdit()
         // resetTableView()
@@ -576,11 +577,11 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             }
         }
 
-        var itemsToDelete: [Items] = []
+        var itemsToDelete: [Task] = []
 
         if selectedCount != 0 {
             if let indexPaths = self.tableView.indexPathsForSelectedRows {
-                var itemArray: [Items] = []
+                var itemArray: [Task] = []
                 indexPaths.forEach { indexPath in
                     // The index paths are static during enumeration, but the item indexes are not
                     // Add them to an array first, delete only what's in the array, and then update the table UI
@@ -592,13 +593,13 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 itemArray.forEach { item in
                     itemsToDelete.append(item)
                 }
-                Items.batchSoftDelete(itemArray: itemsToDelete)
+                Task.batchSoftDelete(itemArray: itemsToDelete)
             }
         } else if selectedCount == 0, itemCount != 0 {
             items?.forEach { item in
                 itemsToDelete.append(item)
             }
-            Items.batchSoftDelete(itemArray: itemsToDelete)
+            Task.batchSoftDelete(itemArray: itemsToDelete)
             endEdit()
             resetTableView()
             changeTabBar(hidden: false, animated: true)
@@ -738,19 +739,21 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     // MARK: - Realm
 
-    var items: Results<Items>?
+    var items: List<Task>?
 
     var segment: Int?
 
     func loadItemsForSegment(segment: Int) {
         printDebug("loading items for segment \(segment)")
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        shouldAllowRearranging = true
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
+//                let realm = try! Realm()
+                let taskCategory = TaskCategory.returnTaskCategory(segment)
                 if RoutinesPlus.getShowUpcomingTasks() {
-                    self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "completeUntil", ascending: true)
+                    self.items = taskCategory.taskList//.filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "completeUntil", ascending: true)
                 } else {
-                    self.items = realm.objects(Items.self).filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
+                    self.items = taskCategory.taskList//.filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
                 }
             }
         }
@@ -761,15 +764,27 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     func loadAllItems() {
         printDebug("loading all items")
+        shouldAllowRearranging = false
         // Sort by segment to put in order of the day
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
-                if RoutinesPlus.getShowUpcomingTasks() {
-                    self.items = realm.objects(Items.self).filter("isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true).sorted(byKeyPath: "completeUntil", ascending: true)
-                } else {
-                    self.items = realm.objects(Items.self).filter("isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
-                }
+//                let realm = try! Realm()
+                let morningList = TaskCategory.returnTaskCategory(0).taskList
+                let afternoonList = TaskCategory.returnTaskCategory(1).taskList
+                let eveningList = TaskCategory.returnTaskCategory(2).taskList
+                let nightList = TaskCategory.returnTaskCategory(3).taskList
+//                if RoutinesPlus.getShowUpcomingTasks() {
+//                    self.items = taskCategory.taskList//.filter("isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true).sorted(byKeyPath: "completeUntil", ascending: true)
+//                } else {
+//                    self.items = taskCategory.taskList//.filter("isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+//                }
+                var fullList = [Task]()
+                fullList.append(contentsOf: morningList)
+                fullList.append(contentsOf: afternoonList)
+                fullList.append(contentsOf: eveningList)
+                fullList.append(contentsOf: nightList)
+                self.items = List<Task>()
+                self.items?.append(objectsIn: fullList)
             }
         }
         // For now it has to be like this
@@ -966,13 +981,13 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         // Reduce the corner radius (applicable to layouts featuring rounded corners).
         (alert.backgroundView as? CornerRoundingView)?.cornerRadius = 10
 
-        if Options.getDarkModeStatus() {
-            config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
-            config.dimModeAccessibilityLabel = "Dismiss Warning"
-        } else {
-            config.dimMode = .blur(style: .regular, alpha: 1, interactive: true)
-            config.dimModeAccessibilityLabel = "Dismiss Warning"
-        }
+//        if Options.getDarkModeStatus() {
+//            config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
+//            config.dimModeAccessibilityLabel = "Dismiss Warning"
+//        } else {
+//            config.dimMode = .blur(style: .regular, alpha: 1, interactive: true)
+//            config.dimModeAccessibilityLabel = "Dismiss Warning"
+//        }
 
         SwiftMessages.show(config: config, view: alert)
     }
