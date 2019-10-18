@@ -444,6 +444,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     let nightCategory = migration.create("TaskCategory", value: TaskCategory(category: 3))
                     let allCategory = migration.create("TaskCategory", value: TaskCategory(category: 4))
                     
+                    var morningList = [MigrationObject]()
+                    var afternoonList = [MigrationObject]()
+                    var eveningList = [MigrationObject]()
+                    var nightList = [MigrationObject]()
+                    var allList = [MigrationObject]()
+                    
                     migration.enumerateObjects(ofType: RoutinesPlus.className()) { _, _ in
                         //auto migration
                     }
@@ -453,23 +459,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     migration.enumerateObjects(ofType: "Items") { oldObject, newObject in
                         //Create a new task from the old object
                         let newTask = migration.create(Task.className(), value: oldObject!)
-                        
-                        /*  Based on the segment of that task, add it to the appropriate
-                            category taskList from the categories above
+                        debugPrint("newTask: " + String(describing: newTask))
+                        /*  
+                        Based on the segment of that task, append it to the appropriate
+                        array of tasks associated with the categories above
                         */
                         switch (newTask["segment"] as! Int) {
                         case 1:
-                            afternoonCategory.dynamicList("taskList").append(newTask)
+                            debugPrint("adding newTask to afternoon: " + String(describing: newTask))
+                            afternoonList.append(newTask)
                         case 2:
-                            eveningCategory.dynamicList("taskList").append(newTask)
+                            debugPrint("adding newTask to evening: " + String(describing: newTask))
+                            eveningList.append(newTask)
                         case 3:
-                            nightCategory.dynamicList("taskList").append(newTask)
+                            debugPrint("adding newTask to night: " + String(describing: newTask))
+                            nightList.append(newTask)
                         default:
-                            morningCategory.dynamicList("taskList").append(newTask)
+                            debugPrint("adding newTask to morning: " + String(describing: newTask))
+                            morningList.append(newTask)
                         }
-                        //Finally add each new task to the All category taskList
-                        allCategory.dynamicList("taskList").append(newTask)
+                        //Also add each task to the array for allList
+                        debugPrint("adding newTask to all: " + String(describing: newTask))
+                        allList.append(newTask)
                     }
+                    
+                    //Finally, append sequence in reversed order to the category lists so it appears as the user previously had them sorted
+                    /*
+                     Note: This didn't work during my initial testing, which worries me still. But after re-writing all of this, it seems fine.
+                     Previously, it produced a ton of duplicate tasks, progressively getting worse as the enumeration continued.
+                     */
+                    morningCategory.dynamicList("taskList").append(objectsIn: morningList.reversed())
+                    afternoonCategory.dynamicList("taskList").append(objectsIn: afternoonList.reversed())
+                    eveningCategory.dynamicList("taskList").append(objectsIn: eveningList.reversed())
+                    nightCategory.dynamicList("taskList").append(objectsIn: nightList.reversed())
+                    allCategory.dynamicList("taskList").append(objectsIn: allList.reversed())
                 }
                 
                 if oldSchemaVersion > 25, oldSchemaVersion <= 26 {
@@ -513,6 +536,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             AppDelegate.syncEngine = SyncEngine(objects: [
                 SyncObject<Task>(),
                 SyncObject<Options>(),
+                SyncObject<TaskCategory>(),
+                SyncObject<RoutinesPlus>(),
             ], databaseScope: .private)
         } else {
             printDebug("Disabling cloud syncEngine")

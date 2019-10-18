@@ -123,8 +123,11 @@ import RealmSwift
                         self.originalSegment = segment
                         self.repeats = repeats
                         self.notes = notes
-                        removeTaskFromCategoryList(segment: previousSegment)
-                        TaskCategory.returnTaskCategory(segment).taskList.append(self)
+                        //Maintain position in list if segment has not changed
+                        if previousSegment != segment {
+                            removeTaskFromCategoryList(segment: previousSegment)
+                            TaskCategory.returnTaskCategory(segment).taskList.append(self)
+                        }
                     }
                 } catch {
                     fatalError("Error updating item: \(error)")
@@ -185,12 +188,14 @@ import RealmSwift
                     itemsToSoftDelete.forEach { item in
                         item.isDeleted = true
                         item.removeTaskFromCategoryList(segment: item.segment)
+                        item.removeTaskFromCategoryList(segment: CategorySelections.All.rawValue)
                     }
                     itemsToComplete.forEach { item in
                         item.segment = item.originalSegment
                         item.completeUntil = Date().startOfNextDay
                         item.dateModified = Date()
-                        item.removeTaskFromCategoryList(segment: item.segment)
+                        //Move item to bottom
+                        item.moveTaskInList(task: item, categories: nil, toIndex: nil)
                     }
                     try realm.commitWrite()
                 } catch {
