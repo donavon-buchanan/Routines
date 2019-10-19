@@ -53,6 +53,10 @@ struct NotificationHandler {
     }
 
     func createNewNotification(forItem item: Task, function: String = #function) {
+        guard Options.getSegmentNotification(segment: item.segment) else { 
+            self.removeNotifications(withIdentifiers: [item.uuidString])
+            return
+        }
         debugPrint(#function + "Called by \(function)")
         checkNotificationPermission()
 
@@ -157,7 +161,9 @@ struct NotificationHandler {
         DispatchQueue.main.async {
             items.forEach { item in
                 if let item = item {
-                    if !item.isDeleted {
+                    if !Options.getSegmentNotification(segment: item.segment) {
+                        self.removeNotifications(withIdentifiers: [item.uuidString])
+                    } else if !item.isDeleted {
                         debugPrint("Updating Notification")
                         self.createNewNotification(forItem: item)
                     } else {

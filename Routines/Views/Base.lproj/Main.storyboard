@@ -1595,85 +1595,10 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection headerTitle="Advanced" id="2LE-Iq-fqA" userLabel="Routines+">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="routinesPlusCell" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="plusCell" id="hbh-VZ-ZBu" userLabel="syncCell">
-                                        <rect key="frame" x="0.0" y="518.66666412353516" width="375" height="64"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hbh-VZ-ZBu" id="EUE-Da-TdW">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="TJi-e8-DUN">
-                                                    <rect key="frame" x="16" y="11" width="343" height="42"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iCloud Sync" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VCc-OP-gnR" userLabel="Cloud Sync">
-                                                            <rect key="frame" x="0.0" y="10.999999999999998" width="171.66666666666666" height="20.333333333333329"/>
-                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                            <nil key="textColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MGB-Cp-D5F">
-                                                            <rect key="frame" x="294" y="5.6666666666666679" width="51" height="31.000000000000004"/>
-                                                            <connections>
-                                                                <action selector="cloudSyncSwitchToggled:" destination="a3q-M5-d7t" eventType="valueChanged" id="WeW-ad-e0s"/>
-                                                            </connections>
-                                                        </switch>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="TJi-e8-DUN" firstAttribute="leading" secondItem="EUE-Da-TdW" secondAttribute="leadingMargin" id="bVg-QO-Cs7"/>
-                                                <constraint firstItem="TJi-e8-DUN" firstAttribute="top" secondItem="EUE-Da-TdW" secondAttribute="topMargin" id="cRN-0n-TrJ"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="TJi-e8-DUN" secondAttribute="bottom" id="rQm-Ix-48U"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="TJi-e8-DUN" secondAttribute="trailing" id="vaT-GY-qOp"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="settingsUpcomingCell" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="upcomingCell" id="HmU-m9-qHa">
-                                        <rect key="frame" x="0.0" y="582.66666412353516" width="375" height="64"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HmU-m9-qHa" id="mwN-kF-QID">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="O5i-hI-S7J">
-                                                    <rect key="frame" x="16" y="11" width="343" height="42"/>
-                                                    <subviews>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Za9-i2-Egb">
-                                                            <rect key="frame" x="0.0" y="10.999999999999998" width="294" height="20.333333333333329"/>
-                                                            <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="showUpcomingLabel" text="Show Upcoming Tasks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t6l-Ww-83R">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="294" height="20.333333333333332"/>
-                                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                                    <nil key="textColor"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                            </subviews>
-                                                        </stackView>
-                                                        <switch opaque="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" restorationIdentifier="showUpcomingSwitch" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iPw-1T-UVh">
-                                                            <rect key="frame" x="294" y="5.6666666666666679" width="51" height="31.000000000000004"/>
-                                                            <connections>
-                                                                <action selector="upcomingTasksSwitchToggled:" destination="a3q-M5-d7t" eventType="valueChanged" id="UGv-0G-5dX"/>
-                                                            </connections>
-                                                        </switch>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="O5i-hI-S7J" secondAttribute="trailing" id="BQ3-7I-ibH"/>
-                                                <constraint firstItem="O5i-hI-S7J" firstAttribute="top" secondItem="mwN-kF-QID" secondAttribute="topMargin" id="eeL-9F-Ba1"/>
-                                                <constraint firstItem="O5i-hI-S7J" firstAttribute="leading" secondItem="mwN-kF-QID" secondAttribute="leadingMargin" id="pcC-pR-XLF"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="O5i-hI-S7J" secondAttribute="bottom" id="shd-WN-aCZ"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
                             <tableViewSection headerTitle="About" id="Mh0-Xn-pCD">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AboutCell" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="cell" id="JZL-NA-pX6">
-                                        <rect key="frame" x="0.0" y="702.66666412353516" width="375" height="64"/>
+                                        <rect key="frame" x="0.0" y="518.66666412353516" width="375" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JZL-NA-pX6" id="XeW-Nf-qRm">
                                             <rect key="frame" x="0.0" y="0.0" width="348" height="64"/>
@@ -1714,16 +1639,12 @@
                     <connections>
                         <outlet property="afternoonSubLabel" destination="TUo-1L-76t" id="72X-gF-7Mv"/>
                         <outlet property="afternoonSwitch" destination="ZmJ-rT-USa" id="VaE-y0-Ieg"/>
-                        <outlet property="cloudSyncLabel" destination="VCc-OP-gnR" id="GdX-ZO-8yk"/>
-                        <outlet property="cloudSyncSwitch" destination="MGB-Cp-D5F" id="l6T-hF-5na"/>
                         <outlet property="eveningSubLabel" destination="Kl5-0v-AiW" id="ezH-w5-U1V"/>
                         <outlet property="eveningSwitch" destination="3B4-sy-Lml" id="850-BD-9q6"/>
                         <outlet property="morningSubLabel" destination="x3y-qH-YXd" id="Z4P-95-oqd"/>
                         <outlet property="morningSwitch" destination="sr5-g1-2Wx" id="fxs-kv-RAv"/>
                         <outlet property="nightSubLabel" destination="RBy-Vs-22B" id="vo0-6e-R9I"/>
                         <outlet property="nightSwitch" destination="6Be-Gy-fuV" id="zOC-H7-Hsz"/>
-                        <outlet property="upcomingTasksCellLabel" destination="t6l-Ww-83R" id="ToD-IU-vKA"/>
-                        <outlet property="upcomingTasksSwitch" destination="iPw-1T-UVh" id="7ps-IT-CBX"/>
                         <outletCollection property="cellLabels" destination="X1n-I8-wot" collectionClass="NSMutableArray" id="UWm-Ts-c4c"/>
                         <outletCollection property="cellLabels" destination="t8n-qX-FiY" collectionClass="NSMutableArray" id="try-qJ-RZM"/>
                         <outletCollection property="cellLabels" destination="CQu-dM-fZe" collectionClass="NSMutableArray" id="uox-s2-yc2"/>
@@ -1734,10 +1655,6 @@
                         <outletCollection property="switches" destination="ZmJ-rT-USa" collectionClass="NSMutableArray" id="UZ9-EH-5M4"/>
                         <outletCollection property="switches" destination="3B4-sy-Lml" collectionClass="NSMutableArray" id="5kb-Ft-QDf"/>
                         <outletCollection property="switches" destination="6Be-Gy-fuV" collectionClass="NSMutableArray" id="NRV-5o-VAr"/>
-                        <outletCollection property="switches" destination="MGB-Cp-D5F" collectionClass="NSMutableArray" id="ZEK-rx-NwM"/>
-                        <outletCollection property="cellLabels" destination="VCc-OP-gnR" collectionClass="NSMutableArray" id="QpP-Ja-68K"/>
-                        <outletCollection property="cellLabels" destination="t6l-Ww-83R" collectionClass="NSMutableArray" id="Fwl-TR-ih7"/>
-                        <outletCollection property="switches" destination="iPw-1T-UVh" collectionClass="NSMutableArray" id="DuM-Ie-zNh"/>
                         <segue destination="1aL-IG-qEf" kind="unwind" identifier="unwindToTableViewController" unwindAction="unwindToTableViewControllerWithSegue:" id="hf9-Xq-OiU"/>
                     </connections>
                 </tableViewController>

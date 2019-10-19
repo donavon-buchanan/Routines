@@ -37,24 +37,24 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var eveningSubLabel: UILabel!
     @IBOutlet var nightSubLabel: UILabel!
 
-    // MARK: - Routines+
+    // MARK: - Advanced
 
-    @IBOutlet var cloudSyncLabel: UILabel!
-    @IBOutlet var cloudSyncSwitch: UISwitch!
-    @IBAction func cloudSyncSwitchToggled(_ sender: UISwitch) {
-        let realm = try! Realm()
-        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
-        routinesPlus?.setCloudSync(toggle: cloudSyncSwitch.isOn)
-        debugPrint("Cloud sync switch: \(sender.isOn)")
-    }
-
-    @IBOutlet var upcomingTasksCellLabel: UILabel!
-//    @IBOutlet var upcomingTasksCellStatusLabel: UILabel!
-    @IBOutlet var upcomingTasksSwitch: UISwitch!
-    @IBAction func upcomingTasksSwitchToggled(_ sender: UISwitch) {
-        RoutinesPlus.setUpcomingTasks(sender.isOn)
-        debugPrint("Upcoming tasks switch: \(sender.isOn)")
-    }
+//    @IBOutlet var cloudSyncLabel: UILabel!
+//    @IBOutlet var cloudSyncSwitch: UISwitch!
+//    @IBAction func cloudSyncSwitchToggled(_ sender: UISwitch) {
+//        let realm = try! Realm()
+//        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
+//        routinesPlus?.setCloudSync(toggle: cloudSyncSwitch.isOn)
+//        debugPrint("Cloud sync switch: \(sender.isOn)")
+//    }
+//
+//    @IBOutlet var upcomingTasksCellLabel: UILabel!
+////    @IBOutlet var upcomingTasksCellStatusLabel: UILabel!
+//    @IBOutlet var upcomingTasksSwitch: UISwitch!
+//    @IBAction func upcomingTasksSwitchToggled(_ sender: UISwitch) {
+//        RoutinesPlus.setUpcomingTasks(sender.isOn)
+//        debugPrint("Upcoming tasks switch: \(sender.isOn)")
+//    }
 
     // MARK: Automatic Dark Mode
 
@@ -74,15 +74,23 @@ class OptionsTableViewController: UITableViewController {
         switch sender.tag {
         case 1:
             Options.setSegmentNotification(segment: 1, bool: sender.isOn)
+            let items = TaskCategory.returnTaskCategory(sender.tag).taskList
+            notificationHandler.batchModifyNotifications(items: Array(items))
         // print("Afternoon Switch Toggled \(sender.isOn)")
         case 2:
             Options.setSegmentNotification(segment: 2, bool: sender.isOn)
+            let items = TaskCategory.returnTaskCategory(sender.tag).taskList
+            notificationHandler.batchModifyNotifications(items: Array(items))
         // print("Evening Switch Toggled \(sender.isOn)")
         case 3:
             Options.setSegmentNotification(segment: 3, bool: sender.isOn)
+            let items = TaskCategory.returnTaskCategory(sender.tag).taskList
+            notificationHandler.batchModifyNotifications(items: Array(items))
         // print("Night Switch Toggled \(sender.isOn)")
         default:
             Options.setSegmentNotification(segment: 0, bool: sender.isOn)
+            let items = TaskCategory.returnTaskCategory(sender.tag).taskList
+            notificationHandler.batchModifyNotifications(items: Array(items))
             // print("Morning Switch Toggled \(sender.isOn)")
         }
     }
@@ -95,9 +103,9 @@ class OptionsTableViewController: UITableViewController {
 
     // MARK: Task Priorities
 
-    @IBOutlet var taskPrioritiesLabel: UILabel!
-    @IBOutlet var taskPrioritiesStatusLabel: UILabel!
-    @IBOutlet var taskPrioritiesCell: UITableViewCell!
+//    @IBOutlet var taskPrioritiesLabel: UILabel!
+//    @IBOutlet var taskPrioritiesStatusLabel: UILabel!
+//    @IBOutlet var taskPrioritiesCell: UITableViewCell!
 
     // MARK: Unlock and Restore Purchase
 
@@ -179,6 +187,8 @@ class OptionsTableViewController: UITableViewController {
                 haptic.impactOccurred()
                 // The next line should not be necessary. iOS 13 bug/regression
                 Options.setSegmentNotification(segment: 1, bool: afternoonSwitch.isOn)
+                let items = TaskCategory.returnTaskCategory(1).taskList
+                notificationHandler.batchModifyNotifications(items: Array(items))
             case 2:
                 // print("Tapped Evening Cell")
                 let isOn = !eveningSwitch.isOn
@@ -186,6 +196,8 @@ class OptionsTableViewController: UITableViewController {
                 haptic.impactOccurred()
                 // The next line should not be necessary. iOS 13 bug/regression
                 Options.setSegmentNotification(segment: 2, bool: eveningSwitch.isOn)
+                let items = TaskCategory.returnTaskCategory(2).taskList
+                notificationHandler.batchModifyNotifications(items: Array(items))
             case 3:
                 // print("Tapped Night Cell")
                 let isOn = !nightSwitch.isOn
@@ -193,6 +205,8 @@ class OptionsTableViewController: UITableViewController {
                 haptic.impactOccurred()
                 // The next line should not be necessary. iOS 13 bug/regression
                 Options.setSegmentNotification(segment: 3, bool: nightSwitch.isOn)
+                let items = TaskCategory.returnTaskCategory(3).taskList
+                notificationHandler.batchModifyNotifications(items: Array(items))
             default:
                 // print("Tapped Morning Cell")
                 let isOn = !morningSwitch.isOn
@@ -200,24 +214,8 @@ class OptionsTableViewController: UITableViewController {
                 haptic.impactOccurred()
                 // The next line should not be necessary. iOS 13 bug/regression
                 Options.setSegmentNotification(segment: 0, bool: morningSwitch.isOn)
-            }
-        case 2:
-            switch indexPath.row {
-            case 0:
-                debugPrint("\(#function) - cloudSyncSwitch.isEnabled")
-                cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
-                haptic.impactOccurred()
-                // The next line should not be necessary. iOS 13 bug/regression
-                let realm = try! Realm()
-                let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
-                routinesPlus?.setCloudSync(toggle: cloudSyncSwitch.isOn)
-            case 1:
-                upcomingTasksSwitch.setOn(!upcomingTasksSwitch.isOn, animated: true)
-                haptic.impactOccurred()
-                // The next line should not be necessary. iOS 13 bug/regression
-                RoutinesPlus.setUpcomingTasks(upcomingTasksSwitch.isOn)
-            default:
-                break
+                let items = TaskCategory.returnTaskCategory(0).taskList
+                notificationHandler.batchModifyNotifications(items: Array(items))
             }
         default:
             debugPrint("\(#function) - Default case triggered")
@@ -241,10 +239,10 @@ class OptionsTableViewController: UITableViewController {
         eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: animated)
         nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: animated)
         
-        let realm = try! Realm()
-        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
+//        let realm = try! Realm()
+//        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
 
-        cloudSyncSwitch.setOn(routinesPlus?.getCloudSync() ?? false, animated: animated)
+//        cloudSyncSwitch.setOn(routinesPlus?.getCloudSync() ?? false, animated: animated)
 //        cloudSyncSwitch.isEnabled = RoutinesPlus.getPurchasedStatus()
 
 //        darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: animated)
@@ -260,7 +258,7 @@ class OptionsTableViewController: UITableViewController {
 //        }
 
 //        taskPrioritiesLabel.theme_textColor = GlobalPicker.cellTextColors
-        upcomingTasksSwitch.setOn(RoutinesPlus.getShowUpcomingTasks(), animated: animated)
+//        upcomingTasksSwitch.setOn(RoutinesPlus.getShowUpcomingTasks(), animated: animated)
 
 //        unlockButton.layer.masksToBounds = true
 //        unlockButton.layer.cornerRadius = 12
