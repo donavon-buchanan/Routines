@@ -7,7 +7,7 @@
 //
 
 import RealmSwift
-import SwiftMessages
+//import SwiftMessages
 // import SwiftTheme
 import UIKit
 import UserNotifications
@@ -149,7 +149,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     fileprivate func setEditing() {
         tableView.setEditing(true, animated: true)
-        let clearButton = UIBarButtonItem(title: "Clear All", style: .plain, target: self, action: #selector(showClearAlert))
+        let clearButton = UIBarButtonItem(title: "Clear Tasks", style: .plain, target: self, action: #selector(showClearAlert))
         navigationItem.leftBarButtonItems = [clearButton]
         let trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteSelectedAlert))
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(endEdit))
@@ -543,7 +543,34 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     @objc func showClearAlert() {
-        showAlert(title: "Are you sure?", body: "This will mark all the tasks shown as completed. Repeating tasks will still appear again tomorrow.")
+//        showAlert(title: "Are you sure?", body: "This will mark all the tasks shown as completed. Repeating tasks will still appear again tomorrow.")
+        let action = UIAlertAction(title: "Confirm", style: .destructive) { (action) in
+            if let selectedCount = self.tableView.indexPathsForSelectedRows?.count {
+                switch selectedCount {
+                case 0:
+                    self.clearAll()
+                default:
+                    self.completeSelectedRows()
+                }
+            } else {
+                self.clearAll()
+            }
+        }
+        var body: String {
+            if let selectedCount = self.tableView.indexPathsForSelectedRows?.count {
+                switch selectedCount {
+                case 0:
+                    return "Are you sure you want to clear all tasks shown?"
+                case 1:
+                    return "Are you sure you want to clear the selected task?"
+                default:
+                    return "Are you sure you want to clear \(selectedCount) selected tasks?"
+                }
+            } else {
+                return "Are you sure you want to clear all tasks shown?"
+            }
+        }
+        showStandardAlert(title: "Clear Tasks", body: body, action: action)
     }
 
     @objc private func clearAll() {
@@ -558,6 +585,51 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         endEdit()
         // resetTableView()
         // changeTabBar(hidden: false, animated: true)
+    }
+    
+    func completeSelectedRows() {
+        var itemCount: Int {
+            if let items = items {
+                return items.count
+            } else {
+                return 0
+            }
+        }
+        var selectedCount: Int {
+            if let selectedPaths = tableView.indexPathsForSelectedRows {
+                return selectedPaths.count
+            } else {
+                return 0
+            }
+        }
+        
+        var itemsToComplete: [Task] = []
+        
+        if selectedCount != 0 {
+            if let indexPaths = self.tableView.indexPathsForSelectedRows {
+                var itemArray: [Task] = []
+                indexPaths.forEach { indexPath in
+                    // The index paths are static during enumeration, but the item indexes are not
+                    // Add them to an array first, delete only what's in the array, and then update the table UI
+                    if let itemAtIndex = items?[indexPath.row] {
+                        itemArray.append(itemAtIndex)
+                    }
+                }
+                
+                itemArray.forEach { item in
+                    itemsToComplete.append(item)
+                }
+                Task.batchComplete(itemArray: itemsToComplete)
+            }
+        } else if selectedCount == 0, itemCount != 0 {
+            items?.forEach { item in
+                itemsToComplete.append(item)
+            }
+            Task.batchComplete(itemArray: itemsToComplete)
+            endEdit()
+            resetTableView()
+            changeTabBar(hidden: false, animated: true)
+        }
     }
 
     // TODO: Do this for completing items too
@@ -604,8 +676,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             resetTableView()
             changeTabBar(hidden: false, animated: true)
         }
-
-        //        updateBadge()
     }
 
     // MARK: - Navigation
@@ -746,19 +816,12 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     func loadItemsForSegment(segment: Int) {
         debugPrint("loading items for segment \(segment)")
         shouldAllowRearranging = true
-        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
-            autoreleasepool {
-//                let realm = try! Realm()
-                let taskCategory = TaskCategory.returnTaskCategory(segment)
-                if RoutinesPlus.getShowUpcomingTasks() {
-                    self.items = taskCategory.taskList//.filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "completeUntil", ascending: true)
-                } else {
-                    self.items = taskCategory.taskList//.filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
-                }
-            }
+        let taskCategory = TaskCategory.returnTaskCategory(segment)
+        if RoutinesPlus.getShowUpcomingTasks() {
+            self.items = taskCategory.taskList//.filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "completeUntil", ascending: true)
+        } else {
+            self.items = taskCategory.taskList//.filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
         }
-        // For now it has to be like this
-        // Otherwise, items get potentially loaded into cells they should or that don't exist and crash
         observeItems()
     }
 
@@ -766,13 +829,30 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         debugPrint("loading all items")
         shouldAllowRearranging = false
         // Sort by segment to put in order of the day
-        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
-            }
+        let realm = try! Realm()
+        let taskList = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
+        let mlist = TaskCategory.returnTaskCategory(CategorySelections.Morning.rawValue).taskList
+        let alist = TaskCategory.returnTaskCategory(CategorySelections.Afternoon.rawValue).taskList
+        let elist = TaskCategory.returnTaskCategory(CategorySelections.Evening.rawValue).taskList
+        let nlist = TaskCategory.returnTaskCategory(CategorySelections.Night.rawValue).taskList
+        do {
+                //Prevents notification chaos by using beginWrite
+                realm.beginWrite()
+                let tasks = taskList.sorted(byKeyPath: "segment", ascending: false)
+                debugPrint("tasks: " + String(describing: tasks.count))
+                taskList.removeAll()
+                taskList.append(objectsIn: mlist)
+                taskList.append(objectsIn: alist)
+                taskList.append(objectsIn: elist)
+                taskList.append(objectsIn: nlist)
+                debugPrint("tasksList: " + String(describing: taskList.count))
+                
+                try realm.commitWrite()
+        } catch {
+            fatalError("Failed to sort allList")
         }
-        // For now it has to be like this
-        // Otherwise, items get potentially loaded into cells they should or that don't exist and crash
+        items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
+        
         observeItems()
     }
 
@@ -940,41 +1020,41 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         present(alertController, animated: true, completion: nil)
     }
 
-    func showAlert(title: String, body: String) {
-        var config = SwiftMessages.Config()
-        config.presentationStyle = .center
-        config.duration = .forever
-
-        let alert = MessageView.viewFromNib(layout: .cardView)
-        let icon = "⁉️"
-        alert.configureTheme(.info, iconStyle: .default)
-        alert.configureContent(title: title, body: body, iconText: icon)
-        alert.titleLabel?.textColor = .black
-        alert.bodyLabel?.textColor = .black
-
-        alert.button?.setTitleColor(.white, for: .normal)
-        alert.button?.setTitle("Do it!", for: .normal)
-        alert.button?.addTarget(self, action: #selector(clearAll), for: .touchUpInside)
-
-        alert.buttonTapHandler = { _ in SwiftMessages.hide() }
-
-        // Increase the external margin around the card. In general, the effect of this setting
-        // depends on how the given layout is constrained to the layout margins.
-        alert.layoutMarginAdditions = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-
-        // Reduce the corner radius (applicable to layouts featuring rounded corners).
-        (alert.backgroundView as? CornerRoundingView)?.cornerRadius = 10
-
-//        if Options.getDarkModeStatus() {
-//            config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
-//            config.dimModeAccessibilityLabel = "Dismiss Warning"
-//        } else {
-//            config.dimMode = .blur(style: .regular, alpha: 1, interactive: true)
-//            config.dimModeAccessibilityLabel = "Dismiss Warning"
-//        }
-
-        SwiftMessages.show(config: config, view: alert)
-    }
+//    func showAlert(title: String, body: String) {
+//        var config = SwiftMessages.Config()
+//        config.presentationStyle = .center
+//        config.duration = .forever
+//
+//        let alert = MessageView.viewFromNib(layout: .cardView)
+//        let icon = "⁉️"
+//        alert.configureTheme(.info, iconStyle: .default)
+//        alert.configureContent(title: title, body: body, iconText: icon)
+//        alert.titleLabel?.textColor = .black
+//        alert.bodyLabel?.textColor = .black
+//
+//        alert.button?.setTitleColor(.white, for: .normal)
+//        alert.button?.setTitle("Do it!", for: .normal)
+//        alert.button?.addTarget(self, action: #selector(clearAll), for: .touchUpInside)
+//
+//        alert.buttonTapHandler = { _ in SwiftMessages.hide() }
+//
+//        // Increase the external margin around the card. In general, the effect of this setting
+//        // depends on how the given layout is constrained to the layout margins.
+//        alert.layoutMarginAdditions = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
+//
+//        // Reduce the corner radius (applicable to layouts featuring rounded corners).
+//        (alert.backgroundView as? CornerRoundingView)?.cornerRadius = 10
+//
+////        if Options.getDarkModeStatus() {
+////            config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
+////            config.dimModeAccessibilityLabel = "Dismiss Warning"
+////        } else {
+////            config.dimMode = .blur(style: .regular, alpha: 1, interactive: true)
+////            config.dimModeAccessibilityLabel = "Dismiss Warning"
+////        }
+//
+//        SwiftMessages.show(config: config, view: alert)
+//    }
 
     func showStandardAlert(title: String, body: String, action: UIAlertAction?) {
         let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)

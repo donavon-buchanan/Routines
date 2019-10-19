@@ -6,13 +6,12 @@
 //  Copyright © 2019 Donavon Buchanan. All rights reserved.
 //
 
-import Foundation
-import IceCream
+import UIKit
 import RealmSwift
 
 @objcMembers class RoutinesPlus: Object {
     static let realmDispatchQueueLabel: String = "background"
-    static let cloudSyncKey: String = "cloudSync"
+    let cloudSyncKey: String = "cloudSync"
 //    static let expiryDateKey: String = "expiryDate"
 
     dynamic var routinesPlusKey = UUID().uuidString
@@ -48,7 +47,7 @@ import RealmSwift
         }
     }
 
-    static func getCloudSync() -> Bool {
+    func getCloudSync() -> Bool {
         #if targetEnvironment(simulator) || DEBUG
             return true
         #else
@@ -56,10 +55,11 @@ import RealmSwift
         #endif
     }
 
-    static func setCloudSync(toggle: Bool) {
+    func setCloudSync(toggle: Bool) {
         UserDefaults.standard.set(toggle, forKey: cloudSyncKey)
-
-        AppDelegate.setSync()
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.setSync()
+        }
     }
 
 //    static func setExpiryDate(date: Date) {
@@ -130,14 +130,14 @@ import RealmSwift
 //    }
 }
 
-extension RoutinesPlus: CKRecordConvertible {
-    var isDeleted: Bool {
-        false
-    }
-
-    // Yep, leave it blank!
-}
-
-extension RoutinesPlus: CKRecordRecoverable {
-    // Leave it blank, too.
-}
+//extension RoutinesPlus: CKRecordConvertible {
+//    var isDeleted: Bool {
+//        false
+//    }
+//
+//    // Yep, leave it blank!
+//}
+//
+//extension RoutinesPlus: CKRecordRecoverable {
+//    // Leave it blank, too.
+//}

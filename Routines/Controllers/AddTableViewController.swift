@@ -7,7 +7,7 @@
 //
 
 import RealmSwift
-import SwiftMessages
+//import SwiftMessages
 import UIKit
 import UserNotifications
 
@@ -82,21 +82,25 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     @objc func setSegmentZero() {
         segmentSelection.selectedSegmentIndex = 0
 //        TaskTableViewController.setAppearance(forSegment: 0)
+        segmentSelection.selectedSegmentTintColor = UIColor(segment: segmentSelection.selectedSegmentIndex)
     }
 
     @objc func setSegmentOne() {
         segmentSelection.selectedSegmentIndex = 1
 //        TaskTableViewController.setAppearance(forSegment: 1)
+        segmentSelection.selectedSegmentTintColor = UIColor(segment: segmentSelection.selectedSegmentIndex)
     }
 
     @objc func setSegmentTwo() {
         segmentSelection.selectedSegmentIndex = 2
 //        TaskTableViewController.setAppearance(forSegment: 2)
+        segmentSelection.selectedSegmentTintColor = UIColor(segment: segmentSelection.selectedSegmentIndex)
     }
 
     @objc func setSegmentThree() {
         segmentSelection.selectedSegmentIndex = 3
 //        TaskTableViewController.setAppearance(forSegment: 3)
+        segmentSelection.selectedSegmentTintColor = UIColor(segment: segmentSelection.selectedSegmentIndex)
     }
 
     @IBOutlet var repeatDailyLabel: UILabel!
@@ -342,14 +346,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     // MARK: - Banners
 
-    func showBanner(title: String?) {
-        SwiftMessages.pauseBetweenMessages = 0
-        SwiftMessages.hideAll()
-        SwiftMessages.show { () -> UIView in
-            let banner = MessageView.viewFromNib(layout: .statusLine)
-            banner.configureTheme(.success)
-            banner.configureContent(title: "", body: title ?? "Saved!")
-            return banner
-        }
-    }
+//    func showBanner(title: String?) {
+//        SwiftMessages.pauseBetweenMessages = 0
+//        SwiftMessages.hideAll()
+//        SwiftMessages.show { () -> UIView in
+//            let banner = MessageView.viewFromNib(layout: .statusLine)
+//            banner.configureTheme(.success)
+//            banner.configureContent(title: "", body: title ?? "Saved!")
+//            return banner
+//        }
+//    }
 }

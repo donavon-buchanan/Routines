@@ -42,7 +42,9 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var cloudSyncLabel: UILabel!
     @IBOutlet var cloudSyncSwitch: UISwitch!
     @IBAction func cloudSyncSwitchToggled(_ sender: UISwitch) {
-        RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
+        let realm = try! Realm()
+        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
+        routinesPlus?.setCloudSync(toggle: cloudSyncSwitch.isOn)
         debugPrint("Cloud sync switch: \(sender.isOn)")
     }
 
@@ -206,7 +208,9 @@ class OptionsTableViewController: UITableViewController {
                 cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
                 haptic.impactOccurred()
                 // The next line should not be necessary. iOS 13 bug/regression
-                RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
+                let realm = try! Realm()
+                let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
+                routinesPlus?.setCloudSync(toggle: cloudSyncSwitch.isOn)
             case 1:
                 upcomingTasksSwitch.setOn(!upcomingTasksSwitch.isOn, animated: true)
                 haptic.impactOccurred()
@@ -236,8 +240,11 @@ class OptionsTableViewController: UITableViewController {
         afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: animated)
         eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: animated)
         nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: animated)
+        
+        let realm = try! Realm()
+        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
 
-        cloudSyncSwitch.setOn(RoutinesPlus.getCloudSync(), animated: animated)
+        cloudSyncSwitch.setOn(routinesPlus?.getCloudSync() ?? false, animated: animated)
 //        cloudSyncSwitch.isEnabled = RoutinesPlus.getPurchasedStatus()
 
 //        darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: animated)

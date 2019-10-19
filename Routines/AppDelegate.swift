@@ -6,11 +6,9 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-import CloudKit
-import IceCream
+//import CloudKit
+//import IceCream
 import RealmSwift
-// import SwiftTheme
-// import SwiftyStoreKit
 import UIKit
 import UserNotifications
 
@@ -32,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var shortcutItemToProcess: UIApplicationShortcutItem?
 
-    static var syncEngine: SyncEngine?
+//    var syncEngine: SyncEngine?
 
     func application(_: UIApplication, supportedInterfaceOrientationsFor _: UIWindow?) -> UIInterfaceOrientationMask {
         switch UIDevice.current.userInterfaceIdiom {
@@ -89,6 +87,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         debugPrint("\(#function) - Start")
 
         // Override point for customization after application launch.
+        
+        self.setSync()
 
         application.registerForRemoteNotifications()
 
@@ -133,11 +133,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
 
-    func application(_: UIApplication, performFetchWithCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
+    func application(_: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         observeItems()
         observeOptions()
 
-//        AppDelegate.syncEngine?.pull(completionHandler: { error in
+//        self.syncEngine?.pull(completionHandler: { error in
 //            if let error = error {
 //                debugPrint("Error with sync pull: \(error)")
 //                completionHandler(.failed)
@@ -147,18 +147,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        })
     }
 
-    func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
-        let dict = userInfo as! [String: NSObject]
-        let notification = CKNotification(fromRemoteNotificationDictionary: dict)
-
-        if let subscriptionID = notification?.subscriptionID, IceCreamSubscription.allIDs.contains(subscriptionID) {
-            NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
-        }
+    func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+//        let dict = userInfo as! [String: NSObject]
+//        let notification = CKNotification(fromRemoteNotificationDictionary: dict)
+//
+//        if let subscriptionID = notification?.subscriptionID, IceCreamSubscription.allIDs.contains(subscriptionID) {
+//            NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
+//        }
 
         observeItems()
         observeOptions()
 
-//        AppDelegate.syncEngine?.pull(completionHandler: { error in
+//        self.syncEngine?.pull(completionHandler: { error in
 //            if let error = error {
 //                debugPrint("Error with sync pull: \(error)")
 //                completionHandler(.failed)
@@ -176,11 +176,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
 //        AppDelegate.automaticDarkModeTimer.stopTimer()
 
-//        AppDelegate.syncEngine?.pushAll()
-
-        func applicationWillResignActive(_: UIApplication) {
-            //
-        }
+//        self.syncEngine?.pushAll()
 
         debugPrint("\(#function) - End")
     }
@@ -225,7 +221,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationDidBecomeActive(_: UIApplication) {
         debugPrint("\(#function) - Start")
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        AppDelegate.setSync()
+        self.setSync()
 
         if let shortcutItem = shortcutItemToProcess {
             if shortcutItem.type == "AddAction" {
@@ -525,31 +521,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         item.snooze()
     }
 
-    static func setSync() {
+    func setSync() {
         debugPrint(#function)
-        if RoutinesPlus.getCloudSync() {
-            // Setting this each time was causing the list of items to trigger a change in observation tokens
-            // Only needs to be set if it isn't already
-            guard AppDelegate.syncEngine == nil else { return }
-            debugPrint("Enabling cloud syncEngine")
-
-            AppDelegate.syncEngine = SyncEngine(objects: [
+//        let realm = try! Realm()
+//        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
+//        if routinesPlus?.getCloudSync() ?? false {
+//            // Setting this each time was causing the list of items to trigger a change in observation tokens
+//            // Only needs to be set if it isn't already
+//            guard self.syncEngine == nil else { return }
+//            debugPrint("Enabling cloud syncEngine")
+//
+//            self.syncEngine = SyncEngine(objects: [
+//                SyncObject<Options>(),
+//                SyncObject<RoutinesPlus>(),
 //                SyncObject<Task>(),
-                SyncObject<Options>(),
-                SyncObject<TaskCategory>(),
-                SyncObject<RoutinesPlus>(),
-            ], databaseScope: .private)
-        } else {
-            debugPrint("Disabling cloud syncEngine")
-            AppDelegate.syncEngine = nil
-        }
+//                SyncObject<TaskCategory>(),
+//            ], databaseScope: .private)
+//            syncEngine?.setup()
+//        } else {
+//            debugPrint("Disabling cloud syncEngine")
+//            self.syncEngine = nil
+//        }
     }
 
     // MARK: - Update after Notifications
 
     var itemsToken: NotificationToken?
     var optionsToken: NotificationToken?
-    var items: Results<Task>?
+    var items: List<Task>?
     var options: Options?
 
     // TODO: This creates some redudancies with notification creation and deletion as handled by the Items class.
@@ -558,8 +557,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Observe Results Notifications
         guard itemsToken == nil else { return }
         let notificationHandler = NotificationHandler()
-        let realm = try! Realm()
-        items = realm.objects(Task.self)
+//        let realm = try! Realm()
+        items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
         // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
         // Observe Results Notifications
         itemsToken = items?.observe { (changes: RealmCollectionChange) in

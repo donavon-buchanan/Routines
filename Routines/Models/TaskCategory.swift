@@ -6,7 +6,7 @@
 //  Copyright © 2019 Donavon Buchanan. All rights reserved.
 //
 
-import IceCream
+//import IceCream
 import RealmSwift
 
 // Morning = 0
@@ -64,10 +64,10 @@ enum CategorySelections: Int {
     }
 }
 
-extension TaskCategory: CKRecordConvertible {
-    // Yep, leave it blank!
-}
-
-extension TaskCategory: CKRecordRecoverable {
-    // Leave it blank, too.
-}
+//extension TaskCategory: CKRecordConvertible {
+//    // Yep, leave it blank!
+//}
+//
+//extension TaskCategory: CKRecordRecoverable {
+//    // Leave it blank, too.
+//}

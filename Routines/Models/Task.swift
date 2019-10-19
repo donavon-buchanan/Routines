@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import IceCream
+//import IceCream
 import RealmSwift
 
 @objcMembers class Task: Object {
@@ -143,22 +143,35 @@ import RealmSwift
             notificationHanlder.removeNotifications(withIdentifiers: [self.uuidString])
         } else {
             debugPrint("marking completed until: \(Date().startOfNextDay)")
-            DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
-                autoreleasepool {
-                    let realm = try! Realm()
-                    do {
-                        try realm.write {
-                            self.segment = self.originalSegment
-                            self.completeUntil = Date().startOfNextDay
-                            self.dateModified = Date()
-                            //Move task to bottom of list
-                            self.moveTaskInList(task: self, categories: nil, toIndex: nil)
-                        }
-                    } catch {
-                        // print("failed to save completeUntil")
-                        fatalError("Error completing item: \(error)")
-                    }
+//            DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
+//                autoreleasepool {
+//                    let realm = try! Realm()
+//                    do {
+//                        try realm.write {
+//                            self.segment = self.originalSegment
+//                            self.completeUntil = Date().startOfNextDay
+//                            self.dateModified = Date()
+//                            //Move task to bottom of list
+//                            self.moveTaskInList(task: self, categories: nil, toIndex: nil)
+//                        }
+//                    } catch {
+//                        // print("failed to save completeUntil")
+//                        fatalError("Error completing item: \(error)")
+//                    }
+//                }
+//            }
+            let realm = try! Realm()
+            do {
+                try realm.write {
+                    self.segment = self.originalSegment
+                    self.completeUntil = Date().startOfNextDay
+                    self.dateModified = Date()
+                    //Move task to bottom of list
+                    self.moveTaskInList(task: self, categories: nil, toIndex: nil)
                 }
+            } catch {
+                // print("failed to save completeUntil")
+                fatalError("Error completing item: \(error)")
             }
             notificationHanlder.createNewNotification(forItem: self)
         }
@@ -184,12 +197,15 @@ import RealmSwift
                  */
                 let realm = try! Realm()
                 do {
+                    //Separate into two write transactions so the index is updated before trying to move tasks
                     realm.beginWrite()
                     itemsToSoftDelete.forEach { item in
                         item.isDeleted = true
                         item.removeTaskFromCategoryList(segment: item.segment)
                         item.removeTaskFromCategoryList(segment: CategorySelections.All.rawValue)
                     }
+                    try realm.commitWrite()
+                    realm.beginWrite()
                     itemsToComplete.forEach { item in
                         item.segment = item.originalSegment
                         item.completeUntil = Date().startOfNextDay
@@ -324,22 +340,33 @@ import RealmSwift
     }
 
     func snooze() {
-        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                do {
-                    try realm.write {
-                        self.dateModified = Date()
-                        moveTaskCategory(from: segment, to: snoozeTo())
-                        self.segment = snoozeTo()
-                    }
-                } catch {
-                    debugPrint("failed to snooze item")
-                }
+//        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                do {
+//                    try realm.write {
+//                        self.dateModified = Date()
+//                        moveTaskCategory(from: segment, to: snoozeTo())
+//                        self.segment = snoozeTo()
+//                    }
+//                } catch {
+//                    debugPrint("failed to snooze item")
+//                }
+//            }
+//
+//            
+//        }
+        let realm = try! Realm()
+        do {
+            try realm.write {
+                self.dateModified = Date()
+                moveTaskCategory(from: segment, to: snoozeTo())
+                self.segment = snoozeTo()
             }
-
-            notificationHanlder.createNewNotification(forItem: self)
+        } catch {
+            debugPrint("failed to snooze item")
         }
+        notificationHanlder.createNewNotification(forItem: self)
         debugPrint("Snoozing to \(segment). Original segment was \(originalSegment)")
     }
 
@@ -518,10 +545,10 @@ import RealmSwift
     }
 }
 
-extension Task: CKRecordConvertible {
-    // Yep, leave it blank!
-}
-
-extension Task: CKRecordRecoverable {
-    // Leave it blank, too.
-}
+//extension Task: CKRecordConvertible {
+//    // Yep, leave it blank!
+//}
+//
+//extension Task: CKRecordRecoverable {
+//    // Leave it blank, too.
+//}
