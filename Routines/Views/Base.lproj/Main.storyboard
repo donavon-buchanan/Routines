@@ -92,7 +92,6 @@
                         <connections>
                             <outlet property="dataSource" destination="e3v-kc-NWN" id="jIU-Fl-vbJ"/>
                             <outlet property="delegate" destination="e3v-kc-NWN" id="VaK-D5-ige"/>
-                            <outletCollection property="gestureRecognizers" destination="rSg-dh-f1f" appends="YES" id="AKs-cA-pSs"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="zZQ-20-1Ec">

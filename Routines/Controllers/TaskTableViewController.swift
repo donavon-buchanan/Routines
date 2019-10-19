@@ -149,30 +149,30 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     fileprivate func setEditing() {
         tableView.setEditing(true, animated: true)
-        let clearButton = UIBarButtonItem(title: "Clear Tasks", style: .plain, target: self, action: #selector(showClearAlert))
+        let clearButton = UIBarButtonItem(title: "Complete", style: .plain, target: self, action: #selector(showClearAlert))
         navigationItem.leftBarButtonItems = [clearButton]
         let trashButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteSelectedAlert))
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(endEdit))
         navigationItem.rightBarButtonItems = [doneButton, trashButton]
     }
 
-    @IBAction func longPressToEdit(_ sender: UILongPressGestureRecognizer) {
-        if sender.state == .began {
-            if let count = items?.count {
-                if count > 0 {
-                    if !tableView.isEditing {
-                        setEditing()
-                    } else {
-                        endEdit()
-                    }
-                } else {
-                    endEdit()
-                }
-            } else {
-                endEdit()
-            }
-        }
-    }
+//    @IBAction func longPressToEdit(_ sender: UILongPressGestureRecognizer) {
+//        if sender.state == .began {
+//            if let count = items?.count {
+//                if count > 0 {
+//                    if !tableView.isEditing {
+//                        setEditing()
+//                    } else {
+//                        endEdit()
+//                    }
+//                } else {
+//                    endEdit()
+//                }
+//            } else {
+//                endEdit()
+//            }
+//        }
+//    }
 
     @objc func endEdit() {
         tableView.setEditing(false, animated: true)
@@ -556,6 +556,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 self.clearAll()
             }
         }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
         var body: String {
             if let selectedCount = self.tableView.indexPathsForSelectedRows?.count {
                 switch selectedCount {
@@ -570,7 +573,10 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 return "Are you sure you want to clear all tasks shown?"
             }
         }
-        showStandardAlert(title: "Clear Tasks", body: body, action: action)
+        let alertController = UIAlertController(title: "Complete Tasks", message: body, preferredStyle: .alert)
+        alertController.addAction(cancel)
+        alertController.addAction(action)
+        self.present(alertController, animated: true, completion: nil)
     }
 
     @objc private func clearAll() {
