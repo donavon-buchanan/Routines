@@ -43,7 +43,7 @@ struct NotificationHandler {
             let itemSegment = item.segment
             // Only count the items who's segment is equal or greater than the current item
             // TODO: Maybe should match this against "originalSegment"?
-            let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList.filter("segment >= %@ AND completeUntil <= %@", itemSegment, item.completeUntil)//.sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
+            let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList.filter("segment >= %@ AND completeUntil <= %@", itemSegment, item.completeUntil) // .sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
             if let currentItemIndex = items.index(of: item) {
                 debugPrint("Item title: \(item.title!) at index: \(currentItemIndex)")
                 badgeCount = currentItemIndex + 1
@@ -55,8 +55,8 @@ struct NotificationHandler {
     }
 
     func createNewNotification(forItem item: Task, function: String = #function) {
-        guard Options.getSegmentNotification(segment: item.segment) else { 
-            self.removeNotifications(withIdentifiers: [item.uuidString])
+        guard Options.getSegmentNotification(segment: item.segment) else {
+            removeNotifications(withIdentifiers: [item.uuidString])
             return
         }
         debugPrint(#function + "Called by \(function)")
@@ -105,11 +105,11 @@ struct NotificationHandler {
 
     func returnNotificationTrigger(item: Task) -> UNCalendarNotificationTrigger {
         // debugPrint(#function + "Called by \(function)")
-        //The day component here is causing problems
+        // The day component here is causing problems
 //        let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.day, .hour, .minute, .second, .calendar], from: firstTriggerDate(forItem: item))
         let dateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: firstTriggerDate(forItem: item))
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: item.repeats)
-        
+
         return trigger
     }
 
@@ -233,7 +233,7 @@ struct NotificationHandler {
     func refreshAllNotifications(function: String = #function) {
         debugPrint(#function + "Called by \(function)")
 //        let realm = try! Realm()
-        let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList//.sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+        let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList // .sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
         batchModifyNotifications(items: items.map { $0 })
     }
 
@@ -249,18 +249,18 @@ struct NotificationHandler {
     }
 }
 
-//class UNNotificationTriggerWIthFirstTriggerDate: UNCalendarNotificationTrigger {
-//    
+// class UNNotificationTriggerWIthFirstTriggerDate: UNCalendarNotificationTrigger {
+//
 ////    private var nextTriggerDate: Date
 ////    private override var dateComponents: DateComponents
 ////    private override var repeats: Bool
 //    private var task: Task?
-//    
+//
 //    public convenience init(task: Task, dateComponents: DateComponents, repeats: Bool) {
 //        self.init(dateMatching: dateComponents, repeats: repeats)
 //        self.task = task
 //    }
-//    
+//
 //    override open func nextTriggerDate() -> Date? {
 //        if let task = task {
 //            if Date() > task.completeUntil {
@@ -272,7 +272,7 @@ struct NotificationHandler {
 //            }
 //        } else {
 //            debugPrint("Returning default next trigger date")
-//            return super.nextTriggerDate()   
+//            return super.nextTriggerDate()
 //        }
 //    }
-//}
+// }

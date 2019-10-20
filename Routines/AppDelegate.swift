@@ -6,8 +6,6 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-//import CloudKit
-//import IceCream
 import RealmSwift
 import UIKit
 import UserNotifications
@@ -87,8 +85,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         debugPrint("\(#function) - Start")
 
         // Override point for customization after application launch.
-        
-        self.setSync()
+
+        setSync()
 
         application.registerForRemoteNotifications()
 
@@ -133,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
 
-    func application(_: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    func application(_: UIApplication, performFetchWithCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
 //        observeItems()
 //        observeOptions()
 
@@ -147,7 +145,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        })
     }
 
-    func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    func application(_: UIApplication, didReceiveRemoteNotification _: [AnyHashable: Any], fetchCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
 //        let dict = userInfo as! [String: NSObject]
 //        let notification = CKNotification(fromRemoteNotificationDictionary: dict)
 //
@@ -191,7 +189,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 //        observeItems()
 //        observeOptions()
-        
 
         debugPrint("\(#function) - End")
     }
@@ -223,7 +220,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationDidBecomeActive(_: UIApplication) {
         debugPrint("\(#function) - Start")
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        self.setSync()
+        setSync()
 
         if let shortcutItem = shortcutItemToProcess {
             if shortcutItem.type == "AddAction" {
@@ -435,34 +432,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
 
                 if oldSchemaVersion >= 21, oldSchemaVersion <= 25 {
-                    //First, create the new category objects
+                    // First, create the new category objects
                     let morningCategory = migration.create("TaskCategory", value: TaskCategory(category: 0))
                     let afternoonCategory = migration.create("TaskCategory", value: TaskCategory(category: 1))
                     let eveningCategory = migration.create("TaskCategory", value: TaskCategory(category: 2))
                     let nightCategory = migration.create("TaskCategory", value: TaskCategory(category: 3))
                     let allCategory = migration.create("TaskCategory", value: TaskCategory(category: 4))
-                    
+
                     var morningList = [MigrationObject]()
                     var afternoonList = [MigrationObject]()
                     var eveningList = [MigrationObject]()
                     var nightList = [MigrationObject]()
                     var allList = [MigrationObject]()
-                    
+
                     migration.enumerateObjects(ofType: RoutinesPlus.className()) { _, _ in
-                        //auto migration
-                    }
-                    migration.enumerateObjects(ofType: Options.className()) { (_, _) in
                         // auto migration
                     }
-                    migration.enumerateObjects(ofType: "Items") { oldObject, newObject in
-                        //Create a new task from the old object
+                    migration.enumerateObjects(ofType: Options.className()) { _, _ in
+                        // auto migration
+                    }
+                    migration.enumerateObjects(ofType: "Items") { oldObject, _ in
+                        // Create a new task from the old object
                         let newTask = migration.create(Task.className(), value: oldObject!)
                         debugPrint("newTask: " + String(describing: newTask))
-                        /*  
-                        Based on the segment of that task, append it to the appropriate
-                        array of tasks associated with the categories above
-                        */
-                        switch (newTask["segment"] as! Int) {
+                        /*
+                         Based on the segment of that task, append it to the appropriate
+                         array of tasks associated with the categories above
+                         */
+                        switch newTask["segment"] as! Int {
                         case 1:
                             debugPrint("adding newTask to afternoon: " + String(describing: newTask))
                             afternoonList.append(newTask)
@@ -476,12 +473,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                             debugPrint("adding newTask to morning: " + String(describing: newTask))
                             morningList.append(newTask)
                         }
-                        //Also add each task to the array for allList
+                        // Also add each task to the array for allList
                         debugPrint("adding newTask to all: " + String(describing: newTask))
                         allList.append(newTask)
                     }
-                    
-                    //Finally, append sequence in reversed order to the category lists so it appears as the user previously had them sorted
+
+                    // Finally, append sequence in reversed order to the category lists so it appears as the user previously had them sorted
                     /*
                      Note: This didn't work during my initial testing, which worries me still. But after re-writing all of this, it seems fine.
                      Previously, it produced a ton of duplicate tasks, progressively getting worse as the enumeration continued.
@@ -492,10 +489,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     nightCategory.dynamicList("taskList").append(objectsIn: nightList.reversed())
                     allCategory.dynamicList("taskList").append(objectsIn: allList.reversed())
                 }
-                
+
                 if oldSchemaVersion > 25, oldSchemaVersion <= 26 {
-                    migration.enumerateObjects(ofType: "Task") { (_, _) in
-                        //auto
+                    migration.enumerateObjects(ofType: "Task") { _, _ in
+                        // auto
                     }
                 }
             }
@@ -559,7 +556,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        // Observe Results Notifications
 //        guard itemsToken == nil else { return }
 //        let notificationHandler = NotificationHandler()
-////        let realm = try! Realm()
+    ////        let realm = try! Realm()
 //        items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
 //        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
 //        // Observe Results Notifications

@@ -57,10 +57,10 @@ import RealmSwift
                 let realm = try! Realm()
                 do {
                     try realm.write {
-                        //realm.add(self)
+                        // realm.add(self)
                         TaskCategory.returnTaskCategory(self.segment).taskList.append(self)
-                        
-                        //This line adds all tasks to the "All" category object
+
+                        // This line adds all tasks to the "All" category object
                         TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList.append(self)
                     }
                 } catch {
@@ -70,17 +70,17 @@ import RealmSwift
         }
         notificationHanlder.createNewNotification(forItem: self)
     }
-    
-    //MUST be called from within a realm write operation
+
+    // MUST be called from within a realm write operation
     private func removeTaskFromCategoryList(segment: Int) {
         let previousCategoryList = TaskCategory.returnTaskCategory(segment).taskList
         if let index = previousCategoryList.index(of: self) {
             previousCategoryList.remove(at: index)
         }
     }
-    
-    //MUST be called from within a realm write operation
-    //This is probably overkill and potentially problematic doing a -1 count on an index that might already be 0
+
+    // MUST be called from within a realm write operation
+    // This is probably overkill and potentially problematic doing a -1 count on an index that might already be 0
     private func moveTaskInList(task: Task, categories: [Int]?, toIndex: Int?) {
         let taskPrimaryCategory = TaskCategory.returnTaskCategory(task.segment)
         let taskPrimaryCategoryIndex = taskPrimaryCategory.taskList.index(of: task)
@@ -92,7 +92,7 @@ import RealmSwift
         // Else, default to the task's primary (segment) category
         // toIndex should default to the last index of the list if not provided
         if let categories = categories {
-            categories.forEach { (category) in
+            categories.forEach { category in
                 let taskCategory = TaskCategory.returnTaskCategory(category)
                 let lastIndex = taskCategory.taskList.count - 1
                 if let taskCategoryIndex = taskCategory.taskList.index(of: task) {
@@ -122,7 +122,7 @@ import RealmSwift
                         self.originalSegment = segment
                         self.repeats = repeats
                         self.notes = notes
-                        //Maintain position in list if segment has not changed
+                        // Maintain position in list if segment has not changed
                         if previousSegment != segment {
                             removeTaskFromCategoryList(segment: previousSegment)
                             TaskCategory.returnTaskCategory(segment).taskList.append(self)
@@ -165,7 +165,7 @@ import RealmSwift
                     self.segment = self.originalSegment
                     self.completeUntil = Date().startOfNextDay
                     self.dateModified = Date()
-                    //Move task to bottom of list
+                    // Move task to bottom of list
                     self.moveTaskInList(task: self, categories: nil, toIndex: nil)
                 }
             } catch {
@@ -196,7 +196,7 @@ import RealmSwift
                  */
                 let realm = try! Realm()
                 do {
-                    //Separate into two write transactions so the index is updated before trying to move tasks
+                    // Separate into two write transactions so the index is updated before trying to move tasks
                     realm.beginWrite()
                     itemsToSoftDelete.forEach { item in
 //                        item.isDeleted = true
@@ -210,7 +210,7 @@ import RealmSwift
                         item.segment = item.originalSegment
                         item.completeUntil = Date().startOfNextDay
                         item.dateModified = Date()
-                        //Move item to bottom
+                        // Move item to bottom
                         item.moveTaskInList(task: item, categories: nil, toIndex: nil)
                     }
                     try realm.commitWrite()
@@ -334,8 +334,8 @@ import RealmSwift
 //        center.removePendingNotificationRequests(withIdentifiers: [uuidString])
 //        center.removePendingNotificationRequests(withIdentifiers: uuidStrings)
 //    }
-    
-    //MUST be called from within a realm write operation
+
+    // MUST be called from within a realm write operation
     private func moveTaskCategory(from: Int, to: Int) {
         removeTaskFromCategoryList(segment: from)
         TaskCategory.returnTaskCategory(to).taskList.append(self)
@@ -356,7 +356,7 @@ import RealmSwift
 //                }
 //            }
 //
-//            
+//
 //        }
         let realm = try! Realm()
         do {
@@ -393,7 +393,7 @@ import RealmSwift
                             moveTaskCategory(from: segment, to: 0)
                             self.segment = 0
                         default:
-                            moveTaskCategory(from: segment, to: (self.segment + 1))
+                            moveTaskCategory(from: segment, to: self.segment + 1)
                             self.segment += 1
                         }
                     }
@@ -547,10 +547,10 @@ import RealmSwift
     }
 }
 
-//extension Task: CKRecordConvertible {
+// extension Task: CKRecordConvertible {
 //    // Yep, leave it blank!
-//}
+// }
 //
-//extension Task: CKRecordRecoverable {
+// extension Task: CKRecordRecoverable {
 //    // Leave it blank, too.
-//}
+// }

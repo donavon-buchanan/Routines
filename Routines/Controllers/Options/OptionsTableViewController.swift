@@ -7,9 +7,6 @@
 //
 
 import RealmSwift
-import StoreKit
-// import SwiftTheme
-// import SwiftyStoreKit
 import UIKit
 import UserNotifications
 
@@ -49,7 +46,7 @@ class OptionsTableViewController: UITableViewController {
 //    }
 //
 //    @IBOutlet var upcomingTasksCellLabel: UILabel!
-////    @IBOutlet var upcomingTasksCellStatusLabel: UILabel!
+    ////    @IBOutlet var upcomingTasksCellStatusLabel: UILabel!
 //    @IBOutlet var upcomingTasksSwitch: UISwitch!
 //    @IBAction func upcomingTasksSwitchToggled(_ sender: UISwitch) {
 //        RoutinesPlus.setUpcomingTasks(sender.isOn)
@@ -63,7 +60,7 @@ class OptionsTableViewController: UITableViewController {
 
     override var keyCommands: [UIKeyCommand]? {
         [
-            UIKeyCommand(title: "Exit", action: #selector(dismissView), input: "w", modifierFlags: .init(arrayLiteral: .command)),
+            UIKeyCommand(title: "Exit", action: #selector(dismissView), input: "w", modifierFlags: .init(arrayLiteral: .command))
         ]
     }
 
@@ -238,7 +235,7 @@ class OptionsTableViewController: UITableViewController {
         afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: animated)
         eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: animated)
         nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: animated)
-        
+
 //        let realm = try! Realm()
 //        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
 

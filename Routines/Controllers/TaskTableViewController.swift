@@ -24,14 +24,14 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             UIKeyCommand(title: "Add New Task", action: #selector(addNewTask), input: "n", modifierFlags: .command),
             UIKeyCommand(title: "Open Settings", action: #selector(openSettings), input: "o", modifierFlags: .alternate),
             UIKeyCommand(title: "Edit List", action: #selector(editKeyCommand), input: "e", modifierFlags: .init(arrayLiteral: .shift, .command)),
-            UIKeyCommand(title: "Show Entire Day", action: #selector(showAllKeyCommand), input: "a", modifierFlags: .init(arrayLiteral: .shift, .command)),
+            UIKeyCommand(title: "Show Entire Day", action: #selector(showAllKeyCommand), input: "a", modifierFlags: .init(arrayLiteral: .shift, .command))
         ]
         if !linesBarButtonSelected {
             commandArray.append(contentsOf: [
                 UIKeyCommand(title: "Select Morning", action: #selector(setSegmentZero), input: "1", modifierFlags: .command),
                 UIKeyCommand(title: "Select Afternoon", action: #selector(setSegmentOne), input: "2", modifierFlags: .command),
                 UIKeyCommand(title: "Select Evening", action: #selector(setSegmentTwo), input: "3", modifierFlags: .command),
-                UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command),
+                UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command)
             ])
         }
         return commandArray
@@ -360,7 +360,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         // Realm occasionally throws an error here. Use guard to return early if the item no-longer exist.
         guard let item = items?[indexPath.row] else {
             debugPrint("Failed to fetch item from index path. Returning empty cell")
-            return cell 
+            return cell
         }
 
         let segment = item.segment
@@ -524,7 +524,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     @objc func showClearAlert() {
 //        showAlert(title: "Are you sure?", body: "This will mark all the tasks shown as completed. Repeating tasks will still appear again tomorrow.")
-        let action = UIAlertAction(title: "Confirm", style: .destructive) { (action) in
+        let action = UIAlertAction(title: "Confirm", style: .destructive) { _ in
             if let selectedCount = self.tableView.indexPathsForSelectedRows?.count {
                 switch selectedCount {
                 case 0:
@@ -536,9 +536,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 self.clearAll()
             }
         }
-        
+
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        
+
         var body: String {
             if let selectedCount = self.tableView.indexPathsForSelectedRows?.count {
                 switch selectedCount {
@@ -556,7 +556,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         let alertController = UIAlertController(title: "Complete Tasks", message: body, preferredStyle: .alert)
         alertController.addAction(cancel)
         alertController.addAction(action)
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
     }
 
     @objc private func clearAll() {
@@ -572,7 +572,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         // resetTableView()
         // changeTabBar(hidden: false, animated: true)
     }
-    
+
     func completeSelectedRows() {
         var itemCount: Int {
             if let items = items {
@@ -588,9 +588,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 return 0
             }
         }
-        
+
         var itemsToComplete: [Task] = []
-        
+
         if selectedCount != 0 {
             if let indexPaths = self.tableView.indexPathsForSelectedRows {
                 var itemArray: [Task] = []
@@ -601,7 +601,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                         itemArray.append(itemAtIndex)
                     }
                 }
-                
+
                 itemArray.forEach { item in
                     itemsToComplete.append(item)
                 }
@@ -804,9 +804,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         shouldAllowRearranging = true
         let taskCategory = TaskCategory.returnTaskCategory(segment)
         if RoutinesPlus.getShowUpcomingTasks() {
-            self.items = taskCategory.taskList//.filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "completeUntil", ascending: true)
+            items = taskCategory.taskList // .filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "completeUntil", ascending: true)
         } else {
-            self.items = taskCategory.taskList//.filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
+            items = taskCategory.taskList // .filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
         }
         observeItems()
     }
@@ -822,23 +822,23 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         let elist = TaskCategory.returnTaskCategory(CategorySelections.Evening.rawValue).taskList
         let nlist = TaskCategory.returnTaskCategory(CategorySelections.Night.rawValue).taskList
         do {
-                //Prevents notification chaos by using beginWrite
-                realm.beginWrite()
-                let tasks = taskList.sorted(byKeyPath: "segment", ascending: false)
-                debugPrint("tasks: " + String(describing: tasks.count))
-                taskList.removeAll()
-                taskList.append(objectsIn: mlist)
-                taskList.append(objectsIn: alist)
-                taskList.append(objectsIn: elist)
-                taskList.append(objectsIn: nlist)
-                debugPrint("tasksList: " + String(describing: taskList.count))
-                
-                try realm.commitWrite()
+            // Prevents notification chaos by using beginWrite
+            realm.beginWrite()
+            let tasks = taskList.sorted(byKeyPath: "segment", ascending: false)
+            debugPrint("tasks: " + String(describing: tasks.count))
+            taskList.removeAll()
+            taskList.append(objectsIn: mlist)
+            taskList.append(objectsIn: alist)
+            taskList.append(objectsIn: elist)
+            taskList.append(objectsIn: nlist)
+            debugPrint("tasksList: " + String(describing: taskList.count))
+
+            try realm.commitWrite()
         } catch {
             realm.cancelWrite()
         }
         items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
-        
+
         observeItems()
     }
 
@@ -1031,13 +1031,13 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 //        // Reduce the corner radius (applicable to layouts featuring rounded corners).
 //        (alert.backgroundView as? CornerRoundingView)?.cornerRadius = 10
 //
-////        if Options.getDarkModeStatus() {
-////            config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
-////            config.dimModeAccessibilityLabel = "Dismiss Warning"
-////        } else {
-////            config.dimMode = .blur(style: .regular, alpha: 1, interactive: true)
-////            config.dimModeAccessibilityLabel = "Dismiss Warning"
-////        }
+    ////        if Options.getDarkModeStatus() {
+    ////            config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
+    ////            config.dimModeAccessibilityLabel = "Dismiss Warning"
+    ////        } else {
+    ////            config.dimMode = .blur(style: .regular, alpha: 1, interactive: true)
+    ////            config.dimModeAccessibilityLabel = "Dismiss Warning"
+    ////        }
 //
 //        SwiftMessages.show(config: config, view: alert)
 //    }

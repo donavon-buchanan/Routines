@@ -6,8 +6,8 @@
 //  Copyright © 2019 Donavon Buchanan. All rights reserved.
 //
 
-import UIKit
 import RealmSwift
+import UIKit
 
 @objcMembers class RoutinesPlus: Object {
     static let realmDispatchQueueLabel: String = "background"
@@ -130,14 +130,14 @@ import RealmSwift
 //    }
 }
 
-//extension RoutinesPlus: CKRecordConvertible {
+// extension RoutinesPlus: CKRecordConvertible {
 //    var isDeleted: Bool {
 //        false
 //    }
 //
 //    // Yep, leave it blank!
-//}
+// }
 //
-//extension RoutinesPlus: CKRecordRecoverable {
+// extension RoutinesPlus: CKRecordRecoverable {
 //    // Leave it blank, too.
-//}
+// }

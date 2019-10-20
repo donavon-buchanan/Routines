@@ -6,7 +6,7 @@
 //  Copyright © 2019 Donavon Buchanan. All rights reserved.
 //
 
-//import IceCream
+// import IceCream
 import RealmSwift
 
 // Morning = 0
@@ -26,25 +26,26 @@ enum CategorySelections: Int {
     override static func primaryKey() -> String? {
         "id"
     }
+
     dynamic var categoryInt = 0
 
     let taskList = List<Task>()
-    
+
     required convenience init(category: Int) {
         self.init()
-        self.categoryInt = category
-        self.id = String(category)
+        categoryInt = category
+        id = String(category)
     }
-    
-    //Convenience function to return category object if it exist. If not, create it and return it
+
+    // Convenience function to return category object if it exist. If not, create it and return it
     static func returnTaskCategory(_ category: Int) -> TaskCategory {
         let realm = try! Realm()
         if let taskCategory = realm.object(ofType: TaskCategory.self, forPrimaryKey: String(category)) {
-            //If it exist, return it
+            // If it exist, return it
             debugPrint("Category object for \(category) exist. Returning")
             return taskCategory
         } else {
-            //Else, create it, then return it
+            // Else, create it, then return it
             debugPrint("Category object for \(category) does not exist yet. Creating then returning")
             do {
                 if realm.isInWriteTransaction {
@@ -64,10 +65,10 @@ enum CategorySelections: Int {
     }
 }
 
-//extension TaskCategory: CKRecordConvertible {
+// extension TaskCategory: CKRecordConvertible {
 //    // Yep, leave it blank!
-//}
+// }
 //
-//extension TaskCategory: CKRecordRecoverable {
+// extension TaskCategory: CKRecordRecoverable {
 //    // Leave it blank, too.
-//}
+// }

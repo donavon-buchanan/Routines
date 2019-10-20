@@ -8,7 +8,6 @@
 
 // import CloudKit
 import Foundation
-//import IceCream
 import RealmSwift
 
 @objcMembers class Options: Object {
@@ -47,9 +46,9 @@ import RealmSwift
 //        debugPrint("Setting dark mode to: \(bool)")
 //
 //        UserDefaults.standard.set(bool, forKey: "darkMode")
-////        DispatchQueue.main.async {
-////            TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
-////        }
+    ////        DispatchQueue.main.async {
+    ////            TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
+    ////        }
 //    }
 //
 //    dynamic var autoDarkMode: Bool = false
@@ -418,14 +417,14 @@ import RealmSwift
     }
 }
 
-//extension Options: CKRecordConvertible {
+// extension Options: CKRecordConvertible {
 //    var isDeleted: Bool {
 //        false
 //    }
 //
 //    // Yep, leave it blank!
-//}
+// }
 //
-//extension Options: CKRecordRecoverable {
+// extension Options: CKRecordRecoverable {
 //    // Leave it blank, too.
-//}
+// }
