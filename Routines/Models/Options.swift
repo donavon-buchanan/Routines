@@ -304,7 +304,7 @@ import RealmSwift
                             }
                         }
                     } catch {
-                        fatalError("\(#function): failed to set segment notification")
+                        realm.cancelWrite()
                     }
                 }
             }

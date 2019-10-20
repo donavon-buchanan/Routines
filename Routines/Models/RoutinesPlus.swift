@@ -41,7 +41,7 @@ import RealmSwift
                         routinesPlusOptions.showUpcomingTasks = isOn
                     }
                 } catch {
-                    fatalError("\(#function) error: \(error)")
+                    realm.cancelWrite()
                 }
             }
         }

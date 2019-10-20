@@ -57,7 +57,7 @@ enum CategorySelections: Int {
                     }
                 }
             } catch {
-                fatalError("Could not create new category object from returnTaskCategory")
+                realm.cancelWrite()
             }
             return returnTaskCategory(category)
         }

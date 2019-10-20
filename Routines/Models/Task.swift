@@ -7,7 +7,6 @@
 //
 
 import Foundation
-//import IceCream
 import RealmSwift
 
 @objcMembers class Task: Object {
@@ -65,7 +64,7 @@ import RealmSwift
                         TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList.append(self)
                     }
                 } catch {
-                    fatalError("Error adding new item: \(error)")
+                    realm.cancelWrite()
                 }
             }
         }
@@ -130,7 +129,7 @@ import RealmSwift
                         }
                     }
                 } catch {
-                    fatalError("Error updating item: \(error)")
+                    realm.cancelWrite()
                 }
             }
         }
@@ -171,7 +170,7 @@ import RealmSwift
                 }
             } catch {
                 // print("failed to save completeUntil")
-                fatalError("Error completing item: \(error)")
+                realm.cancelWrite()
             }
             notificationHanlder.createNewNotification(forItem: self)
         }
@@ -200,9 +199,10 @@ import RealmSwift
                     //Separate into two write transactions so the index is updated before trying to move tasks
                     realm.beginWrite()
                     itemsToSoftDelete.forEach { item in
-                        item.isDeleted = true
+//                        item.isDeleted = true
                         item.removeTaskFromCategoryList(segment: item.segment)
                         item.removeTaskFromCategoryList(segment: CategorySelections.All.rawValue)
+                        realm.delete(item)
                     }
                     try realm.commitWrite()
                     realm.beginWrite()
@@ -215,7 +215,7 @@ import RealmSwift
                     }
                     try realm.commitWrite()
                 } catch {
-                    fatalError("\(#function) failed with error: \(error)")
+                    realm.cancelWrite()
                 }
             }
         }
@@ -240,12 +240,13 @@ import RealmSwift
                 let realm = try! Realm()
                 do {
                     try realm.write {
-                        self.isDeleted = true
+//                        self.isDeleted = true // Need to actually remove them since we're not using IceCream for sync
                         removeTaskFromCategoryList(segment: self.segment)
                         removeTaskFromCategoryList(segment: CategorySelections.All.rawValue)
+                        realm.delete(self)
                     }
                 } catch {
-                    fatalError("Error with softDelete: \(error)")
+                    realm.cancelWrite()
                 }
             }
         }
@@ -264,13 +265,14 @@ import RealmSwift
                 do {
                     realm.beginWrite()
                     itemArray.forEach { item in
-                        item.isDeleted = true
+//                        item.isDeleted = true  // Need to actually remove them since we're not using IceCream for sync
                         item.removeTaskFromCategoryList(segment: item.segment)
                         item.removeTaskFromCategoryList(segment: CategorySelections.All.rawValue)
+                        realm.delete(item)
                     }
                     try realm.commitWrite()
                 } catch {
-                    fatalError("\(#function) failed with error: \(error)")
+                    realm.cancelWrite()
                 }
             }
         }
@@ -364,7 +366,7 @@ import RealmSwift
                 self.segment = snoozeTo()
             }
         } catch {
-            debugPrint("failed to snooze item")
+            realm.cancelWrite()
         }
         notificationHanlder.createNewNotification(forItem: self)
         debugPrint("Snoozing to \(segment). Original segment was \(originalSegment)")
@@ -396,7 +398,7 @@ import RealmSwift
                         }
                     }
                 } catch {
-                    debugPrint("\(#function): \(error)")
+                    realm.cancelWrite()
                 }
             }
         }
@@ -504,7 +506,7 @@ import RealmSwift
                         self.repeats = bool
                     }
                 } catch {
-                    debugPrint("failed to update daily repeat bool")
+                    realm.cancelWrite()
                 }
             }
         }

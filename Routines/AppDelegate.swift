@@ -117,8 +117,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //            }
 //        }
 
-        observeItems()
-        observeOptions()
+//        observeItems()
+//        observeOptions()
         #if targetEnvironment(simulator)
             loadDefaultData()
         #endif
@@ -134,8 +134,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        observeItems()
-        observeOptions()
+//        observeItems()
+//        observeOptions()
 
 //        self.syncEngine?.pull(completionHandler: { error in
 //            if let error = error {
@@ -155,8 +155,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //            NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
 //        }
 
-        observeItems()
-        observeOptions()
+//        observeItems()
+//        observeOptions()
 
 //        self.syncEngine?.pull(completionHandler: { error in
 //            if let error = error {
@@ -177,6 +177,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        AppDelegate.automaticDarkModeTimer.stopTimer()
 
 //        self.syncEngine?.pushAll()
+        notificationHandler.removeOrphanedNotifications()
+//        notificationHandler.refreshAllNotifications()
 
         debugPrint("\(#function) - End")
     }
@@ -187,9 +189,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 //        AppDelegate.syncEngine?.pushAll()
 
-        observeItems()
-        observeOptions()
-        notificationHandler.removeOrphanedNotifications()
+//        observeItems()
+//        observeOptions()
+        
 
         debugPrint("\(#function) - End")
     }
@@ -212,8 +214,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         debugPrint("\(#function) - Start")
 
         // Sync with iCloud
-        observeItems()
-        observeOptions()
+//        observeItems()
+//        observeOptions()
 
         debugPrint("\(#function) - End")
     }
@@ -311,11 +313,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     let newOptions = Options()
                     newOptions.optionsKey = Options.primaryKey()
                     do {
-                        try realm.write {
-                            realm.add(newOptions)
-                        }
+                        realm.beginWrite()
+                        realm.add(newOptions)
+                        try realm.commitWrite()
                     } catch {
-                        fatalError("Failed to create first Options object: \(error)")
+                        realm.cancelWrite()
                     }
                 }
             }
@@ -333,11 +335,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     let newRoutinesPlus = RoutinesPlus()
                     newRoutinesPlus.routinesPlusKey = RoutinesPlus.primaryKey()
                     do {
-                        try realm.write {
-                            realm.add(newRoutinesPlus)
-                        }
+                        realm.beginWrite()
+                        realm.add(newRoutinesPlus)
+                        try realm.commitWrite()
                     } catch {
-                        fatalError("Failed to create first RoutinesPlus object: \(error)")
+                        realm.cancelWrite()
                     }
                 }
             }
@@ -546,68 +548,68 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     // MARK: - Update after Notifications
 
-    var itemsToken: NotificationToken?
-    var optionsToken: NotificationToken?
-    var items: List<Task>?
-    var options: Options?
-
-    // TODO: This creates some redudancies with notification creation and deletion as handled by the Items class.
-    func observeItems(function: String = #function) {
-        debugPrint(#function + "Called by \(function)")
-        // Observe Results Notifications
-        guard itemsToken == nil else { return }
-        let notificationHandler = NotificationHandler()
+//    var itemsToken: NotificationToken?
+//    var optionsToken: NotificationToken?
+//    var items: List<Task>?
+//    var options: Options?
+//
+//    // TODO: This creates some redudancies with notification creation and deletion as handled by the Items class.
+//    func observeItems(function: String = #function) {
+//        debugPrint(#function + "Called by \(function)")
+//        // Observe Results Notifications
+//        guard itemsToken == nil else { return }
+//        let notificationHandler = NotificationHandler()
+////        let realm = try! Realm()
+//        items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
+//        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
+//        // Observe Results Notifications
+//        itemsToken = items?.observe { (changes: RealmCollectionChange) in
+//            switch changes {
+//            case .initial:
+//                notificationHandler.removeOrphanedNotifications()
+//                notificationHandler.checkForMissingNotifications()
+//            case let .update(_, _, insertions, modifications):
+//                debugPrint("updated items detected")
+//                // Caused crashes because deleted items don't exist and can't provide a property value
+//                // notificationHandler.removeNotifications(withIdentifiers: deletions.map { (self.items?[$0].uuidString) ?? ""})
+//                // These are being called too much because the order of the list is changing
+//                notificationHandler.removeOrphanedNotifications()
+//                debugPrint(#function + "Item Insertions: \(insertions.map { (self.items?[$0].title!) }) ")
+//                notificationHandler.batchModifyNotifications(items: insertions.map { (self.items?[$0]) })
+//                debugPrint(#function + "Item Modifications: \(modifications.map { (self.items?[$0].title!) }) ")
+//                notificationHandler.batchModifyNotifications(items: modifications.map { (self.items?[$0]) })
+//            case let .error(error):
+//                // An error occurred while opening the Realm file on the background worker thread
+//                debugPrint("Error in \(#function) - \(error)")
+//            }
+//        }
+//    }
+//
+//    func observeOptions(function: String = #function) {
+//        debugPrint(#function + "Called by \(function)")
+//        guard optionsToken == nil else { return }
 //        let realm = try! Realm()
-        items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
-        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
-        // Observe Results Notifications
-        itemsToken = items?.observe { (changes: RealmCollectionChange) in
-            switch changes {
-            case .initial:
-                notificationHandler.removeOrphanedNotifications()
-                notificationHandler.checkForMissingNotifications()
-            case let .update(_, _, insertions, modifications):
-                debugPrint("updated items detected")
-                // Caused crashes because deleted items don't exist and can't provide a property value
-                // notificationHandler.removeNotifications(withIdentifiers: deletions.map { (self.items?[$0].uuidString) ?? ""})
-                // These are being called too much because the order of the list is changing
-                notificationHandler.removeOrphanedNotifications()
-                debugPrint(#function + "Item Insertions: \(insertions.map { (self.items?[$0].title!) }) ")
-                notificationHandler.batchModifyNotifications(items: insertions.map { (self.items?[$0]) })
-                debugPrint(#function + "Item Modifications: \(modifications.map { (self.items?[$0].title!) }) ")
-                notificationHandler.batchModifyNotifications(items: modifications.map { (self.items?[$0]) })
-            case let .error(error):
-                // An error occurred while opening the Realm file on the background worker thread
-                debugPrint("Error in \(#function) - \(error)")
-            }
-        }
-    }
-
-    func observeOptions(function: String = #function) {
-        debugPrint(#function + "Called by \(function)")
-        guard optionsToken == nil else { return }
-        let realm = try! Realm()
-        let notificationHandler = NotificationHandler()
-        if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-            optionsToken = options.observe { change in
-                switch change {
-                case let .change(properties):
-                    properties.forEach { property in
-                        debugPrint("Changed options property is \(property.name)")
-                        if property.name.contains("Minute") || property.name.contains("Hour") {
-                            //this is being called too much because of sync
-                            debugPrint("Notification times changed. Recreating notifications as necessary.")
-                            notificationHandler.refreshAllNotifications()
-                        }
-                    }
-                case let .error(error):
-                    debugPrint("An error occurred: \(error)")
-                case .deleted:
-                    debugPrint("Options was deleted.")
-                }
-            }
-        }
-    }
+//        let notificationHandler = NotificationHandler()
+//        if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+//            optionsToken = options.observe { change in
+//                switch change {
+//                case let .change(properties):
+//                    properties.forEach { property in
+//                        debugPrint("Changed options property is \(property.name)")
+//                        if property.name.contains("Minute") || property.name.contains("Hour") {
+//                            //this is being called too much because of sync
+//                            debugPrint("Notification times changed. Recreating notifications as necessary.")
+//                            notificationHandler.refreshAllNotifications()
+//                        }
+//                    }
+//                case let .error(error):
+//                    debugPrint("An error occurred: \(error)")
+//                case .deleted:
+//                    debugPrint("Options was deleted.")
+//                }
+//            }
+//        }
+//    }
 
 //    static func refreshAndUpdate(function: String = #function) {
 //        debugPrint(#function + "Called by \(function)")
@@ -624,8 +626,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     deinit {
         debugPrint("\(#function) called. Tokens invalidated")
-        itemsToken?.invalidate()
-        optionsToken?.invalidate()
+//        itemsToken?.invalidate()
+//        optionsToken?.invalidate()
     }
 
     // MARK: - Notification Categories and Actions

@@ -381,7 +381,7 @@ class OptionsTableViewController: UITableViewController {
 //                self.perform(#selector(self.dismissWaitAlert), with: nil, afterDelay: 1)
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
-                fatalError("\(error)")
+                debugPrint("\(error)")
             }
         }
     }

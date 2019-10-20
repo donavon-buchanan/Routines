@@ -86,7 +86,7 @@ class CustomTimesTableViewController: UITableViewController {
                         options?.nightMinute = newOptions.nightMinute
                     }
                 } catch {
-                    fatalError("Error resetting times: \(error)")
+                    realm.cancelWrite()
                 }
             }
         }
@@ -128,7 +128,7 @@ class CustomTimesTableViewController: UITableViewController {
                         }
                     }
                 } catch {
-                    // print("updateSavedTimes failed")
+                    realm.cancelWrite()
                 }
             }
         }

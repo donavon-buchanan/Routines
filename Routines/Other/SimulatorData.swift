@@ -21,7 +21,7 @@ func loadDefaultData() {
                         realm.delete(items)
                     }
                 } catch {
-                    fatalError("Simulator failed to delete items with error: \(error)")
+                    realm.cancelWrite()
                 }
             }
         }

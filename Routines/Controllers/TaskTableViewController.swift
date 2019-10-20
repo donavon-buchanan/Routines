@@ -7,8 +7,6 @@
 //
 
 import RealmSwift
-//import SwiftMessages
-// import SwiftTheme
 import UIKit
 import UserNotifications
 
@@ -18,23 +16,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     @IBOutlet var addbarButtonItem: UIBarButtonItem!
     @IBOutlet var linesBarButtonItem: UIBarButtonItem!
     @IBOutlet var editBarButtonItem: UIBarButtonItem!
-
-//    var segmentColor: UIColor {
-//        switch segment {
-//        case 0:
-//            return UIColor(red: 0.96, green: 0.46, blue: 0.27, alpha: 1.0)
-//        case 1:
-//            return UIColor(red: 0.15, green: 0.73, blue: 0.93, alpha: 1.0)
-//        case 2:
-//            return UIColor(red: 0.38, green: 0.64, blue: 0.53, alpha: 1.0)
-//        case 3:
-//            return UIColor(red: 0.39, green: 0.36, blue: 0.91, alpha: 1.0)
-//        default:
-//            return .clear
-//        }
-//    }
-
-//    var shouldShowHiddenTasksMessage = false
 
     override var keyCommands: [UIKeyCommand]? {
         var commandArray: [UIKeyCommand]
@@ -266,26 +247,25 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         // Avoids flashing screen glitch
         // TODO: Restoration is loading all the views at once
         debugPrint("View loaded? - \(isViewLoaded)")
-//        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
     }
 
     override func viewWillAppear(_: Bool) {
         debugPrint(#function + " start")
 
-        loadItemsForSegment(segment: segment!)
+        loadItemsForSegment(segment: segment ?? 0)
 //        TaskTableViewController.setAppearance(forSegment: segment!)
-        title = returnTitle(forSegment: segment!)
+        title = returnTitle(forSegment: segment ?? 0)
 
         let navigationBarAppearance = UINavigationBarAppearance()
-        navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
-        navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
+        navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment ?? 0)]
+        navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment ?? 0)]
         let buttonAppearance = UIBarButtonItemAppearance()
-        buttonAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment!)]
-        navigationController?.navigationBar.tintColor = UIColor(segment: segment!)
+        buttonAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment ?? 0)]
+        navigationController?.navigationBar.tintColor = UIColor(segment: segment ?? 0)
         navigationBarAppearance.buttonAppearance = buttonAppearance
         navigationController?.navigationBar.standardAppearance = navigationBarAppearance
         navigationController?.navigationBar.compactAppearance = navigationBarAppearance
-        tabBarController?.tabBar.tintColor = UIColor(segment: segment!)
+        tabBarController?.tabBar.tintColor = UIColor(segment: segment ?? 0)
 
         debugPrint(#function + " end")
     }
@@ -707,7 +687,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             let navVC = segue.destination as! UINavigationController
             let destination = navVC.topViewController as! AddTableViewController
             // set segment based on current tab
-            guard let selectedTab = tabBarController?.selectedIndex else { fatalError() }
+            guard let selectedTab = tabBarController?.selectedIndex else { return }
             destination.editingSegment = selectedTab
             destination.selectedIndex = segment
             resetTableView()
@@ -855,7 +835,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 
                 try realm.commitWrite()
         } catch {
-            fatalError("Failed to sort allList")
+            realm.cancelWrite()
         }
         items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
         

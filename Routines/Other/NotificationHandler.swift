@@ -20,13 +20,15 @@ struct NotificationHandler {
         segmentTime.minute = Options.getOptionMinute(segment: item.segment)
         segmentTime.second = 0
 
-        // First, check if notifications are enabled for the segment
-        // Also check if item hasn't been marked as complete already
-        if Options.getSegmentNotification(segment: item.segment), item.completeUntil < Date().endOfDay, Date() <= segmentTime.date! {
+        // check if item hasn't been marked as complete already
+        if item.completeUntil < Date().endOfDay, Date() <= segmentTime.date! {
+            debugPrint("1: Task completeUntil is before end of today. Now is before or equal to the segment trigger date")
             return segmentTime.date!
-        } else if Options.getSegmentNotification(segment: item.segment), item.completeUntil > Date().endOfDay, Date() <= segmentTime.date! {
-            return segmentTime.date!
+        } else if item.completeUntil > Date().endOfDay, Date() <= segmentTime.date! {
+            debugPrint("2: Task completeUntil is after end of today. Now is before or equal to the segment trigger date.")
+            return segmentTime.date!.nextDay
         } else {
+            debugPrint("3: Returning nextDay segment trigger date.")
             return segmentTime.date!.nextDay
         }
 
@@ -41,7 +43,7 @@ struct NotificationHandler {
             let itemSegment = item.segment
             // Only count the items who's segment is equal or greater than the current item
             // TODO: Maybe should match this against "originalSegment"?
-            let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList.filter("segment >= %@ AND isDeleted = %@ AND completeUntil <= %@", itemSegment, false, item.completeUntil)//.sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
+            let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList.filter("segment >= %@ AND completeUntil <= %@", itemSegment, item.completeUntil)//.sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
             if let currentItemIndex = items.index(of: item) {
                 debugPrint("Item title: \(item.title!) at index: \(currentItemIndex)")
                 badgeCount = currentItemIndex + 1
@@ -103,9 +105,12 @@ struct NotificationHandler {
 
     func returnNotificationTrigger(item: Task) -> UNCalendarNotificationTrigger {
         // debugPrint(#function + "Called by \(function)")
-        let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: firstTriggerDate(forItem: item))
-
-        return UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: item.repeats)
+        //The day component here is causing problems
+//        let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.day, .hour, .minute, .second, .calendar], from: firstTriggerDate(forItem: item))
+        let dateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: firstTriggerDate(forItem: item))
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: item.repeats)
+        
+        return trigger
     }
 
     func removeNotifications(withIdentifiers identifiers: [String], function: String = #function) {
@@ -116,7 +121,7 @@ struct NotificationHandler {
     func removeOrphanedNotifications(function: String = #function) {
         debugPrint(#function + "Called by \(function)")
 //        let realm = try! Realm()
-        let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList.filter("isDeleted = %@", false)
+        let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
         let itemIDArray: [String] = items.map { $0.uuidString }
 
         center.getPendingNotificationRequests { pendingRequests in
@@ -140,7 +145,7 @@ struct NotificationHandler {
         debugPrint(#function + "Called by \(function)")
         center.getPendingNotificationRequests { pendingRequests in
             let realm = try! Realm()
-            let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList.filter("isDeleted = %@", false)
+            let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
             debugPrint("Pending Requests Count: \(pendingRequests.count)")
             let pendingRequestsSet = Set(pendingRequests.map { $0.identifier })
             debugPrint("Pending Requests Set Count: \(pendingRequestsSet.count)")
@@ -161,10 +166,7 @@ struct NotificationHandler {
         DispatchQueue.main.async {
             items.forEach { item in
                 if let item = item {
-                    if !Options.getSegmentNotification(segment: item.segment) {
-                        self.removeNotifications(withIdentifiers: [item.uuidString])
-                    } else if !item.isDeleted {
-                        debugPrint("Updating Notification")
+                    if Options.getSegmentNotification(segment: item.segment) {
                         self.createNewNotification(forItem: item)
                     } else {
                         debugPrint("Removing notification for soft deleted item")
@@ -231,7 +233,7 @@ struct NotificationHandler {
     func refreshAllNotifications(function: String = #function) {
         debugPrint(#function + "Called by \(function)")
 //        let realm = try! Realm()
-        let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList.filter("isDeleted = %@", false)//.sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+        let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList//.sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
         batchModifyNotifications(items: items.map { $0 })
     }
 
@@ -246,3 +248,31 @@ struct NotificationHandler {
         }
     }
 }
+
+//class UNNotificationTriggerWIthFirstTriggerDate: UNCalendarNotificationTrigger {
+//    
+////    private var nextTriggerDate: Date
+////    private override var dateComponents: DateComponents
+////    private override var repeats: Bool
+//    private var task: Task?
+//    
+//    public convenience init(task: Task, dateComponents: DateComponents, repeats: Bool) {
+//        self.init(dateMatching: dateComponents, repeats: repeats)
+//        self.task = task
+//    }
+//    
+//    override open func nextTriggerDate() -> Date? {
+//        if let task = task {
+//            if Date() > task.completeUntil {
+//                debugPrint("Setting nextTriggerDate to default")
+//                return super.nextTriggerDate()
+//            } else {
+//                debugPrint("Setting nextTriggerDate to nextDay")
+//                return super.nextTriggerDate()?.nextDay
+//            }
+//        } else {
+//            debugPrint("Returning default next trigger date")
+//            return super.nextTriggerDate()   
+//        }
+//    }
+//}
