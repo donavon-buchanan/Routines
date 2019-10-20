@@ -6,7 +6,7 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-import SwiftTheme
+// import SwiftTheme
 import UIKit
 
 class RepeatTableViewController: UITableViewController {
@@ -35,24 +35,24 @@ class RepeatTableViewController: UITableViewController {
         super.viewDidLoad()
     }
 
-    override func viewWillAppear(_: Bool) {
-        setUpUI()
-    }
-
-    func setUpUI() {
-        let dummyLabel = UILabel()
-        if Options.getDarkModeStatus() {
-            dummyLabel.theme_textColor = GlobalPicker.barTextColor
-        } else {
-            dummyLabel.theme_textColor = GlobalPicker.cellIndicatorTint
-        }
-
-        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
-
-        cells.forEach { cell in
-            cell.theme_backgroundColor = GlobalPicker.backgroundColor
-            cell.textLabel?.theme_textColor = GlobalPicker.cellTextColors
-            cell.detailTextLabel?.theme_textColor = GlobalPicker.cellTextColors
-        }
-    }
+//    override func viewWillAppear(_: Bool) {
+//        setUpUI()
+//    }
+//
+//    func setUpUI() {
+//        let dummyLabel = UILabel()
+//        if Options.getDarkModeStatus() {
+//            dummyLabel.theme_textColor = GlobalPicker.barTextColor
+//        } else {
+//            dummyLabel.theme_textColor = GlobalPicker.cellIndicatorTint
+//        }
+//
+//        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+//
+//        cells.forEach { cell in
+//            cell.theme_backgroundColor = GlobalPicker.backgroundColor
+//            cell.textLabel?.theme_textColor = GlobalPicker.cellTextColors
+//            cell.detailTextLabel?.theme_textColor = GlobalPicker.cellTextColors
+//        }
+//    }
 }

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lsp-WH-zrr">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="axl-yr-j6j">
+            <objects>
+                <viewController id="VDl-Zp-rGc" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kI1-rZ-mWf">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="eIY-wE-vhf"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="xX2-vo-vJE">
+                        <leftBarButtonItems>
+                            <barButtonItem title="Item" image="gear" catalog="system" id="Klk-SI-Yvz">
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </barButtonItem>
+                            <barButtonItem systemItem="edit" id="dBH-PH-qu6">
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </barButtonItem>
+                        </leftBarButtonItems>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="KOe-jx-t1V">
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </barButtonItem>
+                            <barButtonItem title="Item" image="lines-button" id="33p-Yd-VLQ">
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OfJ-D4-2Na" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1994.4000000000001" y="231.2807881773399"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="MaC-Iz-71E">
+            <objects>
+                <tabBarController id="lsp-WH-zrr" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" backgroundImage="clear-pixel" shadowImage="clear-pixel" id="nuC-8l-780">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="8jr-ix-HvO" kind="relationship" relationship="viewControllers" id="TOk-vp-yZ4"/>
+                        <segue destination="Azq-nL-rqx" kind="relationship" relationship="viewControllers" id="iEl-2D-0YK"/>
+                        <segue destination="QWd-BU-7Lm" kind="relationship" relationship="viewControllers" id="PSi-7f-wrf"/>
+                        <segue destination="HqD-Iz-Ymw" kind="relationship" relationship="viewControllers" id="2qw-Bw-0u7"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cgt-dp-99R" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-492" y="51"/>
+        </scene>
+        <!--Night-->
+        <scene sceneID="12Y-77-Cjw">
+            <objects>
+                <navigationController title="Night" automaticallyAdjustsScrollViewInsets="NO" id="HqD-Iz-Ymw" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="night" selectedImage="moon.stars" catalog="system" id="Gwe-Fe-vLH"/>
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="hsq-sV-5q5">
+                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="VDl-Zp-rGc" kind="relationship" relationship="rootViewController" id="mP7-lL-god"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hys-zg-g05" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1994" y="918"/>
+        </scene>
+        <!--Afternoon-->
+        <scene sceneID="Sds-Se-YAZ">
+            <objects>
+                <navigationController title="Afternoon" automaticallyAdjustsScrollViewInsets="NO" id="Azq-nL-rqx" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="afternoon" selectedImage="sun.max" catalog="system" id="Oqh-ny-HNO"/>
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="oLr-0q-Cib">
+                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="VDl-Zp-rGc" kind="relationship" relationship="rootViewController" id="6Yw-lu-iUS"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xlo-Vs-SkG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="110" y="919"/>
+        </scene>
+        <!--Evening-->
+        <scene sceneID="U3a-2a-0MP">
+            <objects>
+                <navigationController title="Evening" automaticallyAdjustsScrollViewInsets="NO" id="QWd-BU-7Lm" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="evening" selectedImage="sunset" catalog="system" id="0gz-jW-uVG"/>
+                    <toolbarItems/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="gg9-ZD-ATP">
+                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="VDl-Zp-rGc" kind="relationship" relationship="rootViewController" id="9LV-zW-bJc"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XMO-Ca-4nS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1052" y="919"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="QrM-QX-M99">
+            <objects>
+                <navigationController id="8jr-ix-HvO" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="" image="morning" selectedImage="sunrise" catalog="system" id="4QB-5x-kNF"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" shadowImage="clear-pixel" largeTitles="YES" id="BP9-ZD-4WK">
+                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="VDl-Zp-rGc" kind="relationship" relationship="rootViewController" id="zxk-pW-3in"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="s8f-W0-gGj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="922" y="231"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="afternoon" width="23" height="23"/>
+        <image name="clear-pixel" width="1" height="1"/>
+        <image name="evening" width="23" height="23"/>
+        <image name="gear" catalog="system" width="64" height="58"/>
+        <image name="lines-button" width="26" height="26"/>
+        <image name="moon.stars" catalog="system" width="64" height="62"/>
+        <image name="morning" width="23" height="23"/>
+        <image name="night" width="23" height="23"/>
+        <image name="sun.max" catalog="system" width="64" height="62"/>
+        <image name="sunrise" catalog="system" width="64" height="48"/>
+        <image name="sunset" catalog="system" width="64" height="48"/>
+    </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="mP7-lL-god"/>
+    </inferredMetricsTieBreakers>
+</document>

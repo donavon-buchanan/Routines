@@ -6,40 +6,31 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-import CloudKit
-import IceCream
+//import CloudKit
+//import IceCream
 import RealmSwift
-import SwiftTheme
-import SwiftyStoreKit
 import UIKit
 import UserNotifications
-#if targetEnvironment(simulator)
-    import SimulatorStatusMagic
-#endif
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
 
-    let afterSyncTimer = AfterSyncTimer()
-    
     let notificationHandler = NotificationHandler()
 
-    static let automaticDarkModeTimer = AutomaticDarkModeTimer()
+//    static let automaticDarkModeTimer = AutomaticDarkModeTimer()
 
-    static func setAutomaticDarkModeTimer() {
-        if Options.getAutomaticDarkModeStatus() {
-            automaticDarkModeTimer.startTimer()
-        } else {
-            automaticDarkModeTimer.stopTimer()
-        }
-    }
+//    static func setAutomaticDarkModeTimer() {
+//        if Options.getAutomaticDarkModeStatus() {
+//            automaticDarkModeTimer.startTimer()
+//        } else {
+//            automaticDarkModeTimer.stopTimer()
+//        }
+//    }
 
     var shortcutItemToProcess: UIApplicationShortcutItem?
 
-    static var syncEngine: SyncEngine?
-
-    static var productInfo: RetrieveResults?
+//    var syncEngine: SyncEngine?
 
     func application(_: UIApplication, supportedInterfaceOrientationsFor _: UIWindow?) -> UIInterfaceOrientationMask {
         switch UIDevice.current.userInterfaceIdiom {
@@ -52,28 +43,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     // TODO: This should be used way less. Make notification management on individual tasks better!
 //    static func refreshNotifications(function: String = #function) {
-//        printDebug(#function + "Called by \(function)")
+//        debugPrint(#function + "Called by \(function)")
 //
 //        let notificationHandler = NotificationHandler()
 //        notificationHandler.removeOrphanedNotifications()
 //
 //        let realm = try! Realm()
-//        let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+//        let items = realm.objects(Task.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
 //        items.forEach { item in
 //            notificationHandler.createNewNotification(forItem: item)
 //        }
 //    }
 
     func application(_: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
         let center = UNUserNotificationCenter.current()
         center.delegate = self
 
         AppDelegate.registerNotificationCategoriesAndActions()
 
         migrateRealm()
-        
-        //I thought this would be needed. But it seems there's already another func to take care of this.
+
+        // I thought this would be needed. But it seems there's already another func to take care of this.
 //        if UserDefaults.standard.bool(forKey: "notificationsHaveRefreshed") {
 //            let notificationHandler = NotificationHandler()
 //            notificationHandler.refreshAllNotifications()
@@ -84,24 +75,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         AppDelegate.checkRoutinesPlus()
 
         // Theme
-        setUpTheme()
+//        setUpTheme()
 
-        Options.automaticDarkModeCheck()
+//        Options.automaticDarkModeCheck()
 
-        printDebug("\(#function) - End")
+        debugPrint("\(#function) - End")
         return true
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        printDebug("\(#function) - Start")
-
-        #if targetEnvironment(simulator)
-            SDStatusBarManager.sharedInstance()?.enableOverrides()
-        #endif
-
-        application.setMinimumBackgroundFetchInterval(270)
+        debugPrint("\(#function) - Start")
 
         // Override point for customization after application launch.
+        
+        self.setSync()
 
         application.registerForRemoteNotifications()
 
@@ -112,87 +99,105 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             shortcutItemToProcess = shortcutItem
         }
 
-        // SwiftyStoreKit
-        SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
-            for purchase in purchases {
-                switch purchase.transaction.transactionState {
-                case .purchased, .restored:
-                    if purchase.needsFinishTransaction {
-                        SwiftyStoreKit.finishTransaction(purchase.transaction)
-                    }
-                    // Unlock content
-                    RoutinesPlus.setPurchasedStatus(status: true)
-                case .failed, .purchasing, .deferred:
-                    break // do nothing
-                @unknown default:
-                    break
-                }
-            }
-        }
+//        // SwiftyStoreKit
+//        SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
+//            for purchase in purchases {
+//                switch purchase.transaction.transactionState {
+//                case .purchased, .restored:
+//                    if purchase.needsFinishTransaction {
+//                        SwiftyStoreKit.finishTransaction(purchase.transaction)
+//                    }
+//                    // Unlock content
+//                    RoutinesPlus.setPurchasedStatus(status: true)
+//                case .failed, .purchasing, .deferred:
+//                    break // do nothing
+//                @unknown default:
+//                    break
+//                }
+//            }
+//        }
 
-        observeItems()
-
+//        observeItems()
+//        observeOptions()
         #if targetEnvironment(simulator)
             loadDefaultData()
         #endif
 
-        printDebug("\(#function) - End")
+        var shortcutItems: [UIApplicationShortcutItem] = []
+        let settingsShortcut = UIMutableApplicationShortcutItem(type: "SettingsAction", localizedTitle: "Settings")
+        settingsShortcut.icon = UIApplicationShortcutIcon(systemImageName: "gear")
+        shortcutItems.append(settingsShortcut)
+        UIApplication.shared.shortcutItems = shortcutItems
+
+        debugPrint("\(#function) - End")
         return true
     }
 
     func application(_: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        AppDelegate.syncEngine?.pull()
-        AppDelegate.refreshAndUpdate()
-        completionHandler(.newData)
+//        observeItems()
+//        observeOptions()
+
+//        self.syncEngine?.pull(completionHandler: { error in
+//            if let error = error {
+//                debugPrint("Error with sync pull: \(error)")
+//                completionHandler(.failed)
+//            } else {
+//                completionHandler(.newData)
+//            }
+//        })
     }
 
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let dict = userInfo as! [String: NSObject]
-        let notification = CKNotification(fromRemoteNotificationDictionary: dict)
+    func application(_: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+//        let dict = userInfo as! [String: NSObject]
+//        let notification = CKNotification(fromRemoteNotificationDictionary: dict)
+//
+//        if let subscriptionID = notification?.subscriptionID, IceCreamSubscription.allIDs.contains(subscriptionID) {
+//            NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
+//        }
 
-        if let subscriptionID = notification?.subscriptionID, IceCreamSubscription.allIDs.contains(subscriptionID) {
-            NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
-        }
-        switch application.applicationState {
-        case .active:
-            afterSyncTimer.startTimer()
-            completionHandler(.newData)
-        default:
-            // Still have to do this because changes in time don't cause an update to the list of items
-            AppDelegate.refreshAndUpdate()
-            completionHandler(.newData)
-        }
+//        observeItems()
+//        observeOptions()
 
-        printDebug("Received push notification")
+//        self.syncEngine?.pull(completionHandler: { error in
+//            if let error = error {
+//                debugPrint("Error with sync pull: \(error)")
+//                completionHandler(.failed)
+//            } else {
+//                completionHandler(.newData)
+//            }
+//        })
+
+        debugPrint("Received push notification")
     }
 
     func applicationWillResignActive(_: UIApplication) {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        afterSyncTimer.stopTimer()
-        AppDelegate.automaticDarkModeTimer.stopTimer()
+//        AppDelegate.automaticDarkModeTimer.stopTimer()
 
-        AppDelegate.syncEngine?.pushAll()
+//        self.syncEngine?.pushAll()
+        notificationHandler.removeOrphanedNotifications()
+//        notificationHandler.refreshAllNotifications()
 
-        // Redundant. But necessary for now.
-        AppDelegate.refreshAndUpdate()
-
-        printDebug("\(#function) - End")
+        debugPrint("\(#function) - End")
     }
 
     func applicationDidEnterBackground(_: UIApplication) {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+//        AppDelegate.syncEngine?.pushAll()
 
-        observeItems()
+//        observeItems()
+//        observeOptions()
+        
 
-        printDebug("\(#function) - End")
+        debugPrint("\(#function) - End")
     }
 
     static func removeOldNotifications(function: String = #function) {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
         debugPrint("#funciton was Called from: \(function)")
         let center = UNUserNotificationCenter.current()
         center.removeAllDeliveredNotifications()
@@ -202,22 +207,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 UIApplication.shared.applicationIconBadgeNumber = 0
             }
         }
-        printDebug("\(#function) - End")
+        debugPrint("\(#function) - End")
     }
 
     func applicationWillEnterForeground(_: UIApplication) {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
 
         // Sync with iCloud
-        observeItems()
+//        observeItems()
+//        observeOptions()
 
-        printDebug("\(#function) - End")
+        debugPrint("\(#function) - End")
     }
 
     func applicationDidBecomeActive(_: UIApplication) {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        AppDelegate.setSync()
+        self.setSync()
 
         if let shortcutItem = shortcutItemToProcess {
             if shortcutItem.type == "AddAction" {
@@ -229,19 +235,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             shortcutItemToProcess = nil
         }
 
-        AppDelegate.setAutomaticDarkModeTimer()
-        printDebug("\(#function) - End")
+//        AppDelegate.setAutomaticDarkModeTimer()
+        debugPrint("\(#function) - End")
     }
 
 //    static func removeOrphanedNotifications() {
-//        printDebug("\(#function) - Start")
+//        debugPrint("\(#function) - Start")
 //        let center = UNUserNotificationCenter.current()
 //        var orphanNotifications: [String] = []
 //        center.getPendingNotificationRequests(completionHandler: { pendingNotifications in
 //            pendingNotifications.forEach { notification in
 //                let id = notification.identifier
 //                let realm = try! Realm()
-//                let item = realm.object(ofType: Items.self, forPrimaryKey: id)
+//                let item = realm.object(ofType: Task.self, forPrimaryKey: id)
 //                // First test nil for items that don't exist
 //                if item == nil {
 //                    orphanNotifications.append(id)
@@ -254,24 +260,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //            }
 //        })
 //        center.removePendingNotificationRequests(withIdentifiers: orphanNotifications)
-//        printDebug("\(#function) - End")
+//        debugPrint("\(#function) - End")
 //    }
 
     func applicationWillTerminate(_: UIApplication) {
-        printDebug("\(#function) - Start")
+        debugPrint("\(#function) - Start")
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-
-        AppDelegate.refreshAndUpdate()
-
-        printDebug("\(#function) - End")
+        notificationHandler.removeOrphanedNotifications()
+        debugPrint("\(#function) - End")
     }
 
     func application(_: UIApplication, shouldSaveApplicationState _: NSCoder) -> Bool {
-        return true
+        true
     }
 
     func application(_: UIApplication, shouldRestoreApplicationState _: NSCoder) -> Bool {
-        return true
+        true
     }
 
     open func restoreSelectedTab(tab: Int?) {
@@ -303,17 +307,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             autoreleasepool {
                 let realm = try! Realm()
                 if realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil {
-                    printDebug("Options exist. App should continue")
+                    debugPrint("Options exist. App should continue")
                 } else {
-                    printDebug("Options DO NOT exist. Creating")
+                    debugPrint("Options DO NOT exist. Creating")
                     let newOptions = Options()
                     newOptions.optionsKey = Options.primaryKey()
                     do {
-                        try realm.write {
-                            realm.add(newOptions)
-                        }
+                        realm.beginWrite()
+                        realm.add(newOptions)
+                        try realm.commitWrite()
                     } catch {
-                        fatalError("Failed to create first Options object: \(error)")
+                        realm.cancelWrite()
                     }
                 }
             }
@@ -325,17 +329,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             autoreleasepool {
                 let realm = try! Realm()
                 if realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey()) != nil {
-                    printDebug("RoutinesPlus exist. App should continue")
+                    debugPrint("RoutinesPlus exist. App should continue")
                 } else {
-                    printDebug("RoutinesPlus DOES NOT exist. Creating")
+                    debugPrint("RoutinesPlus DOES NOT exist. Creating")
                     let newRoutinesPlus = RoutinesPlus()
                     newRoutinesPlus.routinesPlusKey = RoutinesPlus.primaryKey()
                     do {
-                        try realm.write {
-                            realm.add(newRoutinesPlus)
-                        }
+                        realm.beginWrite()
+                        realm.add(newRoutinesPlus)
+                        try realm.commitWrite()
                     } catch {
-                        fatalError("Failed to create first RoutinesPlus object: \(error)")
+                        realm.cancelWrite()
                     }
                 }
             }
@@ -346,12 +350,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 22,
+            schemaVersion: 27,
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
             migrationBlock: { migration, oldSchemaVersion in
-                printDebug("oldSchemaVersion: \(oldSchemaVersion)")
+                debugPrint("oldSchemaVersion: \(oldSchemaVersion)")
                 if oldSchemaVersion < 9 {
                     migration.enumerateObjects(ofType: Options.className()) { oldObject, newObject in
                         let morningStartTime = oldObject!["morningStartTime"] as! Date
@@ -385,9 +389,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         print("oldObject: " + String(describing: oldObject))
                         print("newObject: " + String(describing: newObject))
                     }
-                    // TODO: !!! Items class name can't migrate because class name changed !!!
+                    // TODO: !!! Task class name can't migrate because class name changed !!!
                     // TODO: Also, future migrations may conflict with iCloud
-                    migration.enumerateObjects(ofType: Items.className()) { _, newObject in
+                    migration.enumerateObjects(ofType: "Items") { _, newObject in
                         // print("oldObject: " + String(describing: oldObject))
                         newObject!["isDeleted"] = false
                         newObject!["dateModified"] = Date()
@@ -398,7 +402,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 }
 
                 if oldSchemaVersion >= 15, oldSchemaVersion < 18 {
-                    migration.enumerateObjects(ofType: Items.className()) { oldObject, newObject in
+                    migration.enumerateObjects(ofType: "Items") { oldObject, newObject in
                         print("oldObject: " + String(describing: oldObject))
                         print("newObject: " + String(describing: newObject))
                         let originalSegment = oldObject!["segment"] as! Int
@@ -416,25 +420,82 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         let cloudSync = oldObject!["cloudSync"] as! Bool
                         UserDefaults.standard.set(cloudSync, forKey: "cloudSync")
 
-                        let purchasedProduct = oldObject!["purchasedProduct"] as! String
-
-                        let routinesPlusPurchased = oldObject!["routinesPlusPurchased"] as! Bool
+//                        let purchasedProduct = oldObject!["purchasedProduct"] as! String
+//
+//                        let routinesPlusPurchased = oldObject!["routinesPlusPurchased"] as! Bool
 
                         let newRoutinesPlus = RoutinesPlus()
 
                         newRoutinesPlus.routinesPlusKey = RoutinesPlus.primaryKey()
-                        newRoutinesPlus.purchasedProduct = purchasedProduct
-                        newRoutinesPlus.routinesPlusPurchased = routinesPlusPurchased
+//                        newRoutinesPlus.purchasedProduct = purchasedProduct
+//                        newRoutinesPlus.routinesPlusPurchased = routinesPlusPurchased
 
                         migration.create("RoutinesPlus", value: newRoutinesPlus)
                     }
                 }
 
-                if oldSchemaVersion <= 21 {
-                    migration.enumerateObjects(ofType: Options.className()) { oldObject, _ in
-                        if let darkMode = oldObject!["darkMode"] as? Bool {
-                            UserDefaults.standard.set(darkMode, forKey: "darkMode")
+                if oldSchemaVersion >= 21, oldSchemaVersion <= 25 {
+                    //First, create the new category objects
+                    let morningCategory = migration.create("TaskCategory", value: TaskCategory(category: 0))
+                    let afternoonCategory = migration.create("TaskCategory", value: TaskCategory(category: 1))
+                    let eveningCategory = migration.create("TaskCategory", value: TaskCategory(category: 2))
+                    let nightCategory = migration.create("TaskCategory", value: TaskCategory(category: 3))
+                    let allCategory = migration.create("TaskCategory", value: TaskCategory(category: 4))
+                    
+                    var morningList = [MigrationObject]()
+                    var afternoonList = [MigrationObject]()
+                    var eveningList = [MigrationObject]()
+                    var nightList = [MigrationObject]()
+                    var allList = [MigrationObject]()
+                    
+                    migration.enumerateObjects(ofType: RoutinesPlus.className()) { _, _ in
+                        //auto migration
+                    }
+                    migration.enumerateObjects(ofType: Options.className()) { (_, _) in
+                        // auto migration
+                    }
+                    migration.enumerateObjects(ofType: "Items") { oldObject, newObject in
+                        //Create a new task from the old object
+                        let newTask = migration.create(Task.className(), value: oldObject!)
+                        debugPrint("newTask: " + String(describing: newTask))
+                        /*  
+                        Based on the segment of that task, append it to the appropriate
+                        array of tasks associated with the categories above
+                        */
+                        switch (newTask["segment"] as! Int) {
+                        case 1:
+                            debugPrint("adding newTask to afternoon: " + String(describing: newTask))
+                            afternoonList.append(newTask)
+                        case 2:
+                            debugPrint("adding newTask to evening: " + String(describing: newTask))
+                            eveningList.append(newTask)
+                        case 3:
+                            debugPrint("adding newTask to night: " + String(describing: newTask))
+                            nightList.append(newTask)
+                        default:
+                            debugPrint("adding newTask to morning: " + String(describing: newTask))
+                            morningList.append(newTask)
                         }
+                        //Also add each task to the array for allList
+                        debugPrint("adding newTask to all: " + String(describing: newTask))
+                        allList.append(newTask)
+                    }
+                    
+                    //Finally, append sequence in reversed order to the category lists so it appears as the user previously had them sorted
+                    /*
+                     Note: This didn't work during my initial testing, which worries me still. But after re-writing all of this, it seems fine.
+                     Previously, it produced a ton of duplicate tasks, progressively getting worse as the enumeration continued.
+                     */
+                    morningCategory.dynamicList("taskList").append(objectsIn: morningList.reversed())
+                    afternoonCategory.dynamicList("taskList").append(objectsIn: afternoonList.reversed())
+                    eveningCategory.dynamicList("taskList").append(objectsIn: eveningList.reversed())
+                    nightCategory.dynamicList("taskList").append(objectsIn: nightList.reversed())
+                    allCategory.dynamicList("taskList").append(objectsIn: allList.reversed())
+                }
+                
+                if oldSchemaVersion > 25, oldSchemaVersion <= 26 {
+                    migration.enumerateObjects(ofType: "Task") { (_, _) in
+                        //auto
                     }
                 }
             }
@@ -450,75 +511,123 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func completeItem(uuidString: String) {
         let realm = try! Realm()
-        guard let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) else { return }
+        guard let item = realm.object(ofType: Task.self, forPrimaryKey: uuidString) else { return }
 
         item.completeItem()
     }
 
     func snoozeItem(uuidString: String) {
         let realm = try! Realm()
-        guard let item = realm.object(ofType: Items.self, forPrimaryKey: uuidString) else { return }
+        guard let item = realm.object(ofType: Task.self, forPrimaryKey: uuidString) else { return }
 
         item.snooze()
     }
 
-    static func setSync() {
-        printDebug(#function)
-        if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getCloudSync() {
-            // Setting this each time was causing the list of items to trigger a change in observation tokens
-            // Only needs to be set if it isn't already
-            guard AppDelegate.syncEngine == nil else { return }
-            printDebug("Enabling cloud syncEngine")
-
-            AppDelegate.syncEngine = SyncEngine(objects: [
-                SyncObject<Items>(),
-                SyncObject<Options>(),
-            ], databaseScope: .private)
-        } else {
-            printDebug("Disabling cloud syncEngine")
-            AppDelegate.syncEngine = nil
-        }
+    func setSync() {
+        debugPrint(#function)
+//        let realm = try! Realm()
+//        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
+//        if routinesPlus?.getCloudSync() ?? false {
+//            // Setting this each time was causing the list of items to trigger a change in observation tokens
+//            // Only needs to be set if it isn't already
+//            guard self.syncEngine == nil else { return }
+//            debugPrint("Enabling cloud syncEngine")
+//
+//            self.syncEngine = SyncEngine(objects: [
+//                SyncObject<Options>(),
+//                SyncObject<RoutinesPlus>(),
+//                SyncObject<Task>(),
+//                SyncObject<TaskCategory>(),
+//            ], databaseScope: .private)
+//            syncEngine?.setup()
+//        } else {
+//            debugPrint("Disabling cloud syncEngine")
+//            self.syncEngine = nil
+//        }
     }
 
     // MARK: - Update after Notifications
 
-    var itemsToken: NotificationToken?
-    var items: Results<Items>?
+//    var itemsToken: NotificationToken?
+//    var optionsToken: NotificationToken?
+//    var items: List<Task>?
+//    var options: Options?
+//
+//    // TODO: This creates some redudancies with notification creation and deletion as handled by the Items class.
+//    func observeItems(function: String = #function) {
+//        debugPrint(#function + "Called by \(function)")
+//        // Observe Results Notifications
+//        guard itemsToken == nil else { return }
+//        let notificationHandler = NotificationHandler()
+////        let realm = try! Realm()
+//        items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
+//        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
+//        // Observe Results Notifications
+//        itemsToken = items?.observe { (changes: RealmCollectionChange) in
+//            switch changes {
+//            case .initial:
+//                notificationHandler.removeOrphanedNotifications()
+//                notificationHandler.checkForMissingNotifications()
+//            case let .update(_, _, insertions, modifications):
+//                debugPrint("updated items detected")
+//                // Caused crashes because deleted items don't exist and can't provide a property value
+//                // notificationHandler.removeNotifications(withIdentifiers: deletions.map { (self.items?[$0].uuidString) ?? ""})
+//                // These are being called too much because the order of the list is changing
+//                notificationHandler.removeOrphanedNotifications()
+//                debugPrint(#function + "Item Insertions: \(insertions.map { (self.items?[$0].title!) }) ")
+//                notificationHandler.batchModifyNotifications(items: insertions.map { (self.items?[$0]) })
+//                debugPrint(#function + "Item Modifications: \(modifications.map { (self.items?[$0].title!) }) ")
+//                notificationHandler.batchModifyNotifications(items: modifications.map { (self.items?[$0]) })
+//            case let .error(error):
+//                // An error occurred while opening the Realm file on the background worker thread
+//                debugPrint("Error in \(#function) - \(error)")
+//            }
+//        }
+//    }
+//
+//    func observeOptions(function: String = #function) {
+//        debugPrint(#function + "Called by \(function)")
+//        guard optionsToken == nil else { return }
+//        let realm = try! Realm()
+//        let notificationHandler = NotificationHandler()
+//        if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+//            optionsToken = options.observe { change in
+//                switch change {
+//                case let .change(properties):
+//                    properties.forEach { property in
+//                        debugPrint("Changed options property is \(property.name)")
+//                        if property.name.contains("Minute") || property.name.contains("Hour") {
+//                            //this is being called too much because of sync
+//                            debugPrint("Notification times changed. Recreating notifications as necessary.")
+//                            notificationHandler.refreshAllNotifications()
+//                        }
+//                    }
+//                case let .error(error):
+//                    debugPrint("An error occurred: \(error)")
+//                case .deleted:
+//                    debugPrint("Options was deleted.")
+//                }
+//            }
+//        }
+//    }
 
-    func observeItems() {
-        // Observe Results Notifications
-        guard itemsToken == nil else { return }
-        printDebug(#function + "Setting token and observing items")
-
-        let realm = try! Realm()
-        let application = UIApplication.shared
-        items = realm.objects(Items.self)
-
-        itemsToken = items?.observe { _ in
-            if application.applicationState == .active {
-                self.afterSyncTimer.startTimer()
-            } else {
-                AppDelegate.refreshAndUpdate()
-            }
-        }
-    }
-
-    static func refreshAndUpdate(function: String = #function) {
-        printDebug(#function + "Called by \(function)")
-        let notificationHandler = NotificationHandler()
-        notificationHandler.refreshAllNotifications()
-        AppDelegate.updateBadgeFromPush()
-        // AppDelegate.removeOrphanedNotifications()
-    }
+//    static func refreshAndUpdate(function: String = #function) {
+//        debugPrint(#function + "Called by \(function)")
+//        let notificationHandler = NotificationHandler()
+//        notificationHandler.refreshAllNotifications()
+//        AppDelegate.updateBadgeFromPush()
+//        // AppDelegate.removeOrphanedNotifications()
+//    }
 
 //    @objc func backgroundRefresh() {
-//        printDebug(#function)
+//        debugPrint(#function)
 //        refreshAndUpdate()
 //    }
 
     deinit {
-        printDebug("\(#function) called. Tokens invalidated")
-        itemsToken?.invalidate()
+        debugPrint("\(#function) called. Tokens invalidated")
+//        itemsToken?.invalidate()
+//        optionsToken?.invalidate()
     }
 
     // MARK: - Notification Categories and Actions
@@ -542,45 +651,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let nightSummaryFormat = "%u more Night tasks"
         let nightPreviewPlaceholder = "%u Night tasks"
 
-        var morningCategory: UNNotificationCategory
-        if #available(iOS 12.0, *) {
-            morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: morningPreviewPlaceholder, categorySummaryFormat: morningSummaryFormat, options: [])
-        } else if #available(iOS 11.0, *) {
-            morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: morningPreviewPlaceholder, options: [])
-        } else {
-            // Fallback on earlier versions
-            morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction, completeAction], intentIdentifiers: [], options: [])
-        }
+        let morningCategory = UNNotificationCategory(identifier: "morning", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: morningPreviewPlaceholder, categorySummaryFormat: morningSummaryFormat, options: [])
 
-        var afternoonCategory: UNNotificationCategory
-        if #available(iOS 12.0, *) {
-            afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: afternoonPreviewPlaceholder, categorySummaryFormat: afternoonSummaryFormat, options: [])
-        } else if #available(iOS 11.0, *) {
-            afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: afternoonPreviewPlaceholder, options: [])
-        } else {
-            // Fallback on earlier versions
-            afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction, completeAction], intentIdentifiers: [], options: [])
-        }
+        let afternoonCategory = UNNotificationCategory(identifier: "afternoon", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: afternoonPreviewPlaceholder, categorySummaryFormat: afternoonSummaryFormat, options: [])
 
-        var eveningCategory: UNNotificationCategory
-        if #available(iOS 12.0, *) {
-            eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: eveningPreviewPlaceholder, categorySummaryFormat: eveningSummaryFormat, options: [])
-        } else if #available(iOS 11.0, *) {
-            eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: eveningPreviewPlaceholder, options: [])
-        } else {
-            // Fallback on earlier versions
-            eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction, completeAction], intentIdentifiers: [], options: [])
-        }
+        let eveningCategory = UNNotificationCategory(identifier: "evening", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: eveningPreviewPlaceholder, categorySummaryFormat: eveningSummaryFormat, options: [])
 
-        var nightCategory: UNNotificationCategory
-        if #available(iOS 12.0, *) {
-            nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: nightPreviewPlaceholder, categorySummaryFormat: nightSummaryFormat, options: [])
-        } else if #available(iOS 11.0, *) {
-            nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: nightPreviewPlaceholder, options: [])
-        } else {
-            // Fallback on earlier versions
-            nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction, completeAction], intentIdentifiers: [], options: [])
-        }
+        let nightCategory = UNNotificationCategory(identifier: "night", actions: [snoozeAction, completeAction], intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: nightPreviewPlaceholder, categorySummaryFormat: nightSummaryFormat, options: [])
 
         center.setNotificationCategories([morningCategory, afternoonCategory, eveningCategory, nightCategory])
     }
@@ -608,8 +685,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     static func updateBadgeFromPush() {
-        printDebug(#function)
-        printDebug("updating badge from remote push")
+        debugPrint(#function)
+        debugPrint("updating badge from remote push")
         let center = UNUserNotificationCenter.current()
         var remoteBadge = 0
         center.getDeliveredNotifications { deliveredNotifications in
@@ -618,34 +695,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UIApplication.shared.applicationIconBadgeNumber = remoteBadge
     }
 
+    fileprivate func presentStoryboardView(withIdentifier identifier: String) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let addViewController = storyBoard.instantiateViewController(withIdentifier: identifier)
+        let topController = UIApplication.shared.windows.first?.rootViewController
+        // Dismiss if there's another view already on top
+        topController?.dismiss(animated: true, completion: nil)
+        topController?.present(addViewController, animated: true, completion: nil)
+    }
+
     // Notification Settings Screen
     fileprivate func goToSettings() {
-        // print("Opening settings")
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let optionsViewController = storyBoard.instantiateViewController(withIdentifier: "settingsViewController") as! OptionsTableViewController
-        let rootVC = window?.rootViewController as! UITabBarController
-        // Set the selected index so you know what child will be on screen
-        let index = Options.getSelectedIndex()
-        rootVC.selectedIndex = index
-        printDebug(#function + " segment \(index)")
-        let navVC = rootVC.children[index] as! UINavigationController
-        navVC.pushViewController(optionsViewController, animated: true)
-        // TableViewController.setAppearance(segment: index)
+        presentStoryboardView(withIdentifier: "settingsNavigationController")
     }
 
     fileprivate func goToAdd() {
-        // print("Opening Add view")
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let addViewController = storyBoard.instantiateViewController(withIdentifier: "addEditViewController") as! AddTableViewController
-        let rootVC = window?.rootViewController as! UITabBarController
-        // Set the selected index so you know what child will be on screen
-        let index = Options.getSelectedIndex()
-        rootVC.selectedIndex = index
-        printDebug(#function + " segment \(index)")
-        let navVC = rootVC.children[index] as! UINavigationController
-        navVC.pushViewController(addViewController, animated: true)
-        addViewController.editingSegment = index
-        // TableViewController.setAppearance(segment: index)
+        presentStoryboardView(withIdentifier: "addEditNavigationController")
     }
 
     func userNotificationCenter(_: UNUserNotificationCenter, openSettingsFor _: UNNotification?) {
@@ -667,10 +732,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
         var segment = Int()
-        DispatchQueue(label: Items.realmDispatchQueueLabel).sync {
+        DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let item = realm.object(ofType: Items.self, forPrimaryKey: identifier) {
+                if let item = realm.object(ofType: Task.self, forPrimaryKey: identifier) {
                     segment = item.segment
                 }
             }
@@ -693,61 +758,61 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     // MARK: - Themes
 
-    func setUpTheme() {
-        window?.theme_backgroundColor = GlobalPicker.backgroundColor
-
-        // tab bar
-        let tabBar = UITabBar.appearance()
-        tabBar.theme_tintColor = GlobalPicker.barTextColor
-        tabBar.theme_barStyle = GlobalPicker.barStyle
-        tabBar.theme_barTintColor = GlobalPicker.tabBarTintColor
-        tabBar.backgroundImage = UIImage()
-        tabBar.theme_backgroundColor = GlobalPicker.backgroundColor
-        tabBar.shadowImage = UIImage()
-
-        // Themes.restoreLastTheme()
-
-        // status bar
-
-        UIApplication.shared.theme_setStatusBarStyle([.default, .default, .default, .default, .lightContent, .lightContent, .lightContent, .lightContent, .lightContent], animated: true)
-
-        // navigation bar
-
-        let navigationBar = UINavigationBar.appearance()
-        navigationBar.theme_barStyle = GlobalPicker.barStyle
-        navigationBar.theme_tintColor = GlobalPicker.barTextColor
-        navigationBar.shadowImage = UIImage()
-        // isTranslucent false seems to cause a layout bug
-
-        let shadow = NSShadow()
-        shadow.shadowOffset = CGSize(width: 0, height: 0)
-
-        let titleAttributes = GlobalPicker.barTextColors.map { hexString in
-            [
-                NSAttributedString.Key.foregroundColor: UIColor(rgba: hexString),
-                // NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
-
-                NSAttributedString.Key.shadow: shadow,
-            ]
-        }
-
-        navigationBar.theme_titleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
-        navigationBar.theme_largeTitleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
-
-        // Cells
-        let cell = UITableViewCell.appearance()
-        cell.theme_backgroundColor = GlobalPicker.barTintColor
-        cell.theme_tintColor = GlobalPicker.barTextColor
-
-        // TableView
-        let tableViewUI = UITableView.appearance()
-        tableViewUI.theme_separatorColor = GlobalPicker.cellSeparator
-        //tableViewUI.theme_backgroundColor = GlobalPicker.cellBackground
-
-        // switches
-        let switchUI = UISwitch.appearance()
-        switchUI.theme_onTintColor = GlobalPicker.switchTintColor
-        switchUI.theme_tintColor = GlobalPicker.switchTintColor
-        switchUI.theme_backgroundColor = GlobalPicker.cellBackground
-    }
+//    func setUpTheme() {
+    ////        window?.theme_backgroundColor = GlobalPicker.backgroundColor
+//
+//        // tab bar
+//        let tabBar = UITabBar.appearance()
+//        tabBar.theme_tintColor = GlobalPicker.barTextColor
+//        tabBar.theme_barStyle = GlobalPicker.barStyle
+//        tabBar.theme_barTintColor = GlobalPicker.tabBarTintColor
+//        tabBar.backgroundImage = UIImage()
+//        tabBar.theme_backgroundColor = GlobalPicker.backgroundColor
+//        tabBar.shadowImage = UIImage()
+//
+//        // Themes.restoreLastTheme()
+//
+//        // status bar
+//
+    ////        UIApplication.shared.theme_setStatusBarStyle([.default, .default, .default, .default, .lightContent, .lightContent, .lightContent, .lightContent, .lightContent], animated: true)
+//
+//        // navigation bar
+//
+    ////        let navigationBar = UINavigationBar.appearance()
+    ////        navigationBar.theme_barStyle = GlobalPicker.barStyle
+    ////        navigationBar.theme_tintColor = GlobalPicker.barTextColor
+    ////        navigationBar.shadowImage = UIImage()
+//        // isTranslucent false seems to cause a layout bug
+//
+    ////        let shadow = NSShadow()
+    ////        shadow.shadowOffset = CGSize(width: 0, height: 0)
+    ////
+    ////        let titleAttributes = GlobalPicker.barTextColors.map { hexString in
+    ////            [
+    ////                NSAttributedString.Key.foregroundColor: UIColor(rgba: hexString),
+    ////                // NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+    ////
+    ////                NSAttributedString.Key.shadow: shadow,
+    ////            ]
+    ////        }
+    ////
+    ////        navigationBar.theme_titleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
+    ////        navigationBar.theme_largeTitleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
+//
+//        // Cells
+    ////        let cell = UITableViewCell.appearance()
+    ////        cell.theme_backgroundColor = GlobalPicker.barTintColor
+    ////        cell.theme_tintColor = GlobalPicker.barTextColor
+    ////
+    ////        // TableView
+    ////        let tableViewUI = UITableView.appearance()
+    ////        tableViewUI.theme_separatorColor = GlobalPicker.cellSeparator
+    ////        //tableViewUI.theme_backgroundColor = GlobalPicker.cellBackground
+    ////
+    ////        // switches
+    ////        let switchUI = UISwitch.appearance()
+    ////        switchUI.theme_onTintColor = GlobalPicker.switchTintColor
+    ////        switchUI.theme_tintColor = GlobalPicker.switchTintColor
+    ////        switchUI.theme_backgroundColor = GlobalPicker.cellBackground
+//    }
 }

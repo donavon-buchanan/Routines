@@ -15,37 +15,37 @@ class AboutTableViewController: UITableViewController {
 
     @IBOutlet var labels: [UILabel]!
 
-    @IBOutlet var gearImage: UIImageView!
-    @IBOutlet var morningImage: UIImageView!
-    @IBOutlet var afternoonImage: UIImageView!
-    @IBOutlet var eveningImage: UIImageView!
-    @IBOutlet var nightImage: UIImageView!
+//    @IBOutlet var gearImage: UIImageView!
+//    @IBOutlet var morningImage: UIImageView!
+//    @IBOutlet var afternoonImage: UIImageView!
+//    @IBOutlet var eveningImage: UIImageView!
+//    @IBOutlet var nightImage: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+//        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         versionNumberLabel.text = setVersionNumberLabel()
-        setViewBackgroundGraphic()
+//        setViewBackgroundGraphic()
 
-        cells.forEach { cell in
-            cell.theme_backgroundColor = GlobalPicker.cellBackground
-        }
-
-        labels.forEach { label in
-            label.theme_textColor = GlobalPicker.cellTextColors
-        }
-
-        gearImage.theme_image = GlobalPicker.gear
-        morningImage.theme_image = GlobalPicker.morning
-        afternoonImage.theme_image = GlobalPicker.afternoon
-        eveningImage.theme_image = GlobalPicker.evening
-        nightImage.theme_image = GlobalPicker.night
+//        cells.forEach { cell in
+//            cell.theme_backgroundColor = GlobalPicker.cellBackground
+//        }
+//
+//        labels.forEach { label in
+//            label.theme_textColor = GlobalPicker.cellTextColors
+//        }
+//
+//        gearImage.theme_image = GlobalPicker.gear
+//        morningImage.theme_image = GlobalPicker.morning
+//        afternoonImage.theme_image = GlobalPicker.afternoon
+//        eveningImage.theme_image = GlobalPicker.evening
+//        nightImage.theme_image = GlobalPicker.night
     }
 
     func setVersionNumberLabel() -> String {
-        guard let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String else { fatalError("Failed to get version number") }
+        guard let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String else { return "Failed to get version number" }
 
-        guard let buildNumber = Bundle.main.infoDictionary!["CFBundleVersion"] as? String else { fatalError("Failed to get build number") }
+        guard let buildNumber = Bundle.main.infoDictionary!["CFBundleVersion"] as? String else { return "Failed to get build number" }
 
         let versionString = "Version: \(appVersion), Build: \(buildNumber)"
 
@@ -53,13 +53,13 @@ class AboutTableViewController: UITableViewController {
     }
 
     // Set background graphic
-    func setViewBackgroundGraphic() {
-        let backgroundImageView = UIImageView()
-        let backgroundImage = UIImage(imageLiteralResourceName: "inlay")
-
-        backgroundImageView.image = backgroundImage
-        backgroundImageView.contentMode = .scaleAspectFit
-
-        tableView.backgroundView = backgroundImageView
-    }
+//    func setViewBackgroundGraphic() {
+//        let backgroundImageView = UIImageView()
+//        let backgroundImage = UIImage(imageLiteralResourceName: "inlay")
+//
+//        backgroundImageView.image = backgroundImage
+//        backgroundImageView.contentMode = .scaleAspectFit
+//
+//        tableView.backgroundView = backgroundImageView
+//    }
 }

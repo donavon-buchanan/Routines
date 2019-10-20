@@ -29,9 +29,9 @@ class DailyTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableAppearance.theme_backgroundColor = GlobalPicker.backgroundColor
-        cellAppearance.theme_backgroundColor = GlobalPicker.cellBackground
-        labelAppearance.theme_textColor = GlobalPicker.cellTextColors
+//        tableAppearance.theme_backgroundColor = GlobalPicker.backgroundColor
+//        cellAppearance.theme_backgroundColor = GlobalPicker.cellBackground
+//        labelAppearance.theme_textColor = GlobalPicker.cellTextColors
     }
 
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {

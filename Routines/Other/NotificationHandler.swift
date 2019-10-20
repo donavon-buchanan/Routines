@@ -13,20 +13,22 @@ import UserNotifications
 struct NotificationHandler {
     let center = UNUserNotificationCenter.current()
 
-    func firstTriggerDate(forItem item: Items) -> Date {
+    func firstTriggerDate(forItem item: Task) -> Date {
         var segmentTime = Calendar.autoupdatingCurrent.dateComponents([.year, .month, .day, .calendar, .timeZone], from: Date())
 
         segmentTime.hour = Options.getOptionHour(segment: item.segment)
         segmentTime.minute = Options.getOptionMinute(segment: item.segment)
         segmentTime.second = 0
 
-        // First, check if notifications are enabled for the segment
-        // Also check if item hasn't been marked as complete already
-        if Options.getSegmentNotification(segment: item.segment), item.completeUntil < Date().endOfDay, Date() <= segmentTime.date! {
+        // check if item hasn't been marked as complete already
+        if item.completeUntil < Date().endOfDay, Date() <= segmentTime.date! {
+            debugPrint("1: Task completeUntil is before end of today. Now is before or equal to the segment trigger date")
             return segmentTime.date!
-        } else if Options.getSegmentNotification(segment: item.segment), item.completeUntil > Date().endOfDay, Date() <= segmentTime.date! {
-            return segmentTime.date!
+        } else if item.completeUntil > Date().endOfDay, Date() <= segmentTime.date! {
+            debugPrint("2: Task completeUntil is after end of today. Now is before or equal to the segment trigger date.")
+            return segmentTime.date!.nextDay
         } else {
+            debugPrint("3: Returning nextDay segment trigger date.")
             return segmentTime.date!.nextDay
         }
 
@@ -37,30 +39,35 @@ struct NotificationHandler {
         var badgeCount = 0
         let realm = try! Realm()
         // Get all the items in or under the current segment.
-        if let item = realm.object(ofType: Items.self, forPrimaryKey: id) {
+        if let item = realm.object(ofType: Task.self, forPrimaryKey: id) {
             let itemSegment = item.segment
             // Only count the items who's segment is equal or greater than the current item
             // TODO: Maybe should match this against "originalSegment"?
-            let items = realm.objects(Items.self).filter("segment >= %@ AND isDeleted = %@ AND completeUntil <= %@", itemSegment, false, item.completeUntil).sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
+            let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList.filter("segment >= %@ AND completeUntil <= %@", itemSegment, item.completeUntil)//.sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
             if let currentItemIndex = items.index(of: item) {
-                printDebug("Item title: \(item.title!) at index: \(currentItemIndex)")
+                debugPrint("Item title: \(item.title!) at index: \(currentItemIndex)")
                 badgeCount = currentItemIndex + 1
-                printDebug("setBadgeNumber to \(badgeCount) for \(item.title!)")
+                debugPrint("setBadgeNumber to \(badgeCount) for \(item.title!)")
             }
         }
 
         return badgeCount
     }
 
-    func createNewNotification(forItem item: Items) {
+    func createNewNotification(forItem item: Task, function: String = #function) {
+        guard Options.getSegmentNotification(segment: item.segment) else { 
+            self.removeNotifications(withIdentifiers: [item.uuidString])
+            return
+        }
+        debugPrint(#function + "Called by \(function)")
         checkNotificationPermission()
 
         let title = item.title!
         let notes = item.notes
         let segment = item.segment
         let id = item.uuidString
-        let triggerDate = firstTriggerDate(forItem: item)
-        let repeats = item.repeats
+        // let triggerDate = firstTriggerDate(forItem: item)
+        // let repeats = item.repeats
 
         let content = UNMutableNotificationContent()
         content.title = title
@@ -85,9 +92,9 @@ struct NotificationHandler {
             content.categoryIdentifier = "morning"
         }
 
-        let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: triggerDate)
+        // let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: triggerDate)
 
-        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: repeats)
+        let trigger = returnNotificationTrigger(item: item)
 
         // Create the request
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
@@ -96,18 +103,30 @@ struct NotificationHandler {
         scheduleNotification(request: request)
     }
 
-    func removeNotifications(withIdentifiers identifiers: [String]) {
+    func returnNotificationTrigger(item: Task) -> UNCalendarNotificationTrigger {
+        // debugPrint(#function + "Called by \(function)")
+        //The day component here is causing problems
+//        let triggerDateComponents = Calendar.autoupdatingCurrent.dateComponents([.day, .hour, .minute, .second, .calendar], from: firstTriggerDate(forItem: item))
+        let dateComponents = Calendar.autoupdatingCurrent.dateComponents([.hour, .minute, .second, .calendar], from: firstTriggerDate(forItem: item))
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: item.repeats)
+        
+        return trigger
+    }
+
+    func removeNotifications(withIdentifiers identifiers: [String], function: String = #function) {
+        debugPrint(#function + "Called by \(function)")
         center.removePendingNotificationRequests(withIdentifiers: identifiers)
     }
 
-    func removeOrphanedNotifications() {
-        let realm = try! Realm()
-        let items = realm.objects(Items.self).filter("isDeleted = %@", false)
+    func removeOrphanedNotifications(function: String = #function) {
+        debugPrint(#function + "Called by \(function)")
+//        let realm = try! Realm()
+        let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
         let itemIDArray: [String] = items.map { $0.uuidString }
 
         center.getPendingNotificationRequests { pendingRequests in
-            //This has to happen inside the closure, otherwise the values to notificationIDArray never get written in time.
-            //Seems to execute async
+            // This has to happen inside the closure, otherwise the values to notificationIDArray never get written in time.
+            // Seems to execute async
             var notificationIDArray: [String] = []
             notificationIDArray = pendingRequests.map { $0.identifier }
             let itemSet = Set(itemIDArray)
@@ -116,45 +135,144 @@ struct NotificationHandler {
             print("notificationSet count: \(notificationSet.count)")
             let orphans = notificationSet.subtracting(itemSet)
             print("orphans count: \(orphans.count)")
+
+            guard orphans.count > 0 else { return }
             self.removeNotifications(withIdentifiers: Array(orphans))
+        }
+    }
+
+    func checkForMissingNotifications(function: String = #function) {
+        debugPrint(#function + "Called by \(function)")
+        center.getPendingNotificationRequests { pendingRequests in
+            let realm = try! Realm()
+            let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
+            debugPrint("Pending Requests Count: \(pendingRequests.count)")
+            let pendingRequestsSet = Set(pendingRequests.map { $0.identifier })
+            debugPrint("Pending Requests Set Count: \(pendingRequestsSet.count)")
+            let itemIDArray: [String] = items.map { $0.uuidString }
+            debugPrint("Item Array Count: \(itemIDArray.count)")
+            itemIDArray.forEach { itemID in
+                if !pendingRequestsSet.contains(itemID) {
+                    if let item = realm.object(ofType: Task.self, forPrimaryKey: itemID) {
+                        self.createNewNotification(forItem: item)
+                    }
+                }
+            }
+        }
+    }
+
+    func batchModifyNotifications(items: [Task?], function: String = #function) {
+        debugPrint(#function + "Called by \(function)")
+        DispatchQueue.main.async {
+            items.forEach { item in
+                if let item = item {
+                    if Options.getSegmentNotification(segment: item.segment) {
+                        self.createNewNotification(forItem: item)
+                    } else {
+                        debugPrint("Removing notification for soft deleted item")
+                        self.removeNotifications(withIdentifiers: [item.uuidString])
+                    }
+                }
+            }
         }
     }
 
     func checkNotificationPermission() {
         // Request permission to display alerts and play sounds
-        /* center.requestAuthorization(options: [.alert, .sound, .badge, .provisional, .providesAppNotificationSettings]) { (status, error) in
-            //
-         } */
-        if #available(iOS 12.0, *) {
-            center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { _, _ in
-                // Enable or disable features based on authorization.
-            }
-        } else {
-            // Fallback on earlier versions
-            center.requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in
-                // Enable or disable features based on authorization.
-            }
-        }
-    }
-    
-    func refreshAllNotifications() {
-        //TODO: Delivered notifications are being delivered. Check for change in notification properties before creating it again.
-        removeOrphanedNotifications()
-        let realm = try! Realm()
-        let items = realm.objects(Items.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
-        //center.removeAllPendingNotificationRequests()
-        items.forEach { (item) in
-            createNewNotification(forItem: item)
+        center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { _, _ in
+            // Enable or disable features based on authorization.
         }
     }
 
-    private func scheduleNotification(request: UNNotificationRequest) {
+//    func refreshAllNotifications(function: String = #function) {
+//        debugPrint(#function + "Called by \(function)")
+//        //Do some cleanup first
+//        removeOrphanedNotifications()
+//
+//        center.getPendingNotificationRequests { (pendingRequests) in
+//            let realm = try! Realm()
+//            let items = realm.objects(Task.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+//            debugPrint("Starting count for items list is \(items.count)")
+//            // 1. Iterate through all pending requests and check that the trigger matches what *would* be set with the item's current properties
+//            // 2. If there's a match, the notification does not need to be updated and the item can be ignored. Add to Set of ignored items
+//            // 3. After iteration has finished, subtract set from set of all qualifying Task in Realm and save as new set of items
+//            // 4. Add new notifications for the set of items
+//            var itemsToIgnore = Set<Task>()
+//            // 1.
+//            pendingRequests.forEach({ (request) in
+//                if let item = realm.object(ofType: Task.self, forPrimaryKey: request.identifier) {
+//                    debugPrint("Found item matching notification request ID: \(item.title!)")
+//                    // 2.
+//                    let trigger = request.trigger as! UNCalendarNotificationTrigger
+//                    //Calendar will never match. So set them equal, then compare
+//                    var requestDateComponents = trigger.dateComponents
+//                    var itemDateComponents = self.returnNotificationTrigger(item: item).dateComponents
+//                    requestDateComponents.calendar = Calendar.autoupdatingCurrent
+//                    itemDateComponents.calendar = Calendar.autoupdatingCurrent
+//
+//                    if requestDateComponents == itemDateComponents {
+//                        debugPrint("Item notification does not need updating. Added to ignore list: \(item.title!)")
+//                        itemsToIgnore.insert(item)
+//                    }
+//                } else {
+//                    debugPrint("Did not find matching item for request ID. Removing notification")
+//                    self.removeNotifications(withIdentifiers: [request.identifier])
+//                }
+//            })
+//            // 3.
+//            debugPrint("Ignored items count is: \(itemsToIgnore.count)")
+//            let itemsNeedingNotificationRefresh = Set(items).subtracting(itemsToIgnore)
+//            debugPrint("itemsNeedingNotificationRefresh count is: \(itemsNeedingNotificationRefresh.count)")
+//            // 4.
+//            itemsNeedingNotificationRefresh.forEach({ (item) in
+//                self.createNewNotification(forItem: item)
+//            })
+//        }
+//    }
+
+    func refreshAllNotifications(function: String = #function) {
+        debugPrint(#function + "Called by \(function)")
+//        let realm = try! Realm()
+        let items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList//.sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
+        batchModifyNotifications(items: items.map { $0 })
+    }
+
+    private func scheduleNotification(request: UNNotificationRequest, function: String = #function) {
+        debugPrint(#function + "Called by \(function)")
         center.add(request) { error in
             if error != nil {
-                printDebug("Failed to create notification with error: \(String(describing: error))")
+                debugPrint("Failed to create notification with error: \(String(describing: error))")
             } else {
-                printDebug("Notification created successfully")
+                debugPrint("Notification created successfully")
             }
         }
     }
 }
+
+//class UNNotificationTriggerWIthFirstTriggerDate: UNCalendarNotificationTrigger {
+//    
+////    private var nextTriggerDate: Date
+////    private override var dateComponents: DateComponents
+////    private override var repeats: Bool
+//    private var task: Task?
+//    
+//    public convenience init(task: Task, dateComponents: DateComponents, repeats: Bool) {
+//        self.init(dateMatching: dateComponents, repeats: repeats)
+//        self.task = task
+//    }
+//    
+//    override open func nextTriggerDate() -> Date? {
+//        if let task = task {
+//            if Date() > task.completeUntil {
+//                debugPrint("Setting nextTriggerDate to default")
+//                return super.nextTriggerDate()
+//            } else {
+//                debugPrint("Setting nextTriggerDate to nextDay")
+//                return super.nextTriggerDate()?.nextDay
+//            }
+//        } else {
+//            debugPrint("Returning default next trigger date")
+//            return super.nextTriggerDate()   
+//        }
+//    }
+//}

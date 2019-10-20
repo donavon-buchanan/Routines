@@ -38,7 +38,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>6760</string>
+	<string>6791</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
@@ -52,14 +52,6 @@
 			<string>New Task</string>
 			<key>UIApplicationShortcutItemType</key>
 			<string>AddAction</string>
-		</dict>
-		<dict>
-			<key>UIApplicationShortcutItemIconFile</key>
-			<string>gear</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>Settings</string>
-			<key>UIApplicationShortcutItemType</key>
-			<string>SettingsAction</string>
 		</dict>
 	</array>
 	<key>UIBackgroundModes</key>

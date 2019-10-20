@@ -1,31 +1,31 @@
+////
+////  automaticDarkModeTimer.swift
+////  Routines
+////
+////  Created by Donavon Buchanan on 5/6/19.
+////  Copyright © 2019 Donavon Buchanan. All rights reserved.
+////
 //
-//  automaticDarkModeTimer.swift
-//  Routines
+//import Foundation
 //
-//  Created by Donavon Buchanan on 5/6/19.
-//  Copyright © 2019 Donavon Buchanan. All rights reserved.
+//class AutomaticDarkModeTimer {
+//    var timer: Timer?
 //
-
-import Foundation
-
-class AutomaticDarkModeTimer {
-    var timer: Timer?
-
-    func startTimer() {
-        guard timer == nil else { return }
-        automaticDarkModeCheck()
-        timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(automaticDarkModeCheck), userInfo: nil, repeats: true)
-        printDebug("automatic dark mode timer started")
-    }
-
-    func stopTimer() {
-        guard timer != nil else { return }
-        timer?.invalidate()
-        timer = nil
-        printDebug("automatic dark mode timer invalidated")
-    }
-
-    @objc func automaticDarkModeCheck() {
-        Options.automaticDarkModeCheck()
-    }
-}
+//    func startTimer() {
+//        guard timer == nil else { return }
+//        automaticDarkModeCheck()
+//        timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(automaticDarkModeCheck), userInfo: nil, repeats: true)
+//        debugPrint("automatic dark mode timer started")
+//    }
+//
+//    func stopTimer() {
+//        guard timer != nil else { return }
+//        timer?.invalidate()
+//        timer = nil
+//        debugPrint("automatic dark mode timer invalidated")
+//    }
+//
+//    @objc func automaticDarkModeCheck() {
+//        Options.automaticDarkModeCheck()
+//    }
+//}

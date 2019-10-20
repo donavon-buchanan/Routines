@@ -1,69 +1,70 @@
+////
+////  Themes.swift
+////  Routines
+////
+////  Created by Donavon Buchanan on 11/14/18.
+////  Copyright © 2018 Donavon Buchanan. All rights reserved.
+////
 //
-//  Themes.swift
-//  Routines
+// import Foundation
+// import RealmSwift
+////import SwiftTheme
+// import UIKit
 //
-//  Created by Donavon Buchanan on 11/14/18.
-//  Copyright © 2018 Donavon Buchanan. All rights reserved.
+// enum Themes: Int {
+//    case morningLight = 0
+//    case afternoonLight = 1
+//    case eveningLight = 2
+//    case nightLight = 3
 //
-
-import Foundation
-import RealmSwift
-import SwiftTheme
-
-enum Themes: Int {
-    case morningLight = 0
-    case afternoonLight = 1
-    case eveningLight = 2
-    case nightLight = 3
-
-    case morningDark = 4
-    case afternoonDark = 5
-    case eveningDark = 6
-    case nightDark = 7
-
-    case monochromeDark = 8
-
-    static var current: Themes {
-        return Themes(rawValue: ThemeManager.currentThemeIndex)!
-    }
-
-    static var before = Themes.morningLight
-
-    // MARK: Switch Themes
-
-    static func switchTo(theme: Themes) {
-        before = current
-        ThemeManager.setTheme(index: theme.rawValue)
-    }
-
-    // MARK: Switch Dark
-
-    // TODO: Pass in segment here
-    static func isDarkMode() -> Bool {
-        return (Options.getDarkModeStatus())
-    }
-
-    // MARK: Save & Restore
-
-//    static func restoreLastTheme() {
-//        switchTo(theme: Themes(rawValue: Options.getThemeIndex())!)
+//    case morningDark = 4
+//    case afternoonDark = 5
+//    case eveningDark = 6
+//    case nightDark = 7
+//
+//    case monochromeDark = 8
+//
+//    static var current: Themes {
+//        Themes(rawValue: ThemeManager.currentThemeIndex)!
 //    }
-
-    // TODO: Get rid of this
-//    static func saveLastTheme() {
-//        let realmDispatchQueueLabel: String = "background"
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-//                do {
-//                    try realm.write {
-//                        options?.themeIndex = ThemeManager.currentThemeIndex
-//                    }
-//                } catch {
-//                    // print("failed to save theme index")
-//                }
-//            }
-//        }
+//
+//    static var before = Themes.morningLight
+//
+//    // MARK: Switch Themes
+//
+//    static func switchTo(theme: Themes) {
+//        before = current
+//        ThemeManager.setTheme(index: theme.rawValue)
 //    }
-}
+//
+//    // MARK: Switch Dark
+//
+//    // TODO: Pass in segment here
+//    static func isDarkMode() -> Bool {
+//        (Options.getDarkModeStatus())
+//    }
+//
+//    // MARK: Save & Restore
+//
+////    static func restoreLastTheme() {
+////        switchTo(theme: Themes(rawValue: Options.getThemeIndex())!)
+////    }
+//
+//    // TODO: Get rid of this
+////    static func saveLastTheme() {
+////        let realmDispatchQueueLabel: String = "background"
+////        DispatchQueue(label: realmDispatchQueueLabel).sync {
+////            autoreleasepool {
+////                let realm = try! Realm()
+////                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+////                do {
+////                    try realm.write {
+////                        options?.themeIndex = ThemeManager.currentThemeIndex
+////                    }
+////                } catch {
+////                    // print("failed to save theme index")
+////                }
+////            }
+////        }
+////    }
+// }

@@ -7,29 +7,45 @@
 //
 
 import RealmSwift
-import SwiftMessages
+//import SwiftMessages
 import UIKit
 import UserNotifications
 
 class AddTableViewController: UITableViewController, UITextViewDelegate, UITextFieldDelegate {
     // MARK: - Properties
 
-    @IBOutlet var priorityNumberLabel: UILabel!
-
-    @IBOutlet var prioritySlider: UISlider!
-    @IBAction func prioritySliderChanged(_ sender: UISlider) {
-        priorityNumberLabel.text = String(Int(sender.value))
-    }
-
-    @IBAction func prioritySliderTouched(_: UISlider) {
-        view.endEditing(true)
-        if item != nil, taskTextField.hasText {
-            navigationItem.rightBarButtonItem?.isEnabled = true
+    func segmentColor(segment: Int) -> UIColor {
+        switch segment {
+        case 0:
+            return UIColor(red: 0.96, green: 0.46, blue: 0.27, alpha: 1.0)
+        case 1:
+            return UIColor(red: 0.15, green: 0.73, blue: 0.93, alpha: 1.0)
+        case 2:
+            return UIColor(red: 0.38, green: 0.64, blue: 0.53, alpha: 1.0)
+        case 3:
+            return UIColor(red: 0.39, green: 0.36, blue: 0.91, alpha: 1.0)
+        default:
+            return UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         }
     }
 
+//    @IBOutlet var priorityNumberLabel: UILabel!
+//
+//    @IBOutlet var prioritySlider: UISlider!
+//    @IBAction func prioritySliderChanged(_ sender: UISlider) {
+//        priorityNumberLabel.text = String(Int(sender.value))
+//    }
+//
+//    @IBAction func prioritySliderTouched(_: UISlider) {
+//        view.endEditing(true)
+//        if item != nil, taskTextField.hasText {
+//            navigationItem.rightBarButtonItem?.isEnabled = true
+//        }
+//    }
+
     @IBOutlet var taskTextField: UITextField!
     @IBOutlet var segmentSelection: UISegmentedControl!
+
     @IBOutlet var notesTextView: UITextView!
 
     @IBOutlet var repeatDailySwitch: UISwitch!
@@ -40,9 +56,15 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     override var keyCommands: [UIKeyCommand]? {
-        return [
-            UIKeyCommand(input: "s", modifierFlags: .command, action: #selector(saveKeyCommand), discoverabilityTitle: "Save Task"),
-            UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit"),
+        [
+            // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
+            UIKeyCommand(title: "Save Task", action: #selector(saveKeyCommand), input: "s", modifierFlags: .command),
+            UIKeyCommand(title: "Exit", action: #selector(dismissView), input: "w", modifierFlags: .init(arrayLiteral: .command)),
+            UIKeyCommand(title: "Toggle Repeat Daily", action: #selector(toggleRepeat), input: "r", modifierFlags: .command),
+            UIKeyCommand(title: "Select Morning", action: #selector(setSegmentZero), input: "1", modifierFlags: .command),
+            UIKeyCommand(title: "Select Afternoon", action: #selector(setSegmentOne), input: "2", modifierFlags: .command),
+            UIKeyCommand(title: "Select Evening", action: #selector(setSegmentTwo), input: "3", modifierFlags: .command),
+            UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command),
         ]
     }
 
@@ -53,13 +75,46 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         }
     }
 
-    @IBOutlet var repeatDailyLabel: UILabel!
-
-    @IBAction func segmentSelected(_ sender: UISegmentedControl) {
-        TaskTableViewController.setAppearance(forSegment: sender.selectedSegmentIndex)
+    @objc func toggleRepeat() {
+        repeatDailySwitch.setOn(!repeatDailySwitch.isOn, animated: true)
     }
 
-    var item: Items?
+    @objc func setSegmentZero() {
+        segmentSelection.selectedSegmentIndex = 0
+//        TaskTableViewController.setAppearance(forSegment: 0)
+        segmentSelection.selectedSegmentTintColor = UIColor(segment: segmentSelection.selectedSegmentIndex)
+    }
+
+    @objc func setSegmentOne() {
+        segmentSelection.selectedSegmentIndex = 1
+//        TaskTableViewController.setAppearance(forSegment: 1)
+        segmentSelection.selectedSegmentTintColor = UIColor(segment: segmentSelection.selectedSegmentIndex)
+    }
+
+    @objc func setSegmentTwo() {
+        segmentSelection.selectedSegmentIndex = 2
+//        TaskTableViewController.setAppearance(forSegment: 2)
+        segmentSelection.selectedSegmentTintColor = UIColor(segment: segmentSelection.selectedSegmentIndex)
+    }
+
+    @objc func setSegmentThree() {
+        segmentSelection.selectedSegmentIndex = 3
+//        TaskTableViewController.setAppearance(forSegment: 3)
+        segmentSelection.selectedSegmentTintColor = UIColor(segment: segmentSelection.selectedSegmentIndex)
+    }
+
+    @IBOutlet var repeatDailyLabel: UILabel!
+
+//    @IBAction func segmentSelected(sender: UISegmentedControl) {
+//        sender.selectedSegmentTintColor = segmentColor(segment: sender.selectedSegmentIndex)
+//    }
+
+    @IBAction func segmentValueChanged(_ sender: UISegmentedControl) {
+        sender.selectedSegmentTintColor = UIColor(segment: sender.selectedSegmentIndex)
+    }
+
+    var item: Task?
+    var selectedIndex: Int?
 
     var editingSegment: Int?
     var shouldShowHiddenTasksMessage = false
@@ -67,14 +122,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     func loadItem() {
         // If item is loaded, fill in values for editing
         if item != nil {
-            TaskTableViewController.setAppearance(forSegment: item!.segment)
+//            TaskTableViewController.setAppearance(forSegment: item!.segment)
 
             taskTextField.text = item?.title
             segmentSelection.selectedSegmentIndex = item?.segment ?? 0
             notesTextView.text = item?.notes
             repeatDailySwitch.setOn(item!.repeats, animated: false)
-            priorityNumberLabel.text = "\(item?.priority ?? 0)"
-            prioritySlider.value = Float(item?.priority ?? 0)
 
             title = "Editing Task"
         } else {
@@ -86,16 +139,16 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         repeatDailySwitch.layer.cornerRadius = 15
         repeatDailySwitch.layer.masksToBounds = true
 
-        repeatDailyLabel.theme_textColor = GlobalPicker.cellTextColors
+//        repeatDailyLabel.theme_textColor = GlobalPicker.cellTextColors
 
-        priorityNumberLabel.theme_textColor = GlobalPicker.textColor
-        prioritySlider.theme_thumbTintColor = GlobalPicker.textColor
+//        priorityNumberLabel.theme_textColor = GlobalPicker.textColor
+//        prioritySlider.theme_thumbTintColor = GlobalPicker.textColor
 
-        if !RoutinesPlus.getPurchasedStatus() {
-            prioritySlider.isEnabled = false
-        } else {
-            prioritySlider.isEnabled = true
-        }
+//        if !RoutinesPlus.getPurchasedStatus() {
+//            prioritySlider.isEnabled = false
+//        } else {
+//            prioritySlider.isEnabled = true
+//        }
     }
 
 //    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
@@ -114,20 +167,39 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if let selectedIndex = self.selectedIndex {
+            print("Appearance condition 1")
+            setAppearance(forSegment: selectedIndex)
+            print("Setting appearance for index of \(selectedIndex)")
+            segmentSelection.selectedSegmentTintColor = UIColor(segment: selectedIndex)
+        } else if let currentItem = item {
+            print("Appearance condition 2")
+            print("Setting appearance for index of \(currentItem.segment)")
+            // I'm not sure why, but the method below doesn't change the color in time
+            // Needs to be done more directly here
+//            setAppearance(forSegment: currentItem.segment)
+            navigationController?.navigationBar.tintColor = UIColor(segment: currentItem.segment)
+            UISwitch.appearance().onTintColor = UIColor(segment: currentItem.segment)
+            segmentSelection.selectedSegmentTintColor = UIColor(segment: currentItem.segment)
+        } else {
+            navigationController?.navigationBar.tintColor = UIColor(segment: 0)
+            UISwitch.appearance().onTintColor = UIColor(segment: 0)
+            segmentSelection.selectedSegmentIndex = 0
+            segmentSelection.selectedSegmentTintColor = UIColor(segment: 0)
+        }
+
         // Set right bar item as "Save"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButtonPressed))
         // Disable button until all values are filled
         navigationItem.rightBarButtonItem?.isEnabled = false
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissView))
 
-        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+//        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
 
-        let cellAppearance = UITableViewCell.appearance()
-        cellAppearance.theme_backgroundColor = GlobalPicker.backgroundColor
+//        let cellAppearance = UITableViewCell.appearance()
+//        cellAppearance.theme_backgroundColor = GlobalPicker.backgroundColor
 
-        if #available(iOS 11.0, *) {
-            self.navigationItem.largeTitleDisplayMode = .never
-        }
+        navigationItem.largeTitleDisplayMode = .never
 
         // load in segment from add segue
         if let currentSegmentSelection = editingSegment {
@@ -140,11 +212,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         segmentSelection.addTarget(self, action: #selector(textFieldDidChange), for: .valueChanged)
         notesTextView.delegate = self
         taskTextField.delegate = self
+        taskTextField.backgroundColor = UIColor.tertiarySystemBackground
 
         notesTextView.layer.cornerRadius = 6
         notesTextView.layer.masksToBounds = true
         notesTextView.layer.borderWidth = 0.1
-        notesTextView.layer.borderColor = UIColor.darkGray.cgColor
+        notesTextView.backgroundColor = UIColor.tertiarySystemBackground
 
         // Add tap gesture for editing notes
         let textFieldTap = UITapGestureRecognizer(target: self, action: #selector(setNotesEditable))
@@ -155,13 +228,13 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         viewTap.cancelsTouchesInView = false
         view.addGestureRecognizer(viewTap)
 
-        taskTextField.theme_keyboardAppearance = GlobalPicker.keyboardStyle
-        taskTextField.theme_textColor = GlobalPicker.cellTextColors
-        taskTextField.theme_backgroundColor = GlobalPicker.textInputBackground
-
-        notesTextView.theme_keyboardAppearance = GlobalPicker.keyboardStyle
-        notesTextView.theme_textColor = GlobalPicker.cellTextColors
-        notesTextView.theme_backgroundColor = GlobalPicker.textInputBackground
+//        taskTextField.theme_keyboardAppearance = GlobalPicker.keyboardStyle
+//        taskTextField.theme_textColor = GlobalPicker.cellTextColors
+//        taskTextField.theme_backgroundColor = GlobalPicker.textInputBackground
+//
+//        notesTextView.theme_keyboardAppearance = GlobalPicker.keyboardStyle
+//        notesTextView.theme_textColor = GlobalPicker.cellTextColors
+//        notesTextView.theme_backgroundColor = GlobalPicker.textInputBackground
     }
 
     override func encodeRestorableState(with coder: NSCoder) {
@@ -175,16 +248,16 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
-        let itemId = coder.decodeObject(forKey: "itemId") as! String
+        guard let itemId = coder.decodeObject(forKey: "itemId") as! String? else { return }
         let realm = try! Realm()
-        item = realm.object(ofType: Items.self, forPrimaryKey: itemId)
+        item = realm.object(ofType: Task.self, forPrimaryKey: itemId)
         setUpUI()
         super.decodeRestorableState(with: coder)
     }
 
-    override func applicationFinishedRestoringState() {
-        TaskTableViewController.setAppearance(forSegment: item?.segment ?? 0)
-    }
+//    override func applicationFinishedRestoringState() {
+//        TaskTableViewController.setAppearance(forSegment: item?.segment ?? 0)
+//    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -232,17 +305,13 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 4 {
+        // This is a bad way to do this
+        if indexPath.section == 2 {
             let haptic = UIImpactFeedbackGenerator(style: .light)
             haptic.impactOccurred()
             repeatDailySwitch.setOn(!repeatDailySwitch.isOn, animated: true)
             if item != nil, taskTextField.hasText {
                 navigationItem.rightBarButtonItem?.isEnabled = true
-            }
-        }
-        if indexPath.section == 2 {
-            if !prioritySlider.isEnabled {
-                segueToRoutinesPlusViewController()
             }
         }
     }
@@ -263,11 +332,12 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     @objc func saveButtonPressed() {
         if let updatedItem = item {
-            updatedItem.updateItem(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text, priority: Int(prioritySlider.value))
+            updatedItem.updateItem(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
         } else {
-            let newItem = Items(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, priority: Int(prioritySlider.value), repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
-            newItem.addNewItem(newItem)
-            if newItem.completeUntil > Date().endOfDay {
+//            let newItem = Task(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, priority: Int(prioritySlider.value), repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
+            let newTask = Task(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
+            newTask.addNewItem()
+            if newTask.completeUntil > Date().endOfDay {
                 shouldShowHiddenTasksMessage = true
             }
         }
@@ -276,14 +346,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     // MARK: - Banners
 
-    func showBanner(title: String?) {
-        SwiftMessages.pauseBetweenMessages = 0
-        SwiftMessages.hideAll()
-        SwiftMessages.show { () -> UIView in
-            let banner = MessageView.viewFromNib(layout: .statusLine)
-            banner.configureTheme(.success)
-            banner.configureContent(title: "", body: title ?? "Saved!")
-            return banner
-        }
-    }
+//    func showBanner(title: String?) {
+//        SwiftMessages.pauseBetweenMessages = 0
+//        SwiftMessages.hideAll()
+//        SwiftMessages.show { () -> UIView in
+//            let banner = MessageView.viewFromNib(layout: .statusLine)
+//            banner.configureTheme(.success)
+//            banner.configureContent(title: "", body: title ?? "Saved!")
+//            return banner
+//        }
+//    }
 }

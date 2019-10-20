@@ -6,22 +6,21 @@
 //  Copyright © 2019 Donavon Buchanan. All rights reserved.
 //
 
-import Foundation
-import IceCream
+import UIKit
 import RealmSwift
 
 @objcMembers class RoutinesPlus: Object {
     static let realmDispatchQueueLabel: String = "background"
-    static let cloudSyncKey: String = "cloudSync"
-    static let expiryDateKey: String = "expiryDate"
+    let cloudSyncKey: String = "cloudSync"
+//    static let expiryDateKey: String = "expiryDate"
 
     dynamic var routinesPlusKey = UUID().uuidString
     override static func primaryKey() -> String {
-        return "routinesPlusKey"
+        "routinesPlusKey"
     }
 
-    dynamic var routinesPlusPurchased: Bool = false
-    dynamic var purchasedProduct: String = ""
+//    dynamic var routinesPlusPurchased: Bool = false
+//    dynamic var purchasedProduct: String = ""
 
     // View upcoming
     dynamic var showUpcomingTasks: Bool = false
@@ -42,13 +41,13 @@ import RealmSwift
                         routinesPlusOptions.showUpcomingTasks = isOn
                     }
                 } catch {
-                    fatalError("\(#function) error: \(error)")
+                    realm.cancelWrite()
                 }
             }
         }
     }
 
-    static func getCloudSync() -> Bool {
+    func getCloudSync() -> Bool {
         #if targetEnvironment(simulator) || DEBUG
             return true
         #else
@@ -56,88 +55,89 @@ import RealmSwift
         #endif
     }
 
-    static func setCloudSync(toggle: Bool) {
+    func setCloudSync(toggle: Bool) {
         UserDefaults.standard.set(toggle, forKey: cloudSyncKey)
-
-        AppDelegate.setSync()
-    }
-
-    static func setExpiryDate(date: Date) {
-        printDebug("Setting Routines Plus expiration date to: \(date)")
-        UserDefaults.standard.set(date, forKey: expiryDateKey)
-    }
-
-    static func getExpiryDate() -> Date {
-        return (UserDefaults.standard.object(forKey: expiryDateKey) as? Date) ?? Date()
-    }
-
-    static func getPurchasedStatus() -> Bool {
-        var status = false
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
-                status = routinesPlus?.routinesPlusPurchased ?? false
-            }
-        }
-        #if targetEnvironment(simulator) || DEBUG
-            return true
-        #else
-            return status
-        #endif
-    }
-
-    static func setPurchasedStatus(status: Bool) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
-                do {
-                    try realm.write {
-                        routinesPlus?.routinesPlusPurchased = status
-                    }
-                } catch {
-                    fatalError("\(#function) - Failed to set purchased status in routinesPlus with error: \(error)")
-                }
-            }
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.setSync()
         }
     }
 
-    static func setPurchasedProduct(productID: String) {
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                let realm = try! Realm()
-                let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
-                do {
-                    try realm.write {
-                        routinesPlus?.purchasedProduct = productID
-                    }
-                } catch {
-                    fatalError("\(#function) - Error saving purchased product: \(error)")
-                }
-            }
-        }
-    }
+//    static func setExpiryDate(date: Date) {
+//        debugPrint("Setting Routines Plus expiration date to: \(date)")
+//        UserDefaults.standard.set(date, forKey: expiryDateKey)
+//    }
 
-    static func getPurchasedProduct() -> String {
-        let realm = try! Realm()
-        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
-        #if targetEnvironment(simulator) || DEBUG
-            return ""
-        #else
-            return routinesPlus?.purchasedProduct ?? ""
-        #endif
-    }
+//    static func getExpiryDate() -> Date {
+//        (UserDefaults.standard.object(forKey: expiryDateKey) as? Date) ?? Date()
+//    }
+
+//    static func getPurchasedStatus() -> Bool {
+//        var status = false
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
+//                status = routinesPlus?.routinesPlusPurchased ?? false
+//            }
+//        }
+//        #if targetEnvironment(simulator) || DEBUG
+//            return true
+//        #else
+//            return status
+//        #endif
+//    }
+//
+//    static func setPurchasedStatus(status: Bool) {
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
+//                do {
+//                    try realm.write {
+//                        routinesPlus?.routinesPlusPurchased = status
+//                    }
+//                } catch {
+//                    fatalError("\(#function) - Failed to set purchased status in routinesPlus with error: \(error)")
+//                }
+//            }
+//        }
+//    }
+
+//    static func setPurchasedProduct(productID: String) {
+//        DispatchQueue(label: realmDispatchQueueLabel).sync {
+//            autoreleasepool {
+//                let realm = try! Realm()
+//                let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
+//                do {
+//                    try realm.write {
+//                        routinesPlus?.purchasedProduct = productID
+//                    }
+//                } catch {
+//                    fatalError("\(#function) - Error saving purchased product: \(error)")
+//                }
+//            }
+//        }
+//    }
+//
+//    static func getPurchasedProduct() -> String {
+//        let realm = try! Realm()
+//        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
+//        #if targetEnvironment(simulator) || DEBUG
+//            return ""
+//        #else
+//            return routinesPlus?.purchasedProduct ?? ""
+//        #endif
+//    }
 }
 
-extension RoutinesPlus: CKRecordConvertible {
-    var isDeleted: Bool {
-        return false
-    }
-
-    // Yep, leave it blank!
-}
-
-extension RoutinesPlus: CKRecordRecoverable {
-    // Leave it blank, too.
-}
+//extension RoutinesPlus: CKRecordConvertible {
+//    var isDeleted: Bool {
+//        false
+//    }
+//
+//    // Yep, leave it blank!
+//}
+//
+//extension RoutinesPlus: CKRecordRecoverable {
+//    // Leave it blank, too.
+//}

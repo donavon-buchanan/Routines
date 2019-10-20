@@ -22,13 +22,13 @@ class TaskTableViewCell: UITableViewCell {
         var segmentColor: UIColor {
             switch segment {
             case 0:
-                return UIColor(rgba: "#f47645", defaultColor: .red)
+                return UIColor(hex: "#f47645") ?? UIColor(red: 0.96, green: 0.46, blue: 0.27, alpha: 1.0)
             case 1:
-                return UIColor(rgba: "#26baee", defaultColor: .red)
+                return UIColor(hex: "#26baee") ?? UIColor(red: 0.15, green: 0.73, blue: 0.93, alpha: 1.0)
             case 2:
-                return UIColor(rgba: "#62a388", defaultColor: .red)
+                return UIColor(hex: "#62a388") ?? UIColor(red: 0.38, green: 0.64, blue: 0.53, alpha: 1.0)
             case 3:
-                return UIColor(rgba: "#645be7", defaultColor: .red)
+                return UIColor(hex: "#645be7") ?? UIColor(red: 0.39, green: 0.36, blue: 0.91, alpha: 1.0)
             default:
                 return .clear
             }
@@ -41,7 +41,7 @@ class TaskTableViewCell: UITableViewCell {
         addSubview(barView)
 
         selectedBackgroundView = UIView(frame: frame)
-        selectedBackgroundView?.theme_backgroundColor = GlobalPicker.backgroundColor
+//        selectedBackgroundView?.theme_backgroundColor = GlobalPicker.backgroundColor
 
         // Have to set up the same for the background view during selection
         backgroundBarView.frame = CGRect(x: 0, y: 0, width: 7, height: 200)
@@ -49,7 +49,7 @@ class TaskTableViewCell: UITableViewCell {
         backgroundBarView.backgroundColor = segmentColor
         selectedBackgroundView?.addSubview(backgroundBarView)
 
-        cellTitleLabel.theme_textColor = GlobalPicker.cellTextColors
-        theme_backgroundColor = GlobalPicker.backgroundColor
+//        cellTitleLabel.theme_textColor = GlobalPicker.cellTextColors
+//        theme_backgroundColor = GlobalPicker.backgroundColor
     }
 }

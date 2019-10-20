@@ -8,21 +8,22 @@
 
 import RealmSwift
 import StoreKit
-import SwiftMessages
-import SwiftTheme
-import SwiftyStoreKit
+// import SwiftTheme
+// import SwiftyStoreKit
 import UIKit
 import UserNotifications
 
-enum RegisteredPurchase: String {
-    case lifetime = "lifetime1"
-    case yearly = "routines_plus_yearly"
-    case monthly = "routines_plus_monthly"
-}
+// enum RegisteredPurchase: String {
+//    case lifetime = "lifetime1"
+//    case yearly = "routines_plus_yearly"
+//    case monthly = "routines_plus_monthly"
+// }
 
 class OptionsTableViewController: UITableViewController {
     let notificationHandler = NotificationHandler()
-    
+
+    var selectedIndex: Int?
+
     @IBOutlet var cellLabels: [UILabel]!
     @IBOutlet var switches: [UISwitch]!
 
@@ -36,44 +37,33 @@ class OptionsTableViewController: UITableViewController {
     @IBOutlet var eveningSubLabel: UILabel!
     @IBOutlet var nightSubLabel: UILabel!
 
-    // MARK: - Routines+
+    // MARK: - Advanced
 
-    @IBOutlet var cloudSyncLabel: UILabel!
-    @IBOutlet var cloudSyncSwitch: UISwitch!
-    @IBAction func cloudSyncSwitchToggled(_ sender: UISwitch) {
-        if cloudSyncSwitch.isEnabled {
-            // cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
-            RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
-            if cloudSyncSwitch.isOn {
-                notificationHandler.refreshAllNotifications()
-            }
-        } else {
-            // Show Purchase Options
-            segueToRoutinesPlusViewController()
-        }
-        printDebug("Cloud sync switch: \(sender.isOn)")
-    }
-
-    @IBOutlet var upcomingTasksCellLabel: UILabel!
-    @IBOutlet var upcomingTasksCellStatusLabel: UILabel!
-    @IBOutlet var upcomingTasksSwitch: UISwitch!
-    @IBAction func upcomingTasksSwitchToggled(_ sender: UISwitch) {
-        if upcomingTasksSwitch.isEnabled {
-            RoutinesPlus.setUpcomingTasks(sender.isOn)
-        } else {
-            // Show Purchase Options
-            segueToRoutinesPlusViewController()
-        }
-    }
+//    @IBOutlet var cloudSyncLabel: UILabel!
+//    @IBOutlet var cloudSyncSwitch: UISwitch!
+//    @IBAction func cloudSyncSwitchToggled(_ sender: UISwitch) {
+//        let realm = try! Realm()
+//        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
+//        routinesPlus?.setCloudSync(toggle: cloudSyncSwitch.isOn)
+//        debugPrint("Cloud sync switch: \(sender.isOn)")
+//    }
+//
+//    @IBOutlet var upcomingTasksCellLabel: UILabel!
+////    @IBOutlet var upcomingTasksCellStatusLabel: UILabel!
+//    @IBOutlet var upcomingTasksSwitch: UISwitch!
+//    @IBAction func upcomingTasksSwitchToggled(_ sender: UISwitch) {
+//        RoutinesPlus.setUpcomingTasks(sender.isOn)
+//        debugPrint("Upcoming tasks switch: \(sender.isOn)")
+//    }
 
     // MARK: Automatic Dark Mode
 
-    @IBOutlet var automaticDarkModeLabel: UILabel!
-    @IBOutlet var automaticDarkModeStatusLabel: UILabel!
+//    @IBOutlet var automaticDarkModeLabel: UILabel!
+//    @IBOutlet var automaticDarkModeStatusLabel: UILabel!
 
     override var keyCommands: [UIKeyCommand]? {
-        return [
-            UIKeyCommand(input: "w", modifierFlags: .init(arrayLiteral: .command), action: #selector(dismissView), discoverabilityTitle: "Exit"),
+        [
+            UIKeyCommand(title: "Exit", action: #selector(dismissView), input: "w", modifierFlags: .init(arrayLiteral: .command)),
         ]
     }
 
@@ -84,46 +74,54 @@ class OptionsTableViewController: UITableViewController {
         switch sender.tag {
         case 1:
             Options.setSegmentNotification(segment: 1, bool: sender.isOn)
+            let items = TaskCategory.returnTaskCategory(sender.tag).taskList
+            notificationHandler.batchModifyNotifications(items: Array(items))
         // print("Afternoon Switch Toggled \(sender.isOn)")
         case 2:
             Options.setSegmentNotification(segment: 2, bool: sender.isOn)
+            let items = TaskCategory.returnTaskCategory(sender.tag).taskList
+            notificationHandler.batchModifyNotifications(items: Array(items))
         // print("Evening Switch Toggled \(sender.isOn)")
         case 3:
             Options.setSegmentNotification(segment: 3, bool: sender.isOn)
+            let items = TaskCategory.returnTaskCategory(sender.tag).taskList
+            notificationHandler.batchModifyNotifications(items: Array(items))
         // print("Night Switch Toggled \(sender.isOn)")
         default:
             Options.setSegmentNotification(segment: 0, bool: sender.isOn)
+            let items = TaskCategory.returnTaskCategory(sender.tag).taskList
+            notificationHandler.batchModifyNotifications(items: Array(items))
             // print("Morning Switch Toggled \(sender.isOn)")
         }
     }
 
-    @IBOutlet var darkModeSwtich: UISwitch!
-    @IBAction func darkModeSwitchToggled(_ sender: UISwitch) {
-        Options.setDarkMode(sender.isOn)
-        // setAppearance(forSegment: Options.getSelectedIndex())
-    }
+//    @IBOutlet var darkModeSwtich: UISwitch!
+//    @IBAction func darkModeSwitchToggled(_ sender: UISwitch) {
+//        Options.setDarkMode(sender.isOn)
+//        // setAppearance(forSegment: Options.getSelectedIndex())
+//    }
 
     // MARK: Task Priorities
 
-    @IBOutlet var taskPrioritiesLabel: UILabel!
-    @IBOutlet var taskPrioritiesStatusLabel: UILabel!
-    @IBOutlet var taskPrioritiesCell: UITableViewCell!
+//    @IBOutlet var taskPrioritiesLabel: UILabel!
+//    @IBOutlet var taskPrioritiesStatusLabel: UILabel!
+//    @IBOutlet var taskPrioritiesCell: UITableViewCell!
 
     // MARK: Unlock and Restore Purchase
 
-    @IBOutlet var unlockCell: UITableViewCell!
-    @IBOutlet var unlockButton: UIButton!
-    @IBAction func unlockButtonAction(_: UIButton) {
-        if !RoutinesPlus.getPurchasedStatus() {
-            segueToRoutinesPlusViewController()
-        }
-    }
-
-    @IBOutlet var restorePurchaseCell: UITableViewCell!
-    @IBOutlet var restorePurchaseButton: UIButton!
-    @IBAction func restorePurchaseButtonAction(_: UIButton) {
-        restorePurchase()
-    }
+//    @IBOutlet var unlockCell: UITableViewCell!
+//    @IBOutlet var unlockButton: UIButton!
+//    @IBAction func unlockButtonAction(_: UIButton) {
+//        if !RoutinesPlus.getPurchasedStatus() {
+//            segueToRoutinesPlusViewController()
+//        }
+//    }
+//
+//    @IBOutlet var restorePurchaseCell: UITableViewCell!
+//    @IBOutlet var restorePurchaseButton: UIButton!
+//    @IBAction func restorePurchaseButtonAction(_: UIButton) {
+//        restorePurchase()
+//    }
 
     // MARK: - View management
 
@@ -132,12 +130,23 @@ class OptionsTableViewController: UITableViewController {
         performSegue(withIdentifier: "unwindToTableViewController", sender: self)
     }
 
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        debugPrint("Segue")
+//        if let taskView = segue.destination as? TaskTableViewController {
+//            // KVO, all the built in lifecycle functions, and this completely fail
+//            debugPrint("Reloading table after unloading options view")
+//            taskView.tableView.reloadData()
+//        }
+//    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        UISwitch.appearance().onTintColor = UIColor(segment: selectedIndex ?? 0)
+        navigationController?.navigationBar.tintColor = UIColor(segment: selectedIndex ?? 0)
         // Colors
-        cellLabels.forEach { label in
-            label.theme_textColor = GlobalPicker.cellTextColors
-        }
+//        cellLabels.forEach { label in
+//            label.theme_textColor = GlobalPicker.cellTextColors
+//        }
         switches.forEach { UISwitch in
             // band-aid for graphical glitch when toggling dark mode
             UISwitch.layer.cornerRadius = 15
@@ -146,14 +155,14 @@ class OptionsTableViewController: UITableViewController {
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissView))
 
-        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
+//        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         observeOptions()
-        observeRoutinesPlus()
+//        observeRoutinesPlus()
     }
 
-    override func applicationFinishedRestoringState() {
-        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
-    }
+//    override func applicationFinishedRestoringState() {
+//        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
+//    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -176,67 +185,40 @@ class OptionsTableViewController: UITableViewController {
                 let isOn = !afternoonSwitch.isOn
                 afternoonSwitch.setOn(isOn, animated: true)
                 haptic.impactOccurred()
+                // The next line should not be necessary. iOS 13 bug/regression
+                Options.setSegmentNotification(segment: 1, bool: afternoonSwitch.isOn)
+                let items = TaskCategory.returnTaskCategory(1).taskList
+                notificationHandler.batchModifyNotifications(items: Array(items))
             case 2:
                 // print("Tapped Evening Cell")
                 let isOn = !eveningSwitch.isOn
                 eveningSwitch.setOn(isOn, animated: true)
                 haptic.impactOccurred()
+                // The next line should not be necessary. iOS 13 bug/regression
+                Options.setSegmentNotification(segment: 2, bool: eveningSwitch.isOn)
+                let items = TaskCategory.returnTaskCategory(2).taskList
+                notificationHandler.batchModifyNotifications(items: Array(items))
             case 3:
                 // print("Tapped Night Cell")
                 let isOn = !nightSwitch.isOn
                 nightSwitch.setOn(isOn, animated: true)
                 haptic.impactOccurred()
+                // The next line should not be necessary. iOS 13 bug/regression
+                Options.setSegmentNotification(segment: 3, bool: nightSwitch.isOn)
+                let items = TaskCategory.returnTaskCategory(3).taskList
+                notificationHandler.batchModifyNotifications(items: Array(items))
             default:
                 // print("Tapped Morning Cell")
                 let isOn = !morningSwitch.isOn
                 morningSwitch.setOn(isOn, animated: true)
                 haptic.impactOccurred()
-            }
-        case 2:
-            if darkModeSwtich.isEnabled {
-                darkModeSwtich.setOn(!darkModeSwtich.isOn, animated: true)
-                Options.setDarkMode(darkModeSwtich.isOn)
-                // Shouldn't be necessary with the observation token
-                // TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
-                haptic.impactOccurred()
-            }
-        case 3:
-            switch indexPath.row {
-            case 0:
-                printDebug("\(#function) - Case 3")
-                if cloudSyncSwitch.isEnabled {
-                    printDebug("\(#function) - cloudSyncSwitch.isEnabled")
-                    cloudSyncSwitch.setOn(!cloudSyncSwitch.isOn, animated: true)
-                    RoutinesPlus.setCloudSync(toggle: cloudSyncSwitch.isOn)
-                    haptic.impactOccurred()
-                    if cloudSyncSwitch.isOn {
-                        notificationHandler.refreshAllNotifications()
-                    }
-                } else {
-                    printDebug("\(#function) - Case 3 else, should show purchase options")
-                    segueToRoutinesPlusViewController()
-                }
-            case 1:
-                segueToAutomaticDarkModeTableView()
-            case 2:
-                if !RoutinesPlus.getPurchasedStatus() {
-                    segueToRoutinesPlusViewController()
-                }
-            case 3:
-                if !RoutinesPlus.getPurchasedStatus() {
-                    segueToRoutinesPlusViewController()
-                } else {
-                    if upcomingTasksSwitch.isEnabled {
-                        upcomingTasksSwitch.setOn(!upcomingTasksSwitch.isOn, animated: true)
-                        RoutinesPlus.setUpcomingTasks(upcomingTasksSwitch.isOn)
-                        haptic.impactOccurred()
-                    }
-                }
-            default:
-                break
+                // The next line should not be necessary. iOS 13 bug/regression
+                Options.setSegmentNotification(segment: 0, bool: morningSwitch.isOn)
+                let items = TaskCategory.returnTaskCategory(0).taskList
+                notificationHandler.batchModifyNotifications(items: Array(items))
             }
         default:
-            printDebug("\(#function) - Default case triggered")
+            debugPrint("\(#function) - Default case triggered")
         }
     }
 
@@ -246,12 +228,6 @@ class OptionsTableViewController: UITableViewController {
             return "Set when each time period should begin"
         case 1:
             return "Enable to receive notifications at the start of each period"
-        case 3:
-            if RoutinesPlus.getPurchasedStatus() {
-                return "Thanks for your support!"
-            } else {
-                return "Tap to unlock"
-            }
         default:
             return nil
         }
@@ -262,62 +238,65 @@ class OptionsTableViewController: UITableViewController {
         afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: animated)
         eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: animated)
         nightSwitch.setOn(Options.getSegmentNotification(segment: 3), animated: animated)
+        
+//        let realm = try! Realm()
+//        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
 
-        cloudSyncSwitch.setOn(RoutinesPlus.getCloudSync(), animated: animated)
-        cloudSyncSwitch.isEnabled = RoutinesPlus.getPurchasedStatus()
+//        cloudSyncSwitch.setOn(routinesPlus?.getCloudSync() ?? false, animated: animated)
+//        cloudSyncSwitch.isEnabled = RoutinesPlus.getPurchasedStatus()
 
-        darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: animated)
-        darkModeSwtich.isEnabled = !Options.getAutomaticDarkModeStatus()
+//        darkModeSwtich.setOn(Options.getDarkModeStatus(), animated: animated)
+//        darkModeSwtich.isEnabled = !Options.getAutomaticDarkModeStatus()
 
-        switch Options.getAutomaticDarkModeStatus() {
-        case true:
-            automaticDarkModeStatusLabel.text = "Enabled"
-            automaticDarkModeStatusLabel.theme_textColor = GlobalPicker.textColor
-        case false:
-            automaticDarkModeStatusLabel.text = "Disabled"
-            automaticDarkModeStatusLabel.textColor = .lightGray
-        }
+//        switch Options.getAutomaticDarkModeStatus() {
+//        case true:
+//            automaticDarkModeStatusLabel.text = "Enabled"
+        ////            automaticDarkModeStatusLabel.theme_textColor = GlobalPicker.textColor
+//        case false:
+//            automaticDarkModeStatusLabel.text = "Disabled"
+//            automaticDarkModeStatusLabel.textColor = .lightGray
+//        }
 
-        taskPrioritiesLabel.theme_textColor = GlobalPicker.cellTextColors
-        upcomingTasksSwitch.setOn(RoutinesPlus.getShowUpcomingTasks(), animated: animated)
+//        taskPrioritiesLabel.theme_textColor = GlobalPicker.cellTextColors
+//        upcomingTasksSwitch.setOn(RoutinesPlus.getShowUpcomingTasks(), animated: animated)
 
-        unlockButton.layer.masksToBounds = true
-        unlockButton.layer.cornerRadius = 12
+//        unlockButton.layer.masksToBounds = true
+//        unlockButton.layer.cornerRadius = 12
 
-        if RoutinesPlus.getPurchasedStatus() {
-            taskPrioritiesStatusLabel.text = "Unlocked"
-            taskPrioritiesStatusLabel.theme_textColor = GlobalPicker.textColor
-            taskPrioritiesCell.accessoryType = .none
+//        if RoutinesPlus.getPurchasedStatus() {
+//            taskPrioritiesStatusLabel.text = "Unlocked"
+//            taskPrioritiesStatusLabel.theme_textColor = GlobalPicker.textColor
+//            taskPrioritiesCell.accessoryType = .none
 
-            upcomingTasksSwitch.isEnabled = true
-            upcomingTasksCellStatusLabel.text = "Unlocked"
-            upcomingTasksCellStatusLabel.theme_textColor = GlobalPicker.textColor
+//            upcomingTasksSwitch.isEnabled = true
+//            upcomingTasksCellStatusLabel.text = "Unlocked"
+//            upcomingTasksCellStatusLabel.theme_textColor = GlobalPicker.textColor
 
-            unlockButton.isEnabled = false
-            unlockButton.theme_backgroundColor = GlobalPicker.backgroundColor
-            unlockButton.layer.theme_borderColor = GlobalPicker.shadowColor
-            unlockButton.layer.borderWidth = 2
-        } else {
-            taskPrioritiesStatusLabel.text = "Disabled"
-            taskPrioritiesStatusLabel.textColor = .lightGray
-            taskPrioritiesCell.accessoryType = .disclosureIndicator
+//            unlockButton.isEnabled = false
+//            unlockButton.theme_backgroundColor = GlobalPicker.backgroundColor
+//            unlockButton.layer.theme_borderColor = GlobalPicker.shadowColor
+//            unlockButton.layer.borderWidth = 2
+//        } else {
+//            taskPrioritiesStatusLabel.text = "Disabled"
+//            taskPrioritiesStatusLabel.textColor = .lightGray
+//            taskPrioritiesCell.accessoryType = .disclosureIndicator
+//
+//            upcomingTasksSwitch.isEnabled = false
+//            upcomingTasksCellStatusLabel.text = "Disabled"
+//            upcomingTasksCellStatusLabel.textColor = .lightGray
+//
+//            unlockButton.isEnabled = true
+//            unlockButton.theme_backgroundColor = GlobalPicker.barTextColor
+//            unlockButton.layer.borderWidth = 0
+//        }
 
-            upcomingTasksSwitch.isEnabled = false
-            upcomingTasksCellStatusLabel.text = "Disabled"
-            upcomingTasksCellStatusLabel.textColor = .lightGray
+//        unlockButton.setTitle("Unlock", for: .normal)
+//        unlockButton.setTitle("Unlocked", for: .disabled)
 
-            unlockButton.isEnabled = true
-            unlockButton.theme_backgroundColor = GlobalPicker.barTextColor
-            unlockButton.layer.borderWidth = 0
-        }
+//        unlockButton.setTitleColor(.white, for: .normal)
+//        unlockButton.theme_setTitleColor(GlobalPicker.barTextColor, forState: .disabled)
 
-        unlockButton.setTitle("Unlock", for: .normal)
-        unlockButton.setTitle("Unlocked", for: .disabled)
-
-        unlockButton.setTitleColor(.white, for: .normal)
-        unlockButton.theme_setTitleColor(GlobalPicker.barTextColor, forState: .disabled)
-
-        restorePurchaseButton.theme_setTitleColor(GlobalPicker.cellTextColors, forState: .normal)
+//        restorePurchaseButton.theme_setTitleColor(GlobalPicker.cellTextColors, forState: .normal)
 
         morningSubLabel.text = Options.getSegmentTimeString(segment: 0)
         afternoonSubLabel.text = Options.getSegmentTimeString(segment: 1)
@@ -360,20 +339,20 @@ class OptionsTableViewController: UITableViewController {
     // MARK: - Options
 
     var optionsToken: NotificationToken?
-    var routinesPlusToken: NotificationToken?
+//    var routinesPlusToken: NotificationToken?
 
 //    var pleaseWaitAlert: SwiftMessagesAlertsController?
 //    @objc private func dismissWaitAlert() {
 //        guard pleaseWaitAlert != nil else { return }
 //        pleaseWaitAlert?.dismissAlert()
 //        pleaseWaitAlert = nil
-//        Items.requestNotificationPermission()
+//        Task.requestNotificationPermission()
 //    }
 
     deinit {
-        printDebug("\(#function) called from OptionsTableViewController. Options token invalidated")
+        debugPrint("\(#function) called from OptionsTableViewController. Options token invalidated")
         optionsToken?.invalidate()
-        routinesPlusToken?.invalidate()
+//        routinesPlusToken?.invalidate()
 //        pleaseWaitAlert = nil
     }
 
@@ -385,7 +364,7 @@ class OptionsTableViewController: UITableViewController {
             guard let self = self else { return }
             switch changes {
             case .initial:
-                printDebug("Initial load for Options. Set up UI")
+                debugPrint("Initial load for Options. Set up UI")
                 self.setUpUI(animated: false)
             case .update:
                 // Don't bother taking action of Options don't even exist
@@ -397,35 +376,35 @@ class OptionsTableViewController: UITableViewController {
 //                    return
 //                }
                 self.refreshUI()
-                TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
+//                TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
 //                guard self.pleaseWaitAlert != nil else { return }
 //                self.perform(#selector(self.dismissWaitAlert), with: nil, afterDelay: 1)
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
-                fatalError("\(error)")
+                debugPrint("\(error)")
             }
         }
     }
 
-    func observeRoutinesPlus() {
-        let realm = try! Realm()
-        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
-        routinesPlusToken = routinesPlus?.observe { _ in
-            printDebug("Something in RoutinesPlus changed")
-            NotificationHandler().checkNotificationPermission()
-            self.refreshUI()
-        }
-    }
+//    func observeRoutinesPlus() {
+//        let realm = try! Realm()
+//        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
+//        routinesPlusToken = routinesPlus?.observe { _ in
+//            debugPrint("Something in RoutinesPlus changed")
+//            NotificationHandler().checkNotificationPermission()
+//            self.refreshUI()
+//        }
+//    }
 
     // MARK: - IAP
 
-    func segueToAutomaticDarkModeTableView() {
-        if !RoutinesPlus.getPurchasedStatus() {
-            segueToRoutinesPlusViewController()
-        } else {
-            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let AutomaticDarkModeTableViewController = storyBoard.instantiateViewController(withIdentifier: "AutomaticDarkModeTableView") as! AutomaticDarkModeTableViewController
-            navigationController?.pushViewController(AutomaticDarkModeTableViewController, animated: true)
-        }
-    }
+//    func segueToAutomaticDarkModeTableView() {
+//        if !RoutinesPlus.getPurchasedStatus() {
+//            segueToRoutinesPlusViewController()
+//        } else {
+//            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//            let AutomaticDarkModeTableViewController = storyBoard.instantiateViewController(withIdentifier: "AutomaticDarkModeTableView") as! AutomaticDarkModeTableViewController
+//            navigationController?.pushViewController(AutomaticDarkModeTableViewController, animated: true)
+//        }
+//    }
 }

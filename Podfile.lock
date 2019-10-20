@@ -1,49 +1,32 @@
 PODS:
-  - IceCream (1.9.2):
+  - IceCream (1.12.1):
     - RealmSwift
-  - Realm (3.16.2):
-    - Realm/Headers (= 3.16.2)
-  - Realm/Headers (3.16.2)
-  - RealmSwift (3.16.2):
-    - Realm (= 3.16.2)
-  - SimulatorStatusMagic (2.4.1)
-  - SwiftDate (6.0.3)
-  - SwiftMessages (7.0.0):
-    - SwiftMessages/App (= 7.0.0)
-  - SwiftMessages/App (7.0.0)
-  - SwiftTheme (0.4.4)
-  - SwiftyStoreKit (0.15.0)
+  - Realm (3.19.1):
+    - Realm/Headers (= 3.19.1)
+  - Realm/Headers (3.19.1)
+  - RealmSwift (3.19.1):
+    - Realm (= 3.19.1)
+  - SwiftMessages (7.0.1):
+    - SwiftMessages/App (= 7.0.1)
+  - SwiftMessages/App (7.0.1)
 
 DEPENDENCIES:
   - IceCream
-  - RealmSwift
-  - SimulatorStatusMagic
-  - SwiftDate
   - SwiftMessages
-  - SwiftTheme
-  - SwiftyStoreKit
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - IceCream
     - Realm
     - RealmSwift
-    - SimulatorStatusMagic
-    - SwiftDate
     - SwiftMessages
-    - SwiftTheme
-    - SwiftyStoreKit
 
 SPEC CHECKSUMS:
-  IceCream: a4dc38bf35f34b02fc8a1f9028267cb220982542
-  Realm: 0e73b4edeb5b6a90da3d83206883b2e34e00eb38
-  RealmSwift: a81e650171ef0a5f999df1ed8d39ba8d6fce88a4
-  SimulatorStatusMagic: 28d4a9d1a500ac7cea0b2b5a43c1c6ddb40ba56c
-  SwiftDate: 8d4f14bf1ef68e95094511504856547bf9e3e1a6
-  SwiftMessages: a952f7a9103d9aeab93730a2861d2d8fcdd8758f
-  SwiftTheme: a381f983da92153908b7a9eeb961b18b6d94d614
-  SwiftyStoreKit: 033d06b6f87955405d3f844a18a7687c2438592a
+  IceCream: b1b9c2d696d18f424039c118fce07bb8e08a15b3
+  Realm: fb377747e694c7deb62d402400454134fe321bee
+  RealmSwift: 1302b0ab60f3105a2b214a735eeb0938607cf16b
+  SwiftMessages: b577dc7043be8b299857ab35bb663dbff6483bd0
 
-PODFILE CHECKSUM: 8b2d361d32ef44e9c8d9ea4c796911f2230038ff
+PODFILE CHECKSUM: 5aa21ef0140d885503861d8519df2d74f02064f9
 
-COCOAPODS: 1.7.2
+COCOAPODS: 1.8.3

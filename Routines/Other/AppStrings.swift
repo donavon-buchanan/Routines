@@ -8,20 +8,20 @@
 
 import Foundation
 
-public func println(_ items: Any...) {
-    items.forEach { item in
-        print(item, separator: " ", terminator: "\n\n")
-    }
-}
-
-public func printDebug(_ items: Any...) {
-    // I'm stupid. Swift has this built in. But whatever. I like adding the extra line break.
-    #if DEBUG
-        items.forEach { item in
-            print(item, separator: " ", terminator: "\n\n")
-        }
-    #endif
-}
+//public func println(_ items: Any...) {
+//    items.forEach { item in
+//        print(item, separator: " ", terminator: "\n\n")
+//    }
+//}
+//
+//public func debugPrint(_ items: Any...) {
+//    // I'm stupid. Swift has this built in. But whatever. I like adding the extra line break.
+//    #if DEBUG
+//        items.forEach { item in
+//            print(item, separator: " ", terminator: "\n\n")
+//        }
+//    #endif
+//}
 
 struct AppStrings {
     // MARK: - IAP Alerts

@@ -11,19 +11,19 @@ target 'Routines' do
   use_frameworks!
 
   # Pods for Routines
-  pod 'RealmSwift'
+  #pod 'RealmSwift'
   #pod 'SwipeCellKit'
   #pod 'Hue'
-  pod 'SwiftTheme'
+  #pod 'SwiftTheme'
   #pod 'NotificationBannerSwift'
   pod 'SwiftMessages'
   #pod 'ViewAnimator'
   pod 'IceCream'
   #pod 'RxSwift'
   #pod 'RxRealm'
-  pod 'SwiftyStoreKit'
+  #pod 'SwiftyStoreKit'
   #pod 'fluid-slider'
-  pod 'SimulatorStatusMagic', :configurations => ['Debug','Beta']
-  pod 'SwiftDate'
+  #pod 'SimulatorStatusMagic', :configurations => ['Debug','Beta']
+  #pod 'SwiftDate'
 
 end
