@@ -6,7 +6,6 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-// import SwiftTheme
 import UIKit
 
 class RepeatTableViewController: UITableViewController {

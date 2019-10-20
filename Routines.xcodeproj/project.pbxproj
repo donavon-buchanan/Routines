@@ -13,21 +13,14 @@
 		F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3D02160A05600FF36D9 /* CustomTimesTableViewController.swift */; };
 		F8085E5822E3952A00DD6AAE /* RoutinesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8085E5722E3952A00DD6AAE /* RoutinesTests.swift */; };
 		F81194F72267D8E0002E8E7A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F81194F62267D8E0002E8E7A /* StoreKit.framework */; };
-		F81194FB2267F875002E8E7A /* SKProductPriceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81194FA2267F875002E8E7A /* SKProductPriceExtension.swift */; };
 		F81224C8229417E400AEED90 /* SimulatorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81224C7229417E400AEED90 /* SimulatorData.swift */; };
 		F816DB342155CFBA009C6907 /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TaskTableViewController.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
-		F8352C53227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8352C52227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift */; };
-		F85D2A8A227036CF009CE6CE /* RoutinesPlusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85D2A89227036CF009CE6CE /* RoutinesPlusViewController.swift */; };
-		F85D2A8C22703892009CE6CE /* iAPSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85D2A8B22703892009CE6CE /* iAPSegue.swift */; };
 		F86CC22F2355009200D587E9 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86CC22E2355009200D587E9 /* ColorPicker.swift */; };
 		F86E0AC22297FA5400BB53D6 /* RoutinesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86E0AC12297FA5400BB53D6 /* RoutinesUITests.swift */; };
 		F86E0ACA2297FAA400BB53D6 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A9B0A222842BC20043E43A /* SnapshotHelper.swift */; };
-		F896D96F22802E5B0005C899 /* AutomaticDarkModeTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F896D96E22802E5B0005C899 /* AutomaticDarkModeTimer.swift */; };
 		F89C786E22E31E000079B089 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F89C786C22E31E000079B089 /* LaunchScreen.storyboard */; };
-		F8A8B2E2228356F9005C9E56 /* AfterSyncTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A8B2E1228356F9005C9E56 /* AfterSyncTimer.swift */; };
 		F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */; };
-		F8ACD4642269F89100E136E9 /* IAPHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8ACD4632269F89100E136E9 /* IAPHandler.swift */; };
 		F8B30787219C0DAB00437AAA /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B30786219C0DAB00437AAA /* Themes.swift */; };
 		F8B30789219C13B500437AAA /* GlobalPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B30788219C13B500437AAA /* GlobalPicker.swift */; };
 		F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831B72155CBB000DAF60E /* AppDelegate.swift */; };
@@ -48,7 +41,6 @@
 		F8F3270E215C8509004AC619 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8F3270D215C8509004AC619 /* Media.xcassets */; };
 		F8F9B638235AEDDD00DD79B5 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = F8F9B637235AEDDD00DD79B5 /* Realm */; };
 		F8F9B63A235AEDDD00DD79B5 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F8F9B639235AEDDD00DD79B5 /* RealmSwift */; };
-		F8FE52202296929000929DA3 /* AppSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87D49EE2269AA1700845E0D /* AppSecrets.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,25 +70,17 @@
 		F8085E5722E3952A00DD6AAE /* RoutinesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinesTests.swift; sourceTree = "<group>"; };
 		F8085E5922E3952A00DD6AAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F81194F62267D8E0002E8E7A /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		F81194FA2267F875002E8E7A /* SKProductPriceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKProductPriceExtension.swift; sourceTree = "<group>"; };
 		F81224C7229417E400AEED90 /* SimulatorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorData.swift; sourceTree = "<group>"; };
 		F816DB332155CFBA009C6907 /* TaskTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TaskTableViewController.swift; sourceTree = "<group>"; };
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
-		F8352C52227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticDarkModeTableViewController.swift; sourceTree = "<group>"; };
-		F85D2A89227036CF009CE6CE /* RoutinesPlusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinesPlusViewController.swift; sourceTree = "<group>"; };
-		F85D2A8B22703892009CE6CE /* iAPSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iAPSegue.swift; sourceTree = "<group>"; };
 		F86CC22E2355009200D587E9 /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
 		F86E0ABF2297FA5400BB53D6 /* RoutinesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoutinesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F86E0AC12297FA5400BB53D6 /* RoutinesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinesUITests.swift; sourceTree = "<group>"; };
 		F86E0AC32297FA5400BB53D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F87D49EE2269AA1700845E0D /* AppSecrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSecrets.swift; sourceTree = "<group>"; };
-		F896D96E22802E5B0005C899 /* AutomaticDarkModeTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticDarkModeTimer.swift; sourceTree = "<group>"; };
 		F89C786D22E31E000079B089 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
 		F8A761F022580AB400FB9654 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS5.2.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
-		F8A8B2E1228356F9005C9E56 /* AfterSyncTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfterSyncTimer.swift; sourceTree = "<group>"; };
 		F8A9B0A222842BC20043E43A /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = RoutinesUITests/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
-		F8ACD4632269F89100E136E9 /* IAPHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPHandler.swift; sourceTree = "<group>"; };
 		F8B30786219C0DAB00437AAA /* Themes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themes.swift; sourceTree = "<group>"; };
 		F8B30788219C13B500437AAA /* GlobalPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalPicker.swift; sourceTree = "<group>"; };
 		F8B831B42155CBB000DAF60E /* Routines.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routines.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -165,9 +149,6 @@
 				F807D3D02160A05600FF36D9 /* CustomTimesTableViewController.swift */,
 				F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */,
 				F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */,
-				F8352C52227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift */,
-				F896D96E22802E5B0005C899 /* AutomaticDarkModeTimer.swift */,
-				F8A8B2E1228356F9005C9E56 /* AfterSyncTimer.swift */,
 			);
 			path = Options;
 			sourceTree = "<group>";
@@ -185,11 +166,8 @@
 			isa = PBXGroup;
 			children = (
 				F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */,
-				F81194FA2267F875002E8E7A /* SKProductPriceExtension.swift */,
-				F87D49EE2269AA1700845E0D /* AppSecrets.swift */,
 				F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */,
 				F8E031852269C410002C2E32 /* AppStrings.swift */,
-				F8ACD4632269F89100E136E9 /* IAPHandler.swift */,
 				F8CE29C522714E9A00CD9BAE /* UIColorExtensions.swift */,
 				F8C3EC97228D673F0027AFEB /* UIImageExtension.swift */,
 				F81224C7229417E400AEED90 /* SimulatorData.swift */,
@@ -256,8 +234,6 @@
 				F82770D221585D3000420C50 /* AddTableViewController.swift */,
 				F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */,
 				F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */,
-				F85D2A89227036CF009CE6CE /* RoutinesPlusViewController.swift */,
-				F85D2A8B22703892009CE6CE /* iAPSegue.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -467,7 +443,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#if which swiftformat >/dev/null; then\n#swiftformat . --exclude Pods,Generated,/Users/donavon/Developer/Projects/Routines/fastlane/*,/Users/donavon/Developer/Projects/Routines/RoutinesUITests --swiftversion 5.1\n#else\n#echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\n#fi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftformat >/dev/null; then\nswiftformat . --exclude Pods,Generated,/Users/donavon/Developer/Projects/Routines/fastlane/*,/Users/donavon/Developer/Projects/Routines/RoutinesUITests --swiftversion 5.1\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
 		};
 		F8AE682B2357068A00052769 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -485,7 +461,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#if which swiftlint >/dev/null; then\n#  swiftlint\n#else\n#  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n#fi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n  swiftlint autocorrect\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -514,22 +490,16 @@
 				F8B831CD2155CBE300DAF60E /* Task.swift in Sources */,
 				F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */,
 				F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */,
-				F85D2A8C22703892009CE6CE /* iAPSegue.swift in Sources */,
-				F8FE52202296929000929DA3 /* AppSecrets.swift in Sources */,
 				F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */,
 				F8E031862269C410002C2E32 /* AppStrings.swift in Sources */,
-				F81194FB2267F875002E8E7A /* SKProductPriceExtension.swift in Sources */,
 				F81224C8229417E400AEED90 /* SimulatorData.swift in Sources */,
 				F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */,
-				F896D96F22802E5B0005C899 /* AutomaticDarkModeTimer.swift in Sources */,
 				F86CC22F2355009200D587E9 /* ColorPicker.swift in Sources */,
 				F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */,
 				F8C3EC98228D673F0027AFEB /* UIImageExtension.swift in Sources */,
 				F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */,
 				F8CCE20D2288E17E00BAAFEC /* RoutinesPlus.swift in Sources */,
 				F816DB342155CFBA009C6907 /* TaskTableViewController.swift in Sources */,
-				F85D2A8A227036CF009CE6CE /* RoutinesPlusViewController.swift in Sources */,
-				F8352C53227F9EC000FEDBC4 /* AutomaticDarkModeTableViewController.swift in Sources */,
 				F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */,
 				F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */,
 				F8CE29C622714E9A00CD9BAE /* UIColorExtensions.swift in Sources */,
@@ -538,10 +508,8 @@
 				F8DC390222D075D9005C3BE0 /* NotificationHandler.swift in Sources */,
 				F8D5DB532269BCAD005857F2 /* ViewControllerExtension.swift in Sources */,
 				F8B30789219C13B500437AAA /* GlobalPicker.swift in Sources */,
-				F8ACD4642269F89100E136E9 /* IAPHandler.swift in Sources */,
 				F807D3CD216073E300FF36D9 /* Options.swift in Sources */,
 				F8B30787219C0DAB00437AAA /* Themes.swift in Sources */,
-				F8A8B2E2228356F9005C9E56 /* AfterSyncTimer.swift in Sources */,
 				F8C731E623566A6E0074EEB5 /* TaskCategory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,7 +7,6 @@
 //
 
 import RealmSwift
-//import SwiftMessages
 import UIKit
 import UserNotifications
 
@@ -64,7 +63,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             UIKeyCommand(title: "Select Morning", action: #selector(setSegmentZero), input: "1", modifierFlags: .command),
             UIKeyCommand(title: "Select Afternoon", action: #selector(setSegmentOne), input: "2", modifierFlags: .command),
             UIKeyCommand(title: "Select Evening", action: #selector(setSegmentTwo), input: "3", modifierFlags: .command),
-            UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command),
+            UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command)
         ]
     }
 

@@ -60,7 +60,7 @@ func loadDefaultData() {
                     item.completeUntil = Date()
                 }
 
-                itemList.forEach { (task) in
+                itemList.forEach { task in
                     task.addNewItem()
                 }
             }
