@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let center = UNUserNotificationCenter.current()
         center.delegate = self
 
-//        AppDelegate.registerNotificationCategoriesAndActions()
+        AppDelegate.registerNotificationCategoriesAndActions()
 
         migrateRealm()
 
@@ -50,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Override point for customization after application launch.
 
-        application.registerForRemoteNotifications()
+//        application.registerForRemoteNotifications()
 
         // If launchOptions contains the appropriate launch options key, a Home screen quick action
         // is responsible for launching the app. Store the action for processing once the app has
@@ -210,7 +210,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let config = Realm.Configuration(
             // Set the new schema version. This must be greater than the previously used
             // version (if you've never set a schema version before, the version is 0).
-            schemaVersion: 27,
+            schemaVersion: 28,
 
             // Set the block which will be called automatically when opening a Realm with
             // a schema version lower than the one set above
@@ -302,30 +302,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         // auto migration
                     }
                     migration.enumerateObjects(ofType: "Items") { oldObject, _ in
-                        // Create a new task from the old object
-                        let newTask = migration.create(Task.className(), value: oldObject!)
-                        debugPrint("newTask: " + String(describing: newTask))
-                        /*
-                         Based on the segment of that task, append it to the appropriate
-                         array of tasks associated with the categories above
-                         */
-                        switch newTask["segment"] as! Int {
-                        case 1:
-                            debugPrint("adding newTask to afternoon: " + String(describing: newTask))
-                            afternoonList.append(newTask)
-                        case 2:
-                            debugPrint("adding newTask to evening: " + String(describing: newTask))
-                            eveningList.append(newTask)
-                        case 3:
-                            debugPrint("adding newTask to night: " + String(describing: newTask))
-                            nightList.append(newTask)
-                        default:
-                            debugPrint("adding newTask to morning: " + String(describing: newTask))
-                            morningList.append(newTask)
+                        //First check if the old Item was marked for deletion
+                        if oldObject!["isDeleted"] as! Bool == false {
+                            // Create a new task from the old object
+                            let newTask = migration.create(Task.className(), value: oldObject!)
+                            debugPrint("newTask: " + String(describing: newTask))
+                            /*
+                             Based on the segment of that task, append it to the appropriate
+                             array of tasks associated with the categories above
+                             */
+                            switch newTask["segment"] as! Int {
+                            case 1:
+                                debugPrint("adding newTask to afternoon: " + String(describing: newTask))
+                                afternoonList.append(newTask)
+                            case 2:
+                                debugPrint("adding newTask to evening: " + String(describing: newTask))
+                                eveningList.append(newTask)
+                            case 3:
+                                debugPrint("adding newTask to night: " + String(describing: newTask))
+                                nightList.append(newTask)
+                            default:
+                                debugPrint("adding newTask to morning: " + String(describing: newTask))
+                                morningList.append(newTask)
+                            }
+                            // Also add each task to the array for allList
+                            debugPrint("adding newTask to all: " + String(describing: newTask))
+                            allList.append(newTask)
+                        } else {
+                            // If "isDeleted" was true, delete the old object from the realm
+                            migration.delete(oldObject!)
                         }
-                        // Also add each task to the array for allList
-                        debugPrint("adding newTask to all: " + String(describing: newTask))
-                        allList.append(newTask)
+                        
                     }
 
                     // Finally, append sequence in reversed order to the category lists so it appears as the user previously had them sorted
@@ -340,9 +347,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     allCategory.dynamicList("taskList").append(objectsIn: allList.reversed())
                 }
 
-                if oldSchemaVersion > 25, oldSchemaVersion <= 26 {
-                    migration.enumerateObjects(ofType: "Task") { _, _ in
-                        // auto
+                if oldSchemaVersion > 25, oldSchemaVersion <= 27 {
+                    migration.enumerateObjects(ofType: "Task") { oldObject, _ in
+                        // auto migration for property rename or change
+                        // also a little cleanup for TestFlight users
+                        
+                        if oldObject!["isDeleted"] as! Bool == true {
+                            migration.delete(oldObject!)
+                        }
                     }
                 }
             }
