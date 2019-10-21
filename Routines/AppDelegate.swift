@@ -16,16 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     let notificationHandler = NotificationHandler()
 
-//    static let automaticDarkModeTimer = AutomaticDarkModeTimer()
-
-//    static func setAutomaticDarkModeTimer() {
-//        if Options.getAutomaticDarkModeStatus() {
-//            automaticDarkModeTimer.startTimer()
-//        } else {
-//            automaticDarkModeTimer.stopTimer()
-//        }
-//    }
-
     var shortcutItemToProcess: UIApplicationShortcutItem?
 
 //    var syncEngine: SyncEngine?
@@ -39,43 +29,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
-    // TODO: This should be used way less. Make notification management on individual tasks better!
-//    static func refreshNotifications(function: String = #function) {
-//        debugPrint(#function + "Called by \(function)")
-//
-//        let notificationHandler = NotificationHandler()
-//        notificationHandler.removeOrphanedNotifications()
-//
-//        let realm = try! Realm()
-//        let items = realm.objects(Task.self).filter("isDeleted = %@", false).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "segment", ascending: true)
-//        items.forEach { item in
-//            notificationHandler.createNewNotification(forItem: item)
-//        }
-//    }
-
     func application(_: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         debugPrint("\(#function) - Start")
         let center = UNUserNotificationCenter.current()
         center.delegate = self
 
-        AppDelegate.registerNotificationCategoriesAndActions()
+//        AppDelegate.registerNotificationCategoriesAndActions()
 
         migrateRealm()
 
-        // I thought this would be needed. But it seems there's already another func to take care of this.
-//        if UserDefaults.standard.bool(forKey: "notificationsHaveRefreshed") {
-//            let notificationHandler = NotificationHandler()
-//            notificationHandler.refreshAllNotifications()
-//            UserDefaults.standard.set(true, forKey: "notificationsHaveRefreshed")
-//        }
-
         AppDelegate.checkOptions()
         AppDelegate.checkRoutinesPlus()
-
-        // Theme
-//        setUpTheme()
-
-//        Options.automaticDarkModeCheck()
 
         debugPrint("\(#function) - End")
         return true
@@ -86,8 +50,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Override point for customization after application launch.
 
-        setSync()
-
         application.registerForRemoteNotifications()
 
         // If launchOptions contains the appropriate launch options key, a Home screen quick action
@@ -97,26 +59,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             shortcutItemToProcess = shortcutItem
         }
 
-//        // SwiftyStoreKit
-//        SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
-//            for purchase in purchases {
-//                switch purchase.transaction.transactionState {
-//                case .purchased, .restored:
-//                    if purchase.needsFinishTransaction {
-//                        SwiftyStoreKit.finishTransaction(purchase.transaction)
-//                    }
-//                    // Unlock content
-//                    RoutinesPlus.setPurchasedStatus(status: true)
-//                case .failed, .purchasing, .deferred:
-//                    break // do nothing
-//                @unknown default:
-//                    break
-//                }
-//            }
-//        }
-
-//        observeItems()
-//        observeOptions()
         #if targetEnvironment(simulator)
             loadDefaultData()
         #endif
@@ -131,52 +73,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
 
-    func application(_: UIApplication, performFetchWithCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
-//        observeItems()
-//        observeOptions()
-
-//        self.syncEngine?.pull(completionHandler: { error in
-//            if let error = error {
-//                debugPrint("Error with sync pull: \(error)")
-//                completionHandler(.failed)
-//            } else {
-//                completionHandler(.newData)
-//            }
-//        })
-    }
-
-    func application(_: UIApplication, didReceiveRemoteNotification _: [AnyHashable: Any], fetchCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
-//        let dict = userInfo as! [String: NSObject]
-//        let notification = CKNotification(fromRemoteNotificationDictionary: dict)
+//    func application(_: UIApplication, performFetchWithCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
 //
-//        if let subscriptionID = notification?.subscriptionID, IceCreamSubscription.allIDs.contains(subscriptionID) {
-//            NotificationCenter.default.post(name: Notifications.cloudKitDataDidChangeRemotely.name, object: nil, userInfo: userInfo)
-//        }
+//    }
 
-//        observeItems()
-//        observeOptions()
-
-//        self.syncEngine?.pull(completionHandler: { error in
-//            if let error = error {
-//                debugPrint("Error with sync pull: \(error)")
-//                completionHandler(.failed)
-//            } else {
-//                completionHandler(.newData)
-//            }
-//        })
-
-        debugPrint("Received push notification")
-    }
+//    func application(_: UIApplication, didReceiveRemoteNotification _: [AnyHashable: Any], fetchCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
+//
+//
+//        debugPrint("Received push notification")
+//    }
 
     func applicationWillResignActive(_: UIApplication) {
         debugPrint("\(#function) - Start")
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-//        AppDelegate.automaticDarkModeTimer.stopTimer()
 
-//        self.syncEngine?.pushAll()
         notificationHandler.removeOrphanedNotifications()
-//        notificationHandler.refreshAllNotifications()
 
         debugPrint("\(#function) - End")
     }
@@ -185,10 +95,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         debugPrint("\(#function) - Start")
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-//        AppDelegate.syncEngine?.pushAll()
-
-//        observeItems()
-//        observeOptions()
 
         debugPrint("\(#function) - End")
     }
@@ -210,17 +116,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillEnterForeground(_: UIApplication) {
         debugPrint("\(#function) - Start")
 
-        // Sync with iCloud
-//        observeItems()
-//        observeOptions()
-
         debugPrint("\(#function) - End")
     }
 
     func applicationDidBecomeActive(_: UIApplication) {
         debugPrint("\(#function) - Start")
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        setSync()
 
         if let shortcutItem = shortcutItemToProcess {
             if shortcutItem.type == "AddAction" {
@@ -232,33 +133,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             shortcutItemToProcess = nil
         }
 
-//        AppDelegate.setAutomaticDarkModeTimer()
         debugPrint("\(#function) - End")
     }
-
-//    static func removeOrphanedNotifications() {
-//        debugPrint("\(#function) - Start")
-//        let center = UNUserNotificationCenter.current()
-//        var orphanNotifications: [String] = []
-//        center.getPendingNotificationRequests(completionHandler: { pendingNotifications in
-//            pendingNotifications.forEach { notification in
-//                let id = notification.identifier
-//                let realm = try! Realm()
-//                let item = realm.object(ofType: Task.self, forPrimaryKey: id)
-//                // First test nil for items that don't exist
-//                if item == nil {
-//                    orphanNotifications.append(id)
-//                } else if let item = item {
-//                    // Next test if item is valid, but marked for deletion
-//                    if item.isDeleted {
-//                        orphanNotifications.append(id)
-//                    }
-//                }
-//            }
-//        })
-//        center.removePendingNotificationRequests(withIdentifiers: orphanNotifications)
-//        debugPrint("\(#function) - End")
-//    }
 
     func applicationWillTerminate(_: UIApplication) {
         debugPrint("\(#function) - Start")
@@ -283,19 +159,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             rootVC.selectedIndex = Options.getSelectedIndex()
         }
     }
-
-//    func getSelectedTab() -> Int {
-//        var selectedIndex = 0
-//        DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//                    selectedIndex = options.selectedIndex
-//                }
-//            }
-//        }
-//        return selectedIndex
-//    }
 
     // MARK: - Options Realm
 
@@ -374,13 +237,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     }
                 }
 
-//                if oldSchemaVersion < 10 {
-//                    migration.enumerateObjects(ofType: Options.className()) { newObject, oldObject in
-//                        print("oldObject: " + String(describing: oldObject))
-//                        print("newObject: " + String(describing: newObject))
-//                    }
-//                }
-
                 if oldSchemaVersion >= 9, oldSchemaVersion < 15 {
                     migration.enumerateObjects(ofType: Options.className()) { oldObject, newObject in
                         print("oldObject: " + String(describing: oldObject))
@@ -417,15 +273,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         let cloudSync = oldObject!["cloudSync"] as! Bool
                         UserDefaults.standard.set(cloudSync, forKey: "cloudSync")
 
-//                        let purchasedProduct = oldObject!["purchasedProduct"] as! String
-//
-//                        let routinesPlusPurchased = oldObject!["routinesPlusPurchased"] as! Bool
-
                         let newRoutinesPlus = RoutinesPlus()
 
                         newRoutinesPlus.routinesPlusKey = RoutinesPlus.primaryKey()
-//                        newRoutinesPlus.purchasedProduct = purchasedProduct
-//                        newRoutinesPlus.routinesPlusPurchased = routinesPlusPurchased
 
                         migration.create("RoutinesPlus", value: newRoutinesPlus)
                     }
@@ -503,128 +353,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Now that we've told Realm how to handle the schema change, opening the file
         // will automatically perform the migration
-        _ = try! Realm()
+        _ = try? Realm()
     }
 
-    func completeItem(uuidString: String) {
-        let realm = try! Realm()
-        guard let item = realm.object(ofType: Task.self, forPrimaryKey: uuidString) else { return }
+    func completeTask(uuidString: String) {
+        if let realm = try? Realm() {
+            guard let task = realm.object(ofType: Task.self, forPrimaryKey: uuidString) else { return }
 
-        item.completeItem()
+            task.completeTask()
+        }
     }
 
-    func snoozeItem(uuidString: String) {
-        let realm = try! Realm()
-        guard let item = realm.object(ofType: Task.self, forPrimaryKey: uuidString) else { return }
+    func snoozeTask(uuidString: String) {
+        if let realm = try? Realm() {
+            guard let task = realm.object(ofType: Task.self, forPrimaryKey: uuidString) else { return }
 
-        item.snooze()
+            task.snooze()
+        }
     }
-
-    func setSync() {
-        debugPrint(#function)
-//        let realm = try! Realm()
-//        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
-//        if routinesPlus?.getCloudSync() ?? false {
-//            // Setting this each time was causing the list of items to trigger a change in observation tokens
-//            // Only needs to be set if it isn't already
-//            guard self.syncEngine == nil else { return }
-//            debugPrint("Enabling cloud syncEngine")
-//
-//            self.syncEngine = SyncEngine(objects: [
-//                SyncObject<Options>(),
-//                SyncObject<RoutinesPlus>(),
-//                SyncObject<Task>(),
-//                SyncObject<TaskCategory>(),
-//            ], databaseScope: .private)
-//            syncEngine?.setup()
-//        } else {
-//            debugPrint("Disabling cloud syncEngine")
-//            self.syncEngine = nil
-//        }
-    }
-
-    // MARK: - Update after Notifications
-
-//    var itemsToken: NotificationToken?
-//    var optionsToken: NotificationToken?
-//    var items: List<Task>?
-//    var options: Options?
-//
-//    // TODO: This creates some redudancies with notification creation and deletion as handled by the Items class.
-//    func observeItems(function: String = #function) {
-//        debugPrint(#function + "Called by \(function)")
-//        // Observe Results Notifications
-//        guard itemsToken == nil else { return }
-//        let notificationHandler = NotificationHandler()
-    ////        let realm = try! Realm()
-//        items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
-//        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
-//        // Observe Results Notifications
-//        itemsToken = items?.observe { (changes: RealmCollectionChange) in
-//            switch changes {
-//            case .initial:
-//                notificationHandler.removeOrphanedNotifications()
-//                notificationHandler.checkForMissingNotifications()
-//            case let .update(_, _, insertions, modifications):
-//                debugPrint("updated items detected")
-//                // Caused crashes because deleted items don't exist and can't provide a property value
-//                // notificationHandler.removeNotifications(withIdentifiers: deletions.map { (self.items?[$0].uuidString) ?? ""})
-//                // These are being called too much because the order of the list is changing
-//                notificationHandler.removeOrphanedNotifications()
-//                debugPrint(#function + "Item Insertions: \(insertions.map { (self.items?[$0].title!) }) ")
-//                notificationHandler.batchModifyNotifications(items: insertions.map { (self.items?[$0]) })
-//                debugPrint(#function + "Item Modifications: \(modifications.map { (self.items?[$0].title!) }) ")
-//                notificationHandler.batchModifyNotifications(items: modifications.map { (self.items?[$0]) })
-//            case let .error(error):
-//                // An error occurred while opening the Realm file on the background worker thread
-//                debugPrint("Error in \(#function) - \(error)")
-//            }
-//        }
-//    }
-//
-//    func observeOptions(function: String = #function) {
-//        debugPrint(#function + "Called by \(function)")
-//        guard optionsToken == nil else { return }
-//        let realm = try! Realm()
-//        let notificationHandler = NotificationHandler()
-//        if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//            optionsToken = options.observe { change in
-//                switch change {
-//                case let .change(properties):
-//                    properties.forEach { property in
-//                        debugPrint("Changed options property is \(property.name)")
-//                        if property.name.contains("Minute") || property.name.contains("Hour") {
-//                            //this is being called too much because of sync
-//                            debugPrint("Notification times changed. Recreating notifications as necessary.")
-//                            notificationHandler.refreshAllNotifications()
-//                        }
-//                    }
-//                case let .error(error):
-//                    debugPrint("An error occurred: \(error)")
-//                case .deleted:
-//                    debugPrint("Options was deleted.")
-//                }
-//            }
-//        }
-//    }
-
-//    static func refreshAndUpdate(function: String = #function) {
-//        debugPrint(#function + "Called by \(function)")
-//        let notificationHandler = NotificationHandler()
-//        notificationHandler.refreshAllNotifications()
-//        AppDelegate.updateBadgeFromPush()
-//        // AppDelegate.removeOrphanedNotifications()
-//    }
-
-//    @objc func backgroundRefresh() {
-//        debugPrint(#function)
-//        refreshAndUpdate()
-//    }
 
     deinit {
         debugPrint("\(#function) called. Tokens invalidated")
-//        itemsToken?.invalidate()
-//        optionsToken?.invalidate()
     }
 
     // MARK: - Notification Categories and Actions
@@ -662,10 +411,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func userNotificationCenter(_: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         switch response.actionIdentifier {
         case "complete":
-            completeItem(uuidString: response.notification.request.identifier)
+            completeTask(uuidString: response.notification.request.identifier)
             decrementBadge()
         case "snooze":
-            snoozeItem(uuidString: response.notification.request.identifier)
+            snoozeTask(uuidString: response.notification.request.identifier)
             decrementBadge()
         default:
             restoreSelectedTab(tab: getNotificationSegment(id: response.notification.request.identifier))
@@ -715,12 +464,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 
     func application(_: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler _: @escaping (Bool) -> Void) {
-        // Alternatively, a shortcut item may be passed in through this delegate method if the app was
-        // still in memory when the Home screen quick action was used. Again, store it for processing.
         shortcutItemToProcess = shortcutItem
     }
 
-    func getItemSegment(id: String) -> Int {
+    func getTaskSegment(id: String) -> Int {
         var identifier: String {
             if id.count > 36 {
                 return String(id.dropLast())
@@ -732,8 +479,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let realm = try! Realm()
-                if let item = realm.object(ofType: Task.self, forPrimaryKey: identifier) {
-                    segment = item.segment
+                if let task = realm.object(ofType: Task.self, forPrimaryKey: identifier) {
+                    segment = task.segment
                 }
             }
         }
@@ -746,70 +493,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if id.count > 36 {
                 return Int(String(id.last!)) ?? 0
             } else {
-                // If it's not auto snooze, need to fetch the segment property of the item
-                return getItemSegment(id: id)
+                // If it's not auto snooze, need to fetch the segment property of the task
+                return getTaskSegment(id: id)
             }
         }
         return segment
     }
-
-    // MARK: - Themes
-
-//    func setUpTheme() {
-    ////        window?.theme_backgroundColor = GlobalPicker.backgroundColor
-//
-//        // tab bar
-//        let tabBar = UITabBar.appearance()
-//        tabBar.theme_tintColor = GlobalPicker.barTextColor
-//        tabBar.theme_barStyle = GlobalPicker.barStyle
-//        tabBar.theme_barTintColor = GlobalPicker.tabBarTintColor
-//        tabBar.backgroundImage = UIImage()
-//        tabBar.theme_backgroundColor = GlobalPicker.backgroundColor
-//        tabBar.shadowImage = UIImage()
-//
-//        // Themes.restoreLastTheme()
-//
-//        // status bar
-//
-    ////        UIApplication.shared.theme_setStatusBarStyle([.default, .default, .default, .default, .lightContent, .lightContent, .lightContent, .lightContent, .lightContent], animated: true)
-//
-//        // navigation bar
-//
-    ////        let navigationBar = UINavigationBar.appearance()
-    ////        navigationBar.theme_barStyle = GlobalPicker.barStyle
-    ////        navigationBar.theme_tintColor = GlobalPicker.barTextColor
-    ////        navigationBar.shadowImage = UIImage()
-//        // isTranslucent false seems to cause a layout bug
-//
-    ////        let shadow = NSShadow()
-    ////        shadow.shadowOffset = CGSize(width: 0, height: 0)
-    ////
-    ////        let titleAttributes = GlobalPicker.barTextColors.map { hexString in
-    ////            [
-    ////                NSAttributedString.Key.foregroundColor: UIColor(rgba: hexString),
-    ////                // NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
-    ////
-    ////                NSAttributedString.Key.shadow: shadow,
-    ////            ]
-    ////        }
-    ////
-    ////        navigationBar.theme_titleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
-    ////        navigationBar.theme_largeTitleTextAttributes = ThemeDictionaryPicker.pickerWithAttributes(titleAttributes)
-//
-//        // Cells
-    ////        let cell = UITableViewCell.appearance()
-    ////        cell.theme_backgroundColor = GlobalPicker.barTintColor
-    ////        cell.theme_tintColor = GlobalPicker.barTextColor
-    ////
-    ////        // TableView
-    ////        let tableViewUI = UITableView.appearance()
-    ////        tableViewUI.theme_separatorColor = GlobalPicker.cellSeparator
-    ////        //tableViewUI.theme_backgroundColor = GlobalPicker.cellBackground
-    ////
-    ////        // switches
-    ////        let switchUI = UISwitch.appearance()
-    ////        switchUI.theme_onTintColor = GlobalPicker.switchTintColor
-    ////        switchUI.theme_tintColor = GlobalPicker.switchTintColor
-    ////        switchUI.theme_backgroundColor = GlobalPicker.cellBackground
-//    }
 }

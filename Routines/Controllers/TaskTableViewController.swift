@@ -20,18 +20,17 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     override var keyCommands: [UIKeyCommand]? {
         var commandArray: [UIKeyCommand]
         commandArray = [
-            // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
             UIKeyCommand(title: "Add New Task", action: #selector(addNewTask), input: "n", modifierFlags: .command),
             UIKeyCommand(title: "Open Settings", action: #selector(openSettings), input: "o", modifierFlags: .alternate),
             UIKeyCommand(title: "Edit List", action: #selector(editKeyCommand), input: "e", modifierFlags: .init(arrayLiteral: .shift, .command)),
-            UIKeyCommand(title: "Show Entire Day", action: #selector(showAllKeyCommand), input: "a", modifierFlags: .init(arrayLiteral: .shift, .command))
+            UIKeyCommand(title: "Show Entire Day", action: #selector(showAllKeyCommand), input: "a", modifierFlags: .init(arrayLiteral: .shift, .command)),
         ]
         if !linesBarButtonSelected {
             commandArray.append(contentsOf: [
                 UIKeyCommand(title: "Select Morning", action: #selector(setSegmentZero), input: "1", modifierFlags: .command),
                 UIKeyCommand(title: "Select Afternoon", action: #selector(setSegmentOne), input: "2", modifierFlags: .command),
                 UIKeyCommand(title: "Select Evening", action: #selector(setSegmentTwo), input: "3", modifierFlags: .command),
-                UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command)
+                UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command),
             ])
         }
         return commandArray
@@ -99,7 +98,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             title = AppStrings.allDay.localizedCapitalized
             linesBarButtonSelected = true
             linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button-filled")
-            loadAllItems()
+            loadAllTasks()
             changeTabBar(hidden: true, animated: true)
         }
     }
@@ -137,24 +136,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         navigationItem.rightBarButtonItems = [doneButton, trashButton]
     }
 
-//    @IBAction func longPressToEdit(_ sender: UILongPressGestureRecognizer) {
-//        if sender.state == .began {
-//            if let count = items?.count {
-//                if count > 0 {
-//                    if !tableView.isEditing {
-//                        setEditing()
-//                    } else {
-//                        endEdit()
-//                    }
-//                } else {
-//                    endEdit()
-//                }
-//            } else {
-//                endEdit()
-//            }
-//        }
-//    }
-
     @objc func endEdit() {
         tableView.setEditing(false, animated: true)
         navigationItem.leftBarButtonItems = [settingsBarButtonItem, editBarButtonItem]
@@ -165,13 +146,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     // Footer view
     let footerView = UIView()
-
-//    fileprivate func fetchIAPInfo() {
-//        // prefetch prices
-//        if !RoutinesPlus.getPurchasedStatus() {
-//            getAllProductInfo(productIDs: [RegisteredPurchase.lifetime.rawValue, RegisteredPurchase.monthly.rawValue, RegisteredPurchase.yearly.rawValue])
-//        }
-//    }
 
     override func viewDidLoad() {
         debugPrint(#function + " start")
@@ -200,15 +174,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         footerView.backgroundColor = .clear
         tableView.tableFooterView = footerView
-//        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
-
-        //        setViewBackgroundGraphic(enabled: true)
-
-        // Double check to save selected tab and avoid infrequent bug
-        //        Options.setSelectedIndex(index: tabBarController!.selectedIndex)
-
-        //title = returnTitle(forSegment: tabBarController?.selectedIndex ?? 0)
-
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
 
@@ -217,13 +182,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     @objc func appBecameActive() {
         debugPrint(#function + " start")
-//        observeOptions()
-        observeItems()
-        // View loading funcs aren't always called when the app transitions from background to active
-        // So this is to ensure that the UI refreshes
-//        Options.automaticDarkModeCheck()
-//        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
-
+        observeTasks()
         debugPrint(#function + " end")
     }
 
@@ -245,15 +204,15 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             }
         }
         // Avoids flashing screen glitch
-        // TODO: Restoration is loading all the views at once
+        // Restoration is loading all the views at once
         debugPrint("View loaded? - \(isViewLoaded)")
     }
 
     override func viewWillAppear(_: Bool) {
         debugPrint(#function + " start")
 
-        loadItemsForSegment(segment: segment ?? 0)
-//        TaskTableViewController.setAppearance(forSegment: segment!)
+        loadTasksForSegment(segment: segment ?? 0)
+
         title = returnTitle(forSegment: segment ?? 0)
 
         let navigationBarAppearance = UINavigationBarAppearance()
@@ -277,67 +236,24 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     override func viewDidAppear(_: Bool) {
         debugPrint(#function + " start")
 
-//        if RoutinesPlus.getPurchasedStatus(), RoutinesPlus.getPurchasedProduct() != "", RoutinesPlus.getPurchasedProduct() != RegisteredPurchase.lifetime.rawValue, Date() >= RoutinesPlus.getExpiryDate() {
-//            debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
-//            debugPrint("Routines Plus Product: \(RoutinesPlus.getPurchasedProduct())")
-//            verifyReceipt()
-//        } else {
-//            debugPrint("No need to verify yet. Will check on \(RoutinesPlus.getExpiryDate())")
-//            debugPrint("Routines Plus Purchased: \(RoutinesPlus.getPurchasedStatus())")
-//            debugPrint("Routines Plus Product: \(RoutinesPlus.getPurchasedProduct())")
-//        }
-//
-//        fetchIAPInfo()
-
-        // Kind of a band aid for orphaned notifications.
-        // UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-
         AppDelegate.removeOldNotifications()
-
-//        if shouldShowHiddenTasksMessage {
-//            showHiddenTasksMessage()
-//            shouldShowHiddenTasksMessage = false
-//        }
 
         debugPrint(#function + " end")
     }
-
-//    func showHiddenTasksMessage() {
-//        if !UserDefaults.standard.bool(forKey: "hiddenTasksMessageShown"), !RoutinesPlus.getShowUpcomingTasks() {
-//            debugPrint("Showing hidden task message")
-//            let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
-//                self.openSettings()
-//            }
-//            showStandardAlert(title: "Don't see your new task?", body: "Don't worry, it's there. Because your \(returnTitle(forSegment: segment ?? Options.getSelectedIndex())) time has already happened, your task has been created for tomorrow. To see what's happening tomorrow, you can enable Show Upcoming Tasks from the settings.", action: settingsAction)
-//            UserDefaults.standard.set(true, forKey: "hiddenTasksMessageShown")
-//        } else {
-//            shouldShowHiddenTasksMessage = false
-//        }
-//    }
 
     func returnTitle(forSegment segment: Int) -> String {
         debugPrint(#function + " segment: \(segment)")
         switch segment {
         case 0:
-            return AppStrings.timePeriod.morning.rawValue.localizedCapitalized
+            return AppStrings.TimePeriod.morning.rawValue.localizedCapitalized
         case 1:
-            return AppStrings.timePeriod.afternoon.rawValue.localizedCapitalized
+            return AppStrings.TimePeriod.afternoon.rawValue.localizedCapitalized
         case 2:
-            return AppStrings.timePeriod.evening.rawValue.localizedCapitalized
+            return AppStrings.TimePeriod.evening.rawValue.localizedCapitalized
         default:
-            return AppStrings.timePeriod.night.rawValue.localizedCapitalized
+            return AppStrings.TimePeriod.night.rawValue.localizedCapitalized
         }
     }
-
-    //
-    //    func setTabBarTitles() {
-    //        if let tabBarItems = self.tabBarController?.tabBar.items {
-    //            let items = tabBarItems.enumerated().map { ($0, $1) }
-    //            items.forEach { index, item in
-    //                item.title = returnTitle(forSegment: index)
-    //            }
-    //        }
-    //    }
 
     func tabBarController(_ tabBarController: UITabBarController, didSelect _: UIViewController) {
         Options.setSelectedIndex(index: tabBarController.selectedIndex)
@@ -350,24 +266,24 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     override func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        debugPrint("Items count for number of rows is " + String(describing: items?.count))
-        return items?.count ?? 0
+        debugPrint("Items count for number of rows is " + String(describing: tasks?.count))
+        return tasks?.count ?? 0
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TaskTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? TaskTableViewCell else { return UITableViewCell() }
 
-        // Realm occasionally throws an error here. Use guard to return early if the item no-longer exist.
-        guard let item = items?[indexPath.row] else {
-            debugPrint("Failed to fetch item from index path. Returning empty cell")
+        // Realm occasionally throws an error here. Use guard to return early if the task no-longer exist.
+        guard let task = tasks?[indexPath.row] else {
+            debugPrint("Failed to fetch task from index path. Returning empty cell")
             return cell
         }
 
-        let segment = item.segment
-        let cellTitle: String = item.title!
+        let segment = task.segment
+        let cellTitle: String = task.title!
         var cellSubtitle: String? {
-            if let subtitle = item.notes {
-                if subtitle.count > 0 {
+            if let subtitle = task.notes {
+                if !subtitle.isEmpty {
                     return subtitle
                 } else {
                     return nil
@@ -377,14 +293,14 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             }
         }
         var repeatLabel: String {
-            if item.completeUntil < Date().endOfDay {
-                if item.repeats {
+            if task.completeUntil < Date().endOfDay {
+                if task.repeats {
                     return "Repeats Daily"
                 } else {
                     return ""
                 }
             } else {
-                if item.repeats {
+                if task.repeats {
                     return "Tomorrow - Repeats Daily"
                 } else {
                     return "Tomorrow"
@@ -404,7 +320,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         cell.cellTitleLabel?.text = cellTitle
         cell.cellSubtitleLabel?.text = cellSubtitle
 
-        if item.completeUntil > Date().endOfDay {
+        if task.completeUntil > Date().endOfDay {
             cell.cellTitleLabel.textColor = .lightGray
             cell.cellSubtitleLabel.textColor = .lightGray
             cell.repeatLabel.textColor = .lightGray
@@ -421,35 +337,36 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     // Override to support conditional rearranging of the table view.
     override func tableView(_: UITableView, canMoveRowAt _: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
+        // Return false if you do not want the task to be re-orderable.
         shouldAllowRearranging
     }
 
     // Override to support rearranging the table view.
     override func tableView(_: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        let realm = try! Realm()
-        realm.beginWrite()
-        items?.move(from: fromIndexPath.row, to: to.row)
-        if let notificationToken = notificationToken {
-            do {
-                try realm.commitWrite(withoutNotifying: [notificationToken])
-            } catch {
-                realm.cancelWrite()
-            }
-        } else {
-            do {
-                try realm.commitWrite()
-            } catch {
-                realm.cancelWrite()
+        if let realm = try? Realm() {
+            realm.beginWrite()
+            tasks?.move(from: fromIndexPath.row, to: to.row)
+            if let notificationToken = notificationToken {
+                do {
+                    try realm.commitWrite(withoutNotifying: [notificationToken])
+                } catch {
+                    realm.cancelWrite()
+                }
+            } else {
+                do {
+                    try realm.commitWrite()
+                } catch {
+                    realm.cancelWrite()
+                }
             }
         }
     }
 
     override func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard let item = items?[indexPath.row] else { return nil }
-        let itemSegment = item.segment
+        guard let task = tasks?[indexPath.row] else { return nil }
+        let taskSegment = task.segment
         var nextColor: UIColor {
-            switch itemSegment {
+            switch taskSegment {
             case 1:
                 return UIColor(red: 0.38, green: 0.64, blue: 0.53, alpha: 1.0)
             case 2:
@@ -462,11 +379,11 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         }
 
         let completeAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
-            self.completeItemAtIndex(at: indexPath)
+            self.completeTaskAtIndex(at: indexPath)
             completion(true)
         }
         let snoozeAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
-            self.snoozeItem(indexPath: indexPath)
+            self.snoozeTask(indexPath: indexPath)
             if !self.linesBarButtonSelected {
                 completion(true)
             } else {
@@ -475,7 +392,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         }
         let nextSectionAction = UIContextualAction(style: .destructive, title: nil) { _, _, completion in
             debugPrint("\(#function) - indexPath: \(String(describing: indexPath))")
-            self.moveItemToNext(indexPath: indexPath)
+            self.moveTaskToNext(indexPath: indexPath)
             if !self.linesBarButtonSelected {
                 completion(true)
             } else {
@@ -491,7 +408,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         nextSectionAction.image = UIImage(systemName: "arrowshape.turn.up.right.fill")
 
         var arrayOfActions: [UIContextualAction] = []
-        if item.completeUntil < Date().endOfDay {
+        if task.completeUntil < Date().endOfDay {
             arrayOfActions = [completeAction, snoozeAction, nextSectionAction]
         } else {
             arrayOfActions = [nextSectionAction]
@@ -560,13 +477,14 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     @objc private func clearAll() {
-        var itemAray: [Task] = []
+        debugPrint(#function)
+        var taskAray: [Task] = []
 
-        if let items = items {
-            itemAray.append(contentsOf: items)
+        if let tasks = tasks {
+            taskAray.append(contentsOf: tasks)
         }
 
-        Task.batchComplete(itemArray: itemAray)
+        Task.batchComplete(taskArray: taskAray)
 
         endEdit()
         // resetTableView()
@@ -574,55 +492,27 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     func completeSelectedRows() {
-        var itemCount: Int {
-            if let items = items {
-                return items.count
-            } else {
-                return 0
-            }
-        }
-        var selectedCount: Int {
-            if let selectedPaths = tableView.indexPathsForSelectedRows {
-                return selectedPaths.count
-            } else {
-                return 0
-            }
-        }
+        debugPrint(#function)
 
-        var itemsToComplete: [Task] = []
+        var tasksToComplete: [Task] = []
 
-        if selectedCount != 0 {
-            if let indexPaths = self.tableView.indexPathsForSelectedRows {
-                var itemArray: [Task] = []
-                indexPaths.forEach { indexPath in
-                    // The index paths are static during enumeration, but the item indexes are not
-                    // Add them to an array first, delete only what's in the array, and then update the table UI
-                    if let itemAtIndex = items?[indexPath.row] {
-                        itemArray.append(itemAtIndex)
-                    }
+        if let indexPaths = self.tableView.indexPathsForSelectedRows {
+            indexPaths.forEach { indexPath in
+                // The index paths are static during enumeration, but the task indexes are not
+                // Add them to an array first, delete only what's in the array, and then update the table UI
+                if let taskAtIndex = tasks?[indexPath.row] {
+                    debugPrint("Appending task titled \(taskAtIndex.title!) ")
+                    tasksToComplete.append(taskAtIndex)
                 }
-
-                itemArray.forEach { item in
-                    itemsToComplete.append(item)
-                }
-                Task.batchComplete(itemArray: itemsToComplete)
             }
-        } else if selectedCount == 0, itemCount != 0 {
-            items?.forEach { item in
-                itemsToComplete.append(item)
-            }
-            Task.batchComplete(itemArray: itemsToComplete)
-            endEdit()
-            resetTableView()
-            changeTabBar(hidden: false, animated: true)
+            Task.batchComplete(taskArray: tasksToComplete)
         }
     }
 
-    // TODO: Do this for completing items too
     @objc func deleteSelectedRows() {
-        var itemCount: Int {
-            if let items = items {
-                return items.count
+        var taskCount: Int {
+            if let tasks = tasks {
+                return tasks.count
             } else {
                 return 0
             }
@@ -635,29 +525,29 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             }
         }
 
-        var itemsToDelete: [Task] = []
+        var tasksToDelete: [Task] = []
 
         if selectedCount != 0 {
             if let indexPaths = self.tableView.indexPathsForSelectedRows {
-                var itemArray: [Task] = []
+                var taskArray: [Task] = []
                 indexPaths.forEach { indexPath in
-                    // The index paths are static during enumeration, but the item indexes are not
+                    // The index paths are static during enumeration, but the task indexes are not
                     // Add them to an array first, delete only what's in the array, and then update the table UI
-                    if let itemAtIndex = items?[indexPath.row] {
-                        itemArray.append(itemAtIndex)
+                    if let taskAtIndex = tasks?[indexPath.row] {
+                        taskArray.append(taskAtIndex)
                     }
                 }
 
-                itemArray.forEach { item in
-                    itemsToDelete.append(item)
+                taskArray.forEach { task in
+                    tasksToDelete.append(task)
                 }
-                Task.batchSoftDelete(itemArray: itemsToDelete)
+                Task.batchDelete(taskArray: tasksToDelete)
             }
-        } else if selectedCount == 0, itemCount != 0 {
-            items?.forEach { item in
-                itemsToDelete.append(item)
+        } else if selectedCount == 0, taskCount != 0 {
+            tasks?.forEach { task in
+                tasksToDelete.append(task)
             }
-            Task.batchSoftDelete(itemArray: itemsToDelete)
+            Task.batchDelete(taskArray: tasksToDelete)
             endEdit()
             resetTableView()
             changeTabBar(hidden: false, animated: true)
@@ -675,7 +565,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 autoreleasepool {
                     self.linesBarButtonSelected = false
                     self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
-                    self.loadItemsForSegment(segment: self.segment ?? 0)
+                    self.loadTasksForSegment(segment: self.segment ?? 0)
                     self.changeTabBar(hidden: false, animated: true)
                 }
             }
@@ -684,29 +574,29 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         if segue.identifier == "addSegue" {
-            let navVC = segue.destination as! UINavigationController
-            let destination = navVC.topViewController as! AddTableViewController
+            let navVC = segue.destination as? UINavigationController
+            let destination = navVC?.topViewController as? AddTableViewController
             // set segment based on current tab
-            guard let selectedTab = tabBarController?.selectedIndex else { return }
-            destination.editingSegment = selectedTab
-            destination.selectedIndex = segment
+            let selectedTab = tabBarController?.selectedIndex
+            destination?.editingSegment = selectedTab
+            destination?.selectedIndex = segment
             resetTableView()
         }
 
         if segue.identifier == "editSegue" {
-            let navVC = segue.destination as! UINavigationController
-            let destination = navVC.topViewController as! AddTableViewController
+            let navVC = segue.destination as? UINavigationController
+            let destination = navVC?.topViewController as? AddTableViewController
 
-            // pass in current item
+            // pass in current task
             if let indexPath = tableView.indexPathForSelectedRow {
-                destination.item = items?[indexPath.row]
+                destination?.task = tasks?[indexPath.row]
             }
         }
 
         if segue.identifier == "optionsSegue" {
-            let navVC = segue.destination as! UINavigationController
-            let destination = navVC.topViewController as! OptionsTableViewController
-            destination.selectedIndex = tabBarController?.selectedIndex
+            let navVC = segue.destination as? UINavigationController
+            let destination = navVC?.topViewController as? OptionsTableViewController
+            destination?.selectedIndex = tabBarController?.selectedIndex
         }
 
         if let indexPath = tableView.indexPathForSelectedRow {
@@ -718,147 +608,86 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     // Override empty delete func from super
     func softDeleteAtIndex(at indexPath: IndexPath) {
-        if let item = items?[indexPath.row] {
-            item.softDelete()
+        if let task = tasks?[indexPath.row] {
+            task.deleteTask()
             //            updateBadge()
         }
     }
 
-    func completeItemAtIndex(at indexPath: IndexPath) {
-        if let item = items?[indexPath.row] {
-            item.completeItem()
+    func completeTaskAtIndex(at indexPath: IndexPath) {
+        if let task = tasks?[indexPath.row] {
+            task.completeTask()
         }
     }
 
-    func snoozeItem(indexPath: IndexPath) {
-        guard let item = items?[indexPath.row] else { return }
-        item.snooze()
+    func snoozeTask(indexPath: IndexPath) {
+        guard let task = tasks?[indexPath.row] else { return }
+        task.snooze()
     }
 
-    func moveItemToNext(indexPath: IndexPath) {
-        guard let item = items?[indexPath.row] else { return }
-        item.moveToNextSegment()
+    func moveTaskToNext(indexPath: IndexPath) {
+        guard let task = tasks?[indexPath.row] else { return }
+        task.moveToNextSegment()
     }
-
-    // Set background graphic
-    //    func setViewBackgroundGraphic(enabled: Bool) {
-    //        if enabled {
-    //            let backgroundImageView = UIImageView()
-    //            let backgroundImage = UIImage(imageLiteralResourceName: "inlay")
-    //
-    //            backgroundImageView.image = backgroundImage
-    //            backgroundImageView.contentMode = .scaleAspectFit
-    //
-    //            tableView.backgroundView = backgroundImageView
-    ////            view.setNeedsDisplay()
-    ////            view.layoutIfNeeded()
-    //            UIView.transition(with: view, duration: 0.35, options: .transitionCrossDissolve, animations: nil)
-    //        } else {
-    //            tableView.backgroundView = UIView()
-    //            UIView.transition(with: view, duration: 0.0, options: .transitionCrossDissolve, animations: nil)
-    //        }
-    //    }
-
-    // Update tab bar badge counts
-    //    func updateBadge() {
-    //        DispatchQueue.main.async {
-    //            autoreleasepool {
-    //                if let tabs = self.tabBarController?.tabBar.items {
-    //                    for tab in 0 ..< tabs.count {
-    //                        let count = self.getCountForTab(tab)
-    //                        // print("Count for tab \(tab) is \(count)")
-    //                        if count > 0 {
-    //                            tabs[tab].badgeValue = "\(count)"
-    //                        } else {
-    //                            tabs[tab].badgeValue = nil
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-
-    // Don't need this if we're not doing a badge for the tabs
-    //    func getCountForTab(_ tab: Int) -> Int {
-    //        let realm = try! Realm()
-    //        let items = realm.objects(Items.self).filter("segment = %@ AND dateModified < %@ AND isDeleted = \(false) AND completeUntil < %@", tab, Date(), Date().endOfDay)
-    //        var badgeCount = 0
-    //        items.forEach { item in
-    //            if item.firstTriggerDate(segment: item.segment) < Date() {
-    //                badgeCount += 1
-    //            }
-    //        }
-    //        return badgeCount
-    //    }
 
     // MARK: - Manage Notifications
 
     // MARK: - Realm
 
-    var items: List<Task>?
+    var tasks: List<Task>?
 
     var segment: Int?
 
-    func loadItemsForSegment(segment: Int) {
-        debugPrint("loading items for segment \(segment)")
+    func loadTasksForSegment(segment: Int) {
+        debugPrint("loading tasks for segment \(segment)")
         shouldAllowRearranging = true
         let taskCategory = TaskCategory.returnTaskCategory(segment)
         if RoutinesPlus.getShowUpcomingTasks() {
-            items = taskCategory.taskList // .filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "completeUntil", ascending: true)
+            tasks = taskCategory.taskList // .filter("segment = \(segment) AND isDeleted = \(false)").sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false).sorted(byKeyPath: "completeUntil", ascending: true)
         } else {
-            items = taskCategory.taskList // .filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
+            tasks = taskCategory.taskList // .filter("segment = \(segment) AND isDeleted = \(false) AND completeUntil < %@", Date().endOfDay).sorted(byKeyPath: "dateModified", ascending: true).sorted(byKeyPath: "priority", ascending: false)
         }
-        observeItems()
+        observeTasks()
     }
 
-    func loadAllItems() {
-        debugPrint("loading all items")
+    func loadAllTasks() {
+        debugPrint("loading all tasks")
         shouldAllowRearranging = false
         // Sort by segment to put in order of the day
-        let realm = try! Realm()
-        let taskList = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
-        let mlist = TaskCategory.returnTaskCategory(CategorySelections.Morning.rawValue).taskList
-        let alist = TaskCategory.returnTaskCategory(CategorySelections.Afternoon.rawValue).taskList
-        let elist = TaskCategory.returnTaskCategory(CategorySelections.Evening.rawValue).taskList
-        let nlist = TaskCategory.returnTaskCategory(CategorySelections.Night.rawValue).taskList
-        do {
-            // Prevents notification chaos by using beginWrite
-            realm.beginWrite()
-            let tasks = taskList.sorted(byKeyPath: "segment", ascending: false)
-            debugPrint("tasks: " + String(describing: tasks.count))
-            taskList.removeAll()
-            taskList.append(objectsIn: mlist)
-            taskList.append(objectsIn: alist)
-            taskList.append(objectsIn: elist)
-            taskList.append(objectsIn: nlist)
-            debugPrint("tasksList: " + String(describing: taskList.count))
+        if let realm = try? Realm() {
+            let taskList = TaskCategory.returnTaskCategory(CategorySelections.allDay.rawValue).taskList
+            let mlist = TaskCategory.returnTaskCategory(CategorySelections.morning.rawValue).taskList
+            let alist = TaskCategory.returnTaskCategory(CategorySelections.afternoon.rawValue).taskList
+            let elist = TaskCategory.returnTaskCategory(CategorySelections.evening.rawValue).taskList
+            let nlist = TaskCategory.returnTaskCategory(CategorySelections.night.rawValue).taskList
+            do {
+                // Prevents notification chaos by using beginWrite
+                realm.beginWrite()
+                let tasks = taskList.sorted(byKeyPath: "segment", ascending: false)
+                debugPrint("tasks: " + String(describing: tasks.count))
+                taskList.removeAll()
+                taskList.append(objectsIn: mlist)
+                taskList.append(objectsIn: alist)
+                taskList.append(objectsIn: elist)
+                taskList.append(objectsIn: nlist)
+                debugPrint("tasksList: " + String(describing: taskList.count))
 
-            try realm.commitWrite()
-        } catch {
-            realm.cancelWrite()
+                try realm.commitWrite()
+            } catch {
+                realm.cancelWrite()
+            }
+            tasks = TaskCategory.returnTaskCategory(CategorySelections.allDay.rawValue).taskList
+
+            observeTasks()
         }
-        items = TaskCategory.returnTaskCategory(CategorySelections.All.rawValue).taskList
-
-        observeItems()
     }
-
-    // This *should* call the appropriate load based on if the user wants to see All Day or not
-    // Maybe some other time when we let the user default to an all day view? ... Probably should just use a dedicated view in that case
-//    func loadItems() {
-//        if linesBarButtonSelected {
-//            loadAllItems()
-//        } else {
-//            loadItemsForSegment(segment: segment ?? 0)
-//        }
-//    }
 
     var notificationToken: NotificationToken?
 
     // This only needs to be called once when the view is first loaded
-    func observeItems() {
-        // TODO: https://realm.io/docs/swift/latest/#interface-driven-writes
+    func observeTasks() {
         // Observe Results Notifications
-        notificationToken = items?.observe { [weak self] (changes: RealmCollectionChange) in
+        notificationToken = tasks?.observe { [weak self] (changes: RealmCollectionChange) in
             guard let tableView = self?.tableView else { return }
             switch changes {
             case .initial:
@@ -878,7 +707,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
                 }, completion: nil)
             case let .error(error):
                 // An error occurred while opening the Realm file on the background worker thread
-//                fatalError("\(error)")
                 debugPrint("Error in \(#function) - \(error)")
             }
         }
@@ -887,67 +715,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     deinit {
         debugPrint("\(#function) called. Tokens invalidated")
         notificationToken?.invalidate()
-//        optionsToken?.invalidate()
     }
-
-    // var options: Options = Options()
-    // var debugOptionsToken: NotificationToken?
-//    var optionsToken: NotificationToken?
-//
-//    func observeOptions() {
-//        let realm = try! Realm()
-//        let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-//        optionsToken = options?.observe { changes in
-//            switch changes {
-//            case let .change(propertyChanged):
-//                propertyChanged.forEach { change in
-//                    if change.name == "darkMode" {
-//                        if change.oldValue as? Bool != change.newValue as? Bool {
-//                            DispatchQueue.main.async {
-//                                TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
-//                            }
-//                        }
-//                    }
-//                }
-//                AppDelegate.setAutomaticDarkModeTimer()
-//            case let .error(error):
-//                // An error occurred while opening the Realm file on the background worker thread
-//                fatalError("\(error)")
-//            case .deleted:
-//                break
-//            }
-//        }
-//    }
-
-    // MARK: - Themeing
-
-//    static func setAppearance(forSegment segment: Int, function: String = #function) {
-//        debugPrint("Setting theme for segment: \(segment)")
-//        debugPrint("Called from: \(function)")
-//        if Options.getDarkModeStatus() {
-//            switch segment {
-//            case 1:
-//                Themes.switchTo(theme: .afternoonDark)
-//            case 2:
-//                Themes.switchTo(theme: .eveningDark)
-//            case 3:
-//                Themes.switchTo(theme: .nightDark)
-//            default:
-//                Themes.switchTo(theme: .morningDark)
-//            }
-//        } else {
-//            switch segment {
-//            case 1:
-//                Themes.switchTo(theme: .afternoonLight)
-//            case 2:
-//                Themes.switchTo(theme: .eveningLight)
-//            case 3:
-//                Themes.switchTo(theme: .nightLight)
-//            default:
-//                Themes.switchTo(theme: .morningLight)
-//            }
-//        }
-//    }
 
     func deleteAlert(_ indexPath: IndexPath) -> Bool {
         var completion = false
@@ -964,9 +732,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     }
 
     @objc func deleteSelectedAlert() {
-        var itemCount: Int {
-            if let items = self.items {
-                return items.count
+        var taskCount: Int {
+            if let tasks = self.tasks {
+                return tasks.count
             } else {
                 return 0
             }
@@ -987,11 +755,11 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             } else {
                 alertController.message = "This will permanently delete \(selectedCount) selected tasks."
             }
-        } else if selectedCount == 0, itemCount != 0 {
-            if itemCount == 1 {
+        } else if selectedCount == 0, taskCount != 0 {
+            if taskCount == 1 {
                 alertController.message = "This will permanently delete the task shown."
             } else {
-                alertController.message = "This will permanently delete all \(itemCount) tasks shown."
+                alertController.message = "This will permanently delete all \(taskCount) tasks shown."
             }
         } else {
             return
@@ -1005,42 +773,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         }))
         present(alertController, animated: true, completion: nil)
     }
-
-//    func showAlert(title: String, body: String) {
-//        var config = SwiftMessages.Config()
-//        config.presentationStyle = .center
-//        config.duration = .forever
-//
-//        let alert = MessageView.viewFromNib(layout: .cardView)
-//        let icon = "⁉️"
-//        alert.configureTheme(.info, iconStyle: .default)
-//        alert.configureContent(title: title, body: body, iconText: icon)
-//        alert.titleLabel?.textColor = .black
-//        alert.bodyLabel?.textColor = .black
-//
-//        alert.button?.setTitleColor(.white, for: .normal)
-//        alert.button?.setTitle("Do it!", for: .normal)
-//        alert.button?.addTarget(self, action: #selector(clearAll), for: .touchUpInside)
-//
-//        alert.buttonTapHandler = { _ in SwiftMessages.hide() }
-//
-//        // Increase the external margin around the card. In general, the effect of this setting
-//        // depends on how the given layout is constrained to the layout margins.
-//        alert.layoutMarginAdditions = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-//
-//        // Reduce the corner radius (applicable to layouts featuring rounded corners).
-//        (alert.backgroundView as? CornerRoundingView)?.cornerRadius = 10
-//
-    ////        if Options.getDarkModeStatus() {
-    ////            config.dimMode = .blur(style: .dark, alpha: 1, interactive: true)
-    ////            config.dimModeAccessibilityLabel = "Dismiss Warning"
-    ////        } else {
-    ////            config.dimMode = .blur(style: .regular, alpha: 1, interactive: true)
-    ////            config.dimModeAccessibilityLabel = "Dismiss Warning"
-    ////        }
-//
-//        SwiftMessages.show(config: config, view: alert)
-//    }
 
     func showStandardAlert(title: String, body: String, action: UIAlertAction?) {
         let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)

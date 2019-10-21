@@ -39,7 +39,7 @@
 //
 //    // MARK: Switch Dark
 //
-//    // TODO: Pass in segment here
+
 //    static func isDarkMode() -> Bool {
 //        (Options.getDarkModeStatus())
 //    }
@@ -50,7 +50,7 @@
 ////        switchTo(theme: Themes(rawValue: Options.getThemeIndex())!)
 ////    }
 //
-//    // TODO: Get rid of this
+
 ////    static func saveLastTheme() {
 ////        let realmDispatchQueueLabel: String = "background"
 ////        DispatchQueue(label: realmDispatchQueueLabel).sync {

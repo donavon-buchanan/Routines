@@ -21,7 +21,10 @@ struct AppStrings {
 //    static let invalidID = "Invalid Product ID. Please contact support."
 //    static let paymentCanceled = "Payment was canceled."
 //    static let paymentNotAllowed = "Uh oh. Looks like you're not allowed to make payments on this device."
-//    static let privacyAcknowledgementRequired = "Apple requires that you agree to their updated Privacy Policy before making this purchase. Please check your account."
+//    static let privacyAcknowledgementRequired = """
+    // Apple requires that you agree to their updated
+    // Privacy Policy before making this purchase. Please check your account.
+    // """
 //    static let restoreFailed = "Restore Failed"
 //    static let restoreFailedMessage = "Failed to restore purchases. If you believe this is an error, please contact support."
 //    static let purchaseRestored = "Purchase Restored"
@@ -30,7 +33,9 @@ struct AppStrings {
 //    static let receiptVerified = "Receipt verified remotely."
 //    static let verificationFailed = "Receipt Verification Failed"
 //    static let noReceiptFound = "No receipt data was found. We'll try to fetch a new one. Try again."
-//    static let verificationUnknown = "Receipt verification failed with an unknown error. Please try again. If this error continues, contact support."
+//    static let verificationUnknown = """
+    // Receipt verification failed with an unknown error. Please try again. If this error continues, contact support.
+    // """
 //    static let receiptInvalidMessage = "Looks like your subscription has expired. Certain features may be disabled."
 //    static let subActive = "Subscription Active"
 //    static let subActiveUntil = "Your subscription will renew on "
@@ -48,7 +53,7 @@ struct AppStrings {
     // MARK: - User Interface
 
     static let allDay = "All Day"
-    enum timePeriod: String {
+    enum TimePeriod: String {
         case morning, afternoon, evening, night
     }
 

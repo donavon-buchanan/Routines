@@ -60,7 +60,7 @@ class OptionsTableViewController: UITableViewController {
 
     override var keyCommands: [UIKeyCommand]? {
         [
-            UIKeyCommand(title: "Exit", action: #selector(dismissView), input: "w", modifierFlags: .init(arrayLiteral: .command))
+            UIKeyCommand(title: "Exit", action: #selector(dismissView), input: "w", modifierFlags: .init(arrayLiteral: .command)),
         ]
     }
 
@@ -71,23 +71,23 @@ class OptionsTableViewController: UITableViewController {
         switch sender.tag {
         case 1:
             Options.setSegmentNotification(segment: 1, bool: sender.isOn)
-            let items = TaskCategory.returnTaskCategory(sender.tag).taskList
-            notificationHandler.batchModifyNotifications(items: Array(items))
+            let tasks = TaskCategory.returnTaskCategory(sender.tag).taskList
+            notificationHandler.batchModifyNotifications(tasks: Array(tasks))
         // print("Afternoon Switch Toggled \(sender.isOn)")
         case 2:
             Options.setSegmentNotification(segment: 2, bool: sender.isOn)
-            let items = TaskCategory.returnTaskCategory(sender.tag).taskList
-            notificationHandler.batchModifyNotifications(items: Array(items))
+            let tasks = TaskCategory.returnTaskCategory(sender.tag).taskList
+            notificationHandler.batchModifyNotifications(tasks: Array(tasks))
         // print("Evening Switch Toggled \(sender.isOn)")
         case 3:
             Options.setSegmentNotification(segment: 3, bool: sender.isOn)
-            let items = TaskCategory.returnTaskCategory(sender.tag).taskList
-            notificationHandler.batchModifyNotifications(items: Array(items))
+            let tasks = TaskCategory.returnTaskCategory(sender.tag).taskList
+            notificationHandler.batchModifyNotifications(tasks: Array(tasks))
         // print("Night Switch Toggled \(sender.isOn)")
         default:
             Options.setSegmentNotification(segment: 0, bool: sender.isOn)
-            let items = TaskCategory.returnTaskCategory(sender.tag).taskList
-            notificationHandler.batchModifyNotifications(items: Array(items))
+            let tasks = TaskCategory.returnTaskCategory(sender.tag).taskList
+            notificationHandler.batchModifyNotifications(tasks: Array(tasks))
             // print("Morning Switch Toggled \(sender.isOn)")
         }
     }
@@ -184,8 +184,8 @@ class OptionsTableViewController: UITableViewController {
                 haptic.impactOccurred()
                 // The next line should not be necessary. iOS 13 bug/regression
                 Options.setSegmentNotification(segment: 1, bool: afternoonSwitch.isOn)
-                let items = TaskCategory.returnTaskCategory(1).taskList
-                notificationHandler.batchModifyNotifications(items: Array(items))
+                let tasks = TaskCategory.returnTaskCategory(1).taskList
+                notificationHandler.batchModifyNotifications(tasks: Array(tasks))
             case 2:
                 // print("Tapped Evening Cell")
                 let isOn = !eveningSwitch.isOn
@@ -193,8 +193,8 @@ class OptionsTableViewController: UITableViewController {
                 haptic.impactOccurred()
                 // The next line should not be necessary. iOS 13 bug/regression
                 Options.setSegmentNotification(segment: 2, bool: eveningSwitch.isOn)
-                let items = TaskCategory.returnTaskCategory(2).taskList
-                notificationHandler.batchModifyNotifications(items: Array(items))
+                let tasks = TaskCategory.returnTaskCategory(2).taskList
+                notificationHandler.batchModifyNotifications(tasks: Array(tasks))
             case 3:
                 // print("Tapped Night Cell")
                 let isOn = !nightSwitch.isOn
@@ -202,8 +202,8 @@ class OptionsTableViewController: UITableViewController {
                 haptic.impactOccurred()
                 // The next line should not be necessary. iOS 13 bug/regression
                 Options.setSegmentNotification(segment: 3, bool: nightSwitch.isOn)
-                let items = TaskCategory.returnTaskCategory(3).taskList
-                notificationHandler.batchModifyNotifications(items: Array(items))
+                let tasks = TaskCategory.returnTaskCategory(3).taskList
+                notificationHandler.batchModifyNotifications(tasks: Array(tasks))
             default:
                 // print("Tapped Morning Cell")
                 let isOn = !morningSwitch.isOn
@@ -211,8 +211,8 @@ class OptionsTableViewController: UITableViewController {
                 haptic.impactOccurred()
                 // The next line should not be necessary. iOS 13 bug/regression
                 Options.setSegmentNotification(segment: 0, bool: morningSwitch.isOn)
-                let items = TaskCategory.returnTaskCategory(0).taskList
-                notificationHandler.batchModifyNotifications(items: Array(items))
+                let tasks = TaskCategory.returnTaskCategory(0).taskList
+                notificationHandler.batchModifyNotifications(tasks: Array(tasks))
             }
         default:
             debugPrint("\(#function) - Default case triggered")
@@ -355,53 +355,22 @@ class OptionsTableViewController: UITableViewController {
 
     // Need to observe all options even though there will really only be one object because sometimes that object may need to be deleted
     func observeOptions() {
-        let realm = try! Realm()
-        let optionsList = realm.objects(Options.self)
-        optionsToken = optionsList.observe { [weak self] (changes: RealmCollectionChange) in
-            guard let self = self else { return }
-            switch changes {
-            case .initial:
-                debugPrint("Initial load for Options. Set up UI")
-                self.setUpUI(animated: false)
-            case .update:
-                // Don't bother taking action of Options don't even exist
-                // TODO: Remove all this crap. Go back to just observing the one object
-//                guard realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) != nil else {
-//                    guard self.pleaseWaitAlert == nil else { return }
-//                    self.pleaseWaitAlert = SwiftMessagesAlertsController()
-//                    self.pleaseWaitAlert?.showAlert(title: "Please Wait", body: "Syncing your data from iCloud. This shouldn't take long.")
-//                    return
-//                }
-                self.refreshUI()
-//                TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
-//                guard self.pleaseWaitAlert != nil else { return }
-//                self.perform(#selector(self.dismissWaitAlert), with: nil, afterDelay: 1)
-            case let .error(error):
-                // An error occurred while opening the Realm file on the background worker thread
-                debugPrint("\(error)")
+        if let realm = try? Realm() {
+            let optionsList = realm.objects(Options.self)
+            optionsToken = optionsList.observe { [weak self] (changes: RealmCollectionChange) in
+                guard let self = self else { return }
+                switch changes {
+                case .initial:
+                    debugPrint("Initial load for Options. Set up UI")
+                    self.setUpUI(animated: false)
+                case .update:
+                    // Don't bother taking action of Options don't even exist
+                    self.refreshUI()
+                case let .error(error):
+                    // An error occurred while opening the Realm file on the background worker thread
+                    debugPrint("\(error)")
+                }
             }
         }
     }
-
-//    func observeRoutinesPlus() {
-//        let realm = try! Realm()
-//        let routinesPlus = realm.object(ofType: RoutinesPlus.self, forPrimaryKey: RoutinesPlus.primaryKey())
-//        routinesPlusToken = routinesPlus?.observe { _ in
-//            debugPrint("Something in RoutinesPlus changed")
-//            NotificationHandler().checkNotificationPermission()
-//            self.refreshUI()
-//        }
-//    }
-
-    // MARK: - IAP
-
-//    func segueToAutomaticDarkModeTableView() {
-//        if !RoutinesPlus.getPurchasedStatus() {
-//            segueToRoutinesPlusViewController()
-//        } else {
-//            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//            let AutomaticDarkModeTableViewController = storyBoard.instantiateViewController(withIdentifier: "AutomaticDarkModeTableView") as! AutomaticDarkModeTableViewController
-//            navigationController?.pushViewController(AutomaticDarkModeTableViewController, animated: true)
-//        }
-//    }
 }

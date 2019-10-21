@@ -6,8 +6,6 @@
 //  Copyright © 2018 Donavon Buchanan. All rights reserved.
 //
 
-// TODO: You need to fetch uuidStrings on all current items and modify their associated notifications to match any updated times. Run those updates in async. It could be many.
-
 import RealmSwift
 import UIKit
 
@@ -71,21 +69,22 @@ class CustomTimesTableViewController: UITableViewController {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
                 let newOptions = Options()
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                do {
-                    try realm.write {
-                        options?.morningHour = newOptions.morningHour
-                        options?.morningMinute = newOptions.morningMinute
-                        options?.afternoonHour = newOptions.afternoonHour
-                        options?.afternoonMinute = newOptions.afternoonMinute
-                        options?.eveningHour = newOptions.eveningHour
-                        options?.eveningMinute = newOptions.eveningMinute
-                        options?.nightHour = newOptions.nightHour
-                        options?.nightMinute = newOptions.nightMinute
+                if let realm = try? Realm() {
+                    let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+                    do {
+                        try realm.write {
+                            options?.morningHour = newOptions.morningHour
+                            options?.morningMinute = newOptions.morningMinute
+                            options?.afternoonHour = newOptions.afternoonHour
+                            options?.afternoonMinute = newOptions.afternoonMinute
+                            options?.eveningHour = newOptions.eveningHour
+                            options?.eveningMinute = newOptions.eveningMinute
+                            options?.nightHour = newOptions.nightHour
+                            options?.nightMinute = newOptions.nightMinute
+                        }
+                    } catch {
+                        realm.cancelWrite()
                     }
-                } catch {
-                    realm.cancelWrite()
                 }
             }
         }
@@ -107,27 +106,28 @@ class CustomTimesTableViewController: UITableViewController {
         // print("updateSavedTimes received: Hour - \(hour), minute - \(minute)")
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                do {
-                    try realm.write {
-                        switch segment {
-                        case 1:
-                            options?.afternoonHour = hour
-                            options?.afternoonMinute = minute
-                        case 2:
-                            options?.eveningHour = hour
-                            options?.eveningMinute = minute
-                        case 3:
-                            options?.nightHour = hour
-                            options?.nightMinute = minute
-                        default:
-                            options?.morningHour = hour
-                            options?.morningMinute = minute
+                if let realm = try? Realm() {
+                    let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+                    do {
+                        try realm.write {
+                            switch segment {
+                            case 1:
+                                options?.afternoonHour = hour
+                                options?.afternoonMinute = minute
+                            case 2:
+                                options?.eveningHour = hour
+                                options?.eveningMinute = minute
+                            case 3:
+                                options?.nightHour = hour
+                                options?.nightMinute = minute
+                            default:
+                                options?.morningHour = hour
+                                options?.morningMinute = minute
+                            }
                         }
+                    } catch {
+                        realm.cancelWrite()
                     }
-                } catch {
-                    realm.cancelWrite()
                 }
             }
         }
@@ -152,23 +152,24 @@ class CustomTimesTableViewController: UITableViewController {
         var date: Date?
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    // let dateFormatter = DateFormatter()
+                if let realm = try? Realm() {
+                    if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                        // let dateFormatter = DateFormatter()
 
-                    switch segment {
-                    case 1:
-                        let dateComponents = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, hour: options.afternoonHour, minute: options.afternoonMinute)
-                        date = dateComponents.date!
-                    case 2:
-                        let dateComponents = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, hour: options.eveningHour, minute: options.eveningMinute)
-                        date = dateComponents.date!
-                    case 3:
-                        let dateComponents = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, hour: options.nightHour, minute: options.nightMinute)
-                        date = dateComponents.date!
-                    default:
-                        let dateComponents = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, hour: options.morningHour, minute: options.morningMinute)
-                        date = dateComponents.date!
+                        switch segment {
+                        case 1:
+                            let dateComponents = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, hour: options.afternoonHour, minute: options.afternoonMinute)
+                            date = dateComponents.date!
+                        case 2:
+                            let dateComponents = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, hour: options.eveningHour, minute: options.eveningMinute)
+                            date = dateComponents.date!
+                        case 3:
+                            let dateComponents = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, hour: options.nightHour, minute: options.nightMinute)
+                            date = dateComponents.date!
+                        default:
+                            let dateComponents = DateComponents(calendar: Calendar.autoupdatingCurrent, timeZone: TimeZone.autoupdatingCurrent, hour: options.morningHour, minute: options.morningMinute)
+                            date = dateComponents.date!
+                        }
                     }
                 }
             }
@@ -208,20 +209,21 @@ class CustomTimesTableViewController: UITableViewController {
     }
 
     func getOptionHour(segment: Int) -> Int {
-        var hour = Int()
+        var hour = 0
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                switch segment {
-                case 1:
-                    hour = (options?.afternoonHour)!
-                case 2:
-                    hour = (options?.eveningHour)!
-                case 3:
-                    hour = (options?.nightHour)!
-                default:
-                    hour = (options?.morningHour)!
+                if let realm = try? Realm() {
+                    let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+                    switch segment {
+                    case 1:
+                        hour = (options?.afternoonHour)!
+                    case 2:
+                        hour = (options?.eveningHour)!
+                    case 3:
+                        hour = (options?.nightHour)!
+                    default:
+                        hour = (options?.morningHour)!
+                    }
                 }
             }
         }
@@ -229,20 +231,21 @@ class CustomTimesTableViewController: UITableViewController {
     }
 
     func getOptionMinute(segment: Int) -> Int {
-        var minute = Int()
+        var minute = 0
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                switch segment {
-                case 1:
-                    minute = (options?.afternoonMinute)!
-                case 2:
-                    minute = (options?.eveningMinute)!
-                case 3:
-                    minute = (options?.nightMinute)!
-                default:
-                    minute = (options?.morningMinute)!
+                if let realm = try? Realm() {
+                    let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+                    switch segment {
+                    case 1:
+                        minute = (options?.afternoonMinute)!
+                    case 2:
+                        minute = (options?.eveningMinute)!
+                    case 3:
+                        minute = (options?.nightMinute)!
+                    default:
+                        minute = (options?.morningMinute)!
+                    }
                 }
             }
         }
@@ -251,11 +254,12 @@ class CustomTimesTableViewController: UITableViewController {
 
     // Set the notification badge count
     func getSegmentCount(segment: Int) -> Int {
-        var count = Int()
+        var count = 0
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
-                count = realm.objects(Task.self).filter("segment = \(segment)").count
+                if let realm = try? Realm() {
+                    count = realm.objects(Task.self).filter("segment = \(segment)").count
+                }
             }
         }
         return count
@@ -282,19 +286,20 @@ class CustomTimesTableViewController: UITableViewController {
     func loadOptions() {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-                    self.morningHour = options.morningHour
-                    self.morningMinute = options.morningMinute
+                if let realm = try? Realm() {
+                    if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                        self.morningHour = options.morningHour
+                        self.morningMinute = options.morningMinute
 
-                    self.afternoonHour = options.afternoonHour
-                    self.afternoonMinute = options.afternoonMinute
+                        self.afternoonHour = options.afternoonHour
+                        self.afternoonMinute = options.afternoonMinute
 
-                    self.eveningHour = options.eveningHour
-                    self.eveningMinute = options.eveningMinute
+                        self.eveningHour = options.eveningHour
+                        self.eveningMinute = options.eveningMinute
 
-                    self.nightHour = options.nightHour
-                    self.nightMinute = options.nightMinute
+                        self.nightHour = options.nightHour
+                        self.nightMinute = options.nightMinute
+                    }
                 }
             }
         }
@@ -304,47 +309,22 @@ class CustomTimesTableViewController: UITableViewController {
         var enabled = false
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
-                    switch segment {
-                    case 1:
-                        enabled = options.afternoonNotificationsOn
-                    case 2:
-                        enabled = options.eveningNotificationsOn
-                    case 3:
-                        enabled = options.nightNotificationsOn
-                    default:
-                        enabled = options.morningNotificationsOn
+                if let realm = try? Realm() {
+                    if let options = realm.object(ofType: Options.self, forPrimaryKey: optionsKey) {
+                        switch segment {
+                        case 1:
+                            enabled = options.afternoonNotificationsOn
+                        case 2:
+                            enabled = options.eveningNotificationsOn
+                        case 3:
+                            enabled = options.nightNotificationsOn
+                        default:
+                            enabled = options.morningNotificationsOn
+                        }
                     }
                 }
             }
         }
         return enabled
     }
-
-//    func getSelectedTab() -> Int {
-//        var selectedIndex = 0
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//                    selectedIndex = options.selectedIndex
-//                }
-//            }
-//        }
-//        return selectedIndex
-//    }
-//
-//    func getDarkModeStatus() -> Bool {
-//        var darkMode = false
-//        DispatchQueue(label: realmDispatchQueueLabel).sync {
-//            autoreleasepool {
-//                let realm = try! Realm()
-//                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
-//                    darkMode = options.darkMode
-//                }
-//            }
-//        }
-//        return darkMode
-//    }
 }

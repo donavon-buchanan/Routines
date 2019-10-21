@@ -181,8 +181,8 @@ import RealmSwift
         var badge = true
         DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                let realm = try? Realm()
+                if let options = realm?.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     badge = options.badge
                 }
             }
@@ -223,8 +223,8 @@ import RealmSwift
         var hour = Int()
         DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                let realm = try? Realm()
+                if let options = realm?.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     switch segment {
                     case 1:
                         hour = options.afternoonHour
@@ -245,8 +245,8 @@ import RealmSwift
         var minute = Int()
         DispatchQueue(label: Task.realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+                let realm = try? Realm()
+                let options = realm?.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
                 switch segment {
                 case 1:
                     minute = (options?.afternoonMinute)!
@@ -266,8 +266,8 @@ import RealmSwift
         var enabled = false
         DispatchQueue(label: Options.realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                let realm = try? Realm()
+                if let options = realm?.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     switch segment {
                     case 1:
                         enabled = options.afternoonNotificationsOn
@@ -287,10 +287,10 @@ import RealmSwift
     static func setSegmentNotification(segment: Int, bool: Bool) {
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
-                if let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
+                let realm = try? Realm()
+                if let options = realm?.object(ofType: Options.self, forPrimaryKey: Options.primaryKey()) {
                     do {
-                        try realm.write {
+                        try realm?.write {
                             switch segment {
                             case 1:
                                 options.afternoonNotificationsOn = bool
@@ -303,7 +303,7 @@ import RealmSwift
                             }
                         }
                     } catch {
-                        realm.cancelWrite()
+                        realm?.cancelWrite()
                     }
                 }
             }
@@ -351,8 +351,8 @@ import RealmSwift
         var timeString: String = ""
         DispatchQueue(label: realmDispatchQueueLabel).sync {
             autoreleasepool {
-                let realm = try! Realm()
-                let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+                let realm = try? Realm()
+                let options = realm?.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
                 var timeOption = DateComponents()
                 timeOption.calendar = Calendar.autoupdatingCurrent
                 timeOption.timeZone = TimeZone.autoupdatingCurrent

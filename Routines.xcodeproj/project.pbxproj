@@ -22,7 +22,6 @@
 		F89C786E22E31E000079B089 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F89C786C22E31E000079B089 /* LaunchScreen.storyboard */; };
 		F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */; };
 		F8B30787219C0DAB00437AAA /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B30786219C0DAB00437AAA /* Themes.swift */; };
-		F8B30789219C13B500437AAA /* GlobalPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B30788219C13B500437AAA /* GlobalPicker.swift */; };
 		F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831B72155CBB000DAF60E /* AppDelegate.swift */; };
 		F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8B831BB2155CBB000DAF60E /* Main.storyboard */; };
 		F8B831CD2155CBE300DAF60E /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831CC2155CBE300DAF60E /* Task.swift */; };
@@ -82,7 +81,6 @@
 		F8A9B0A222842BC20043E43A /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = RoutinesUITests/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		F8B30786219C0DAB00437AAA /* Themes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Themes.swift; sourceTree = "<group>"; };
-		F8B30788219C13B500437AAA /* GlobalPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalPicker.swift; sourceTree = "<group>"; };
 		F8B831B42155CBB000DAF60E /* Routines.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Routines.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8B831B72155CBB000DAF60E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8B831BC2155CBB000DAF60E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -213,7 +211,6 @@
 				F802FC962254C3D60054CF22 /* Routines.entitlements */,
 				F8B831B72155CBB000DAF60E /* AppDelegate.swift */,
 				F8B30786219C0DAB00437AAA /* Themes.swift */,
-				F8B30788219C13B500437AAA /* GlobalPicker.swift */,
 				F86CC22E2355009200D587E9 /* ColorPicker.swift */,
 				F8B831CB2155CBD000DAF60E /* Models */,
 				F8B831C92155CBBD00DAF60E /* Controllers */,
@@ -443,7 +440,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftformat >/dev/null; then\nswiftformat . --exclude Pods,Generated,/Users/donavon/Developer/Projects/Routines/fastlane/*,/Users/donavon/Developer/Projects/Routines/RoutinesUITests --swiftversion 5.1\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#if which swiftformat >/dev/null; then\n#swiftformat . --exclude Pods,Generated,/Users/donavon/Developer/Projects/Routines/fastlane/*,/Users/donavon/Developer/Projects/Routines/RoutinesUITests --swiftversion 5.1\n#else\n#echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\n#fi\n";
 		};
 		F8AE682B2357068A00052769 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -461,7 +458,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n  swiftlint autocorrect\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#if which swiftlint >/dev/null; then\n#  swiftlint\n#else\n#  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n#fi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -507,7 +504,6 @@
 				F807D3CF2160964E00FF36D9 /* OptionsTableViewController.swift in Sources */,
 				F8DC390222D075D9005C3BE0 /* NotificationHandler.swift in Sources */,
 				F8D5DB532269BCAD005857F2 /* ViewControllerExtension.swift in Sources */,
-				F8B30789219C13B500437AAA /* GlobalPicker.swift in Sources */,
 				F807D3CD216073E300FF36D9 /* Options.swift in Sources */,
 				F8B30787219C0DAB00437AAA /* Themes.swift in Sources */,
 				F8C731E623566A6E0074EEB5 /* TaskCategory.swift in Sources */,

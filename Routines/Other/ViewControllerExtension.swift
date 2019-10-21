@@ -50,7 +50,10 @@ extension UIViewController {
 
     func notificationPermissionsAlert() {
         DispatchQueue.main.async {
-            let alertController = UIAlertController(title: AppStrings.notificationPermissionsAlertTitle, message: AppStrings.notificationPermissionsMessage, preferredStyle: .alert)
+            let alertController = UIAlertController(
+                title: AppStrings.notificationPermissionsAlertTitle,
+                message: AppStrings.notificationPermissionsMessage, preferredStyle: .alert
+            )
             let notNowAction = UIAlertAction(title: "Not Now", style: .cancel, handler: nil)
             let settingsAction = UIAlertAction(title: "Go to Settings", style: .default) { _ in
                 // go to app's Settings
@@ -80,7 +83,7 @@ extension UIViewController {
 //
     func showAlert(alert: UIAlertController) {
         DispatchQueue.main.async {
-            guard let _ = self.presentedViewController else {
+            guard self.presentedViewController != nil else {
                 self.present(alert, animated: true, completion: nil)
                 return
             }
@@ -88,13 +91,6 @@ extension UIViewController {
     }
 
 //
-//    func showFailAlert() {
-//        let alertController = UIAlertController(title: "Connection Failure", message: "Failed to fetch purchase options from the App Store. Please check your internet conenction and try again.", preferredStyle: .alert)
-//        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-//        alertController.addAction(okAction)
-//        present(alertController, animated: true, completion: nil)
-//        getAllProductInfo(productIDs: [RegisteredPurchase.lifetime.rawValue, RegisteredPurchase.monthly.rawValue, RegisteredPurchase.yearly.rawValue])
-//    }
 //
 //    func alertForProductRetrievalInfo(result: RetrieveResults) -> UIAlertController {
 //        if let product = result.retrievedProducts.first {

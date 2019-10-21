@@ -37,7 +37,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 //
 //    @IBAction func prioritySliderTouched(_: UISlider) {
 //        view.endEditing(true)
-//        if item != nil, taskTextField.hasText {
+//        if task != nil, taskTextField.hasText {
 //            navigationItem.rightBarButtonItem?.isEnabled = true
 //        }
 //    }
@@ -49,26 +49,24 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     @IBOutlet var repeatDailySwitch: UISwitch!
     @IBAction func repeatDailySwitchToggled(_: UISwitch) {
-        if item != nil, taskTextField.hasText {
+        if task != nil, taskTextField.hasText {
             navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
 
     override var keyCommands: [UIKeyCommand]? {
         [
-            // TODO: Create a global array var that to add or remove these commands from within other functions so that they can be active based on UI state
             UIKeyCommand(title: "Save Task", action: #selector(saveKeyCommand), input: "s", modifierFlags: .command),
-            UIKeyCommand(title: "Exit", action: #selector(dismissView), input: "w", modifierFlags: .init(arrayLiteral: .command)),
+            UIKeyCommand(title: "Exit", action: #selector(dismissView), input: UIKeyCommand.inputEscape),
             UIKeyCommand(title: "Toggle Repeat Daily", action: #selector(toggleRepeat), input: "r", modifierFlags: .command),
             UIKeyCommand(title: "Select Morning", action: #selector(setSegmentZero), input: "1", modifierFlags: .command),
             UIKeyCommand(title: "Select Afternoon", action: #selector(setSegmentOne), input: "2", modifierFlags: .command),
             UIKeyCommand(title: "Select Evening", action: #selector(setSegmentTwo), input: "3", modifierFlags: .command),
-            UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command)
+            UIKeyCommand(title: "Select Night", action: #selector(setSegmentThree), input: "4", modifierFlags: .command),
         ]
     }
 
     @objc func saveKeyCommand() {
-        // TODO: If the user tries to save before they're able, show a helpful banner message
         if navigationItem.rightBarButtonItem!.isEnabled {
             saveButtonPressed()
         }
@@ -112,21 +110,21 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         sender.selectedSegmentTintColor = UIColor(segment: sender.selectedSegmentIndex)
     }
 
-    var item: Task?
+    var task: Task?
     var selectedIndex: Int?
 
     var editingSegment: Int?
     var shouldShowHiddenTasksMessage = false
 
-    func loadItem() {
-        // If item is loaded, fill in values for editing
-        if item != nil {
-//            TaskTableViewController.setAppearance(forSegment: item!.segment)
+    func loadTask() {
+        // If task is loaded, fill in values for editing
+        if task != nil {
+//            TaskTableViewController.setAppearance(forSegment: task!.segment)
 
-            taskTextField.text = item?.title
-            segmentSelection.selectedSegmentIndex = item?.segment ?? 0
-            notesTextView.text = item?.notes
-            repeatDailySwitch.setOn(item!.repeats, animated: false)
+            taskTextField.text = task?.title
+            segmentSelection.selectedSegmentIndex = task?.segment ?? 0
+            notesTextView.text = task?.notes
+            repeatDailySwitch.setOn(task!.repeats, animated: false)
 
             title = "Editing Task"
         } else {
@@ -171,15 +169,15 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             setAppearance(forSegment: selectedIndex)
             print("Setting appearance for index of \(selectedIndex)")
             segmentSelection.selectedSegmentTintColor = UIColor(segment: selectedIndex)
-        } else if let currentItem = item {
+        } else if let currentTask = task {
             print("Appearance condition 2")
-            print("Setting appearance for index of \(currentItem.segment)")
+            print("Setting appearance for index of \(currentTask.segment)")
             // I'm not sure why, but the method below doesn't change the color in time
             // Needs to be done more directly here
-//            setAppearance(forSegment: currentItem.segment)
-            navigationController?.navigationBar.tintColor = UIColor(segment: currentItem.segment)
-            UISwitch.appearance().onTintColor = UIColor(segment: currentItem.segment)
-            segmentSelection.selectedSegmentTintColor = UIColor(segment: currentItem.segment)
+//            setAppearance(forSegment: currentTask.segment)
+            navigationController?.navigationBar.tintColor = UIColor(segment: currentTask.segment)
+            UISwitch.appearance().onTintColor = UIColor(segment: currentTask.segment)
+            segmentSelection.selectedSegmentTintColor = UIColor(segment: currentTask.segment)
         } else {
             navigationController?.navigationBar.tintColor = UIColor(segment: 0)
             UISwitch.appearance().onTintColor = UIColor(segment: 0)
@@ -187,7 +185,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             segmentSelection.selectedSegmentTintColor = UIColor(segment: 0)
         }
 
-        // Set right bar item as "Save"
+        // Set right bar task as "Save"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButtonPressed))
         // Disable button until all values are filled
         navigationItem.rightBarButtonItem?.isEnabled = false
@@ -238,8 +236,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     override func encodeRestorableState(with coder: NSCoder) {
         // 1
-        if let item = item {
-            coder.encode(item.uuidString, forKey: "itemId")
+        if let task = task {
+            coder.encode(task.uuidString, forKey: "taskId")
         }
 
         // 2
@@ -247,21 +245,22 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
-        guard let itemId = coder.decodeObject(forKey: "itemId") as! String? else { return }
-        let realm = try! Realm()
-        item = realm.object(ofType: Task.self, forPrimaryKey: itemId)
-        setUpUI()
-        super.decodeRestorableState(with: coder)
+        guard let taskId = coder.decodeObject(forKey: "taskId") as? String else { return }
+        if let realm = try? Realm() {
+            task = realm.object(ofType: Task.self, forPrimaryKey: taskId)
+            setUpUI()
+            super.decodeRestorableState(with: coder)
+        }
     }
 
 //    override func applicationFinishedRestoringState() {
-//        TaskTableViewController.setAppearance(forSegment: item?.segment ?? 0)
+//        TaskTableViewController.setAppearance(forSegment: task?.segment ?? 0)
 //    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         DispatchQueue.main.async {
-            self.loadItem()
+            self.loadTask()
         }
     }
 
@@ -309,14 +308,14 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             let haptic = UIImpactFeedbackGenerator(style: .light)
             haptic.impactOccurred()
             repeatDailySwitch.setOn(!repeatDailySwitch.isOn, animated: true)
-            if item != nil, taskTextField.hasText {
+            if task != nil, taskTextField.hasText {
                 navigationItem.rightBarButtonItem?.isEnabled = true
             }
         }
     }
 
     @objc func textFieldDidChange() {
-        if taskTextField.text!.count > 0 {
+        if taskTextField.hasText {
             navigationItem.rightBarButtonItem?.isEnabled = true
         } else {
             navigationItem.rightBarButtonItem?.isEnabled = false
@@ -324,18 +323,18 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     func textViewDidChange(_: UITextView) {
-        if item != nil {
+        if task != nil {
             navigationItem.rightBarButtonItem?.isEnabled = true
         }
     }
 
     @objc func saveButtonPressed() {
-        if let updatedItem = item {
-            updatedItem.updateItem(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
+        if let updatedTask = task {
+            updatedTask.updateTask(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
         } else {
-//            let newItem = Task(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, priority: Int(prioritySlider.value), repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
+//            let newTask = Task(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, priority: Int(prioritySlider.value), repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
             let newTask = Task(title: taskTextField.text!, segment: segmentSelection.selectedSegmentIndex, repeats: repeatDailySwitch.isOn, notes: notesTextView.text)
-            newTask.addNewItem()
+            newTask.addNewTask()
             if newTask.completeUntil > Date().endOfDay {
                 shouldShowHiddenTasksMessage = true
             }
