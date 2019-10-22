@@ -10,6 +10,9 @@ import RealmSwift
 import UIKit
 
 class CustomTimesTableViewController: UITableViewController {
+    
+    let notificationHanlder = NotificationHandler()
+    
     @IBOutlet var morningDatePicker: UIDatePicker!
     @IBOutlet var afternoonDatePicker: UIDatePicker!
     @IBOutlet var eveningDatePicker: UIDatePicker!
@@ -104,33 +107,30 @@ class CustomTimesTableViewController: UITableViewController {
 
     func updateSavedTimes(segment: Int, hour: Int, minute: Int) {
         // print("updateSavedTimes received: Hour - \(hour), minute - \(minute)")
-        DispatchQueue(label: realmDispatchQueueLabel).sync {
-            autoreleasepool {
-                if let realm = try? Realm() {
-                    let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
-                    do {
-                        try realm.write {
-                            switch segment {
-                            case 1:
-                                options?.afternoonHour = hour
-                                options?.afternoonMinute = minute
-                            case 2:
-                                options?.eveningHour = hour
-                                options?.eveningMinute = minute
-                            case 3:
-                                options?.nightHour = hour
-                                options?.nightMinute = minute
-                            default:
-                                options?.morningHour = hour
-                                options?.morningMinute = minute
-                            }
-                        }
-                    } catch {
-                        realm.cancelWrite()
+        if let realm = try? Realm() {
+            let options = realm.object(ofType: Options.self, forPrimaryKey: Options.primaryKey())
+            do {
+                try realm.write {
+                    switch segment {
+                    case 1:
+                        options?.afternoonHour = hour
+                        options?.afternoonMinute = minute
+                    case 2:
+                        options?.eveningHour = hour
+                        options?.eveningMinute = minute
+                    case 3:
+                        options?.nightHour = hour
+                        options?.nightMinute = minute
+                    default:
+                        options?.morningHour = hour
+                        options?.morningMinute = minute
                     }
                 }
+            } catch {
+                realm.cancelWrite()
             }
         }
+        notificationHanlder.refreshAllNotifications()
     }
 
     func setUpUI(animated: Bool) {

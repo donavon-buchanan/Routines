@@ -35,22 +35,17 @@ struct NotificationHandler {
         // return segmentTime.date!
     }
 
-    func setBadgeNumber(id: String) -> Int {
-        var badgeCount = 0
-        let realm = try? Realm()
-        // Get all the tasks in or under the current segment.
-        if let task = realm?.object(ofType: Task.self, forPrimaryKey: id) {
-            let taskSegment = task.segment
-            // Only count the tasks who's segment is equal or greater than the current task
-            let tasks = TaskCategory.returnTaskCategory(CategorySelections.allDay.rawValue).taskList.filter("segment >= %@ AND completeUntil <= %@", taskSegment, task.completeUntil) // .sorted(byKeyPath: "dateModified").sorted(byKeyPath: "segment")
-            if let currentTaskIndex = tasks.index(of: task) {
-                debugPrint("Task title: \(task.title!) at index: \(currentTaskIndex)")
-                badgeCount = currentTaskIndex + 1
-                debugPrint("setBadgeNumber to \(badgeCount) for \(task.title!)")
-            }
+    func setBadgeNumber(forTask task: Task) -> Int {
+        //First get the category so we can find the index of the task in its list
+        let taskCategory = TaskCategory.returnTaskCategory(task.segment)
+        //Find the index. This will act as the base for our badge number since the list is ordered
+        if let index = taskCategory.taskList.index(of: task) {
+            //If the index is found, return index position + 1
+            return index + 1
+        } else {
+            //If it's not found, something went wrong and we should just 0 out the badge
+            return 0
         }
-
-        return badgeCount
     }
 
     func createNewNotification(forTask task: Task, function: String = #function) {
@@ -73,7 +68,7 @@ struct NotificationHandler {
         content.sound = UNNotificationSound.default
         content.threadIdentifier = String(segment)
 
-        content.badge = setBadgeNumber(id: id) as NSNumber
+        content.badge = setBadgeNumber(forTask: task) as NSNumber
 
         if let notes = notes {
             content.body = notes

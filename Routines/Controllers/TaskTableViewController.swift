@@ -236,7 +236,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     override func viewDidAppear(_: Bool) {
         debugPrint(#function + " start")
 
-        AppDelegate.removeOldNotifications()
+//        AppDelegate.removeOldNotifications()
 
         debugPrint(#function + " end")
     }

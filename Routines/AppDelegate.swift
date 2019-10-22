@@ -132,6 +132,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
             shortcutItemToProcess = nil
         }
+        
+        AppDelegate.removeOldNotifications()
+        notificationHandler.removeOrphanedNotifications()
 
         debugPrint("\(#function) - End")
     }
