@@ -28,14 +28,14 @@ extension UIViewController {
 
     // MARK: - Notifications
 
-    func checkNotificationPermission() {
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { notificationsOn, _ in
-            if !notificationsOn {
-                self.notificationPermissionsAlert()
-            }
-        }
-    }
+//    func checkNotificationPermission() {
+//        let center = UNUserNotificationCenter.current()
+//        center.requestAuthorization(options: [.alert, .sound, .badge]) { notificationsOn, _ in
+//            if !notificationsOn {
+//                self.notificationPermissionsAlert()
+//            }
+//        }
+//    }
 
     // MARK: - Segues
 

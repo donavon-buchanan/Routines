@@ -19,7 +19,7 @@ class RoutinesUITests: XCTestCase {
         let app = XCUIApplication()
         setupSnapshot(app, waitForAnimations: false)
         app.launch()
-
+        
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
         if ProcessInfo().arguments.contains("SKIP_ANIMATIONS") {
             UIView.setAnimationsEnabled(false)
@@ -34,6 +34,17 @@ class RoutinesUITests: XCTestCase {
     func testGenerateScreenshots() {
         // Use recording to get started writing UI tests.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        let app = XCUIApplication()
+        app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .table).element.swipeDown()
+        
+        let tabBarsQuery = app.tabBars
+        tabBarsQuery.buttons["Afternoon"].tap()
+        tabBarsQuery.buttons["Evening"].tap()
+        tabBarsQuery.buttons["Night"].tap()
+        tabBarsQuery.buttons["Morning"].tap()
+        
+        
 
 //        let app = XCUIApplication()
 //        snapshot("Morning-Light")

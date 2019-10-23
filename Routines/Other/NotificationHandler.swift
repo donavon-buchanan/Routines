@@ -173,9 +173,11 @@ struct NotificationHandler {
 
     func checkNotificationPermission() {
         // Request permission to display alerts and play sounds
+        #if !targetEnvironment(simulator)
         center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { _, _ in
             // Enable or disable features based on authorization.
         }
+        #endif
     }
 
 //    func refreshAllNotifications(function: String = #function) {

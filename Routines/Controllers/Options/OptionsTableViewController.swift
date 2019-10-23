@@ -66,7 +66,7 @@ class OptionsTableViewController: UITableViewController {
 
     @IBAction func notificationSwitchToggled(_ sender: UISwitch) {
         if sender.isOn {
-            checkNotificationPermission()
+            notificationHandler.checkNotificationPermission()
         }
         switch sender.tag {
         case 1:
@@ -175,7 +175,7 @@ class OptionsTableViewController: UITableViewController {
         let haptic = UIImpactFeedbackGenerator(style: .light)
         switch indexPath.section {
         case 1:
-            checkNotificationPermission()
+            notificationHandler.checkNotificationPermission()
             switch indexPath.row {
             case 1:
                 // print("Tapped Afternoon Cell")
