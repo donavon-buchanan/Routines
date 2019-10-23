@@ -23,3 +23,4 @@ DerivedData/
 !default.perspectivev3
 Routines/Other Extensions/AppSecrets.swift
 .DS_Store
+codesigndoc_exports/*

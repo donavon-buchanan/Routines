@@ -4,8 +4,6 @@ branches:
 notifications:
   email:
     - contact@donavon.app
-before_install:
-- pod install --repo-update
 install:
 - bundle install
 language: swift
