@@ -1,6 +1,6 @@
 <img src="/web-assets/images/web-logo-160.png" alt="Routines App Icon" height=70>
 
-[![Build Status](https://travis-ci.org/donavon-buchanan/Routines.svg?branch=master)](https://travis-ci.org/donavon-buchanan/Routines)
+[![Build Status](https://app.bitrise.io/app/a5f28dc0acd387a6/status.svg?token=AAmEkiz-eKNi0SjFvAiQng&branch=master)](https://app.bitrise.io/app/a5f28dc0acd387a6)
 
 
 <p><img src="https://donavon.app/assets/img/screenshot_1.png" width="200" alt="" />  <img src="https://donavon.app/assets/img/screenshot_2.png" width="200" alt="" />  <img src="https://donavon.app/assets/img/screenshot_3.png" width="200" alt="" />  <img src="https://donavon.app/assets/img/screenshot_4.png" width="200" alt="" /></p>
