@@ -216,8 +216,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         title = returnTitle(forSegment: segment ?? 0)
 
         let navigationBarAppearance = UINavigationBarAppearance()
-        navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment ?? 0)]
         navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment ?? 0)]
+        navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment ?? 0)]
         let buttonAppearance = UIBarButtonItemAppearance()
         buttonAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment ?? 0)]
         navigationController?.navigationBar.tintColor = UIColor(segment: segment ?? 0)

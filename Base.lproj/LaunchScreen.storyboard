@@ -12,13 +12,13 @@
             <objects>
                 <viewController id="VDl-Zp-rGc" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kI1-rZ-mWf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="672"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="eIY-wE-vhf"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="xX2-vo-vJE">
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="xX2-vo-vJE">
                         <leftBarButtonItems>
                             <barButtonItem title="Item" image="gear" catalog="system" id="Klk-SI-Yvz">
                                 <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -46,7 +46,7 @@
         <scene sceneID="MaC-Iz-71E">
             <objects>
                 <tabBarController id="lsp-WH-zrr" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" backgroundImage="clear-pixel" shadowImage="clear-pixel" id="nuC-8l-780">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="nuC-8l-780">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -67,7 +67,7 @@
         <scene sceneID="12Y-77-Cjw">
             <objects>
                 <navigationController title="Night" automaticallyAdjustsScrollViewInsets="NO" id="HqD-Iz-Ymw" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="night" selectedImage="moon.stars" catalog="system" id="Gwe-Fe-vLH"/>
+                    <tabBarItem key="tabBarItem" title="" selectedImage="moon.stars" catalog="system" id="Gwe-Fe-vLH"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="hsq-sV-5q5">
@@ -87,7 +87,7 @@
         <scene sceneID="Sds-Se-YAZ">
             <objects>
                 <navigationController title="Afternoon" automaticallyAdjustsScrollViewInsets="NO" id="Azq-nL-rqx" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="afternoon" selectedImage="sun.max" catalog="system" id="Oqh-ny-HNO"/>
+                    <tabBarItem key="tabBarItem" title="" selectedImage="sun.max" catalog="system" id="Oqh-ny-HNO"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="oLr-0q-Cib">
@@ -107,7 +107,7 @@
         <scene sceneID="U3a-2a-0MP">
             <objects>
                 <navigationController title="Evening" automaticallyAdjustsScrollViewInsets="NO" id="QWd-BU-7Lm" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="evening" selectedImage="sunset" catalog="system" id="0gz-jW-uVG"/>
+                    <tabBarItem key="tabBarItem" title="" selectedImage="sunset" catalog="system" id="0gz-jW-uVG"/>
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="gg9-ZD-ATP">
@@ -127,8 +127,8 @@
         <scene sceneID="QrM-QX-M99">
             <objects>
                 <navigationController id="8jr-ix-HvO" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="morning" selectedImage="sunrise" catalog="system" id="4QB-5x-kNF"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" shadowImage="clear-pixel" largeTitles="YES" id="BP9-ZD-4WK">
+                    <tabBarItem key="tabBarItem" title="" selectedImage="sunrise" catalog="system" id="4QB-5x-kNF"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" largeTitles="YES" id="BP9-ZD-4WK">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -138,23 +138,18 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s8f-W0-gGj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="922" y="231"/>
+            <point key="canvasLocation" x="822" y="89"/>
         </scene>
     </scenes>
     <resources>
-        <image name="afternoon" width="23" height="23"/>
-        <image name="clear-pixel" width="1" height="1"/>
-        <image name="evening" width="23" height="23"/>
         <image name="gear" catalog="system" width="64" height="58"/>
         <image name="lines-button" width="26" height="26"/>
         <image name="moon.stars" catalog="system" width="64" height="62"/>
-        <image name="morning" width="23" height="23"/>
-        <image name="night" width="23" height="23"/>
         <image name="sun.max" catalog="system" width="64" height="62"/>
         <image name="sunrise" catalog="system" width="64" height="48"/>
         <image name="sunset" catalog="system" width="64" height="48"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="mP7-lL-god"/>
+        <segue reference="zxk-pW-3in"/>
     </inferredMetricsTieBreakers>
 </document>

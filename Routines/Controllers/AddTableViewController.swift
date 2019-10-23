@@ -196,8 +196,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 //        let cellAppearance = UITableViewCell.appearance()
 //        cellAppearance.theme_backgroundColor = GlobalPicker.backgroundColor
 
-        navigationItem.largeTitleDisplayMode = .never
-
         // load in segment from add segue
         if let currentSegmentSelection = editingSegment {
             segmentSelection.selectedSegmentIndex = currentSegmentSelection

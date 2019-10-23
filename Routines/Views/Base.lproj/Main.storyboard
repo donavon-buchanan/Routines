@@ -128,11 +128,6 @@
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SEk-qH-xtl" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="rSg-dh-f1f">
-                    <connections>
-                        <action selector="longPressToEdit:" destination="e3v-kc-NWN" id="Td0-0D-yAm"/>
-                    </connections>
-                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="101.5625" y="158.7890625"/>
         </scene>
@@ -2024,6 +2019,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="axw-H5-5nW"/>
-        <segue reference="mrq-CI-P72"/>
+        <segue reference="AXD-IN-9f2"/>
     </inferredMetricsTieBreakers>
 </document>
