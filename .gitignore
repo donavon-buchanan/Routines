@@ -24,3 +24,4 @@ DerivedData/
 Routines/Other Extensions/AppSecrets.swift
 .DS_Store
 codesigndoc_exports/*
+*.lock
