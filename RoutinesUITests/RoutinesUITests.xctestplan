@@ -1,0 +1,36 @@
+{
+  "configurations" : [
+    {
+      "id" : "A3BCCEB0-A77D-4FAA-AA8E-4735566E9DA5",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Routines.xcodeproj",
+      "identifier" : "F8B831B32155CBB000DAF60E",
+      "name" : "Routines"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Routines.xcodeproj",
+        "identifier" : "F86E0ABE2297FA5400BB53D6",
+        "name" : "RoutinesUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Routines.xcodeproj",
+        "identifier" : "F8085E5422E3952A00DD6AAE",
+        "name" : "RoutinesTests"
+      }
+    }
+  ],
+  "version" : 1
+}

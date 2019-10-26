@@ -22,6 +22,8 @@ default_platform(:ios)
 platform :ios do
   desc "Generate new localized screenshots"
   lane :screenshots do
-    capture_screenshots(workspace: "Routines.xcodeproj", scheme: "RoutinesUITests")
+    capture_screenshots(
+	project: "Routines.xcodeproj",
+	scheme: "RoutinesUITests")
   end
 end

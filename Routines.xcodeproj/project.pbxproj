@@ -7,15 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F802FC982254C3E10054CF22 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F802FC972254C3E10054CF22 /* CloudKit.framework */; };
 		F807D3CD216073E300FF36D9 /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3CC216073E300FF36D9 /* Options.swift */; };
 		F807D3CF2160964E00FF36D9 /* OptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3CE2160964E00FF36D9 /* OptionsTableViewController.swift */; };
 		F807D3D12160A05600FF36D9 /* CustomTimesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F807D3D02160A05600FF36D9 /* CustomTimesTableViewController.swift */; };
 		F8085E5822E3952A00DD6AAE /* RoutinesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8085E5722E3952A00DD6AAE /* RoutinesTests.swift */; };
-		F81194F72267D8E0002E8E7A /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F81194F62267D8E0002E8E7A /* StoreKit.framework */; };
 		F81224C8229417E400AEED90 /* SimulatorData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81224C7229417E400AEED90 /* SimulatorData.swift */; };
 		F816DB342155CFBA009C6907 /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TaskTableViewController.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
+		F849435323644BAD006CB280 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F849435223644BAD006CB280 /* RealmSwift */; };
 		F86CC22F2355009200D587E9 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86CC22E2355009200D587E9 /* ColorPicker.swift */; };
 		F86E0AC22297FA5400BB53D6 /* RoutinesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86E0AC12297FA5400BB53D6 /* RoutinesUITests.swift */; };
 		F86E0ACA2297FAA400BB53D6 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A9B0A222842BC20043E43A /* SnapshotHelper.swift */; };
@@ -38,8 +37,6 @@
 		F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */; };
 		F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */; };
 		F8F3270E215C8509004AC619 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8F3270D215C8509004AC619 /* Media.xcassets */; };
-		F8F9B638235AEDDD00DD79B5 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = F8F9B637235AEDDD00DD79B5 /* Realm */; };
-		F8F9B63A235AEDDD00DD79B5 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F8F9B639235AEDDD00DD79B5 /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +59,7 @@
 /* Begin PBXFileReference section */
 		F802FC962254C3D60054CF22 /* Routines.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Routines.entitlements; sourceTree = "<group>"; };
 		F802FC972254C3E10054CF22 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		F807BD8623642B6A00934296 /* RoutinesUITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RoutinesUITests.xctestplan; sourceTree = "<group>"; };
 		F807D3CC216073E300FF36D9 /* Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
 		F807D3CE2160964E00FF36D9 /* OptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTableViewController.swift; sourceTree = "<group>"; };
 		F807D3D02160A05600FF36D9 /* CustomTimesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTimesTableViewController.swift; sourceTree = "<group>"; };
@@ -120,10 +118,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8F9B63A235AEDDD00DD79B5 /* RealmSwift in Frameworks */,
-				F802FC982254C3E10054CF22 /* CloudKit.framework in Frameworks */,
-				F81194F72267D8E0002E8E7A /* StoreKit.framework in Frameworks */,
-				F8F9B638235AEDDD00DD79B5 /* Realm in Frameworks */,
+				F849435323644BAD006CB280 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +174,7 @@
 			children = (
 				F8A9B0A222842BC20043E43A /* SnapshotHelper.swift */,
 				F86E0AC12297FA5400BB53D6 /* RoutinesUITests.swift */,
+				F807BD8623642B6A00934296 /* RoutinesUITests.xctestplan */,
 				F86E0AC32297FA5400BB53D6 /* Info.plist */,
 			);
 			path = RoutinesUITests;
@@ -311,8 +307,7 @@
 			);
 			name = Routines;
 			packageProductDependencies = (
-				F8F9B637235AEDDD00DD79B5 /* Realm */,
-				F8F9B639235AEDDD00DD79B5 /* RealmSwift */,
+				F849435223644BAD006CB280 /* RealmSwift */,
 			);
 			productName = Routines;
 			productReference = F8B831B42155CBB000DAF60E /* Routines.app */;
@@ -369,7 +364,7 @@
 			);
 			mainGroup = F8B831AB2155CBB000DAF60E;
 			packageReferences = (
-				F8F9B636235AEDDD00DD79B5 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+				F849435123644BAD006CB280 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
 			);
 			productRefGroup = F8B831B52155CBB000DAF60E /* Products */;
 			projectDirPath = "";
@@ -611,6 +606,7 @@
 		F86E0AC72297FA5400BB53D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APP_BUNDLE_ID = com.donavonbuchanan.Routines;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G8WL98TTBE;
 				INFOPLIST_FILE = RoutinesUITests/Info.plist;
@@ -620,7 +616,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.donavon.RoutinesUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -631,6 +627,7 @@
 		F86E0AC82297FA5400BB53D6 /* Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APP_BUNDLE_ID = com.donavonbuchanan.Routines;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G8WL98TTBE;
 				INFOPLIST_FILE = RoutinesUITests/Info.plist;
@@ -640,7 +637,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.donavon.RoutinesUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -651,6 +648,7 @@
 		F86E0AC92297FA5400BB53D6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APP_BUNDLE_ID = com.donavonbuchanan.Routines;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = G8WL98TTBE;
 				INFOPLIST_FILE = RoutinesUITests/Info.plist;
@@ -660,7 +658,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.donavon.RoutinesUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -701,7 +699,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -788,7 +786,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -934,7 +932,7 @@
 				F8085E5E22E3952A00DD6AAE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		F86E0AC62297FA5400BB53D6 /* Build configuration list for PBXNativeTarget "RoutinesUITests" */ = {
 			isa = XCConfigurationList;
@@ -944,7 +942,7 @@
 				F86E0AC92297FA5400BB53D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		F8B831AF2155CBB000DAF60E /* Build configuration list for PBXProject "Routines" */ = {
 			isa = XCConfigurationList;
@@ -954,7 +952,7 @@
 				F8B831C52155CBB100DAF60E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		F8B831C62155CBB100DAF60E /* Build configuration list for PBXNativeTarget "Routines" */ = {
 			isa = XCConfigurationList;
@@ -964,14 +962,14 @@
 				F8B831C82155CBB100DAF60E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		F8F9B636235AEDDD00DD79B5 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+		F849435123644BAD006CB280 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-cocoa";
+			repositoryURL = "https://github.com/realm/realm-cocoa.git";
 			requirement = {
 				branch = master;
 				kind = branch;
@@ -980,14 +978,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F8F9B637235AEDDD00DD79B5 /* Realm */ = {
+		F849435223644BAD006CB280 /* RealmSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F8F9B636235AEDDD00DD79B5 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
-			productName = Realm;
-		};
-		F8F9B639235AEDDD00DD79B5 /* RealmSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F8F9B636235AEDDD00DD79B5 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			package = F849435123644BAD006CB280 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
 			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */

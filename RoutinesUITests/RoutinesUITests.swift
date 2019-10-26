@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import UIKit
 
 class RoutinesUITests: XCTestCase {
     override func setUp() {
@@ -36,13 +37,29 @@ class RoutinesUITests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
         let app = XCUIApplication()
-        app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .table).element.swipeDown()
-        
+        let morningNavigationBar = app.navigationBars["Morning"]
+        morningNavigationBar.buttons["Options"].tap()
+        snapshot("Options")
+        app.navigationBars["Settings"].buttons["Done"].tap()
+        snapshot("Morning")
+        morningNavigationBar.children(matching: .button).element(boundBy: 2).tap()
+        snapshot("All-Day")
+        app.tables/*@START_MENU_TOKEN@*/.staticTexts["Plan dad's birthday party"]/*[[".cells.staticTexts[\"Plan dad's birthday party\"]",".staticTexts[\"Plan dad's birthday party\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        snapshot("Afternoon-detail")
+        if app.staticTexts["Continue"].exists {
+            app/*@START_MENU_TOKEN@*/.staticTexts["Continue"]/*[[".otherElements[\"UIContinuousPathIntroductionView\"]",".buttons[\"Continue\"].staticTexts[\"Continue\"]",".staticTexts[\"Continue\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[0]]@END_MENU_TOKEN@*/.tap()
+        }
+        app.navigationBars["Editing Task"].buttons["Cancel"].tap()
+        app.navigationBars["All Day"].children(matching: .button).element(boundBy: 2).tap()
         let tabBarsQuery = app.tabBars
         tabBarsQuery.buttons["Afternoon"].tap()
+        snapshot("Afternoon")
         tabBarsQuery.buttons["Evening"].tap()
+        snapshot("Evening")
         tabBarsQuery.buttons["Night"].tap()
+        snapshot("Night")
         tabBarsQuery.buttons["Morning"].tap()
+        
         
         
 

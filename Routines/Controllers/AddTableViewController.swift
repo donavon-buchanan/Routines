@@ -16,15 +16,15 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     func segmentColor(segment: Int) -> UIColor {
         switch segment {
         case 0:
-            return UIColor(red: 0.96, green: 0.46, blue: 0.27, alpha: 1.0)
+            return UIColor(displayP3Red: 0.96, green: 0.46, blue: 0.27, alpha: 1.0)
         case 1:
-            return UIColor(red: 0.15, green: 0.73, blue: 0.93, alpha: 1.0)
+            return UIColor(displayP3Red: 0.15, green: 0.73, blue: 0.93, alpha: 1.0)
         case 2:
-            return UIColor(red: 0.38, green: 0.64, blue: 0.53, alpha: 1.0)
+            return UIColor(displayP3Red: 0.38, green: 0.64, blue: 0.53, alpha: 1.0)
         case 3:
-            return UIColor(red: 0.39, green: 0.36, blue: 0.91, alpha: 1.0)
+            return UIColor(displayP3Red: 0.39, green: 0.36, blue: 0.91, alpha: 1.0)
         default:
-            return UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+            return UIColor(displayP3Red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         }
     }
 
