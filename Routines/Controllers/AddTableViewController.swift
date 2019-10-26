@@ -269,7 +269,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             autoreleasepool {
                 do {
                     self.setUpUI()
+                    #if !targetEnvironment(simulator)
                     self.taskTextField.becomeFirstResponder()
+                    #endif
                 }
             }
         }

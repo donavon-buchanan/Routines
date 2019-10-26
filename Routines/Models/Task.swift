@@ -147,11 +147,15 @@ import RealmSwift
             if let realm = try? Realm() {
                 do {
                     try realm.write {
+                        // Move task to bottom of original list
+                        if self.segment == self.originalSegment {
+                            self.moveTaskInList(task: self, categories: nil, toIndex: nil)
+                        } else {
+                            self.moveTaskCategory(fromSegment: self.segment, toSegment: self.originalSegment)
+                        }
                         self.segment = self.originalSegment
                         self.completeUntil = Date().startOfNextDay
                         self.dateModified = Date()
-                        // Move task to bottom of list
-                        self.moveTaskInList(task: self, categories: nil, toIndex: nil)
                     }
                 } catch {
                     // print("failed to save completeUntil")
@@ -186,11 +190,15 @@ import RealmSwift
             do {
                 try realm.write {
                     tasksToComplete.forEach { task in
+                        // Move task to bottom of original list
+                        if task.segment == task.originalSegment {
+                            task.moveTaskInList(task: task, categories: nil, toIndex: nil)
+                        } else {
+                            task.moveTaskCategory(fromSegment: task.segment, toSegment: task.originalSegment)
+                        }
                         task.segment = task.originalSegment
                         task.completeUntil = Date().startOfNextDay
                         task.dateModified = Date()
-                        // Move task to bottom
-                        task.moveTaskInList(task: task, categories: nil, toIndex: nil)
                     }
                 }
             } catch {
@@ -254,9 +262,9 @@ import RealmSwift
     // MARK: - Notification Handling
 
     // MUST be called from within a realm write operation
-    private func moveTaskCategory(fromIndex: Int, toIndex: Int) {
-        removeTaskFromCategoryList(segment: fromIndex)
-        TaskCategory.returnTaskCategory(toIndex).taskList.append(self)
+    private func moveTaskCategory(fromSegment: Int, toSegment: Int) {
+        removeTaskFromCategoryList(segment: fromSegment)
+        TaskCategory.returnTaskCategory(toSegment).taskList.append(self)
     }
 
     func snooze() {
@@ -264,7 +272,7 @@ import RealmSwift
             do {
                 try realm.write {
                     self.dateModified = Date()
-                    moveTaskCategory(fromIndex: segment, toIndex: snoozeTo())
+                    moveTaskCategory(fromSegment: segment, toSegment: snoozeTo())
                     self.segment = snoozeTo()
                 }
             } catch {
@@ -293,10 +301,10 @@ import RealmSwift
                         try realm.write {
                             switch self.segment {
                             case 3:
-                                moveTaskCategory(fromIndex: segment, toIndex: 0)
+                                moveTaskCategory(fromSegment: segment, toSegment: 0)
                                 self.segment = 0
                             default:
-                                moveTaskCategory(fromIndex: segment, toIndex: self.segment + 1)
+                                moveTaskCategory(fromSegment: segment, toSegment: self.segment + 1)
                                 self.segment += 1
                             }
                         }

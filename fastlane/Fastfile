@@ -24,6 +24,13 @@ platform :ios do
   lane :screenshots do
     capture_screenshots(
 	project: "Routines.xcodeproj",
+	output_directory: "./screenshots/light",
+	dark_mode: false,
+	scheme: "Fastlane")
+    capture_screenshots(
+	project: "Routines.xcodeproj",
+	output_directory: "./screenshots/dark",
+	dark_mode: true,
 	scheme: "Fastlane")
   end
 end
