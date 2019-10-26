@@ -24,6 +24,6 @@ platform :ios do
   lane :screenshots do
     capture_screenshots(
 	project: "Routines.xcodeproj",
-	scheme: "RoutinesUITests")
+	scheme: "Fastlane")
   end
 end
