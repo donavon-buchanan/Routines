@@ -237,22 +237,44 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         if let task = task {
             coder.encode(task.uuidString, forKey: "taskId")
         }
+        if taskTextField.hasText {
+            coder.encode(taskTextField.text, forKey: "taskTextFieldText")
+        }
+        coder.encode(segmentSelection.selectedSegmentIndex, forKey: "selectedSegment")
+        coder.encode(repeatDailySwitch.isOn, forKey: "repeatSwitch")
+        if notesTextView.hasText {
+            coder.encode(notesTextView.text, forKey: "notesText")
+        }
 
         // 2
         super.encodeRestorableState(with: coder)
     }
 
     override func decodeRestorableState(with coder: NSCoder) {
-        guard let taskId = coder.decodeObject(forKey: "taskId") as? String else { return }
-        if let realm = try? Realm() {
-            task = realm.object(ofType: Task.self, forPrimaryKey: taskId)
+        if let taskId = coder.decodeObject(forKey: "taskId") as? String {
+            if let realm = try? Realm() {
+                task = realm.object(ofType: Task.self, forPrimaryKey: taskId)
+            }
             setUpUI()
-            super.decodeRestorableState(with: coder)
         }
+        
+        taskTextField.text = coder.decodeObject(forKey: "taskTextFieldText") as? String
+        let segment = coder.decodeInteger(forKey: "selectedSegment")
+        self.editingSegment = segment
+        self.selectedIndex = segment
+        segmentSelection.selectedSegmentIndex = segment
+        segmentSelection.selectedSegmentTintColor = segmentColor(segment: segment)
+        
+        repeatDailySwitch.isOn = coder.decodeBool(forKey: "repeatSwitch")
+        repeatDailySwitch.setOn(coder.decodeBool(forKey: "repeatSwitch"), animated: false)
+        
+        notesTextView.text = coder.decodeObject(forKey: "notesText") as? String
+        
+        super.decodeRestorableState(with: coder)
     }
 
 //    override func applicationFinishedRestoringState() {
-//        TaskTableViewController.setAppearance(forSegment: task?.segment ?? 0)
+//        setUpUI()
 //    }
 
     override func viewWillAppear(_ animated: Bool) {

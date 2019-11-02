@@ -31,6 +31,10 @@
 		F8CCE20D2288E17E00BAAFEC /* RoutinesPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CCE20C2288E17E00BAAFEC /* RoutinesPlus.swift */; };
 		F8CE29C622714E9A00CD9BAE /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CE29C522714E9A00CD9BAE /* UIColorExtensions.swift */; };
 		F8D5DB532269BCAD005857F2 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */; };
+		F8D764C5236BF6CE00C3C592 /* MorningTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D764C4236BF6CE00C3C592 /* MorningTableViewController.swift */; };
+		F8D764C8236BF6F100C3C592 /* AfternoonTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D764C7236BF6F100C3C592 /* AfternoonTableViewController.swift */; };
+		F8D764CA236BF6FA00C3C592 /* EveningTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D764C9236BF6FA00C3C592 /* EveningTableViewController.swift */; };
+		F8D764CC236BF70300C3C592 /* NightTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D764CB236BF70300C3C592 /* NightTableViewController.swift */; };
 		F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */; };
 		F8DC390222D075D9005C3BE0 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DC390122D075D9005C3BE0 /* NotificationHandler.swift */; };
 		F8E031862269C410002C2E32 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E031852269C410002C2E32 /* AppStrings.swift */; };
@@ -91,6 +95,10 @@
 		F8CCE20C2288E17E00BAAFEC /* RoutinesPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinesPlus.swift; sourceTree = "<group>"; };
 		F8CE29C522714E9A00CD9BAE /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
+		F8D764C4236BF6CE00C3C592 /* MorningTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorningTableViewController.swift; sourceTree = "<group>"; };
+		F8D764C7236BF6F100C3C592 /* AfternoonTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfternoonTableViewController.swift; sourceTree = "<group>"; };
+		F8D764C9236BF6FA00C3C592 /* EveningTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EveningTableViewController.swift; sourceTree = "<group>"; };
+		F8D764CB236BF70300C3C592 /* NightTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightTableViewController.swift; sourceTree = "<group>"; };
 		F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTableViewController.swift; sourceTree = "<group>"; };
 		F8DC390122D075D9005C3BE0 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 		F8E031852269C410002C2E32 /* AppStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStrings.swift; sourceTree = "<group>"; };
@@ -222,7 +230,7 @@
 			isa = PBXGroup;
 			children = (
 				F807D3D22160A06600FF36D9 /* Options */,
-				F816DB332155CFBA009C6907 /* TaskTableViewController.swift */,
+				F8D764C6236BF6D400C3C592 /* Task Table Views */,
 				F8CBBA5621A9058D00A4FFFD /* TaskTableViewCell.swift */,
 				F82770D221585D3000420C50 /* AddTableViewController.swift */,
 				F8CBBA5821A93EB600A4FFFD /* RepeatTableViewController.swift */,
@@ -249,6 +257,18 @@
 				F8CCE20C2288E17E00BAAFEC /* RoutinesPlus.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		F8D764C6236BF6D400C3C592 /* Task Table Views */ = {
+			isa = PBXGroup;
+			children = (
+				F816DB332155CFBA009C6907 /* TaskTableViewController.swift */,
+				F8D764C4236BF6CE00C3C592 /* MorningTableViewController.swift */,
+				F8D764C7236BF6F100C3C592 /* AfternoonTableViewController.swift */,
+				F8D764C9236BF6FA00C3C592 /* EveningTableViewController.swift */,
+				F8D764CB236BF70300C3C592 /* NightTableViewController.swift */,
+			);
+			path = "Task Table Views";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -479,14 +499,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8D764CA236BF6FA00C3C592 /* EveningTableViewController.swift in Sources */,
 				F8B831CD2155CBE300DAF60E /* Task.swift in Sources */,
+				F8D764C8236BF6F100C3C592 /* AfternoonTableViewController.swift in Sources */,
 				F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */,
 				F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */,
 				F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */,
 				F8E031862269C410002C2E32 /* AppStrings.swift in Sources */,
 				F81224C8229417E400AEED90 /* SimulatorData.swift in Sources */,
 				F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */,
+				F8D764CC236BF70300C3C592 /* NightTableViewController.swift in Sources */,
 				F86CC22F2355009200D587E9 /* ColorPicker.swift in Sources */,
+				F8D764C5236BF6CE00C3C592 /* MorningTableViewController.swift in Sources */,
 				F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */,
 				F8C3EC98228D673F0027AFEB /* UIImageExtension.swift in Sources */,
 				F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */,
@@ -743,7 +767,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.12;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -885,7 +909,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.12;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -911,7 +935,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.12;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

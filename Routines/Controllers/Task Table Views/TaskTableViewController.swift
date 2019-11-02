@@ -11,6 +11,7 @@ import UIKit
 import UserNotifications
 
 class TaskTableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
+    
     @IBAction func unwindToTableViewController(segue _: UIStoryboardSegue) {}
     @IBOutlet var settingsBarButtonItem: UIBarButtonItem!
     @IBOutlet var addbarButtonItem: UIBarButtonItem!
@@ -149,24 +150,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     override func viewDidLoad() {
         debugPrint(#function + " start")
-        super.viewDidLoad()
 
         NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil)
 
-        // This convoluted mess is needed because the tab bar controller returns some inane int value during restoration because viewDidLoad is called for all four tabs at once.
-        if let tabBarController = tabBarController {
-            if tabBarController.selectedIndex < 4 {
-                debugPrint("tabBarController index < 4, setting to \(tabBarController.selectedIndex)")
-                if segment == nil {
-                    segment = tabBarController.selectedIndex
-                }
-            }
-        } else {
-            debugPrint("tabBarController is nil. Setting segment to 0")
-            if segment == nil {
-                segment = 0
-            }
-        }
         tableView.allowsMultipleSelectionDuringEditing = true
 
         tabBarController?.delegate = self
@@ -176,8 +162,14 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         tableView.tableFooterView = footerView
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
+        
+        super.viewDidLoad()
 
         debugPrint(#function + " end")
+    }
+    
+    override func applicationFinishedRestoringState() {
+        super.applicationFinishedRestoringState()
     }
 
     @objc func appBecameActive() {
@@ -185,59 +177,32 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         observeTasks()
         debugPrint(#function + " end")
     }
-
-    override func applicationFinishedRestoringState() {
-        /*
-         Because multiple views use this class, I needed a way to set the "segment" property independently
-          This function is called in order of the tab heirarchy. Since that's known,
-          we can just iterate through and get the first child view of each tab's navigation controller
-          because we also know that first child view will always be the table view controller for this class.
-          Once we have that, we set the segment to match the index of the enumeration of controllers.
-          It's a little bit of a hack, yes. But the app heirachy is static enough that it works. It's not ideal,
-          but imo, it's a lot better than creating a bunch of nearly identical views and classes with inheritance complications
-         */
-        if let controllers = self.tabBarController?.viewControllers {
-            let navigationControllers = controllers.enumerated().map { ($0, $1) }
-            navigationControllers.forEach { index, navigationViewController in
-                let tableViewController = navigationViewController.children[0] as! TaskTableViewController
-                tableViewController.segment = index
-            }
-        }
-        // Avoids flashing screen glitch
-        // Restoration is loading all the views at once
-        debugPrint("View loaded? - \(isViewLoaded)")
+    
+    func returnSegment() -> Int {
+        return 0
     }
 
-    override func viewWillAppear(_: Bool) {
+
+    override func viewWillAppear(_ animated: Bool) {
         debugPrint(#function + " start")
-
-        loadTasksForSegment(segment: segment ?? 0)
-
-        title = returnTitle(forSegment: segment ?? 0)
-
+        
+        loadTasksForSegment(segment: returnSegment())
+        
+        title = returnTitle(forSegment: returnSegment() )
+        
         let navigationBarAppearance = UINavigationBarAppearance()
-        navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment ?? 0)]
-        navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment ?? 0)]
+        navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: returnSegment())]
+        navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: returnSegment())]
         let buttonAppearance = UIBarButtonItemAppearance()
-        buttonAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: self.segment ?? 0)]
-        navigationController?.navigationBar.tintColor = UIColor(segment: segment ?? 0)
+        buttonAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: returnSegment())]
+        navigationController?.navigationBar.tintColor = UIColor(segment: returnSegment())
         navigationBarAppearance.buttonAppearance = buttonAppearance
         navigationController?.navigationBar.standardAppearance = navigationBarAppearance
         navigationController?.navigationBar.compactAppearance = navigationBarAppearance
-        tabBarController?.tabBar.tintColor = UIColor(segment: segment ?? 0)
-
-        debugPrint(#function + " end")
-    }
-
-    override func viewWillDisappear(_: Bool) {
-        debugPrint("\(#function)")
-    }
-
-    override func viewDidAppear(_: Bool) {
-        debugPrint(#function + " start")
-
-//        AppDelegate.removeOldNotifications()
-
+        tabBarController?.tabBar.tintColor = UIColor(segment: returnSegment())
+        
+        super.viewWillAppear(animated)
+        
         debugPrint(#function + " end")
     }
 
@@ -560,12 +525,12 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     func resetTableView() {
         // Reset the view just before segue
         if linesBarButtonSelected {
-            title = returnTitle(forSegment: segment ?? 0)
+            title = returnTitle(forSegment: returnSegment())
             DispatchQueue.main.async {
                 autoreleasepool {
                     self.linesBarButtonSelected = false
                     self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
-                    self.loadTasksForSegment(segment: self.segment ?? 0)
+                    self.loadTasksForSegment(segment: self.returnSegment())
                     self.changeTabBar(hidden: false, animated: true)
                 }
             }
@@ -577,9 +542,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             let navVC = segue.destination as? UINavigationController
             let destination = navVC?.topViewController as? AddTableViewController
             // set segment based on current tab
-            let selectedTab = tabBarController?.selectedIndex
+            let selectedTab = returnSegment()
             destination?.editingSegment = selectedTab
-            destination?.selectedIndex = segment
+            destination?.selectedIndex = selectedTab
             resetTableView()
         }
 
@@ -596,7 +561,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         if segue.identifier == "optionsSegue" {
             let navVC = segue.destination as? UINavigationController
             let destination = navVC?.topViewController as? OptionsTableViewController
-            destination?.selectedIndex = tabBarController?.selectedIndex
+            destination?.selectedIndex = returnSegment()
         }
 
         if let indexPath = tableView.indexPathForSelectedRow {
@@ -635,8 +600,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     // MARK: - Realm
 
     var tasks: List<Task>?
-
-    var segment: Int?
 
     func loadTasksForSegment(segment: Int) {
         debugPrint("loading tasks for segment \(segment)")

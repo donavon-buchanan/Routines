@@ -146,22 +146,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         debugPrint("\(#function) - End")
     }
 
-    func application(_: UIApplication, shouldSaveApplicationState _: NSCoder) -> Bool {
+    func application(_ application: UIApplication, shouldSaveSecureApplicationState coder: NSCoder) -> Bool {
         true
     }
 
-    func application(_: UIApplication, shouldRestoreApplicationState _: NSCoder) -> Bool {
+    func application(_ application: UIApplication, shouldRestoreSecureApplicationState coder: NSCoder) -> Bool {
         true
     }
 
-    open func restoreSelectedTab(tab: Int?) {
-        let rootVC = window?.rootViewController as! UITabBarController
-        if let selectedTab = tab {
-            rootVC.selectedIndex = selectedTab
-        } else {
-            rootVC.selectedIndex = Options.getSelectedIndex()
-        }
-    }
+//    open func restoreSelectedTab(tab: Int?) {
+//        let rootVC = window?.rootViewController as! UITabBarController
+//        if let selectedTab = tab {
+//            rootVC.selectedIndex = selectedTab
+//        } else {
+//            rootVC.selectedIndex = Options.getSelectedIndex()
+//        }
+//    }
 
     // MARK: - Options Realm
 
@@ -432,7 +432,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             snoozeTask(uuidString: response.notification.request.identifier)
             decrementBadge()
         default:
-            restoreSelectedTab(tab: getNotificationSegment(id: response.notification.request.identifier))
+            break
         }
 
         completionHandler()

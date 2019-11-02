@@ -43,13 +43,18 @@ class RoutinesUITests: XCTestCase {
         app.navigationBars["Settings"].buttons["Done"].tap()
         snapshot("Morning")
         morningNavigationBar.children(matching: .button).element(boundBy: 2).tap()
-        snapshot("All-Day")
+       
         app.tables/*@START_MENU_TOKEN@*/.staticTexts["Plan dad's birthday party"]/*[[".cells.staticTexts[\"Plan dad's birthday party\"]",".staticTexts[\"Plan dad's birthday party\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
 //        if app.staticTexts["Continue"].exists {
 //            app/*@START_MENU_TOKEN@*/.staticTexts["Continue"]/*[[".otherElements[\"UIContinuousPathIntroductionView\"]",".buttons[\"Continue\"].staticTexts[\"Continue\"]",".staticTexts[\"Continue\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[0]]@END_MENU_TOKEN@*/.tap()
 //        }
         snapshot("Afternoon-detail")
         app.navigationBars["Editing Task"].buttons["Cancel"].tap()
+        
+        let figureOutDinnerPlansStaticText = app.tables/*@START_MENU_TOKEN@*/.staticTexts["Figure out dinner plans"]/*[[".cells.staticTexts[\"Figure out dinner plans\"]",".staticTexts[\"Figure out dinner plans\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+        figureOutDinnerPlansStaticText.swipeLeft()
+        snapshot("All-Day")
+        
         app.navigationBars["All Day"].children(matching: .button).element(boundBy: 2).tap()
         let tabBarsQuery = app.tabBars
         tabBarsQuery.buttons["Afternoon"].tap()
