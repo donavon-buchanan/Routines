@@ -158,7 +158,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 //    }
 
     @objc func dismissView() {
-        performSegue(withIdentifier: "unwindToTableViewController", sender: self)
+//        performSegue(withIdentifier: "unwindToTableViewController", sender: self)
+        self.dismiss(animated: true, completion: nil)
     }
 
     override func viewDidLoad() {
@@ -179,10 +180,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             UISwitch.appearance().onTintColor = UIColor(segment: currentTask.segment)
             segmentSelection.selectedSegmentTintColor = UIColor(segment: currentTask.segment)
         } else {
-            navigationController?.navigationBar.tintColor = UIColor(segment: 0)
-            UISwitch.appearance().onTintColor = UIColor(segment: 0)
-            segmentSelection.selectedSegmentIndex = 0
-            segmentSelection.selectedSegmentTintColor = UIColor(segment: 0)
+            navigationController?.navigationBar.tintColor = UIColor(segment: Options.getCurrentSegmentFromTime())
+            UISwitch.appearance().onTintColor = UIColor(segment: Options.getCurrentSegmentFromTime())
+            segmentSelection.selectedSegmentIndex = Options.getCurrentSegmentFromTime()
+            segmentSelection.selectedSegmentTintColor = UIColor(segment: Options.getCurrentSegmentFromTime())
         }
 
         // Set right bar task as "Save"

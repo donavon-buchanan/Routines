@@ -458,11 +458,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     fileprivate func presentStoryboardView(withIdentifier identifier: String) {
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let addViewController = storyBoard.instantiateViewController(withIdentifier: identifier)
-        let topController = UIApplication.shared.windows.first?.rootViewController
+        let vcToPresent = storyBoard.instantiateViewController(withIdentifier: identifier)
+        let topController = UIApplication.shared.windows.first(where: {$0.isKeyWindow})?.rootViewController
         // Dismiss if there's another view already on top
         topController?.dismiss(animated: true, completion: nil)
-        topController?.present(addViewController, animated: true, completion: nil)
+        topController?.present(vcToPresent, animated: true, completion: nil)
     }
 
     // Notification Settings Screen

@@ -124,7 +124,8 @@ class OptionsTableViewController: UITableViewController {
 
     @objc func dismissView() {
         // dismiss(animated: true, completion: nil)
-        performSegue(withIdentifier: "unwindToTableViewController", sender: self)
+//        performSegue(withIdentifier: "unwindToTableViewController", sender: self)
+        self.dismiss(animated: true, completion: nil)
     }
 
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -138,8 +139,8 @@ class OptionsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        UISwitch.appearance().onTintColor = UIColor(segment: selectedIndex ?? 0)
-        navigationController?.navigationBar.tintColor = UIColor(segment: selectedIndex ?? 0)
+        UISwitch.appearance().onTintColor = UIColor(segment: selectedIndex ?? Options.getCurrentSegmentFromTime())
+        navigationController?.navigationBar.tintColor = UIColor(segment: selectedIndex ?? Options.getCurrentSegmentFromTime())
         // Colors
 //        cellLabels.forEach { label in
 //            label.theme_textColor = GlobalPicker.cellTextColors
