@@ -286,13 +286,7 @@ import RealmSwift
 
     fileprivate func snoozeToInt(function: String = #function) -> Int {
         debugPrint(#function + " called by " + function)
-        let segment = Options.getCurrentSegmentFromTime()
-        switch segment {
-        case 3:
-            return 0
-        default:
-            return segment + 1
-        }
+        return Options.getNextSegmentFromTime()
     }
 
     func moveToNextSegment() {
