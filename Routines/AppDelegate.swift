@@ -436,13 +436,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if let task = realm.object(ofType: Task.self, forPrimaryKey: response.notification.request.identifier) {
                 switch task.segment {
                 case 1:
-                    self.presentStoryboardView(withIdentifier: "afternoonNavigationController")
+                    self.presentSelectedTabView(forSegment: 1)
                 case 2:
-                    self.presentStoryboardView(withIdentifier: "eveningNavigationController")
+                    self.presentSelectedTabView(forSegment: 2)
                 case 3:
-                    self.presentStoryboardView(withIdentifier: "nightNavigationController")
+                    self.presentSelectedTabView(forSegment: 3)
                 default:
-                    self.presentStoryboardView(withIdentifier: "morningNavigationController")
+                    self.presentSelectedTabView(forSegment: 0)
                 }
             } else {
                 break
@@ -479,13 +479,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         topController?.present(vcToPresent, animated: true, completion: nil)
     }
     
-    fileprivate func makeStoryboardViewKey(withIdentifier identifier: String) {
-        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let vcToPresent = storyBoard.instantiateViewController(withIdentifier: identifier)
-        var topController = UIApplication.shared.windows.first(where: {$0.isKeyWindow})?.rootViewController
+    fileprivate func presentSelectedTabView(forSegment segment: Int) {
+//        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+//        let vcToPresent = storyBoard.instantiateViewController(withIdentifier: identifier)
+        let topController = UIApplication.shared.windows.first(where: {$0.isKeyWindow})?.rootViewController as? UITabBarController
         // Dismiss if there's another view already on top
         topController?.dismiss(animated: true, completion: nil)
-        topController = vcToPresent
+        
+        //This doesn't seem safe, but it works for now
+        topController?.selectedViewController = topController?.children[segment]
+        Options.setSelectedIndex(index: segment)
     }
 
     // Notification Settings Screen
