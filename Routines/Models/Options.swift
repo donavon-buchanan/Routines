@@ -310,7 +310,8 @@ import RealmSwift
         }
     }
 
-    static func getCurrentSegmentFromTime() -> Int {
+    static func getCurrentSegmentFromTime(function: String = #function) -> Int {
+        debugPrint(#function + " called by " + function)
         let morning = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 0), minute: Options.getOptionMinute(segment: 0), second: 0, of: Date())
         let afternoon = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 1), minute: Options.getOptionMinute(segment: 1), second: 0, of: Date())
         let evening = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 2), minute: Options.getOptionMinute(segment: 2), second: 0, of: Date())
@@ -331,6 +332,42 @@ import RealmSwift
             currentSegment = 3
         }
 
+        return currentSegment
+    }
+    
+    static func getNextSegmentFromTime(function: String = #function) -> Int {
+        debugPrint(#function + " called by " + function)
+        let morning = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 0), minute: Options.getOptionMinute(segment: 0), second: 0, of: Date())
+        let afternoon = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 1), minute: Options.getOptionMinute(segment: 1), second: 0, of: Date())
+        let evening = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 2), minute: Options.getOptionMinute(segment: 2), second: 0, of: Date())
+        let night = Calendar.autoupdatingCurrent.date(bySettingHour: Options.getOptionHour(segment: 3), minute: Options.getOptionMinute(segment: 3), second: 0, of: Date())
+        
+        debugPrint("morning " + DateFormatter.localizedString(from: morning!, dateStyle: .medium, timeStyle: .full))
+        debugPrint("afternoon " + DateFormatter.localizedString(from: afternoon!, dateStyle: .medium, timeStyle: .full))
+        debugPrint("evening " + DateFormatter.localizedString(from: evening!, dateStyle: .medium, timeStyle: .full))
+        debugPrint("night " + DateFormatter.localizedString(from: night!, dateStyle: .medium, timeStyle: .full))
+        debugPrint("current time " + DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .full))
+        
+        var currentSegment = 0
+        
+        switch Date() {
+        case _ where Date() < afternoon!:
+            debugPrint(#function + "date < afternoon")
+            currentSegment = 1
+        case _ where Date() < evening!:
+            debugPrint(#function + "date < evening")
+            currentSegment = 2
+        case _ where Date() < night!:
+            debugPrint(#function + "date < night")
+            currentSegment = 3
+        case _ where Date() > night! && Date() < morning!:
+            debugPrint(#function + "date > night && < morning")
+            currentSegment = 0
+        default:
+            debugPrint(#function + "default case")
+            currentSegment = 0
+        }
+        
         return currentSegment
     }
 

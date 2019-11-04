@@ -139,8 +139,7 @@ class OptionsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        UISwitch.appearance().onTintColor = UIColor(segment: selectedIndex ?? Options.getCurrentSegmentFromTime())
-        navigationController?.navigationBar.tintColor = UIColor(segment: selectedIndex ?? Options.getCurrentSegmentFromTime())
+        
         // Colors
 //        cellLabels.forEach { label in
 //            label.theme_textColor = GlobalPicker.cellTextColors
@@ -156,20 +155,22 @@ class OptionsTableViewController: UITableViewController {
 //        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         observeOptions()
 //        observeRoutinesPlus()
+        
+        setUpUI(animated: false)
     }
 
 //    override func applicationFinishedRestoringState() {
 //        TaskTableViewController.setAppearance(forSegment: Options.getSelectedIndex())
 //    }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // setUpUI(animated: false)
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        // setUpUI(animated: false)
+//    }
+//
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//    }
 
     // Make the full width of the cell toggle the switch along with typical haptic
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -232,6 +233,9 @@ class OptionsTableViewController: UITableViewController {
     }
 
     func setUpUI(animated: Bool) {
+        UISwitch.appearance().onTintColor = UIColor(segment: selectedIndex ?? Options.getSelectedIndex())
+        navigationController?.navigationBar.tintColor = UIColor(segment: selectedIndex ?? Options.getSelectedIndex())
+        
         morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: animated)
         afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: animated)
         eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: animated)
@@ -363,7 +367,7 @@ class OptionsTableViewController: UITableViewController {
                 switch changes {
                 case .initial:
                     debugPrint("Initial load for Options. Set up UI")
-                    self.setUpUI(animated: false)
+//                    self.setUpUI(animated: false)
                 case .update:
                     // Don't bother taking action of Options don't even exist
                     self.refreshUI()

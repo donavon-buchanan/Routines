@@ -180,10 +180,10 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             UISwitch.appearance().onTintColor = UIColor(segment: currentTask.segment)
             segmentSelection.selectedSegmentTintColor = UIColor(segment: currentTask.segment)
         } else {
-            navigationController?.navigationBar.tintColor = UIColor(segment: Options.getCurrentSegmentFromTime())
-            UISwitch.appearance().onTintColor = UIColor(segment: Options.getCurrentSegmentFromTime())
-            segmentSelection.selectedSegmentIndex = Options.getCurrentSegmentFromTime()
-            segmentSelection.selectedSegmentTintColor = UIColor(segment: Options.getCurrentSegmentFromTime())
+            navigationController?.navigationBar.tintColor = UIColor(segment: Options.getNextSegmentFromTime())
+            UISwitch.appearance().onTintColor = UIColor(segment: Options.getNextSegmentFromTime())
+            segmentSelection.selectedSegmentIndex = Options.getNextSegmentFromTime()
+            segmentSelection.selectedSegmentTintColor = UIColor(segment: Options.getNextSegmentFromTime())
         }
 
         // Set right bar task as "Save"

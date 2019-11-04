@@ -13,7 +13,7 @@ class MorningTableViewController: TaskTableViewController {
     let segment = 0
 
     override func returnSegment() -> Int {
-        return 0
+        return segment
     }
     
 }

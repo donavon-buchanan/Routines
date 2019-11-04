@@ -561,6 +561,15 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         if segue.identifier == "optionsSegue" {
             let navVC = segue.destination as? UINavigationController
             let destination = navVC?.topViewController as? OptionsTableViewController
+            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
+            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
+            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
+            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
+            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
+            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
+            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
+            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
+            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
             destination?.selectedIndex = returnSegment()
         }
 

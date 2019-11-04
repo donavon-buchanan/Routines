@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 //    var syncEngine: SyncEngine?
 
-    func application(_: UIApplication, supportedInterfaceOrientationsFor _: UIWindow?) -> UIInterfaceOrientationMask {
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor _: UIWindow?) -> UIInterfaceOrientationMask {
         switch UIDevice.current.userInterfaceIdiom {
         case .pad:
             return UIInterfaceOrientationMask.all
@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
     }
 
-    func application(_: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         debugPrint("\(#function) - Start")
         let center = UNUserNotificationCenter.current()
         center.delegate = self
@@ -73,17 +73,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
 
-//    func application(_: UIApplication, performFetchWithCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
+//    func application(_ application: UIApplication, performFetchWithCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
 //
 //    }
 
-//    func application(_: UIApplication, didReceiveRemoteNotification _: [AnyHashable: Any], fetchCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
+//    func application(_ application: UIApplication, didReceiveRemoteNotification _: [AnyHashable: Any], fetchCompletionHandler _: @escaping (UIBackgroundFetchResult) -> Void) {
 //
 //
 //        debugPrint("Received push notification")
 //    }
 
-    func applicationWillResignActive(_: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         debugPrint("\(#function) - Start")
 
         notificationHandler.removeOrphanedNotifications()
@@ -91,13 +91,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         debugPrint("\(#function) - End")
     }
 
-    func applicationDidEnterBackground(_: UIApplication) {
-        debugPrint("\(#function) - Start")
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-
-        debugPrint("\(#function) - End")
-    }
+//    func applicationDidEnterBackground(_ application: UIApplication) {
+//        debugPrint("\(#function) - Start")
+//        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+//        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+//
+//        debugPrint("\(#function) - End")
+//    }
 
     static func removeOldNotifications(function: String = #function) {
         debugPrint("\(#function) - Start")
@@ -113,13 +113,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         debugPrint("\(#function) - End")
     }
 
-    func applicationWillEnterForeground(_: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         debugPrint("\(#function) - Start")
 
         debugPrint("\(#function) - End")
     }
 
-    func applicationDidBecomeActive(_: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         debugPrint("\(#function) - Start")
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 
@@ -139,7 +139,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         debugPrint("\(#function) - End")
     }
 
-    func applicationWillTerminate(_: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
         debugPrint("\(#function) - Start")
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         notificationHandler.removeOrphanedNotifications()
@@ -432,7 +432,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             snoozeTask(uuidString: response.notification.request.identifier)
             decrementBadge()
         default:
-            break
+            guard let realm = try? Realm() else { break }
+            if let task = realm.object(ofType: Task.self, forPrimaryKey: response.notification.request.identifier) {
+                switch task.segment {
+                case 1:
+                    self.presentStoryboardView(withIdentifier: "afternoonNavigationController")
+                case 2:
+                    self.presentStoryboardView(withIdentifier: "eveningNavigationController")
+                case 3:
+                    self.presentStoryboardView(withIdentifier: "nightNavigationController")
+                default:
+                    self.presentStoryboardView(withIdentifier: "morningNavigationController")
+                }
+            } else {
+                break
+            }
         }
 
         completionHandler()
@@ -464,6 +478,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         topController?.dismiss(animated: true, completion: nil)
         topController?.present(vcToPresent, animated: true, completion: nil)
     }
+    
+    fileprivate func makeStoryboardViewKey(withIdentifier identifier: String) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let vcToPresent = storyBoard.instantiateViewController(withIdentifier: identifier)
+        var topController = UIApplication.shared.windows.first(where: {$0.isKeyWindow})?.rootViewController
+        // Dismiss if there's another view already on top
+        topController?.dismiss(animated: true, completion: nil)
+        topController = vcToPresent
+    }
 
     // Notification Settings Screen
     fileprivate func goToSettings() {
@@ -478,7 +501,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         goToSettings()
     }
 
-    func application(_: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler _: @escaping (Bool) -> Void) {
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler _: @escaping (Bool) -> Void) {
         shortcutItemToProcess = shortcutItem
     }
 

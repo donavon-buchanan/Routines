@@ -267,13 +267,14 @@ import RealmSwift
         TaskCategory.returnTaskCategory(toSegment).taskList.append(self)
     }
 
-    func snooze() {
+    func snooze(function: String = #function) {
+        debugPrint(#function + " called by " + function)
         if let realm = try? Realm() {
             do {
                 try realm.write {
                     self.dateModified = Date()
-                    moveTaskCategory(fromSegment: segment, toSegment: snoozeTo())
-                    self.segment = snoozeTo()
+                    moveTaskCategory(fromSegment: segment, toSegment: snoozeToInt())
+                    self.segment = snoozeToInt()
                 }
             } catch {
                 realm.cancelWrite()
@@ -283,7 +284,8 @@ import RealmSwift
         }
     }
 
-    fileprivate func snoozeTo() -> Int {
+    fileprivate func snoozeToInt(function: String = #function) -> Int {
+        debugPrint(#function + " called by " + function)
         let segment = Options.getCurrentSegmentFromTime()
         switch segment {
         case 3:
