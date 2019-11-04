@@ -14,7 +14,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="taskTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="88k-hj-4fi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="kKH-bE-y9t"/>
                         <prototypes>
@@ -85,7 +85,7 @@
                                     <outlet property="cellSubtitleLabel" destination="cEr-4p-QCB" id="2Ce-ut-TrO"/>
                                     <outlet property="cellTitleLabel" destination="3Ri-sk-eGh" id="9dR-Qd-kzG"/>
                                     <outlet property="repeatLabel" destination="x8D-8R-rGn" id="nHY-bQ-Xja"/>
-                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="editSegue" modalPresentationStyle="formSheet" id="axw-H5-5nW"/>
+                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="editSegue" modalPresentationStyle="automatic" id="axw-H5-5nW"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -98,7 +98,7 @@
                         <leftBarButtonItems>
                             <barButtonItem title="Options" image="gear" catalog="system" id="fje-qN-BIw">
                                 <connections>
-                                    <segue destination="YEz-r8-dLK" kind="presentation" identifier="optionsSegue" modalPresentationStyle="formSheet" id="CtJ-KX-J4i"/>
+                                    <segue destination="YEz-r8-dLK" kind="presentation" identifier="optionsSegue" modalPresentationStyle="automatic" id="CtJ-KX-J4i"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem systemItem="edit" id="DVX-cP-fuQ">
@@ -110,7 +110,7 @@
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="XO1-Lz-EWV">
                                 <connections>
-                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="addSegue" modalPresentationStyle="formSheet" id="CCO-Gm-Wv4"/>
+                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="addSegue" modalPresentationStyle="automatic" id="CCO-Gm-Wv4"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem image="lines-button" id="fnS-sl-edc">
@@ -1962,7 +1962,6 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="Izc-4f-V3H">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
                         <segue destination="zPf-jp-bgP" kind="relationship" relationship="viewControllers" id="E9L-uE-wiW"/>
@@ -1998,6 +1997,7 @@
             <objects>
                 <navigationController storyboardIdentifier="addEditNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pWN-gw-REk" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="PnZ-x7-oro"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wCC-DC-pyT">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -2018,7 +2018,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="taskTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="f38-17-IbC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="VVf-OA-Z4a"/>
                         <prototypes>
@@ -2089,7 +2089,7 @@
                                     <outlet property="cellSubtitleLabel" destination="MTe-c5-UKx" id="2Sf-eB-CS7"/>
                                     <outlet property="cellTitleLabel" destination="zpW-Xg-Pez" id="5xb-sT-gIL"/>
                                     <outlet property="repeatLabel" destination="x8f-Cg-jOS" id="hCt-AE-pUt"/>
-                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="editSegue" modalPresentationStyle="formSheet" id="HW4-W3-jgO"/>
+                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="editSegue" modalPresentationStyle="automatic" id="HW4-W3-jgO"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -2102,7 +2102,7 @@
                         <leftBarButtonItems>
                             <barButtonItem title="Options" image="gear" catalog="system" id="D1I-mh-9J8">
                                 <connections>
-                                    <segue destination="YEz-r8-dLK" kind="presentation" identifier="optionsSegue" modalPresentationStyle="formSheet" id="9uw-oz-MMT"/>
+                                    <segue destination="YEz-r8-dLK" kind="presentation" identifier="optionsSegue" modalPresentationStyle="automatic" id="9uw-oz-MMT"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem systemItem="edit" id="ChR-wA-WaS">
@@ -2114,7 +2114,7 @@
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="Xd8-8x-lsR">
                                 <connections>
-                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="addSegue" modalPresentationStyle="formSheet" id="kni-da-hXN"/>
+                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="addSegue" modalPresentationStyle="automatic" id="kni-da-hXN"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem image="lines-button" id="C9J-UV-gDw">
@@ -2142,7 +2142,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="taskTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="9yj-L8-FN3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="Zm7-0L-VBy"/>
                         <prototypes>
@@ -2213,7 +2213,7 @@
                                     <outlet property="cellSubtitleLabel" destination="gdl-5d-b7V" id="vHu-Zf-7Aq"/>
                                     <outlet property="cellTitleLabel" destination="FlZ-Yr-37W" id="nBk-xN-jKL"/>
                                     <outlet property="repeatLabel" destination="Dml-Iu-dNy" id="hPl-rr-BjS"/>
-                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="editSegue" trigger="accessoryAction" modalPresentationStyle="formSheet" id="rnq-UF-oDc"/>
+                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="editSegue" modalPresentationStyle="automatic" id="HUM-Zy-m2O"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -2226,7 +2226,7 @@
                         <leftBarButtonItems>
                             <barButtonItem title="Options" image="gear" catalog="system" id="44W-m9-Gcs">
                                 <connections>
-                                    <segue destination="YEz-r8-dLK" kind="presentation" identifier="optionsSegue" modalPresentationStyle="formSheet" id="lZh-7M-aj1"/>
+                                    <segue destination="YEz-r8-dLK" kind="presentation" identifier="optionsSegue" modalPresentationStyle="automatic" id="lZh-7M-aj1"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem systemItem="edit" id="EYy-qc-a81">
@@ -2238,7 +2238,7 @@
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="HxU-rn-lNS">
                                 <connections>
-                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="addSegue" modalPresentationStyle="formSheet" id="bYh-kE-jcU"/>
+                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="addSegue" modalPresentationStyle="automatic" id="bYh-kE-jcU"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem image="lines-button" id="HK1-Yg-YYE">
@@ -2266,7 +2266,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="taskTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="JZC-Tc-Qv8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="1AQ-iw-aox"/>
                         <prototypes>
@@ -2337,7 +2337,7 @@
                                     <outlet property="cellSubtitleLabel" destination="ewt-xU-YuP" id="d9E-pz-KP2"/>
                                     <outlet property="cellTitleLabel" destination="hZn-H3-tBZ" id="Npk-wv-HRE"/>
                                     <outlet property="repeatLabel" destination="EdR-2r-CkT" id="c0X-Ck-jh8"/>
-                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="editSegue" modalPresentationStyle="formSheet" id="xK6-85-Jt7"/>
+                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="editSegue" modalPresentationStyle="automatic" id="xK6-85-Jt7"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -2350,7 +2350,7 @@
                         <leftBarButtonItems>
                             <barButtonItem title="Options" image="gear" catalog="system" id="0jG-1U-3z6">
                                 <connections>
-                                    <segue destination="YEz-r8-dLK" kind="presentation" identifier="optionsSegue" modalPresentationStyle="formSheet" id="cyB-Ve-ZeH"/>
+                                    <segue destination="YEz-r8-dLK" kind="presentation" identifier="optionsSegue" modalPresentationStyle="automatic" id="cyB-Ve-ZeH"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem systemItem="edit" id="Hmg-xS-4yJ">
@@ -2362,7 +2362,7 @@
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="8K1-bp-Fuv">
                                 <connections>
-                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="addSegue" modalPresentationStyle="formSheet" id="hVW-6r-94J"/>
+                                    <segue destination="pWN-gw-REk" kind="presentation" identifier="addSegue" modalPresentationStyle="automatic" id="hVW-6r-94J"/>
                                 </connections>
                             </barButtonItem>
                             <barButtonItem image="lines-button" id="y3S-t6-mfn">

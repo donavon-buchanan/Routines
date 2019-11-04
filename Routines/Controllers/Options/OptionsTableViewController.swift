@@ -144,11 +144,11 @@ class OptionsTableViewController: UITableViewController {
 //        cellLabels.forEach { label in
 //            label.theme_textColor = GlobalPicker.cellTextColors
 //        }
-        switches.forEach { UISwitch in
+//        switches.forEach { UISwitch in
             // band-aid for graphical glitch when toggling dark mode
-            UISwitch.layer.cornerRadius = 15
-            UISwitch.layer.masksToBounds = true
-        }
+//            UISwitch.layer.cornerRadius = 15
+//            UISwitch.layer.masksToBounds = true
+//        }
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissView))
 

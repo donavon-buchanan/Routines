@@ -133,8 +133,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     fileprivate func setUpUI() {
-        repeatDailySwitch.layer.cornerRadius = 15
-        repeatDailySwitch.layer.masksToBounds = true
+//        repeatDailySwitch.layer.cornerRadius = 15
+//        repeatDailySwitch.layer.masksToBounds = true
 
 //        repeatDailyLabel.theme_textColor = GlobalPicker.cellTextColors
 
@@ -167,8 +167,8 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
         if let selectedIndex = self.selectedIndex {
             print("Appearance condition 1")
-            setAppearance(forSegment: selectedIndex)
-            print("Setting appearance for index of \(selectedIndex)")
+            navigationController?.navigationBar.tintColor = UIColor(segment: selectedIndex)
+            UISwitch.appearance().onTintColor = UIColor(segment: selectedIndex)
             segmentSelection.selectedSegmentTintColor = UIColor(segment: selectedIndex)
         } else if let currentTask = task {
             print("Appearance condition 2")

@@ -168,9 +168,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         debugPrint(#function + " end")
     }
     
-    override func applicationFinishedRestoringState() {
-        super.applicationFinishedRestoringState()
-    }
+//    override func applicationFinishedRestoringState() {
+//        super.applicationFinishedRestoringState()
+//    }
 
     @objc func appBecameActive() {
         debugPrint(#function + " start")
@@ -190,9 +190,16 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         
         title = returnTitle(forSegment: returnSegment() )
         
+        //Trying to get the value of returnSegment() was causing issues here when used directly.
+        //Storing and then using the value resulted in large titles behaving as expected
+        let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: returnSegment())]
         let navigationBarAppearance = UINavigationBarAppearance()
-        navigationBarAppearance.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: returnSegment())]
-        navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: returnSegment())]
+        navigationBarAppearance.largeTitleTextAttributes = titleTextAttributes
+        navigationBarAppearance.titleTextAttributes = titleTextAttributes
+//        self.navigationController?.navigationBar.prefersLargeTitles = true
+//        self.navigationController?.navigationBar.scrollEdgeAppearance?.largeTitleTextAttributes = titleTextAttributes
+//        self.navigationController?.navigationBar.scrollEdgeAppearance?.titleTextAttributes = titleTextAttributes
+        
         let buttonAppearance = UIBarButtonItemAppearance()
         buttonAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: returnSegment())]
         navigationController?.navigationBar.tintColor = UIColor(segment: returnSegment())
@@ -603,8 +610,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         guard let task = tasks?[indexPath.row] else { return }
         task.moveToNextSegment()
     }
-
-    // MARK: - Manage Notifications
 
     // MARK: - Realm
 
