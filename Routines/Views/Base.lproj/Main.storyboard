@@ -7,11 +7,11 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Tasks-->
+        <!--Morning Tasks-->
         <scene sceneID="GDV-PT-QEl">
             <objects>
-                <tableViewController storyboardIdentifier="MorningTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="e3v-kc-NWN" userLabel="Tasks" customClass="MorningTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="taskTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="88k-hj-4fi">
+                <tableViewController storyboardIdentifier="MorningTableViewController" id="e3v-kc-NWN" userLabel="Morning Tasks" customClass="MorningTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="MorningTaskTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="88k-hj-4fi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -94,7 +94,7 @@
                             <outlet property="delegate" destination="e3v-kc-NWN" id="VaK-D5-ige"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="zZQ-20-1Ec">
+                    <navigationItem key="navigationItem" title="Morning" id="zZQ-20-1Ec">
                         <leftBarButtonItems>
                             <barButtonItem title="Options" image="gear" catalog="system" id="fje-qN-BIw">
                                 <connections>
@@ -1305,81 +1305,22 @@
             </objects>
             <point key="canvasLocation" x="3526.5625" y="158.7890625"/>
         </scene>
-        <!--Morning-->
-        <scene sceneID="eiy-SR-jk8">
-            <objects>
-                <navigationController storyboardIdentifier="morningNavigationController" title="Morning" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zPf-jp-bgP" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Morning" image="sunrise" catalog="system" selectedImage="sunrise.fill" id="Omx-Dn-6ft" userLabel="Morning"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="iL4-EF-AiN">
-                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="pxM-tj-chR">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                    <connections>
-                        <segue destination="e3v-kc-NWN" kind="relationship" relationship="rootViewController" id="AXD-IN-9f2"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Oap-IY-6hC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1386" y="-581"/>
-        </scene>
-        <!--Afternoon-->
-        <scene sceneID="2hT-c9-pO0">
-            <objects>
-                <navigationController storyboardIdentifier="afternoonNavigationController" title="Afternoon" useStoryboardIdentifierAsRestorationIdentifier="YES" id="75h-0Z-9GG" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="1" title="Afternoon" image="sun.max" catalog="system" selectedImage="sun.max.fill" id="Hmc-YY-uNO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="yy0-pO-f6x">
-                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="HbN-Hm-PY2" kind="relationship" relationship="rootViewController" id="wXf-w5-jyH"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="plc-gL-YhM" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1386" y="159"/>
-        </scene>
         <!--Night-->
-        <scene sceneID="YAI-nr-2dH">
+        <scene sceneID="diM-nl-Q1b">
             <objects>
-                <navigationController storyboardIdentifier="nightNavigationController" title="Night" useStoryboardIdentifierAsRestorationIdentifier="YES" id="pvj-3G-5c5" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="3" title="Night" image="moon.stars" catalog="system" selectedImage="moon.stars.fill" id="KEp-MF-h3Q"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="kHc-p0-Fbk">
-                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Xcq-jM-XSn">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </toolbar>
-                    <connections>
-                        <segue destination="DyB-m7-M4P" kind="relationship" relationship="rootViewController" id="SGM-sC-WmK"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dFu-BB-BH4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2551" y="923"/>
-        </scene>
-        <!--Evening-->
-        <scene sceneID="RJx-Gx-IwY">
-            <objects>
-                <navigationController storyboardIdentifier="eveningNavigationController" title="Evening" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Pir-IO-sd4" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="2" title="Evening" image="sunset" catalog="system" selectedImage="sunset.fill" id="Z95-2D-Mr2"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="zzb-sU-kjl">
+                <navigationController storyboardIdentifier="NightNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xvP-13-Tas" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Night" image="moon.stars" catalog="system" selectedImage="moon.stars.fill" id="DhA-ze-Kq2"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="sPG-E9-x2x">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="oR7-xk-ZkI" kind="relationship" relationship="rootViewController" id="wYA-03-BUW"/>
+                        <segue destination="DyB-m7-M4P" kind="relationship" relationship="rootViewController" id="vXj-GP-rB3"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="A6h-XX-R18" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1MH-Dn-DDf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1386" y="923"/>
+            <point key="canvasLocation" x="-2551" y="922"/>
         </scene>
         <!--Settings-->
         <scene sceneID="Ww1-vj-A6V">
@@ -1778,7 +1719,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rRB-v9-Lah" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="974" y="1641"/>
+            <point key="canvasLocation" x="974" y="1804"/>
         </scene>
         <!--Start Times-->
         <scene sceneID="80A-RC-fBK">
@@ -1957,17 +1898,18 @@
         <!--Tab Bar Controller-->
         <scene sceneID="1yi-uT-aw5">
             <objects>
-                <tabBarController storyboardIdentifier="tabBarController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DVA-mq-Xs7" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="TabBarController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DVA-mq-Xs7" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="Izc-4f-V3H">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="zPf-jp-bgP" kind="relationship" relationship="viewControllers" id="E9L-uE-wiW"/>
-                        <segue destination="75h-0Z-9GG" kind="relationship" relationship="viewControllers" id="IXZ-s9-kjB"/>
-                        <segue destination="Pir-IO-sd4" kind="relationship" relationship="viewControllers" id="oqd-VO-R3J"/>
-                        <segue destination="pvj-3G-5c5" kind="relationship" relationship="viewControllers" id="6er-Nv-mpa"/>
+                        <segue destination="qNJ-5T-36x" kind="relationship" relationship="viewControllers" id="Cdr-MG-5Zs"/>
+                        <segue destination="Thi-JR-gcd" kind="relationship" relationship="viewControllers" id="cF1-v9-owV"/>
+                        <segue destination="Cxy-Vi-pKn" kind="relationship" relationship="viewControllers" id="8lY-mb-Vr7"/>
+                        <segue destination="xvP-13-Tas" kind="relationship" relationship="viewControllers" id="IeU-gq-YFp"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yMD-mU-BLB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2011,11 +1953,11 @@
             </objects>
             <point key="canvasLocation" x="973.4375" y="158.7890625"/>
         </scene>
-        <!--Tasks-->
+        <!--Afternoon Tasks-->
         <scene sceneID="uE5-7s-Rhl">
             <objects>
-                <tableViewController storyboardIdentifier="AfternoonTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="HbN-Hm-PY2" userLabel="Tasks" customClass="AfternoonTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="taskTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="f38-17-IbC">
+                <tableViewController storyboardIdentifier="AfternoonTableViewController" id="HbN-Hm-PY2" userLabel="Afternoon Tasks" customClass="AfternoonTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="AfternoonTaskTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="f38-17-IbC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -2098,7 +2040,7 @@
                             <outlet property="delegate" destination="HbN-Hm-PY2" id="1OF-hm-4oB"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="FaQ-RT-R7g">
+                    <navigationItem key="navigationItem" title="Afternoon" id="FaQ-RT-R7g">
                         <leftBarButtonItems>
                             <barButtonItem title="Options" image="gear" catalog="system" id="D1I-mh-9J8">
                                 <connections>
@@ -2135,11 +2077,11 @@
             </objects>
             <point key="canvasLocation" x="-68" y="159"/>
         </scene>
-        <!--Tasks-->
+        <!--Evening Tasks-->
         <scene sceneID="TN4-oy-Ixd">
             <objects>
-                <tableViewController storyboardIdentifier="EveningTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="oR7-xk-ZkI" userLabel="Tasks" customClass="EveningTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="taskTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="9yj-L8-FN3">
+                <tableViewController storyboardIdentifier="EveningTableViewController" id="oR7-xk-ZkI" userLabel="Evening Tasks" customClass="EveningTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="EveningTaskTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="9yj-L8-FN3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -2222,7 +2164,7 @@
                             <outlet property="delegate" destination="oR7-xk-ZkI" id="Twg-qh-Rui"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="ddO-GZ-RAP">
+                    <navigationItem key="navigationItem" title="Evening" id="ddO-GZ-RAP">
                         <leftBarButtonItems>
                             <barButtonItem title="Options" image="gear" catalog="system" id="44W-m9-Gcs">
                                 <connections>
@@ -2259,11 +2201,11 @@
             </objects>
             <point key="canvasLocation" x="-68" y="922"/>
         </scene>
-        <!--Tasks-->
+        <!--Night Tasks-->
         <scene sceneID="tee-bR-1yC">
             <objects>
-                <tableViewController storyboardIdentifier="NightTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DyB-m7-M4P" userLabel="Tasks" customClass="NightTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="taskTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="JZC-Tc-Qv8">
+                <tableViewController storyboardIdentifier="NightTableViewController" id="DyB-m7-M4P" userLabel="Night Tasks" customClass="NightTableViewController" customModule="Routines" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="NightTaskTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="115" estimatedRowHeight="115" sectionHeaderHeight="28" sectionFooterHeight="28" id="JZC-Tc-Qv8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -2346,7 +2288,7 @@
                             <outlet property="delegate" destination="DyB-m7-M4P" id="dd0-0k-r8n"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Med-ST-DZh">
+                    <navigationItem key="navigationItem" title="Night" id="Med-ST-DZh">
                         <leftBarButtonItems>
                             <barButtonItem title="Options" image="gear" catalog="system" id="0jG-1U-3z6">
                                 <connections>
@@ -2381,7 +2323,58 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kEj-ER-kpv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1386" y="1640"/>
+            <point key="canvasLocation" x="-1274" y="1804"/>
+        </scene>
+        <!--Morning-->
+        <scene sceneID="6Xf-KU-P3U">
+            <objects>
+                <navigationController storyboardIdentifier="MorningNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="qNJ-5T-36x" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Morning" image="sunrise" catalog="system" selectedImage="sunrise.fill" id="HKz-tY-CpF"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="iEe-vc-Nfj">
+                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="e3v-kc-NWN" kind="relationship" relationship="rootViewController" id="faP-9z-JTA"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1cJ-Pg-mW3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1273" y="-576"/>
+        </scene>
+        <!--Afternoon-->
+        <scene sceneID="zai-dj-b03">
+            <objects>
+                <navigationController storyboardIdentifier="AfternoonNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Thi-JR-gcd" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Afternoon" image="sun.max" catalog="system" selectedImage="sun.max.fill" id="qDf-sd-RQQ"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="4Ci-Pu-5J3">
+                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="HbN-Hm-PY2" kind="relationship" relationship="rootViewController" id="1he-fJ-ViB"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4eJ-iS-UZw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1274" y="158"/>
+        </scene>
+        <!--Evening-->
+        <scene sceneID="KM8-E9-XJH">
+            <objects>
+                <navigationController storyboardIdentifier="EveningNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Cxy-Vi-pKn" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Evening" image="sunset" catalog="system" selectedImage="sunset.fill" id="cbh-sI-jQe"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="272-xK-uyZ">
+                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="oR7-xk-ZkI" kind="relationship" relationship="rootViewController" id="t17-fc-X0l"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="t3g-TE-BcZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1274" y="922"/>
         </scene>
     </scenes>
     <resources>
@@ -2397,7 +2390,7 @@
         <image name="sunset.fill" catalog="system" width="64" height="48"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xK6-85-Jt7"/>
+        <segue reference="hVW-6r-94J"/>
         <segue reference="cyB-Ve-ZeH"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -38,11 +38,16 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>6804</string>
+	<string>6805</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
 	<key>UIApplicationShortcutItems</key>
 	<array>
 		<dict>

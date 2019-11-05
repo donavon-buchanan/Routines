@@ -133,19 +133,26 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     }
 
     fileprivate func setUpUI() {
-//        repeatDailySwitch.layer.cornerRadius = 15
-//        repeatDailySwitch.layer.masksToBounds = true
-
-//        repeatDailyLabel.theme_textColor = GlobalPicker.cellTextColors
-
-//        priorityNumberLabel.theme_textColor = GlobalPicker.textColor
-//        prioritySlider.theme_thumbTintColor = GlobalPicker.textColor
-
-//        if !RoutinesPlus.getPurchasedStatus() {
-//            prioritySlider.isEnabled = false
-//        } else {
-//            prioritySlider.isEnabled = true
-//        }
+        if let selectedIndex = self.selectedIndex {
+            print("Appearance condition 1")
+            navigationController?.navigationBar.tintColor = UIColor(segment: selectedIndex)
+            UISwitch.appearance().onTintColor = UIColor(segment: selectedIndex)
+            segmentSelection.selectedSegmentTintColor = UIColor(segment: selectedIndex)
+        } else if let currentTask = task {
+            print("Appearance condition 2")
+            print("Setting appearance for index of \(currentTask.segment)")
+            // I'm not sure why, but the method below doesn't change the color in time
+            // Needs to be done more directly here
+            //            setAppearance(forSegment: currentTask.segment)
+            navigationController?.navigationBar.tintColor = UIColor(segment: currentTask.segment)
+            UISwitch.appearance().onTintColor = UIColor(segment: currentTask.segment)
+            segmentSelection.selectedSegmentTintColor = UIColor(segment: currentTask.segment)
+        } else {
+            navigationController?.navigationBar.tintColor = UIColor(segment: Options.getNextSegmentFromTime())
+            UISwitch.appearance().onTintColor = UIColor(segment: Options.getNextSegmentFromTime())
+            segmentSelection.selectedSegmentIndex = Options.getNextSegmentFromTime()
+            segmentSelection.selectedSegmentTintColor = UIColor(segment: Options.getNextSegmentFromTime())
+        }
     }
 
 //    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
@@ -165,26 +172,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let selectedIndex = self.selectedIndex {
-            print("Appearance condition 1")
-            navigationController?.navigationBar.tintColor = UIColor(segment: selectedIndex)
-            UISwitch.appearance().onTintColor = UIColor(segment: selectedIndex)
-            segmentSelection.selectedSegmentTintColor = UIColor(segment: selectedIndex)
-        } else if let currentTask = task {
-            print("Appearance condition 2")
-            print("Setting appearance for index of \(currentTask.segment)")
-            // I'm not sure why, but the method below doesn't change the color in time
-            // Needs to be done more directly here
-//            setAppearance(forSegment: currentTask.segment)
-            navigationController?.navigationBar.tintColor = UIColor(segment: currentTask.segment)
-            UISwitch.appearance().onTintColor = UIColor(segment: currentTask.segment)
-            segmentSelection.selectedSegmentTintColor = UIColor(segment: currentTask.segment)
-        } else {
-            navigationController?.navigationBar.tintColor = UIColor(segment: Options.getNextSegmentFromTime())
-            UISwitch.appearance().onTintColor = UIColor(segment: Options.getNextSegmentFromTime())
-            segmentSelection.selectedSegmentIndex = Options.getNextSegmentFromTime()
-            segmentSelection.selectedSegmentTintColor = UIColor(segment: Options.getNextSegmentFromTime())
-        }
+        setUpUI()
 
         // Set right bar task as "Save"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveButtonPressed))
@@ -256,7 +244,6 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
             if let realm = try? Realm() {
                 task = realm.object(ofType: Task.self, forPrimaryKey: taskId)
             }
-            setUpUI()
         }
         
         taskTextField.text = coder.decodeObject(forKey: "taskTextFieldText") as? String
@@ -274,9 +261,9 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         super.decodeRestorableState(with: coder)
     }
 
-//    override func applicationFinishedRestoringState() {
-//        setUpUI()
-//    }
+    override func applicationFinishedRestoringState() {
+        setUpUI()
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -291,7 +278,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
         DispatchQueue.main.async {
             autoreleasepool {
                 do {
-                    self.setUpUI()
+//                    self.setUpUI()
                     #if !targetEnvironment(simulator)
                     self.taskTextField.becomeFirstResponder()
                     #endif

@@ -15,5 +15,6 @@ class MorningTableViewController: TaskTableViewController {
     override func returnSegment() -> Int {
         return segment
     }
+
     
 }

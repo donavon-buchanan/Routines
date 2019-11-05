@@ -375,7 +375,7 @@
 				};
 			};
 			buildConfigurationList = F8B831AF2155CBB000DAF60E /* Build configuration list for PBXProject "Routines" */;
-			compatibilityVersion = "Xcode 8.0";
+			compatibilityVersion = "Xcode 11.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (

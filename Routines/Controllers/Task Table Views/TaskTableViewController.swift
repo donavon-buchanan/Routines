@@ -150,6 +150,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     override func viewDidLoad() {
         debugPrint(#function + " start")
+        super.viewDidLoad()
 
         NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil)
 
@@ -162,9 +163,38 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         tableView.tableFooterView = footerView
         tableView.estimatedRowHeight = 115
         tableView.rowHeight = UITableView.automaticDimension
-        
-        super.viewDidLoad()
 
+        debugPrint(#function + " end")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        debugPrint(#function + " start")
+        let segment = returnSegment()
+        
+        loadTasksForSegment(segment: segment)
+        
+        title = returnTitle(forSegment: segment)
+        
+        let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: segment)]
+        let navigationBarAppearance = UINavigationBarAppearance()
+        navigationBarAppearance.backgroundColor = .systemBackground
+        navigationBarAppearance.shadowColor = .clear
+        navigationBarAppearance.largeTitleTextAttributes = titleTextAttributes
+        navigationBarAppearance.titleTextAttributes = titleTextAttributes
+        
+        navigationController?.navigationBar.standardAppearance = navigationBarAppearance
+        navigationController?.navigationBar.compactAppearance = navigationBarAppearance
+        navigationController?.navigationBar.scrollEdgeAppearance = navigationBarAppearance
+        
+        let buttonAppearance = UIBarButtonItemAppearance()
+        buttonAppearance.normal.titleTextAttributes = titleTextAttributes
+        navigationController?.navigationBar.tintColor = UIColor(segment: segment)
+        navigationBarAppearance.buttonAppearance = buttonAppearance
+        tabBarController?.tabBar.tintColor = UIColor(segment: segment)
+        
+//        navigationController?.navigationBar.prefersLargeTitles = true
+//        navigationItem.largeTitleDisplayMode = .automatic
+        
         debugPrint(#function + " end")
     }
     
@@ -180,37 +210,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     
     func returnSegment() -> Int {
         return 0
-    }
-
-
-    override func viewWillAppear(_ animated: Bool) {
-        debugPrint(#function + " start")
-        
-        loadTasksForSegment(segment: returnSegment())
-        
-        title = returnTitle(forSegment: returnSegment() )
-        
-        //Trying to get the value of returnSegment() was causing issues here when used directly.
-        //Storing and then using the value resulted in large titles behaving as expected
-        let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: returnSegment())]
-        let navigationBarAppearance = UINavigationBarAppearance()
-        navigationBarAppearance.largeTitleTextAttributes = titleTextAttributes
-        navigationBarAppearance.titleTextAttributes = titleTextAttributes
-//        self.navigationController?.navigationBar.prefersLargeTitles = true
-//        self.navigationController?.navigationBar.scrollEdgeAppearance?.largeTitleTextAttributes = titleTextAttributes
-//        self.navigationController?.navigationBar.scrollEdgeAppearance?.titleTextAttributes = titleTextAttributes
-        
-        let buttonAppearance = UIBarButtonItemAppearance()
-        buttonAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: returnSegment())]
-        navigationController?.navigationBar.tintColor = UIColor(segment: returnSegment())
-        navigationBarAppearance.buttonAppearance = buttonAppearance
-        navigationController?.navigationBar.standardAppearance = navigationBarAppearance
-        navigationController?.navigationBar.compactAppearance = navigationBarAppearance
-        tabBarController?.tabBar.tintColor = UIColor(segment: returnSegment())
-        
-        super.viewWillAppear(animated)
-        
-        debugPrint(#function + " end")
     }
 
     func returnTitle(forSegment segment: Int) -> String {
