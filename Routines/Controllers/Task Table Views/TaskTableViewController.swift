@@ -11,7 +11,6 @@ import UIKit
 import UserNotifications
 
 class TaskTableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
-    
     @IBAction func unwindToTableViewController(segue _: UIStoryboardSegue) {}
     @IBOutlet var settingsBarButtonItem: UIBarButtonItem!
     @IBOutlet var addbarButtonItem: UIBarButtonItem!
@@ -166,38 +165,38 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         debugPrint(#function + " end")
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
+
+    override func viewWillAppear(_: Bool) {
         debugPrint(#function + " start")
         let segment = returnSegment()
-        
+
         loadTasksForSegment(segment: segment)
-        
+
         title = returnTitle(forSegment: segment)
-        
+
         let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(segment: segment)]
         let navigationBarAppearance = UINavigationBarAppearance()
         navigationBarAppearance.backgroundColor = .systemBackground
         navigationBarAppearance.shadowColor = .clear
         navigationBarAppearance.largeTitleTextAttributes = titleTextAttributes
         navigationBarAppearance.titleTextAttributes = titleTextAttributes
-        
+
         navigationController?.navigationBar.standardAppearance = navigationBarAppearance
         navigationController?.navigationBar.compactAppearance = navigationBarAppearance
         navigationController?.navigationBar.scrollEdgeAppearance = navigationBarAppearance
-        
+
         let buttonAppearance = UIBarButtonItemAppearance()
         buttonAppearance.normal.titleTextAttributes = titleTextAttributes
         navigationController?.navigationBar.tintColor = UIColor(segment: segment)
         navigationBarAppearance.buttonAppearance = buttonAppearance
         tabBarController?.tabBar.tintColor = UIColor(segment: segment)
-        
+
 //        navigationController?.navigationBar.prefersLargeTitles = true
 //        navigationItem.largeTitleDisplayMode = .automatic
-        
+
         debugPrint(#function + " end")
     }
-    
+
 //    override func applicationFinishedRestoringState() {
 //        super.applicationFinishedRestoringState()
 //    }
@@ -207,9 +206,9 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         observeTasks()
         debugPrint(#function + " end")
     }
-    
+
     func returnSegment() -> Int {
-        return 0
+        0
     }
 
     func returnTitle(forSegment segment: Int) -> String {

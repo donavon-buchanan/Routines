@@ -10,9 +10,8 @@ import RealmSwift
 import UIKit
 
 class CustomTimesTableViewController: UITableViewController {
-    
     let notificationHanlder = NotificationHandler()
-    
+
     @IBOutlet var morningDatePicker: UIDatePicker!
     @IBOutlet var afternoonDatePicker: UIDatePicker!
     @IBOutlet var eveningDatePicker: UIDatePicker!

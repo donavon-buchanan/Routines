@@ -334,7 +334,7 @@ import RealmSwift
 
         return currentSegment
     }
-    
+
     static func getNextSegmentFromTime(function: String = #function) -> Int {
         debugPrint(#function + " called by " + function)
         let segment = Options.getCurrentSegmentFromTime()

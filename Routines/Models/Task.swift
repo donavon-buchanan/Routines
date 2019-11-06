@@ -178,10 +178,10 @@ import RealmSwift
                 tasksToDelete.append(task)
             }
         }
-        
+
         let notificationHandler = NotificationHandler()
-        
-        //Remove these before deleting. They won't exist for reference later
+
+        // Remove these before deleting. They won't exist for reference later
         notificationHandler.removeNotifications(withIdentifiers: (tasksToDelete.map { $0.uuidString }))
 
         batchDelete(taskArray: tasksToDelete)
@@ -205,8 +205,8 @@ import RealmSwift
                 realm.cancelWrite()
             }
         }
-        
-        //Now that completed tasks properties have been updated, udpate the notifications
+
+        // Now that completed tasks properties have been updated, udpate the notifications
         tasksToComplete.forEach { task in
             notificationHandler.createNewNotification(forTask: task)
         }
@@ -236,8 +236,8 @@ import RealmSwift
         debugPrint(#function)
 
         if let realm = try? Realm() {
-            //First remove from categories
-            taskArray.forEach { (task) in
+            // First remove from categories
+            taskArray.forEach { task in
                 do {
                     try realm.write {
                         task.removeTaskFromCategoryList(segment: task.segment)
@@ -247,8 +247,8 @@ import RealmSwift
                     realm.cancelWrite()
                 }
             }
-            
-            //Thene delete the tasks
+
+            // Thene delete the tasks
             do {
                 try realm.write {
                     realm.delete(taskArray)

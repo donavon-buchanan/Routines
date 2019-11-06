@@ -125,7 +125,7 @@ class OptionsTableViewController: UITableViewController {
     @objc func dismissView() {
         // dismiss(animated: true, completion: nil)
 //        performSegue(withIdentifier: "unwindToTableViewController", sender: self)
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -139,13 +139,13 @@ class OptionsTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         // Colors
 //        cellLabels.forEach { label in
 //            label.theme_textColor = GlobalPicker.cellTextColors
 //        }
 //        switches.forEach { UISwitch in
-            // band-aid for graphical glitch when toggling dark mode
+        // band-aid for graphical glitch when toggling dark mode
 //            UISwitch.layer.cornerRadius = 15
 //            UISwitch.layer.masksToBounds = true
 //        }
@@ -155,7 +155,7 @@ class OptionsTableViewController: UITableViewController {
 //        tableView.theme_backgroundColor = GlobalPicker.backgroundColor
         observeOptions()
 //        observeRoutinesPlus()
-        
+
         setUpUI(animated: false)
     }
 
@@ -235,7 +235,7 @@ class OptionsTableViewController: UITableViewController {
     func setUpUI(animated: Bool) {
         UISwitch.appearance().onTintColor = UIColor(segment: selectedIndex ?? Options.getSelectedIndex())
         navigationController?.navigationBar.tintColor = UIColor(segment: selectedIndex ?? Options.getSelectedIndex())
-        
+
         morningSwitch.setOn(Options.getSegmentNotification(segment: 0), animated: animated)
         afternoonSwitch.setOn(Options.getSegmentNotification(segment: 1), animated: animated)
         eveningSwitch.setOn(Options.getSegmentNotification(segment: 2), animated: animated)

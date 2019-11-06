@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         return true
     }
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         debugPrint("\(#function) - Start")
 
         // Override point for customization after application launch.
@@ -83,7 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 //        debugPrint("Received push notification")
 //    }
 
-    func applicationWillResignActive(_ application: UIApplication) {
+    func applicationWillResignActive(_: UIApplication) {
         debugPrint("\(#function) - Start")
 
         notificationHandler.removeOrphanedNotifications()
@@ -113,13 +113,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         debugPrint("\(#function) - End")
     }
 
-    func applicationWillEnterForeground(_ application: UIApplication) {
+    func applicationWillEnterForeground(_: UIApplication) {
         debugPrint("\(#function) - Start")
 
         debugPrint("\(#function) - End")
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
+    func applicationDidBecomeActive(_: UIApplication) {
         debugPrint("\(#function) - Start")
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 
@@ -132,25 +132,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
             shortcutItemToProcess = nil
         }
-        
+
         AppDelegate.removeOldNotifications()
         notificationHandler.removeOrphanedNotifications()
 
         debugPrint("\(#function) - End")
     }
 
-    func applicationWillTerminate(_ application: UIApplication) {
+    func applicationWillTerminate(_: UIApplication) {
         debugPrint("\(#function) - Start")
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         notificationHandler.removeOrphanedNotifications()
         debugPrint("\(#function) - End")
     }
 
-    func application(_ application: UIApplication, shouldSaveSecureApplicationState coder: NSCoder) -> Bool {
+    func application(_: UIApplication, shouldSaveSecureApplicationState _: NSCoder) -> Bool {
         true
     }
 
-    func application(_ application: UIApplication, shouldRestoreSecureApplicationState coder: NSCoder) -> Bool {
+    func application(_: UIApplication, shouldRestoreSecureApplicationState _: NSCoder) -> Bool {
         true
     }
 
@@ -305,7 +305,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         // auto migration
                     }
                     migration.enumerateObjects(ofType: "Items") { oldObject, _ in
-                        //First check if the old Item was marked for deletion
+                        // First check if the old Item was marked for deletion
                         if oldObject!["isDeleted"] as! Bool == false {
                             // Create a new task from the old object
                             let newTask = migration.create(Task.className(), value: oldObject!)
@@ -335,7 +335,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                             // If "isDeleted" was true, delete the old object from the realm
                             migration.delete(oldObject!)
                         }
-                        
                     }
 
                     // Finally, append sequence in reversed order to the category lists so it appears as the user previously had them sorted
@@ -354,7 +353,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     migration.enumerateObjects(ofType: "Task") { oldObject, _ in
                         // auto migration for property rename or change
                         // also a little cleanup for TestFlight users
-                        
+
                         if oldObject!["isDeleted"] as! Bool == true {
                             migration.delete(oldObject!)
                         }
@@ -436,13 +435,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             if let task = realm.object(ofType: Task.self, forPrimaryKey: response.notification.request.identifier) {
                 switch task.segment {
                 case 1:
-                    self.presentSelectedTabView(forSegment: 1)
+                    presentSelectedTabView(forSegment: 1)
                 case 2:
-                    self.presentSelectedTabView(forSegment: 2)
+                    presentSelectedTabView(forSegment: 2)
                 case 3:
-                    self.presentSelectedTabView(forSegment: 3)
+                    presentSelectedTabView(forSegment: 3)
                 default:
-                    self.presentSelectedTabView(forSegment: 0)
+                    presentSelectedTabView(forSegment: 0)
                 }
             } else {
                 break
@@ -473,21 +472,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     fileprivate func presentStoryboardView(withIdentifier identifier: String) {
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let vcToPresent = storyBoard.instantiateViewController(withIdentifier: identifier)
-        let topController = UIApplication.shared.windows.first(where: {$0.isKeyWindow})?.rootViewController
+        let topController = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController
         // Dismiss if there's another view already on top
         topController?.dismiss(animated: true, completion: nil)
         topController?.present(vcToPresent, animated: true, completion: nil)
     }
-    
+
     fileprivate func presentSelectedTabView(forSegment segment: Int) {
 //        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
 //        let vcToPresent = storyBoard.instantiateViewController(withIdentifier: identifier)
-        let topController = UIApplication.shared.windows.first(where: {$0.isKeyWindow})?.rootViewController as? UITabBarController
+        let topController = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController as? UITabBarController
         // Dismiss if there's another view already on top
         topController?.dismiss(animated: true, completion: nil)
-        
-        //This doesn't seem safe, but it works for now
-        topController?.selectedViewController = topController?.children[segment]
+
+        guard let tabToPresent = topController?.children[segment] else { return }
+        topController?.selectedViewController = tabToPresent
         Options.setSelectedIndex(index: segment)
     }
 

@@ -36,14 +36,14 @@ struct NotificationHandler {
     }
 
     func setBadgeNumber(forTask task: Task) -> Int {
-        //First get the category so we can find the index of the task in its list
+        // First get the category so we can find the index of the task in its list
         let taskCategory = TaskCategory.returnTaskCategory(task.segment)
-        //Find the index. This will act as the base for our badge number since the list is ordered
+        // Find the index. This will act as the base for our badge number since the list is ordered
         if let index = taskCategory.taskList.index(of: task) {
-            //If the index is found, return index position + 1
+            // If the index is found, return index position + 1
             return index + 1
         } else {
-            //If it's not found, something went wrong and we should just 0 out the badge
+            // If it's not found, something went wrong and we should just 0 out the badge
             return 0
         }
     }
@@ -174,9 +174,9 @@ struct NotificationHandler {
     func checkNotificationPermission() {
         // Request permission to display alerts and play sounds
         #if !targetEnvironment(simulator)
-        center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { _, _ in
-            // Enable or disable features based on authorization.
-        }
+            center.requestAuthorization(options: [.alert, .sound, .badge, .providesAppNotificationSettings]) { _, _ in
+                // Enable or disable features based on authorization.
+            }
         #endif
     }
 

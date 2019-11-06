@@ -15,6 +15,7 @@
 		F816DB342155CFBA009C6907 /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TaskTableViewController.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
 		F849435323644BAD006CB280 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F849435223644BAD006CB280 /* RealmSwift */; };
+		F86C6957237382C0003E556F /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = F86C6956237382C0003E556F /* Realm */; };
 		F86CC22F2355009200D587E9 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86CC22E2355009200D587E9 /* ColorPicker.swift */; };
 		F86E0AC22297FA5400BB53D6 /* RoutinesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86E0AC12297FA5400BB53D6 /* RoutinesUITests.swift */; };
 		F86E0ACA2297FAA400BB53D6 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A9B0A222842BC20043E43A /* SnapshotHelper.swift */; };
@@ -126,6 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F86C6957237382C0003E556F /* Realm in Frameworks */,
 				F849435323644BAD006CB280 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -328,6 +330,7 @@
 			name = Routines;
 			packageProductDependencies = (
 				F849435223644BAD006CB280 /* RealmSwift */,
+				F86C6956237382C0003E556F /* Realm */,
 			);
 			productName = Routines;
 			productReference = F8B831B42155CBB000DAF60E /* Routines.app */;
@@ -767,7 +770,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.01;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -896,7 +899,7 @@
 		F8B831C72155CBB100DAF60E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APP_BUNDLE_ID = com.donavonbuchanan.Routines;
+				APP_BUNDLE_ID = com.donavonbuchanan.RoutinesDebug;
 				APP_DISPLAY_NAME = "Routines Debug";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Routines/Routines.entitlements;
@@ -909,7 +912,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.01;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -935,7 +938,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.01;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1006,6 +1009,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F849435123644BAD006CB280 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
 			productName = RealmSwift;
+		};
+		F86C6956237382C0003E556F /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F849435123644BAD006CB280 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -20,9 +20,10 @@ class TaskTableViewCell: UITableViewCell {
 
     func configColorBar(segment: Int?) {
         var segmentColor: UIColor {
+            guard let segment = segment else { return .clear }
             switch segment {
-            case 0,1,2,3:
-                return UIColor.init(segment: segment!)
+            case 0, 1, 2, 3:
+                return UIColor(segment: segment)
             default:
                 return .clear
             }

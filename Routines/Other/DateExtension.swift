@@ -12,7 +12,7 @@ extension Date {
     var startOfNextDay: Date {
         Calendar.autoupdatingCurrent.nextDate(after: self, matching: DateComponents(hour: 0, minute: 0), matchingPolicy: .nextTimePreservingSmallerComponents)!
     }
-    
+
     var startOfDay: Date {
         Calendar.autoupdatingCurrent.date(bySettingHour: 0, minute: 0, second: 0, of: Date())!
     }

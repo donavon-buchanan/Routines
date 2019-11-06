@@ -166,7 +166,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
 
     @objc func dismissView() {
 //        performSegue(withIdentifier: "unwindToTableViewController", sender: self)
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 
     override func viewDidLoad() {
@@ -245,19 +245,19 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
                 task = realm.object(ofType: Task.self, forPrimaryKey: taskId)
             }
         }
-        
+
         taskTextField.text = coder.decodeObject(forKey: "taskTextFieldText") as? String
         let segment = coder.decodeInteger(forKey: "selectedSegment")
-        self.editingSegment = segment
-        self.selectedIndex = segment
+        editingSegment = segment
+        selectedIndex = segment
         segmentSelection.selectedSegmentIndex = segment
         segmentSelection.selectedSegmentTintColor = segmentColor(segment: segment)
-        
+
         repeatDailySwitch.isOn = coder.decodeBool(forKey: "repeatSwitch")
         repeatDailySwitch.setOn(coder.decodeBool(forKey: "repeatSwitch"), animated: false)
-        
+
         notesTextView.text = coder.decodeObject(forKey: "notesText") as? String
-        
+
         super.decodeRestorableState(with: coder)
     }
 
@@ -280,7 +280,7 @@ class AddTableViewController: UITableViewController, UITextViewDelegate, UITextF
                 do {
 //                    self.setUpUI()
                     #if !targetEnvironment(simulator)
-                    self.taskTextField.becomeFirstResponder()
+                        self.taskTextField.becomeFirstResponder()
                     #endif
                 }
             }
