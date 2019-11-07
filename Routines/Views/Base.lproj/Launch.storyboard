@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jDW-kT-xut">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2xY-ph-eR0">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
@@ -7,10 +7,11 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
+        <!--Morning-->
         <scene sceneID="ldF-d2-cIn">
             <objects>
                 <navigationController id="jDW-kT-xut" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Morning" image="sunrise" catalog="system" id="05c-ef-dWc"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="bX8-g9-MyA">
                         <rect key="frame" x="0.0" y="44" width="375" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -29,21 +30,8 @@
             <objects>
                 <viewController id="VTI-sw-Y7j" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="u6V-zX-2Oe">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tabBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aGv-hK-vw1">
-                                <rect key="frame" x="0.0" y="729" width="375" height="49"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <items>
-                                    <tabBarItem title="Morning" image="sunrise" catalog="system" selectedImage="sunrise.fill" id="QZd-k6-TpN"/>
-                                    <tabBarItem title="Afternoon" image="sun.max" catalog="system" selectedImage="sun.max.fill" id="50F-a8-GcX"/>
-                                    <tabBarItem title="Evening" image="sunset" catalog="system" selectedImage="sunset.fill" id="4RP-dZ-iCp"/>
-                                    <tabBarItem title="Night" image="moon.stars" catalog="system" selectedImage="moon.stars.fill" id="Ref-z7-ZPK"/>
-                                </items>
-                            </tabBar>
-                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="AaT-E8-cQY"/>
                     </view>
@@ -70,17 +58,188 @@
             </objects>
             <point key="canvasLocation" x="-3537" y="-471"/>
         </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="m47-MY-3wS">
+            <objects>
+                <tabBarController id="2xY-ph-eR0" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="GJw-Is-2iY">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="selectedImageTintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="jDW-kT-xut" kind="relationship" relationship="viewControllers" id="Nf0-0T-mp2"/>
+                        <segue destination="mVs-9B-5lC" kind="relationship" relationship="viewControllers" id="73M-8u-AMh"/>
+                        <segue destination="DiP-Dv-K1C" kind="relationship" relationship="viewControllers" id="r3Y-Ln-SQR"/>
+                        <segue destination="oFU-qj-wRS" kind="relationship" relationship="viewControllers" id="NFA-MM-KOi"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nm8-vf-ubb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-6641" y="-273"/>
+        </scene>
+        <!--Afternoon-->
+        <scene sceneID="TyA-Zn-yga">
+            <objects>
+                <navigationController id="mVs-9B-5lC" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Afternoon" image="sun.max" catalog="system" id="gYo-iH-Jee"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="hK2-A6-A6v">
+                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Ygb-hg-jSM" kind="relationship" relationship="rootViewController" id="Gdg-8w-erC"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hDF-LW-kGn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4594" y="227"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="E2U-xt-DQC">
+            <objects>
+                <viewController id="Ygb-hg-jSM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="TBL-QD-gTJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="4MP-dF-HYM"/>
+                    </view>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="2Fm-dP-J7Q">
+                        <leftBarButtonItems>
+                            <barButtonItem image="gear" catalog="system" id="Vwf-2L-gMP">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                            <barButtonItem systemItem="edit" id="I5I-IH-gcS">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                        </leftBarButtonItems>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="JuZ-Ef-5eo">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                            <barButtonItem image="lines-button" id="eEn-Ct-Ls4">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="W5f-7l-vCm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3538" y="227"/>
+        </scene>
+        <!--Evening-->
+        <scene sceneID="QsY-o1-azO">
+            <objects>
+                <navigationController id="DiP-Dv-K1C" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Evening" image="sunset" catalog="system" id="cLb-OS-7JP"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="qCN-xc-HKl">
+                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Nd7-EH-qdl" kind="relationship" relationship="rootViewController" id="bOk-k1-XOw"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LZI-CB-nw7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4594" y="910"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="tGs-GM-HOK">
+            <objects>
+                <viewController id="Nd7-EH-qdl" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gql-yp-nIJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="0LJ-xs-UMt"/>
+                    </view>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="EgN-Rg-c8v">
+                        <leftBarButtonItems>
+                            <barButtonItem image="gear" catalog="system" id="NKm-Ob-t7p">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                            <barButtonItem systemItem="edit" id="pHR-2r-0AC">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                        </leftBarButtonItems>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="hKO-AR-JB3">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                            <barButtonItem image="lines-button" id="PQG-Q5-eRu">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GGG-WS-rly" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3538" y="910"/>
+        </scene>
+        <!--Night-->
+        <scene sceneID="shd-Dx-zo0">
+            <objects>
+                <navigationController id="oFU-qj-wRS" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Night" image="moon.stars" catalog="system" id="Zwl-YG-3Qc"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="fI2-uv-aSV">
+                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="wvS-mg-kvy" kind="relationship" relationship="rootViewController" id="500-ho-BOP"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AD3-K7-Imp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-6487" y="910"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="bv8-x6-3TE">
+            <objects>
+                <viewController id="wvS-mg-kvy" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="cyh-nI-qsa">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="729"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="M1Z-Wa-3Z0"/>
+                    </view>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="FoW-Z8-aRg">
+                        <leftBarButtonItems>
+                            <barButtonItem image="gear" catalog="system" id="3Qw-sd-URN">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                            <barButtonItem systemItem="edit" id="4E9-px-83x">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                        </leftBarButtonItems>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="ide-a7-wlZ">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                            <barButtonItem image="lines-button" id="whE-u9-8Iv">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5aP-lX-Xsz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-5431" y="910"/>
+        </scene>
     </scenes>
     <resources>
         <image name="gear" catalog="system" width="64" height="58"/>
         <image name="lines-button" width="26" height="26"/>
         <image name="moon.stars" catalog="system" width="64" height="62"/>
-        <image name="moon.stars.fill" catalog="system" width="64" height="62"/>
         <image name="sun.max" catalog="system" width="64" height="62"/>
-        <image name="sun.max.fill" catalog="system" width="64" height="62"/>
         <image name="sunrise" catalog="system" width="64" height="48"/>
-        <image name="sunrise.fill" catalog="system" width="64" height="48"/>
         <image name="sunset" catalog="system" width="64" height="48"/>
-        <image name="sunset.fill" catalog="system" width="64" height="48"/>
     </resources>
 </document>
