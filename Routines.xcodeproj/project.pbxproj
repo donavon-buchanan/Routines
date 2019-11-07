@@ -19,7 +19,6 @@
 		F86CC22F2355009200D587E9 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86CC22E2355009200D587E9 /* ColorPicker.swift */; };
 		F86E0AC22297FA5400BB53D6 /* RoutinesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86E0AC12297FA5400BB53D6 /* RoutinesUITests.swift */; };
 		F86E0ACA2297FAA400BB53D6 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A9B0A222842BC20043E43A /* SnapshotHelper.swift */; };
-		F89C786E22E31E000079B089 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F89C786C22E31E000079B089 /* LaunchScreen.storyboard */; };
 		F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */; };
 		F8B30787219C0DAB00437AAA /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B30786219C0DAB00437AAA /* Themes.swift */; };
 		F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8B831B72155CBB000DAF60E /* AppDelegate.swift */; };
@@ -39,6 +38,7 @@
 		F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */; };
 		F8DC390222D075D9005C3BE0 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DC390122D075D9005C3BE0 /* NotificationHandler.swift */; };
 		F8E031862269C410002C2E32 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E031852269C410002C2E32 /* AppStrings.swift */; };
+		F8EA184923741BFB009093A3 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F8EA184723741BFB009093A3 /* Launch.storyboard */; };
 		F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */; };
 		F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */; };
 		F8F3270E215C8509004AC619 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8F3270D215C8509004AC619 /* Media.xcassets */; };
@@ -79,7 +79,6 @@
 		F86E0ABF2297FA5400BB53D6 /* RoutinesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoutinesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F86E0AC12297FA5400BB53D6 /* RoutinesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinesUITests.swift; sourceTree = "<group>"; };
 		F86E0AC32297FA5400BB53D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F89C786D22E31E000079B089 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = SOURCE_ROOT; };
 		F8A761F022580AB400FB9654 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS5.2.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
 		F8A9B0A222842BC20043E43A /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = RoutinesUITests/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		F8AC82DE2198B4CD00E946E6 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
@@ -103,6 +102,7 @@
 		F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTableViewController.swift; sourceTree = "<group>"; };
 		F8DC390122D075D9005C3BE0 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 		F8E031852269C410002C2E32 /* AppStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStrings.swift; sourceTree = "<group>"; };
+		F8EA184823741BFB009093A3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Launch.storyboard; sourceTree = "<group>"; };
 		F8F2784D2187C36300D2AC46 /* AboutTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTableViewController.swift; sourceTree = "<group>"; };
 		F8F2784F2187C82B00D2AC46 /* AboutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTableViewCell.swift; sourceTree = "<group>"; };
 		F8F3270D215C8509004AC619 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -244,8 +244,8 @@
 		F8B831CA2155CBC700DAF60E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F8EA184723741BFB009093A3 /* Launch.storyboard */,
 				F8B831BB2155CBB000DAF60E /* Main.storyboard */,
-				F89C786C22E31E000079B089 /* LaunchScreen.storyboard */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -419,9 +419,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F89C786E22E31E000079B089 /* LaunchScreen.storyboard in Resources */,
 				F8F3270E215C8509004AC619 /* Media.xcassets in Resources */,
 				F8B831BD2155CBB000DAF60E /* Main.storyboard in Resources */,
+				F8EA184923741BFB009093A3 /* Launch.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,20 +548,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		F89C786C22E31E000079B089 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F89C786D22E31E000079B089 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 		F8B831BB2155CBB000DAF60E /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				F8B831BC2155CBB000DAF60E /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F8EA184723741BFB009093A3 /* Launch.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F8EA184823741BFB009093A3 /* Base */,
+			);
+			name = Launch.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

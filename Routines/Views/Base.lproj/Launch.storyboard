@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jDW-kT-xut">
+    <device id="retina5_9" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="ldF-d2-cIn">
+            <objects>
+                <navigationController id="jDW-kT-xut" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="bX8-g9-MyA">
+                        <rect key="frame" x="0.0" y="44" width="375" height="96"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="VTI-sw-Y7j" kind="relationship" relationship="rootViewController" id="5TE-UM-rVi"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YSV-AJ-AvH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4593" y="-471"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="LZ9-qN-Hlj">
+            <objects>
+                <viewController id="VTI-sw-Y7j" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="u6V-zX-2Oe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tabBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aGv-hK-vw1">
+                                <rect key="frame" x="0.0" y="729" width="375" height="49"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <items>
+                                    <tabBarItem title="Morning" image="sunrise" catalog="system" selectedImage="sunrise.fill" id="QZd-k6-TpN"/>
+                                    <tabBarItem title="Afternoon" image="sun.max" catalog="system" selectedImage="sun.max.fill" id="50F-a8-GcX"/>
+                                    <tabBarItem title="Evening" image="sunset" catalog="system" selectedImage="sunset.fill" id="4RP-dZ-iCp"/>
+                                    <tabBarItem title="Night" image="moon.stars" catalog="system" selectedImage="moon.stars.fill" id="Ref-z7-ZPK"/>
+                                </items>
+                            </tabBar>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="AaT-E8-cQY"/>
+                    </view>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="Vro-C0-2Oo">
+                        <leftBarButtonItems>
+                            <barButtonItem image="gear" catalog="system" id="D0F-VK-DXw">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                            <barButtonItem systemItem="edit" id="vUm-9V-Zyf">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                        </leftBarButtonItems>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="hxL-p3-awF">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                            <barButtonItem image="lines-button" id="9g4-eY-3fe">
+                                <color key="tintColor" systemColor="secondaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yAl-ye-2rx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3537" y="-471"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="gear" catalog="system" width="64" height="58"/>
+        <image name="lines-button" width="26" height="26"/>
+        <image name="moon.stars" catalog="system" width="64" height="62"/>
+        <image name="moon.stars.fill" catalog="system" width="64" height="62"/>
+        <image name="sun.max" catalog="system" width="64" height="62"/>
+        <image name="sun.max.fill" catalog="system" width="64" height="62"/>
+        <image name="sunrise" catalog="system" width="64" height="48"/>
+        <image name="sunrise.fill" catalog="system" width="64" height="48"/>
+        <image name="sunset" catalog="system" width="64" height="48"/>
+        <image name="sunset.fill" catalog="system" width="64" height="48"/>
+    </resources>
+</document>
