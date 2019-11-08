@@ -6,7 +6,7 @@
 //  Copyright © 2019 Donavon Buchanan. All rights reserved.
 //
 
-// import IceCream
+import Foundation
 import RealmSwift
 
 // Morning = 0
@@ -20,14 +20,14 @@ enum CategorySelections: Int {
     case morning, afternoon, evening, night, allDay, completed
 }
 
-@objcMembers class TaskCategory: Object {
-    dynamic var isDeleted: Bool = false
-    dynamic var id: String?
+class TaskCategory: Object {
+    @objc dynamic var isDeleted: Bool = false
+    @objc dynamic var id: String?
     override static func primaryKey() -> String? {
         "id"
     }
 
-    dynamic var categoryInt = 0
+    @objc dynamic var categoryInt = 0
 
     let taskList = List<Task>()
 

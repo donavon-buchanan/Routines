@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-@objcMembers class Task: Object {
+class Task: Object {
     lazy var notificationHanlder = NotificationHandler()
 
     static let realmDispatchQueueLabel: String = "background"
@@ -18,18 +18,18 @@ import RealmSwift
         ["notificationHanlder"]
     }
 
-    dynamic var title: String?
-    dynamic var dateModified = Date()
-    dynamic var segment: Int = 0
-    dynamic var originalSegment: Int = 0
-    dynamic var completeUntil = Date()
-    dynamic var repeats: Bool = true
-    dynamic var notes: String?
-    dynamic var priority: Int = 0
+    @objc dynamic var title: String?
+    @objc dynamic var dateModified = Date()
+    @objc dynamic var segment: Int = 0
+    @objc dynamic var originalSegment: Int = 0
+    @objc dynamic var completeUntil = Date()
+    @objc dynamic var repeats: Bool = true
+    @objc dynamic var notes: String?
+    @objc dynamic var priority: Int = 0
     let category = LinkingObjects(fromType: TaskCategory.self, property: "taskList")
 
     // For syncing
-    dynamic var isDeleted: Bool = false
+    @objc dynamic var isDeleted: Bool = false
 
     required convenience init(title: String, segment: Int, repeats: Bool, notes: String?) {
         debugPrint("Running init on Task")
@@ -46,7 +46,7 @@ import RealmSwift
     }
 
     // Notification identifier
-    dynamic var uuidString: String = UUID().uuidString
+    @objc dynamic var uuidString: String = UUID().uuidString
     override static func primaryKey() -> String? {
         "uuidString"
     }

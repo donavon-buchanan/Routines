@@ -367,7 +367,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         // Now that we've told Realm how to handle the schema change, opening the file
         // will automatically perform the migration
-        _ = try? Realm()
+        _ = try! Realm()
     }
 
     func completeTask(uuidString: String) {
