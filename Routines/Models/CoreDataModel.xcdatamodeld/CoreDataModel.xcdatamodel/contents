@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="19C32e" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="CDTask" representedClassName="CDTask" syncable="YES" codeGenerationType="class">
+        <attribute name="completeUntil" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="originalCategoryID" optional="YES" attributeType="String"/>
+        <attribute name="priority" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="repeatType" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="taskCategory" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDTaskCategory" inverseName="tasks" inverseEntity="CDTaskCategory"/>
+    </entity>
+    <entity name="CDTaskCategory" representedClassName="CDTaskCategory" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="notificationHour" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="notificationMinute" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="notificationsEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="tasks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDTask" inverseName="taskCategory" inverseEntity="CDTask"/>
+    </entity>
+    <entity name="UserOptions" representedClassName="UserOptions" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+    </entity>
+    <elements>
+        <element name="CDTask" positionX="-63" positionY="-18" width="128" height="28"/>
+        <element name="CDTaskCategory" positionX="-54" positionY="-9" width="128" height="28"/>
+        <element name="UserOptions" positionX="-36" positionY="9" width="128" height="28"/>
+    </elements>
+</model>

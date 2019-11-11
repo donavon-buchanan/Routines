@@ -8,7 +8,7 @@
 
 import RealmSwift
 import UIKit
-import UserNotifications
+import CoreData
 
 class TaskTableViewController: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
     @IBAction func unwindToTableViewController(segue _: UIStoryboardSegue) {}
@@ -146,10 +146,17 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     // Footer view
     let footerView = UIView()
+    
+    var container: NSPersistentContainer!
 
     override func viewDidLoad() {
         debugPrint(#function + " start")
         super.viewDidLoad()
+        
+        guard container != nil else {
+            fatalError("This view needs a persistent container.")
+        }
+        // The persistent container is available.
 
         NotificationCenter.default.addObserver(self, selector: #selector(appBecameActive), name: UIApplication.willEnterForegroundNotification, object: nil)
 
@@ -205,10 +212,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         debugPrint(#function + " start")
         observeTasks()
         debugPrint(#function + " end")
-    }
-
-    func returnSegment() -> Int {
-        0
     }
 
     func returnTitle(forSegment segment: Int) -> String {

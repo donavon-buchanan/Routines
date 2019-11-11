@@ -15,6 +15,7 @@
 		F816DB342155CFBA009C6907 /* TaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F816DB332155CFBA009C6907 /* TaskTableViewController.swift */; };
 		F82770D321585D3000420C50 /* AddTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82770D221585D3000420C50 /* AddTableViewController.swift */; };
 		F849435323644BAD006CB280 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F849435223644BAD006CB280 /* RealmSwift */; };
+		F84F3260237926BE0002F4E0 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F84F325E237926BE0002F4E0 /* CoreDataModel.xcdatamodeld */; };
 		F86C6957237382C0003E556F /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = F86C6956237382C0003E556F /* Realm */; };
 		F86CC22F2355009200D587E9 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86CC22E2355009200D587E9 /* ColorPicker.swift */; };
 		F86E0AC22297FA5400BB53D6 /* RoutinesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F86E0AC12297FA5400BB53D6 /* RoutinesUITests.swift */; };
@@ -31,10 +32,6 @@
 		F8CCE20D2288E17E00BAAFEC /* RoutinesPlus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CCE20C2288E17E00BAAFEC /* RoutinesPlus.swift */; };
 		F8CE29C622714E9A00CD9BAE /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CE29C522714E9A00CD9BAE /* UIColorExtensions.swift */; };
 		F8D5DB532269BCAD005857F2 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */; };
-		F8D764C5236BF6CE00C3C592 /* MorningTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D764C4236BF6CE00C3C592 /* MorningTableViewController.swift */; };
-		F8D764C8236BF6F100C3C592 /* AfternoonTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D764C7236BF6F100C3C592 /* AfternoonTableViewController.swift */; };
-		F8D764CA236BF6FA00C3C592 /* EveningTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D764C9236BF6FA00C3C592 /* EveningTableViewController.swift */; };
-		F8D764CC236BF70300C3C592 /* NightTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D764CB236BF70300C3C592 /* NightTableViewController.swift */; };
 		F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */; };
 		F8DC390222D075D9005C3BE0 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DC390122D075D9005C3BE0 /* NotificationHandler.swift */; };
 		F8E031862269C410002C2E32 /* AppStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E031852269C410002C2E32 /* AppStrings.swift */; };
@@ -75,6 +72,7 @@
 		F81224C7229417E400AEED90 /* SimulatorData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorData.swift; sourceTree = "<group>"; };
 		F816DB332155CFBA009C6907 /* TaskTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TaskTableViewController.swift; sourceTree = "<group>"; };
 		F82770D221585D3000420C50 /* AddTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTableViewController.swift; sourceTree = "<group>"; };
+		F84F325F237926BE0002F4E0 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		F86CC22E2355009200D587E9 /* ColorPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
 		F86E0ABF2297FA5400BB53D6 /* RoutinesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RoutinesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F86E0AC12297FA5400BB53D6 /* RoutinesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinesUITests.swift; sourceTree = "<group>"; };
@@ -95,10 +93,6 @@
 		F8CCE20C2288E17E00BAAFEC /* RoutinesPlus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutinesPlus.swift; sourceTree = "<group>"; };
 		F8CE29C522714E9A00CD9BAE /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		F8D5DB522269BCAD005857F2 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
-		F8D764C4236BF6CE00C3C592 /* MorningTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorningTableViewController.swift; sourceTree = "<group>"; };
-		F8D764C7236BF6F100C3C592 /* AfternoonTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AfternoonTableViewController.swift; sourceTree = "<group>"; };
-		F8D764C9236BF6FA00C3C592 /* EveningTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EveningTableViewController.swift; sourceTree = "<group>"; };
-		F8D764CB236BF70300C3C592 /* NightTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightTableViewController.swift; sourceTree = "<group>"; };
 		F8DAE74B21E1576E00014994 /* DailyTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyTableViewController.swift; sourceTree = "<group>"; };
 		F8DC390122D075D9005C3BE0 /* NotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
 		F8E031852269C410002C2E32 /* AppStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStrings.swift; sourceTree = "<group>"; };
@@ -257,6 +251,7 @@
 				F8C731E523566A6E0074EEB5 /* TaskCategory.swift */,
 				F807D3CC216073E300FF36D9 /* Options.swift */,
 				F8CCE20C2288E17E00BAAFEC /* RoutinesPlus.swift */,
+				F84F325E237926BE0002F4E0 /* CoreDataModel.xcdatamodeld */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -265,10 +260,6 @@
 			isa = PBXGroup;
 			children = (
 				F816DB332155CFBA009C6907 /* TaskTableViewController.swift */,
-				F8D764C4236BF6CE00C3C592 /* MorningTableViewController.swift */,
-				F8D764C7236BF6F100C3C592 /* AfternoonTableViewController.swift */,
-				F8D764C9236BF6FA00C3C592 /* EveningTableViewController.swift */,
-				F8D764CB236BF70300C3C592 /* NightTableViewController.swift */,
 			);
 			path = "Task Table Views";
 			sourceTree = "<group>";
@@ -502,18 +493,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8D764CA236BF6FA00C3C592 /* EveningTableViewController.swift in Sources */,
 				F8B831CD2155CBE300DAF60E /* Task.swift in Sources */,
-				F8D764C8236BF6F100C3C592 /* AfternoonTableViewController.swift in Sources */,
 				F8F278502187C82B00D2AC46 /* AboutTableViewCell.swift in Sources */,
 				F8DAE74C21E1576E00014994 /* DailyTableViewController.swift in Sources */,
 				F8F2784E2187C36300D2AC46 /* AboutTableViewController.swift in Sources */,
 				F8E031862269C410002C2E32 /* AppStrings.swift in Sources */,
 				F81224C8229417E400AEED90 /* SimulatorData.swift in Sources */,
 				F8AC82DF2198B4CD00E946E6 /* DateExtension.swift in Sources */,
-				F8D764CC236BF70300C3C592 /* NightTableViewController.swift in Sources */,
 				F86CC22F2355009200D587E9 /* ColorPicker.swift in Sources */,
-				F8D764C5236BF6CE00C3C592 /* MorningTableViewController.swift in Sources */,
 				F8CBBA5921A93EB600A4FFFD /* RepeatTableViewController.swift in Sources */,
 				F8C3EC98228D673F0027AFEB /* UIImageExtension.swift in Sources */,
 				F8B831B82155CBB000DAF60E /* AppDelegate.swift in Sources */,
@@ -528,6 +515,7 @@
 				F8D5DB532269BCAD005857F2 /* ViewControllerExtension.swift in Sources */,
 				F807D3CD216073E300FF36D9 /* Options.swift in Sources */,
 				F8B30787219C0DAB00437AAA /* Themes.swift in Sources */,
+				F84F3260237926BE0002F4E0 /* CoreDataModel.xcdatamodeld in Sources */,
 				F8C731E623566A6E0074EEB5 /* TaskCategory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1016,6 +1004,19 @@
 			productName = Realm;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		F84F325E237926BE0002F4E0 /* CoreDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F84F325F237926BE0002F4E0 /* CoreDataModel.xcdatamodel */,
+			);
+			currentVersion = F84F325F237926BE0002F4E0 /* CoreDataModel.xcdatamodel */;
+			path = CoreDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = F8B831AC2155CBB000DAF60E /* Project object */;
 }
