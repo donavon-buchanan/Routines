@@ -49,6 +49,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         debugPrint("\(#function) - Start")
 
         // Override point for customization after application launch.
+        if let rootVC = window?.rootViewController as? TaskTableViewController {
+            rootVC.container = persistentContainer
+        } 
 
 //        application.registerForRemoteNotifications()
 

@@ -172,6 +172,10 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
         debugPrint(#function + " end")
     }
+    
+    func returnSegment() -> Int {
+        0
+    }
 
     override func viewWillAppear(_: Bool) {
         debugPrint(#function + " start")

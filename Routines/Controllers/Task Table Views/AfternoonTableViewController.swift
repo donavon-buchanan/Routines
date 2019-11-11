@@ -9,9 +9,5 @@
 import UIKit
 
 class AfternoonTableViewController: TaskTableViewController {
-//    let segment = 1
 
-    override func returnSegment() -> Int {
-        1
-    }
 }
