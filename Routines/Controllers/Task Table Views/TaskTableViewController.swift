@@ -147,13 +147,13 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     // Footer view
     let footerView = UIView()
     
-    var container: NSPersistentContainer!
+    static var container: NSPersistentContainer!
 
     override func viewDidLoad() {
         debugPrint(#function + " start")
         super.viewDidLoad()
         
-        guard container != nil else {
+        guard TaskTableViewController.container != nil else {
             fatalError("This view needs a persistent container.")
         }
         // The persistent container is available.
