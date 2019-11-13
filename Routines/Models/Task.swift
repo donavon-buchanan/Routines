@@ -26,7 +26,7 @@ class Task: Object {
     @objc dynamic var repeats: Bool = true
     @objc dynamic var notes: String?
     @objc dynamic var priority: Int = 0
-    let category = LinkingObjects(fromType: TaskCategory.self, property: "taskList")
+//    let category = LinkingObjects(fromType: TaskCategory.self, property: "taskList")
 
     // For syncing
     @objc dynamic var isDeleted: Bool = false
