@@ -10,29 +10,29 @@
 import Foundation
 import RealmSwift
 
-@objcMembers class Options: Object {
+class Options: Object {
     // MARK: Color bars
 
     // MARK: - Time settings
 
-    dynamic var morningHour: Int = 7
-    dynamic var morningMinute: Int = 0
+    @objc dynamic var morningHour: Int = 7
+    @objc dynamic var morningMinute: Int = 0
 
-    dynamic var afternoonHour: Int = 12
-    dynamic var afternoonMinute: Int = 0
+    @objc dynamic var afternoonHour: Int = 12
+    @objc dynamic var afternoonMinute: Int = 0
 
-    dynamic var eveningHour: Int = 17
-    dynamic var eveningMinute: Int = 0
+    @objc dynamic var eveningHour: Int = 17
+    @objc dynamic var eveningMinute: Int = 0
 
-    dynamic var nightHour: Int = 21
-    dynamic var nightMinute: Int = 0
+    @objc dynamic var nightHour: Int = 21
+    @objc dynamic var nightMinute: Int = 0
 
-    dynamic var morningNotificationsOn: Bool = true
-    dynamic var afternoonNotificationsOn: Bool = true
-    dynamic var eveningNotificationsOn: Bool = true
-    dynamic var nightNotificationsOn: Bool = true
+    @objc dynamic var morningNotificationsOn: Bool = true
+    @objc dynamic var afternoonNotificationsOn: Bool = true
+    @objc dynamic var eveningNotificationsOn: Bool = true
+    @objc dynamic var nightNotificationsOn: Bool = true
 
-    dynamic var badge: Bool = true
+    @objc dynamic var badge: Bool = true
 
 //    // MARK: Dark Mode
 //
@@ -155,9 +155,9 @@ import RealmSwift
 //
 //    dynamic var themeIndex: Int = 0
 
-    dynamic var selectedIndex: Int = 0
+    @objc dynamic var selectedIndex: Int = 0
 
-    dynamic var optionsKey = UUID().uuidString
+    @objc dynamic var optionsKey = UUID().uuidString
     override static func primaryKey() -> String {
         "optionsKey"
     }

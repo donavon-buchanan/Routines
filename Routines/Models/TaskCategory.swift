@@ -27,7 +27,7 @@ class TaskCategory: Object {
         "id"
     }
 
-    @objc dynamic var categoryInt = 0
+    dynamic var categoryInt = 0
 
     let taskList = List<Task>()
 

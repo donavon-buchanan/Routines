@@ -9,12 +9,12 @@
 import RealmSwift
 import UIKit
 
-@objcMembers class RoutinesPlus: Object {
+class RoutinesPlus: Object {
     static let realmDispatchQueueLabel: String = "background"
     let cloudSyncKey: String = "cloudSync"
 //    static let expiryDateKey: String = "expiryDate"
 
-    dynamic var routinesPlusKey = UUID().uuidString
+    @objc dynamic var routinesPlusKey = UUID().uuidString
     override static func primaryKey() -> String {
         "routinesPlusKey"
     }
@@ -23,7 +23,7 @@ import UIKit
 //    dynamic var purchasedProduct: String = ""
 
     // View upcoming
-    dynamic var showUpcomingTasks: Bool = false
+    @objc dynamic var showUpcomingTasks: Bool = false
 
     static func getShowUpcomingTasks() -> Bool {
         let realm = try? Realm()
