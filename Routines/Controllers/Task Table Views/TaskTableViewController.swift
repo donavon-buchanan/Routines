@@ -168,7 +168,6 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
 
     override func viewWillAppear(_: Bool) {
         debugPrint(#function + " start")
-        let segment = returnSegment()
 
         loadTasksForSegment(segment: segment)
 
@@ -206,6 +205,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         observeTasks()
         debugPrint(#function + " end")
     }
+    
+    lazy var segment: Int = self.returnSegment()
 
     func returnSegment() -> Int {
         0
@@ -530,12 +531,12 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
     func resetTableView() {
         // Reset the view just before segue
         if linesBarButtonSelected {
-            title = returnTitle(forSegment: returnSegment())
+            title = returnTitle(forSegment: self.segment)
             DispatchQueue.main.async {
                 autoreleasepool {
                     self.linesBarButtonSelected = false
                     self.linesBarButtonItem.image = UIImage(imageLiteralResourceName: "lines-button")
-                    self.loadTasksForSegment(segment: self.returnSegment())
+                    self.loadTasksForSegment(segment: self.segment)
                     self.changeTabBar(hidden: false, animated: true)
                 }
             }
@@ -547,7 +548,7 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
             let navVC = segue.destination as? UINavigationController
             let destination = navVC?.topViewController as? AddTableViewController
             // set segment based on current tab
-            let selectedTab = returnSegment()
+            let selectedTab = self.segment
             destination?.editingSegment = selectedTab
             destination?.selectedIndex = selectedTab
             resetTableView()
@@ -566,16 +567,8 @@ class TaskTableViewController: UITableViewController, UINavigationControllerDele
         if segue.identifier == "optionsSegue" {
             let navVC = segue.destination as? UINavigationController
             let destination = navVC?.topViewController as? OptionsTableViewController
-            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
-            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
-            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
-            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
-            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
-            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
-            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
-            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
-            debugPrint("PASSING IN \(returnSegment()) TO selectedIndex")
-            destination?.selectedIndex = returnSegment()
+            debugPrint("PASSING IN \(self.segment) TO selectedIndex")
+            destination?.selectedIndex = self.segment
         }
 
         if let indexPath = tableView.indexPathForSelectedRow {
