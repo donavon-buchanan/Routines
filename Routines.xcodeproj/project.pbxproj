@@ -61,7 +61,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		F802FC962254C3D60054CF22 /* Routines.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Routines.entitlements; sourceTree = "<group>"; };
 		F802FC972254C3E10054CF22 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		F807BD8623642B6A00934296 /* RoutinesUITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = RoutinesUITests.xctestplan; sourceTree = "<group>"; };
 		F807D3CC216073E300FF36D9 /* Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Options.swift; sourceTree = "<group>"; };
@@ -212,7 +211,6 @@
 		F8B831B62155CBB000DAF60E /* Routines */ = {
 			isa = PBXGroup;
 			children = (
-				F802FC962254C3D60054CF22 /* Routines.entitlements */,
 				F8B831B72155CBB000DAF60E /* AppDelegate.swift */,
 				F8B30786219C0DAB00437AAA /* Themes.swift */,
 				F86CC22E2355009200D587E9 /* ColorPicker.swift */,
@@ -773,7 +771,7 @@
 				APP_BUNDLE_ID = com.donavonbuchanan.RoutinesDebug;
 				APP_DISPLAY_NAME = "Routines Debug";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
-				CODE_SIGN_ENTITLEMENTS = Routines/Routines.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6812;
@@ -802,7 +800,7 @@
 				APP_BUNDLE_ID = com.donavonbuchanan.Routines;
 				APP_DISPLAY_NAME = Routines;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Routines/Routines.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6812;
